@@ -15,15 +15,15 @@ export default function Tutorials() {
     const videosList = [
         {
             title: "Como configurar a sua conta",
-            url: "https://www.youtube.com/watch?v=oJw5_mD2o5E",
+            url: "https://www.youtube.com/embed/oJw5_mD2o5E?si=6LurzmhZWzaV5lH2",
         },
         {
             title: "Como cadastrar seu primeiro cliente",
-            url: "https://www.youtube.com/watch?v=5D3Z9Ln1XeA",
+            url: "https://www.youtube.com/embed/5D3Z9Ln1XeA?si=HpCn_6yj6WvmD3fh",
         },
         {
             title: "Como fazer uma avaliação",
-            url: "https://www.youtube.com/watch?v=R2ILJY5SDNg",
+            url: "https://www.youtube.com/embed/R2ILJY5SDNg?si=6Dwpus4qTSW6UZR-",
         }
 
     ];
