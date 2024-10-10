@@ -29,7 +29,8 @@ export default function MenuBar(props) {
         '/tutorials',
         '/sac',
         '/passwordChange',
-        '/accountSetup'
+        '/accountSetup',
+        '/'
     ]
 
 
