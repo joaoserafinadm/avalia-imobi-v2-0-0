@@ -52,7 +52,7 @@ import PaymentModal from "../src/app/PaymentModal.jsx";
 // import SignUp from '../src/components/signUp/SignUp'
 // import PremiumAccount from '../src/components/premiumAccount/PremiumAccount'
 
-export default function MyApp({ Component, pageProps }) {
+export default function MyApp({ Component, pageProps: { session, ...pageProps} }) {
 
     const token = Cookie.get('auth') ? jwt.decode(Cookie.get('auth')) : false
     const router = useRouter();

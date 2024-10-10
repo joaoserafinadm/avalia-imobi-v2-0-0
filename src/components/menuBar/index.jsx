@@ -26,7 +26,10 @@ export default function MenuBar(props) {
     const permitedPages = [
         '/usersManagement',
         '/clientsManagement',
-        '/'
+        '/tutorials',
+        '/sac',
+        '/passwordChange',
+        '/accountSetup'
     ]
 
 
