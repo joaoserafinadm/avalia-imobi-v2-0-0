@@ -1,14 +1,7 @@
 import { connect } from '../../../utils/db'
-import { verify, sign } from 'jsonwebtoken'
-import { ObjectId, ObjectID } from 'bson'
-import cookie from 'cookie'
-
-import { Payment, MercadoPagoConfig } from 'mercadopago';
-
-
-const client = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN });
-
-const payment = new Payment(client);
+import { verify } from 'jsonwebtoken'
+import { ObjectId } from 'bson'
+import fetch from 'node-fetch'; // Para realizar chamadas HTTP para a API REST
 
 const authenticated = fn => async (req, res) => {
     verify(req.cookies.auth, process.env.JWT_SECRET, async function (err, decoded) {
@@ -25,35 +18,90 @@ export default authenticated(async (req, res) => {
 
         const { company_id, user_id, cardTokenId, last4, cardholderName, email } = req.body
 
-        payment.create({
-            body: {
-                transaction_amount: 10,
-                token: cardTokenId,
-                description: 'teste',
-                installments: 1,
-                // payment_method_id: req.paymentMethodId,
-                // issuer_id: req.issuer,
-                payer: {
-                    email: email,
-                    // identification: {
-                    //     type: req.identificationType,
-                    //     number: req.number
-                    // }
+        if (!company_id || !user_id || !cardTokenId || !email) {
+            return res.status(400).json({ message: "Missing parameters on request body" })
+        }
+
+        const { db } = await connect()
+
+        const companyExist = await db.collection('companies').findOne({ _id: ObjectId(company_id) })
+
+        if (!companyExist) {
+            return res.status(400).json({ message: "Company does not exist" })
+        }
+
+        const userExist = await db.collection('users').findOne({ _id: ObjectId(user_id) })
+
+        if (!userExist) {
+            return res.status(400).json({ message: "User does not exist" })
+        }
+
+        try {
+            // Criar a assinatura no Mercado Pago
+            const subscriptionResponse = await fetch('https://api.mercadopago.com/preapproval', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    payer_email: email,
+                    card_token: cardTokenId,
+                    reason: 'Assinatura mensal p/ 1 usuário - Avalia Imobi',
+                    external_reference: company_id,  // Referência externa para identificar a assinatura
+                    auto_recurring: {
+                        frequency: 1,
+                        frequency_type: 'months', // Frequência mensal
+                        transaction_amount: 79.90,
+                        currency_id: "BRL", // Moeda
+                        start_date: new Date().toISOString(), // Data de início da assinatura
+                    }// URL de redirecionamento após a assinatura (opcional)
+                })
+            });
+
+            const subscriptionData = await subscriptionResponse.json();
+
+            if (!subscriptionResponse.ok) {
+                return res.status(400).json({ message: "Error creating subscription", details: subscriptionData })
+            }
+
+            // Atualizar a base de dados com os dados da assinatura
+            const subscriptionId = subscriptionData.id; // ID da assinatura retornado pelo Mercado Pago
+
+            const data = {
+                user_id,
+                cardToken: cardTokenId,
+                last4,
+                cardholderName,
+                email,
+                subscription_id: subscriptionId, // ID da assinatura
+                customer_status: subscriptionData.status,
+                amount: 79.90,
+                usersCount: 1,
+                amountPerUser: 0,
+                dateCreated: new Date(),
+                dateUpdated: new Date()
+            };
+
+            const DBresponse = await db.collection('companies').updateOne(
+                { _id: ObjectId(company_id) },
+                {
+                    $set: {
+                        "paymentData": data
+                    }
                 }
-            },
-            requestOptions: { idempotencyKey: '123' }
-        })
-            .then((result) => console.log("result", result))
-            .catch((error) => console.log("error", error));
+            );
 
+            if (DBresponse.modifiedCount === 0) {
+                return res.status(400).json({ message: "Cant create subscription" })
+            }
 
+            return res.status(200).json({ message: 'Subscription created successfully', subscription: subscriptionData })
 
-
-
-
+        } catch (error) {
+            return res.status(500).json({ message: "Internal Server Error", error: error.message })
+        }
+    } else {
+        return res.status(405).json({ message: "Method not allowed" })
     }
-
-
-
-
-})
+});
