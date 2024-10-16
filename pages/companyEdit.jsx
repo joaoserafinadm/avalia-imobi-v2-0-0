@@ -157,9 +157,9 @@ export default function companyEdit() {
 
         removeInputError()
 
-        if (!companyName || !telefone || !cidade || !email) {
+        if (!companyName  || !cidade || !celular || !email) {
             if (!companyName) document.getElementById("companyNameItem").classList.add('inputError')
-            if (!telefone) document.getElementById("telefoneItem").classList.add('inputError')
+            if (!celular) document.getElementById("celularItem").classList.add('inputError')
             if (!cidade) document.getElementById("cidadeItem").classList.add('inputError')
             if (!email) document.getElementById("emailItem").classList.add('inputError')
             scrollTo('pageTop')
@@ -365,10 +365,10 @@ export default function companyEdit() {
                                     <div className="row mt-3">
                                         <label for="telefoneItem" className="form-label fw-bold">Contatos</label>
                                         <div className="col-12 col-lg-6 my-2">
-                                            <input type="text" className="form-control form-control-sm" id="telefoneItem" value={telefone} onChange={e => maskTelefone(e.target.value)} placeholder="Telefone *" />
+                                            <input type="text" className="form-control form-control-sm" id="telefoneItem" value={telefone} onChange={e => maskTelefone(e.target.value)} placeholder="Telefone" />
                                         </div>
                                         <div className="col-12 col-lg-6 my-2">
-                                            <input type="text" className="form-control form-control-sm" id="celularItem" value={celular} onChange={e => maskCelular(e.target.value)} placeholder="Celular" />
+                                            <input type="text" className="form-control form-control-sm" id="celularItem" value={celular} onChange={e => maskCelular(e.target.value)} placeholder="Celular *" />
                                         </div>
                                         <div className="col-12 col-lg-12 my-2">
                                             <input type="text" className="form-control form-control-sm" id="emailItem" value={email} onChange={e => setEmail(e.target.value)} placeholder="E-mail *" />

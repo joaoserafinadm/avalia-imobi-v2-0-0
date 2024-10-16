@@ -1,12 +1,17 @@
-import { faGear, faStore, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faBook, faGear, faStore, faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
 import { useEffect } from "react"
 import isMobile from "../../utils/isMobile"
+import axios from "axios"
+import Cookie from "js-cookie"
+import jwt from "jsonwebtoken"
 
 
 
 export default function FirstNotifications(props) {
+
+    const token = jwt.decode(Cookie.get("auth"))
 
     const { firstNotifications } = props
 
@@ -46,6 +51,15 @@ export default function FirstNotifications(props) {
         const diferencaEmDias = Math.ceil(diferencaEmMilissegundos / milissegundosPorDia);
 
         return diferencaEmDias;
+    }
+
+
+    const handleDisableTutorial = async () => {
+
+        await axios.post(`/api/indexPage/disableTutorial`, {
+            user_id: token.sub,
+        })
+
     }
 
 
@@ -95,9 +109,34 @@ export default function FirstNotifications(props) {
                 </div>
             )}
 
+            {/* {firstNotifications?.tutorial && ( */}
+            {!firstNotifications?.companyEdit && !firstNotifications?.profileEdit && firstNotifications?.tutorial && (
+
+                <div style={{ maxWidth: '90vw' }} class={`toast my-2 bg-light ${(!firstNotifications?.companyEdit && !firstNotifications?.profileEdit && firstNotifications?.tutorial) ? 'pulse' : ''}`} role="alert" data-bs-autohide="false" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        {/* <img src="..." class="rounded me-2" alt="..."> */}
+                        <span class="me-auto text-orange fw-bold">Aprenda a usar a plataforma!</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <span >
+                            Clique no botão abaixo para acessar a página de tutoriais.
+                        </span >
+                        <div className=" mt-2">
+                            <Link href="/tutorials">
+                                <button className="btn btn-outline-orange btn-sm" onClick={() => handleDisableTutorial()}>
+                                    <FontAwesomeIcon icon={faBook} className="me-2" />Tutoriais
+                                </button>
+                            </Link>
+
+                        </div>
+
+                    </div>
+                </div>
+            )}
             {firstNotifications?.dateLimit && (
 
-                <div style={{maxWidth: '90vw'}} class={`toast my-2 bg-light ${(!firstNotifications?.companyEdit && !firstNotifications?.profileEdit) ? '' : ''}`} role="alert" data-bs-autohide="false" aria-live="assertive" aria-atomic="true">
+                <div style={{ maxWidth: '90vw' }} class={`toast my-2 bg-light ${(!firstNotifications?.companyEdit && !firstNotifications?.profileEdit) ? '' : ''}`} role="alert" data-bs-autohide="false" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header">
                         {/* <img src="..." class="rounded me-2" alt="..."> */}
                         <span class="me-auto text-orange fw-bold">Restam {handleDateLimit(firstNotifications?.dateLimit)} dias para acabar seu teste gratuito!</span>

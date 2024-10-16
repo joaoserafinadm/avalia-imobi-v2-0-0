@@ -36,7 +36,11 @@ export default authenticated(async (req, res) => {
 
         let { active, errorStatus, dateLimit } = companyExist
 
-        if (active && !errorStatus && !dateLimitValidate(dateLimit)) {
+        const dateLimitValid = dateLimitValidate(dateLimit)
+
+        console.log("dateLimitValid", dateLimitValid)
+
+        if (active && !errorStatus && !dateLimitValid) {
             await db.collection('companies').updateOne(
                 { "_id": ObjectId(companyExist._id) },
                 {
@@ -92,6 +96,8 @@ const dateLimitValidate = (dateLimit) => {
 
     const currentDate = new Date()
     currentDate.setHours(0, 0, 0, 0) // Remove time part
+
+    console.log("dateLimit", dateObj, currentDate)
 
     return dateObj >= currentDate
 }

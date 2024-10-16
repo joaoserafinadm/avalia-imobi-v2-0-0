@@ -158,7 +158,8 @@ export default async function (req, res) {
                     active: true,
                     deleted: false,
                     notifications: notifications,
-                    history: []
+                    history: [],
+                    tutorial: true
                 });
 
                 // Recupera o documento da companhia recém-criada
@@ -182,7 +183,8 @@ export default async function (req, res) {
                         headerImg: newCompany.headerImg,
                         logo: newCompany.logo,
                         active: newCompany.active,
-                        errorStatus: newCompany.errorStatus
+                        errorStatus: newCompany.errorStatus,
+                        tutorial: true
                     }
 
                     const jwt = sign(clains, process.env.JWT_SECRET, {})

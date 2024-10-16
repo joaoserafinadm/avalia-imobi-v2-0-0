@@ -91,52 +91,58 @@ export default function userAdd() {
 
     const handleSave = async (company_id) => {
 
-        setLoadingSave(true)
+        if (token.dateLimit) router.push('/accountSetup?status=Assinatura')
 
-        const isValid = validate()
+        else {
 
-        if (isValid) {
 
-            const data = {
-                company_id: token.company_id,
-                user_id: token.sub,
-                firstName,
-                lastName,
-                email,
-                userStatus: userStatus
+            setLoadingSave(true)
+
+            const isValid = validate()
+
+            if (isValid) {
+
+                const data = {
+                    company_id: token.company_id,
+                    user_id: token.sub,
+                    firstName,
+                    lastName,
+                    email,
+                    userStatus: userStatus
+                }
+
+                await axios.post(`${baseUrl()}/api/userAdd`, data)
+                    .then(res => {
+
+                        const alert = {
+                            type: 'alert',
+                            message: `${firstName} adicionado com sucesso!`,
+                            link: res.data
+                        }
+
+                        dispatch(addAlert(alertsArray, [alert]))
+
+                        setLoadingSave(false)
+
+                        router.push('/usersManagement')
+
+
+                    })
+                    .catch(e => {
+                        if (e.response.data.error === 'User already exists') {
+                            setEmailError('Este e-mail ja é utilizado.')
+                            document.getElementById("email").classList.add('inputError')
+                        }
+                        setLoadingSave(false)
+
+                    })
+
+
+                setLoadingSave(false)
             }
-
-            await axios.post(`${baseUrl()}/api/userAdd`, data)
-                .then(res => {
-
-                    const alert = {
-                        type: 'alert',
-                        message: `${firstName} adicionado com sucesso!`,
-                        link: res.data
-                    }
-
-                    dispatch(addAlert(alertsArray, [alert]))
-
-                    setLoadingSave(false)
-
-                    router.push('/usersManagement')
-
-
-                })
-                .catch(e => {
-                    if (e.response.data.error === 'User already exists') {
-                        setEmailError('Este e-mail ja é utilizado.')
-                        document.getElementById("email").classList.add('inputError')
-                    }
-                    setLoadingSave(false)
-
-                })
-
 
             setLoadingSave(false)
         }
-
-        setLoadingSave(false)
 
     }
 

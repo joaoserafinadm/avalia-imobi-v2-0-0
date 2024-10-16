@@ -38,7 +38,7 @@ export default function AccountDetailsPage(props) {
                                 )}
                             </div>
                             <div className="d-flex justify-content-end">
-                                <Link href={`/editProfile/${token.sub}`}>
+                                <Link href={`/editProfile`}>
                                     <span type="button" className="text-orange"><FontAwesomeIcon icon={faPencil} className="editIcon" /></span>
                                 </Link>
                             </div>

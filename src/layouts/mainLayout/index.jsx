@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleBarOff, toggleBarOn } from "../../../store/ToggleBarStatus/ToggleBarStatus.action";
 import window2Mobile from "../../../utils/window2Mobile";
-import { closeModal } from "../../../utils/modalControl";
+import { closeModal, showModal } from "../../../utils/modalControl";
 import MenuBar from "../../components/menuBar";
 import Background from "./Background";
 import Cookie from 'js-cookie'
@@ -27,21 +27,24 @@ export default function MainLayout({ children }) {
 
     const { data, error, isLoading } = useSWR(
         `/api/token/tokenUpdate?company_id=${token?.company_id}&user_id=${token?.sub}`,
-        api,
-        {
-            // refreshInterval: 5000, // 5000ms = 5 segundos
-            refreshInterval: 1000 * 60 * 5, // 5000ms = 5 segundos
-        }
+        api
+        // {
+        //     // refreshInterval: 5000, // 5000ms = 5 segundos
+        //     refreshInterval: 1000 * 60 * 5, // 5000ms = 5 segundos
+        // }
     );
 
 
     useEffect(() => {
 
-        if (data && !data?.active) {
+        console.log("data", router)
 
-            if (data.errorStatus === 1) {
+        if (data && !data?.data?.active && router.pathname !== '/accountSetup') {
 
+            const modal = document.getElementById('dateLimitModal')
 
+            if (data.data?.errorStatus === 1 && !modal.classList.contains('show')) {
+                showModal('dateLimitModal')
             }
         }
 

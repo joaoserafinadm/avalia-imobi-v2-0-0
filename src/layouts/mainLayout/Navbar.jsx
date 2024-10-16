@@ -248,7 +248,7 @@ export default function Nav(props) {
                                             </div>
                                         </ContextAwareToggle>
                                     </li>
-                                    <li>
+                                    <li className="mb-5">
                                         <ContextAwareToggle eventKey="7" collapse="InicioItem">
                                             <div className="d-flex justify-content-start " type='button' onClick={() => router.push('/sac')}>
                                                 <div className="col-1 d-flex justify-content-center align-items-center me-3">
