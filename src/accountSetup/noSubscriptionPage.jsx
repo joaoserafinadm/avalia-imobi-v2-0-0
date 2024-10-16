@@ -17,7 +17,8 @@ export default function NoSubscriptionPage(props) {
                 </div>
             </div>
             <div className="col-12 d-flex justify-content-center">
-                <button className="btn btn-orange pulse" data-bs-toggle="modal" data-bs-target="#creditCardEditModal">
+                <button className="btn btn-orange pulse" >
+                {/* <button className="btn btn-orange pulse" data-bs-toggle="modal" data-bs-target="#creditCardEditModal"> */}
                     Assinar o Avalia Imobi!
                 </button>
             </div>
