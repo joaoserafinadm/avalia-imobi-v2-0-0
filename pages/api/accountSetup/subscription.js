@@ -56,9 +56,9 @@ export default authenticated(async (req, res) => {
                         frequency_type: 'months', // Frequência mensal
                         transaction_amount: 79.90,
                         currency_id: "BRL", // Moeda
-                        start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
+                        // start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
                     },
-                    // status: "authorized", // Definindo o status como autorizado
+                    status: "authorized", // Definindo o status como autorizado
                     back_url: 'https://app.avaliaimobi.com.br', // URL de redirecionamento após a assinatura (opcional)
                 })
             });
