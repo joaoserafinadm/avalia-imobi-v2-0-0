@@ -20,6 +20,7 @@ import AccountDetailsPage from "../src/accountSetup/AccountDetailsPage";
 import SubscriptionPage from "../src/accountSetup/subscriptionPage";
 import NoSubscriptionPage from "../src/accountSetup/noSubscriptionPage";
 import CreditCardEditModal from "../src/accountSetup/creditCardEditModal";
+import ChargeAdressModal from "../src/accountSetup/chargeAdressModal";
 
 
 
@@ -36,6 +37,7 @@ export default function AccountSetup() {
 
     const [userData, setUserData] = useState('')
     const [companyData, setCompanyData] = useState('')
+    const [paymentHistory, setPaymentHistory] = useState([])
 
 
     const [section, setSection] = useState('Detalhes da conta')
@@ -48,7 +50,6 @@ export default function AccountSetup() {
 
         tooltipFunction()
 
-        setLoadingPage(false)
 
         dataFunction(token.sub, token.company_id)
 
@@ -88,6 +89,7 @@ export default function AccountSetup() {
         }).then(res => {
             setUserData(res.data.user)
             setCompanyData(res.data.company)
+            setPaymentHistory(res.data.paymentHistory)
             setLoadingPage(false)
         }).catch(e => {
 
@@ -105,6 +107,8 @@ export default function AccountSetup() {
         <div>
 
             <CreditCardEditModal companyData={companyData} />
+
+            <ChargeAdressModal companyData={companyData} dataFunction={() => dataFunction(token.sub, token.company_id)} />
 
 
 
@@ -128,16 +132,13 @@ export default function AccountSetup() {
 
                                 <div className="carousel-inner ">
 
-
-
-
                                     <div className="carousel-item active">
                                         <AccountDetailsPage userData={userData} companyData={companyData} />
                                     </div>
 
                                     <div className="carousel-item">
                                         {companyData?.paymentData ?
-                                            <SubscriptionPage companyData={companyData} />
+                                            <SubscriptionPage companyData={companyData} paymentHistory={paymentHistory} />
                                             :
                                             <NoSubscriptionPage companyData={companyData} />
                                         }

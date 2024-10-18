@@ -47,6 +47,30 @@ export default authenticated(async (req, res) => {
                 }
             )
 
+            let paymentHistoryResponse
+
+            if (companyExist?.paymentData) {
+                paymentHistoryResponse = await fetch(`https://api.mercadopago.com/preapproval/search?q=${companyExist?.paymentData?.subscription_id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+            }
+
+            const subscriptionData = await paymentHistoryResponse.json();
+
+            console.log(subscriptionData)
+
+            const history = subscriptionData?.results?.map(elem => {
+                return {
+                    date: elem.date_created,
+                    status: elem.status,
+                    summarized: elem.summarized
+                }
+            })
+
 
             const userExist = await db.collection('users').findOne(
                 { _id: ObjectId(user_id) },
@@ -68,7 +92,7 @@ export default authenticated(async (req, res) => {
                 res.status(400).json({ message: "Company or user does not exist" })
             } else {
 
-                res.status(200).json({ company: companyExist, user: userExist })
+                res.status(200).json({ company: companyExist, user: userExist, paymentHistory: history })
 
 
 

@@ -17,8 +17,8 @@ export default function NoSubscriptionPage(props) {
                 </div>
             </div>
             <div className="col-12 d-flex justify-content-center">
-                <button className="btn btn-orange pulse" >
-                {/* <button className="btn btn-orange pulse" data-bs-toggle="modal" data-bs-target="#creditCardEditModal"> */}
+                {/* <button className="btn btn-orange pulse" > */}
+                    <button className="btn btn-orange pulse" data-bs-toggle="modal" data-bs-target="#creditCardEditModal">
                     Assinar o Avalia Imobi!
                 </button>
             </div>
@@ -32,8 +32,14 @@ export default function NoSubscriptionPage(props) {
                         Nosso <b>plano básico</b> começa com um valor de <b>R$79,90 por mês.</b>
                     </div>
                     <div className="col-12 mt-3">
-                        Esse plano permite que voce tenha acesso a <b>todos os recursos do Avalia Imobi</b>.
+                        Esse plano permite que voce tenha acesso a <b>todos os recursos do Avalia Imobi</b>
                     </div>
+                    {/* <div className="col-12 mt-3">
+                        <FontAwesomeIcon icon={faPlus} className="me-2 text-success" />Avaliações ilimitadas.
+                    </div>
+                    <div className="col-12 mt-3">
+                        <FontAwesomeIcon icon={faPlus} className="me-2 text-success" /><b>Mais de 5 usuários:</b> Para equipes maiores, a partir do 6º usuário, o custo por usuário adicional é reduzido para <b>R$14,90 por mês</b>.
+                    </div> */}
                 </div>
             </div>
 
@@ -43,7 +49,7 @@ export default function NoSubscriptionPage(props) {
             <div className="col-12">
                 <div className="row">
                     <div className="col-12 mt-3">
-                        <FontAwesomeIcon icon={faPlus} className="me-2 text-success" /><b>Até 5 usuários:</b> Se você precisar de mais pessoas utilizando o sistema, cada usuário terá um custo adicional de apenas <b>R$19,90 por mês</b>.
+                        <FontAwesomeIcon icon={faPlus} className="me-2 text-success" /><b>Até 5 usuários:</b> Se você precisar de mais pessoas utilizando o sistema, cada usuário terá um custo adicional de <b>R$19,90 por mês</b>.
                     </div>
                     <div className="col-12 mt-3">
                         <FontAwesomeIcon icon={faPlus} className="me-2 text-success" /><b>Mais de 5 usuários:</b> Para equipes maiores, a partir do 6º usuário, o custo por usuário adicional é reduzido para <b>R$14,90 por mês</b>.

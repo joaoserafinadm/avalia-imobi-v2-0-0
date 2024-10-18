@@ -55,15 +55,18 @@ export default authenticated(async (req, res) => {
                         transaction_amount: 79.90,
                         currency_id: "BRL", // Moeda
                         start_date: new Date().toISOString(), // Data de início da assinatura
-                    }// URL de redirecionamento após a assinatura (opcional)
+                    },
+                    back_url: 'https://app.avaliaimobi.com.br', // URL de redirecionamento após a assinatura (opcional)
                 })
             });
 
             const subscriptionData = await subscriptionResponse.json();
 
-            if (!subscriptionResponse.ok) {
+            if (!subscriptionResponse.ok || !subscriptionData.id) {
                 return res.status(400).json({ message: "Error creating subscription", details: subscriptionData })
             }
+
+            console.log("subscriptionData", subscriptionData)
 
             // Atualizar a base de dados com os dados da assinatura
             const subscriptionId = subscriptionData.id; // ID da assinatura retornado pelo Mercado Pago
@@ -76,6 +79,7 @@ export default authenticated(async (req, res) => {
                 email,
                 subscription_id: subscriptionId, // ID da assinatura
                 customer_status: subscriptionData.status,
+                paymentMethod_id: subscriptionData.payment_method_id,
                 amount: 79.90,
                 usersCount: 1,
                 amountPerUser: 0,
@@ -87,6 +91,9 @@ export default authenticated(async (req, res) => {
                 { _id: ObjectId(company_id) },
                 {
                     $set: {
+                        "active": true,
+                        "errorStatus": false,
+                        "dateLimit": false,
                         "paymentData": data
                     }
                 }

@@ -4,11 +4,17 @@ import { loadMercadoPago } from "@mercadopago/sdk-js";
 import axios from "axios";
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken';
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function CreditCardEditModal(props) {
 
     const token = jwt.decode(Cookie.get('auth'))
 
+
+    const router = useRouter()
 
     const [name, setName] = useState('');
     const [cardNumber, setCardNumber] = useState('');
@@ -20,12 +26,14 @@ export default function CreditCardEditModal(props) {
     const [country, setCountry] = useState('BR');
     const [mercadoPagoInstance, setMercadoPagoInstance] = useState(null);
 
+    const [subscriptionError, setSubscriptionError] = useState('')
+
     useEffect(() => {
         const initializeMercadoPago = async () => {
             // Carregando o SDK do Mercado Pago
-            await loadMercadoPago('TEST-5839b0e3-1f27-4e83-9175-8a36d4cdb199');
+            await loadMercadoPago('APP_USR-53a26c95-a27c-4f20-a642-99ee7d0bdc50');
             // Instanciando o objeto MercadoPago
-            const mp = new window.MercadoPago('TEST-5839b0e3-1f27-4e83-9175-8a36d4cdb199');
+            const mp = new window.MercadoPago('APP_USR-53a26c95-a27c-4f20-a642-99ee7d0bdc50');
             setMercadoPagoInstance(mp); // Armazena a instância
         };
 
@@ -54,9 +62,13 @@ export default function CreditCardEditModal(props) {
                     handlePayment(cardToken.id);
                 } else {
                     console.error('Erro ao gerar cardToken:', cardToken);
+                    setSubscriptionError('Houve um erro ao gerar a assinatura, por favor, tente novamente mais tarde! Caso o erro persista, clique <a href="/sac">aqui</a> para entrar em contato.');
+
                 }
             } catch (error) {
                 console.error('Erro ao gerar o token:', error);
+                setSubscriptionError('Houve um erro ao gerar a assinatura, por favor, tente novamente mais tarde! Caso o erro persista, clique <a href="/sac">aqui</a> para entrar em contato.');
+
             }
         }
     };
@@ -67,20 +79,38 @@ export default function CreditCardEditModal(props) {
             company_id: token.company_id,
             user_id: token.sub,
             cardTokenId: cardTokenId,
-            last4: cardNumber.slice(-4),
+            last4: cardNumber.slice(-5),
             cardholderName: name,
             email: email
         }
 
         await axios.post(`/api/accountSetup/subscription`, data)
-            .then(res => {
+            .then(async res => {
+
+                updateToken()
 
             }).catch(e => {
+                setSubscriptionError('Houve um erro ao gerar a assinatura, por favor, tente novamente mais tarde! Caso o erro persista, clique <a href="/sac">aqui</a> para entrar em contato.');
+
+
 
 
             })
+    }
 
 
+    const updateToken = async () => {
+
+        const dataToken = {
+            user_id: token.sub,
+            company_id: token.company_id
+        }
+
+        await axios.get(`/api/token/tokenUpdate`, {
+            params: dataToken
+        }).then(res => {
+            router.reload()
+        })
 
 
     }
@@ -95,6 +125,24 @@ export default function CreditCardEditModal(props) {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
+                            {subscriptionError && (
+                                <div className="row">
+                                    <div className="col-12">
+                                        <div className="alert alert-danger" dangerouslySetInnerHTML={{ __html: subscriptionError }}>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="row">
+                                <div className="col-12">
+                                    <p><b>Importante:</b></p>
+                                    <p>O valor inicial da assinatura é de <b>R$79,90 por mês</b>, correspondente ao plano básico com 1 usuário.</p>
+                                    <p>O valor será ajustado automaticamente conforme novos usuários forem adicionados ao sistema:</p>
+
+                                    <p><FontAwesomeIcon icon={faPlus} className="me-2 text-success" /> Até 5 usuários: R$19,90 mensais por usuário adicional.</p>
+                                    <p><FontAwesomeIcon icon={faPlus} className="me-2 text-success" />Acima de 5 usuários: R$14,90 mensais por usuário adicional.</p>
+                                </div>
+                            </div>
                             <div className="row">
                                 <div className="col-12 my-2">
                                     <label className="small fw-bold" htmlFor="name">Nome do titular do cartão</label>
@@ -120,33 +168,38 @@ export default function CreditCardEditModal(props) {
                                         onChange={(e) => setCardNumber(maskCreditCard(e.target.value))}
                                     />
                                 </div>
-                                <div className="col-6">
-                                    <label className="small fw-bold" htmlFor="expirationDate">Data de validade</label>
-                                    <input
-                                        type="text"
-                                        inputMode="numeric"
-                                        className="form-control"
-                                        id="expirationDate"
-                                        placeholder="MM/YY"
-                                        value={expirationDate}
-                                        onChange={(e) => setExpirationDate(maskMonthDate(e.target.value))}
-                                    />
+                                <div className="col-6 d-flex align-items-end">
+                                    <div className="col-12">
+
+                                        <label className="small fw-bold" htmlFor="expirationDate">Data de validade</label>
+                                        <input
+                                            type="text"
+                                            inputMode="numeric"
+                                            className="form-control"
+                                            id="expirationDate"
+                                            placeholder="MM/YY"
+                                            value={expirationDate}
+                                            onChange={(e) => setExpirationDate(maskMonthDate(e.target.value))}
+                                        />
+                                    </div>
                                 </div>
-                                <div className="col-6">
-                                    <label className="small fw-bold" htmlFor="cvc">Código de segurança</label>
-                                    <input
-                                        type="text"
-                                        inputMode="numeric"
-                                        className="form-control"
-                                        id="cvc"
-                                        placeholder="CVC"
-                                        value={cvc}
-                                        onChange={(e) => {
-                                            const newValue = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-                                            setCvc(newValue); // Atualiza o valor do CVC com apenas números
-                                        }}
-                                        maxLength="4" // Limita a quantidade de dígitos para 3 ou 4, dependendo do padrão do cartão
-                                    />
+                                <div className="col-6 d-flex align-items-end">
+                                    <div className="col-12">
+                                        <label className="small fw-bold" htmlFor="cvc">Código de segurança</label>
+                                        <input
+                                            type="text"
+                                            inputMode="numeric"
+                                            className="form-control"
+                                            id="cvc"
+                                            placeholder="CVC"
+                                            value={cvc}
+                                            onChange={(e) => {
+                                                const newValue = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+                                                setCvc(newValue); // Atualiza o valor do CVC com apenas números
+                                            }}
+                                            maxLength="4" // Limita a quantidade de dígitos para 3 ou 4, dependendo do padrão do cartão
+                                        />
+                                    </div>
                                 </div>
                                 <div className="col-12 my-2">
                                     <label className="small fw-bold" htmlFor="cnpj">CNPJ</label>
@@ -169,7 +222,7 @@ export default function CreditCardEditModal(props) {
                                     />
                                 </div>
                                 <div className="col-12 my-2">
-                                    <label className="small fw-bold" htmlFor="email">Endereço de e-mail</label>
+                                    <label className="small fw-bold" htmlFor="email">E-mail de cobrança</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -257,7 +310,7 @@ export default function CreditCardEditModal(props) {
 // useEffect(() => {
 //     const initializeMercadoPago = async () => {
 //         // Carregando o Mercado Pago com a chave pública
-//         const mp = await loadMercadoPago('TEST-5839b0e3-1f27-4e83-9175-8a36d4cdb199');
+//         const mp = await loadMercadoPago('APP_USR-53a26c95-a27c-4f20-a642-99ee7d0bdc50');
 
 //         // Instanciando o CardForm depois que o SDK foi carregado
 //         if (mp) {
