@@ -59,6 +59,8 @@ export default function CreditCardEditModal(props) {
 
                 if (cardToken && cardToken.id) {
 
+                    console.log('cardToken', cardToken)
+
                     handlePayment(cardToken.id);
                 } else {
                     console.error('Erro ao gerar cardToken:', cardToken);
