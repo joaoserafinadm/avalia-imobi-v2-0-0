@@ -37,7 +37,9 @@ export default authenticated(async (req, res) => {
         }
 
         try {
-            // Criar a assinatura no Mercado Pago
+            const startDate = new Date();
+            startDate.setMinutes(startDate.getMinutes() + 5); // Adicionar 5 minutos
+
             const subscriptionResponse = await fetch('https://api.mercadopago.com/preapproval', {
                 method: 'POST',
                 headers: {
@@ -54,7 +56,7 @@ export default authenticated(async (req, res) => {
                         frequency_type: 'months', // Frequência mensal
                         transaction_amount: 79.90,
                         currency_id: "BRL", // Moeda
-                        start_date: new Date().toISOString(), // Data de início da assinatura
+                        start_date: startDate.toISOString(), // Data de início da assinatura ajustada
                     },
                     back_url: 'https://app.avaliaimobi.com.br', // URL de redirecionamento após a assinatura (opcional)
                 })
