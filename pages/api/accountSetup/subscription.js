@@ -48,7 +48,7 @@ export default authenticated(async (req, res) => {
                 },
                 body: JSON.stringify({
                     payer_email: email,
-                    card_token_id: cardTokenId,
+                    card_token: cardTokenId,
                     reason: 'Assinatura mensal p/ 1 usuário - Avalia Imobi',
                     external_reference: company_id,  // Referência externa para identificar a assinatura
                     auto_recurring: {
