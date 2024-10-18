@@ -59,7 +59,7 @@ export default authenticated(async (req, res) => {
                 });
             }
 
-            const subscriptionData = await paymentHistoryResponse.json();
+            const subscriptionData = await paymentHistoryResponse?.json();
 
             console.log(subscriptionData)
 
