@@ -48,7 +48,7 @@ export default authenticated(async (req, res) => {
                 },
                 body: JSON.stringify({
                     payer_email: email,
-                    card_token_id: cardTokenId,
+                    card_token: cardTokenId,
                     reason: 'Assinatura mensal p/ 1 usuário - Avalia Imobi',
                     external_reference: company_id,  // Referência externa para identificar a assinatura
                     auto_recurring: {
@@ -59,7 +59,7 @@ export default authenticated(async (req, res) => {
                         // start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
                     },
                     payment_type_id: 'credit_card',
-                    status: "authorized", // Definindo o status como autorizado
+                    // status: "authorized", // Definindo o status como autorizado
                     back_url: 'https://app.avaliaimobi.com.br', // URL de redirecionamento após a assinatura (opcional)
                 })
             });
