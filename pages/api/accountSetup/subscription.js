@@ -59,6 +59,7 @@ export default authenticated(async (req, res) => {
                         // start_date: startDate.toISOString(), // Data de início da assinatura ajustada
                     },
                     back_url: 'https://app.avaliaimobi.com.br', // URL de redirecionamento após a assinatura (opcional)
+                    status: "authorized"
                 })
             });
 
