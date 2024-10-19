@@ -16,7 +16,7 @@ export default authenticated(async (req, res) => {
 
     if (req.method === 'POST') {
 
-        const { company_id, user_id, cardTokenId, last4, cardholderName, email } = req.body
+        const { company_id, user_id, cardTokenId, last4, cardholderName,paymentMethodId, email } = req.body
 
         if (!company_id || !user_id || !cardTokenId || !email) {
             return res.status(400).json({ message: "Missing parameters on request body" })
@@ -48,18 +48,18 @@ export default authenticated(async (req, res) => {
                 },
                 body: JSON.stringify({
                     payer_email: email,
-                    card_token_id: cardTokenId,
+                    card_token: cardTokenId,
                     reason: 'Assinatura mensal p/ 1 usuário - Avalia Imobi',
                     external_reference: company_id,  // Referência externa para identificar a assinatura
                     auto_recurring: {
                         frequency: 1,
                         frequency_type: 'months', // Frequência mensal
-                        transaction_amount: 79.90,
+                        transaction_amount: 10,
                         currency_id: "BRL", // Moeda
                         // start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
                     },
-                    payment_type_id: 'credit_card',
-                    // status: "authorized", // Definindo o status como autorizado
+                    payment_type_id: paymentMethodId,
+                    status: "authorized", // Definindo o status como autorizado
                     back_url: 'https://app.avaliaimobi.com.br', // URL de redirecionamento após a assinatura (opcional)
                 })
             });

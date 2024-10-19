@@ -31,9 +31,11 @@ export default function CreditCardEditModal(props) {
     useEffect(() => {
         const initializeMercadoPago = async () => {
             // Carregando o SDK do Mercado Pago
-            await loadMercadoPago('APP_USR-53a26c95-a27c-4f20-a642-99ee7d0bdc50');
+            await loadMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
             // Instanciando o objeto MercadoPago
-            const mp = new window.MercadoPago('APP_USR-53a26c95-a27c-4f20-a642-99ee7d0bdc50');
+            const mp = new window.MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
+
+            console.log('mp', mp)
             setMercadoPagoInstance(mp); // Armazena a instância
         };
 
@@ -47,6 +49,22 @@ export default function CreditCardEditModal(props) {
             const cardNumberCleaned = cardNumber.replace(/\s/g, ''); // Remover espacos em branco
             const identificationNumberCleaned = cpf ? maskCpf(cpf).replace(/\D/g, '') : maskCnpj(cnpj).replace(/\D/g, ''); // Remover todos os caracteres que não são dígitos
             try {
+
+
+                const bin = cardNumberCleaned.substring(0, 6);
+
+                const paymentMethodResponse = await axios.get('https://api.mercadopago.com/v1/payment_methods', {
+                    headers: {
+                        'Content-Type': 'application/json', // Inclua o content-type se necessário
+                        Authorization: `Bearer ${process.env.NEXT_PUBLIC_MERCADO_PAGO_ACCESS_TOKEN}`, // Substitua por sua variável de ambiente ou token direto
+                    }
+                });
+
+                const paymentMethod = paymentMethodResponse.data.results[0];
+                const paymentMethodId = paymentMethod.id;
+
+                console.log('paymentMethodResponse:', paymentMethodResponse);
+
                 const cardToken = await mercadoPagoInstance.createCardToken({
                     cardNumber: cardNumberCleaned,
                     cardholderName: name,
@@ -61,7 +79,7 @@ export default function CreditCardEditModal(props) {
 
                     console.log('cardToken', cardToken)
 
-                    handlePayment(cardToken.id);
+                    handlePayment(cardToken.id, paymentMethodId);
                 } else {
                     console.error('Erro ao gerar cardToken:', cardToken);
                     setSubscriptionError('Houve um erro ao gerar a assinatura, por favor, tente novamente mais tarde! Caso o erro persista, clique <a href="/sac">aqui</a> para entrar em contato.');
@@ -75,7 +93,7 @@ export default function CreditCardEditModal(props) {
         }
     };
 
-    const handlePayment = async (cardTokenId) => {
+    const handlePayment = async (cardTokenId, paymentMethodId) => {
 
         const data = {
             company_id: token.company_id,
@@ -83,6 +101,7 @@ export default function CreditCardEditModal(props) {
             cardTokenId: cardTokenId,
             last4: cardNumber.slice(-5),
             cardholderName: name,
+            paymentMethodId: paymentMethodId,
             email: email
         }
 
@@ -93,9 +112,6 @@ export default function CreditCardEditModal(props) {
 
             }).catch(e => {
                 setSubscriptionError('Houve um erro ao gerar a assinatura, por favor, tente novamente mais tarde! Caso o erro persista, clique <a href="/sac">aqui</a> para entrar em contato.');
-
-
-
 
             })
     }
