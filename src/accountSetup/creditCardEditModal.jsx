@@ -22,20 +22,20 @@ export default function CreditCardEditModal(props) {
 
     const router = useRouter()
 
-    // const [name, setName] = useState('');
-    // const [cardNumber, setCardNumber] = useState('');
-    // const [expirationDate, setExpirationDate] = useState('');
-    // const [cvc, setCvc] = useState('');
-    // const [cpf, setCpf] = useState('');
-    // const [cnpj, setCnpj] = useState('');
-    // const [email, setEmail] = useState('');
-    const [name, setName] = useState('JOAO MARCEL SERAFIN');
-    const [cardNumber, setCardNumber] = useState('5225 9007 1456 3912');
-    const [expirationDate, setExpirationDate] = useState('01/31');
-    const [cvc, setCvc] = useState('106');
-    const [cpf, setCpf] = useState('031.200.930-50');
+    const [name, setName] = useState('');
+    const [cardNumber, setCardNumber] = useState('');
+    const [expirationDate, setExpirationDate] = useState('');
+    const [cvc, setCvc] = useState('');
+    const [cpf, setCpf] = useState('');
     const [cnpj, setCnpj] = useState('');
-    const [email, setEmail] = useState('joaoserafin.adm@gmail.com');
+    const [email, setEmail] = useState('');
+    // const [name, setName] = useState('JOAO MARCEL SERAFIN');
+    // const [cardNumber, setCardNumber] = useState('5225 9007 1456 3912');
+    // const [expirationDate, setExpirationDate] = useState('01/31');
+    // const [cvc, setCvc] = useState('106');
+    // const [cpf, setCpf] = useState('031.200.930-50');
+    // const [cnpj, setCnpj] = useState('');
+    // const [email, setEmail] = useState('joaoserafin.adm@gmail.com');
     const [country, setCountry] = useState('BR');
     const [mercadoPagoInstance, setMercadoPagoInstance] = useState(null);
 
