@@ -125,7 +125,7 @@ export default function CreditCardEditModal(props) {
         await axios.get(`/api/token/tokenUpdate`, {
             params: dataToken
         }).then(res => {
-            router.reload()
+            // router.reload()
         })
 
 
