@@ -110,6 +110,9 @@ export default function SubscriptionPage(props) {
                                             <div className="col-12 col-md-3">
                                                 R$ {elem.value}
                                             </div>
+                                            <div className="col-12 col-md-3">
+                                                R$ {elem.status}
+                                            </div>
                                         </div>
                                     ))}
                                 </div>

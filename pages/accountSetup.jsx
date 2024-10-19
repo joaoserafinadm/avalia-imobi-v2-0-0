@@ -38,6 +38,7 @@ export default function AccountSetup() {
     const [userData, setUserData] = useState('')
     const [companyData, setCompanyData] = useState('')
     const [paymentHistory, setPaymentHistory] = useState([])
+    const [paymentMethods, setPaymentMethods] = useState([])
 
 
     const [section, setSection] = useState('Detalhes da conta')
@@ -90,6 +91,7 @@ export default function AccountSetup() {
             setUserData(res.data.user)
             setCompanyData(res.data.company)
             setPaymentHistory(res.data.paymentHistory)
+            setPaymentMethods(res.data.paymentMethods)
             setLoadingPage(false)
         }).catch(e => {
 
@@ -106,7 +108,7 @@ export default function AccountSetup() {
     return (
         <div>
 
-            <CreditCardEditModal companyData={companyData} />
+            <CreditCardEditModal companyData={companyData} paymentMethods={paymentMethods} />
 
             <ChargeAdressModal companyData={companyData} dataFunction={() => dataFunction(token.sub, token.company_id)} />
 

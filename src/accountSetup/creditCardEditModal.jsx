@@ -8,21 +8,34 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
+// import { initMercadoPago } from '@mercadopago/sdk-react'
+// initMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY)
 
 export default function CreditCardEditModal(props) {
+
+    const { paymentMethods } = props
+
+    console.log('paymentMethods', paymentMethods)
 
     const token = jwt.decode(Cookie.get('auth'))
 
 
     const router = useRouter()
 
-    const [name, setName] = useState('');
-    const [cardNumber, setCardNumber] = useState('');
-    const [expirationDate, setExpirationDate] = useState('');
-    const [cvc, setCvc] = useState('');
-    const [cpf, setCpf] = useState('');
+    // const [name, setName] = useState('');
+    // const [cardNumber, setCardNumber] = useState('');
+    // const [expirationDate, setExpirationDate] = useState('');
+    // const [cvc, setCvc] = useState('');
+    // const [cpf, setCpf] = useState('');
+    // const [cnpj, setCnpj] = useState('');
+    // const [email, setEmail] = useState('');
+    const [name, setName] = useState('JOAO MARCEL SERAFIN');
+    const [cardNumber, setCardNumber] = useState('5225 9007 1456 3912');
+    const [expirationDate, setExpirationDate] = useState('01/31');
+    const [cvc, setCvc] = useState('106');
+    const [cpf, setCpf] = useState('031.200.930-50');
     const [cnpj, setCnpj] = useState('');
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState('joaoserafin.adm@gmail.com');
     const [country, setCountry] = useState('BR');
     const [mercadoPagoInstance, setMercadoPagoInstance] = useState(null);
 
@@ -48,22 +61,7 @@ export default function CreditCardEditModal(props) {
             const expiration = expirationDate.split('/'); // Separar MM/YY
             const cardNumberCleaned = cardNumber.replace(/\s/g, ''); // Remover espacos em branco
             const identificationNumberCleaned = cpf ? maskCpf(cpf).replace(/\D/g, '') : maskCnpj(cnpj).replace(/\D/g, ''); // Remover todos os caracteres que não são dígitos
-            try {
-
-
-                const bin = cardNumberCleaned.substring(0, 6);
-
-                const paymentMethodResponse = await axios.get('https://api.mercadopago.com/v1/payment_methods', {
-                    headers: {
-                        'Content-Type': 'application/json', // Inclua o content-type se necessário
-                        Authorization: `Bearer ${process.env.NEXT_PUBLIC_MERCADO_PAGO_ACCESS_TOKEN}`, // Substitua por sua variável de ambiente ou token direto
-                    }
-                });
-
-                const paymentMethod = paymentMethodResponse.data.results[0];
-                const paymentMethodId = paymentMethod.id;
-
-                console.log('paymentMethodResponse:', paymentMethodResponse);
+            try {           
 
                 const cardToken = await mercadoPagoInstance.createCardToken({
                     cardNumber: cardNumberCleaned,
@@ -79,7 +77,7 @@ export default function CreditCardEditModal(props) {
 
                     console.log('cardToken', cardToken)
 
-                    handlePayment(cardToken.id, paymentMethodId);
+                    handlePayment(cardToken.id);
                 } else {
                     console.error('Erro ao gerar cardToken:', cardToken);
                     setSubscriptionError('Houve um erro ao gerar a assinatura, por favor, tente novamente mais tarde! Caso o erro persista, clique <a href="/sac">aqui</a> para entrar em contato.');
@@ -93,7 +91,7 @@ export default function CreditCardEditModal(props) {
         }
     };
 
-    const handlePayment = async (cardTokenId, paymentMethodId) => {
+    const handlePayment = async (cardTokenId) => {
 
         const data = {
             company_id: token.company_id,
@@ -101,7 +99,7 @@ export default function CreditCardEditModal(props) {
             cardTokenId: cardTokenId,
             last4: cardNumber.slice(-5),
             cardholderName: name,
-            paymentMethodId: paymentMethodId,
+            paymentMethodId: 24,
             email: email
         }
 

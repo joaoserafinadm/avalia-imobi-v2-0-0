@@ -18,6 +18,8 @@ export default authenticated(async (req, res) => {
 
         const { company_id, user_id, cardTokenId, last4, cardholderName,paymentMethodId, email } = req.body
 
+        console.log('cardTokenId:', cardTokenId);
+
         if (!company_id || !user_id || !cardTokenId || !email) {
             return res.status(400).json({ message: "Missing parameters on request body" })
         }
@@ -45,10 +47,11 @@ export default authenticated(async (req, res) => {
                 headers: {
                     'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
                     'Content-Type': 'application/json'
+                    // 'X-scope': 'stage'
                 },
                 body: JSON.stringify({
                     payer_email: email,
-                    card_token: cardTokenId,
+                    card_token_id: cardTokenId,
                     reason: 'Assinatura mensal p/ 1 usuário - Avalia Imobi',
                     external_reference: company_id,  // Referência externa para identificar a assinatura
                     auto_recurring: {
@@ -56,13 +59,15 @@ export default authenticated(async (req, res) => {
                         frequency_type: 'months', // Frequência mensal
                         transaction_amount: 10,
                         currency_id: "BRL", // Moeda
-                        // start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
+                        start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
                     },
-                    payment_type_id: paymentMethodId,
+                    // payment_type_id: 'master',
                     status: "authorized", // Definindo o status como autorizado
                     back_url: 'https://app.avaliaimobi.com.br', // URL de redirecionamento após a assinatura (opcional)
                 })
             });
+
+            // console.log("subscriptionResponse", subscriptionResponse)
 
             const subscriptionData = await subscriptionResponse.json();
 

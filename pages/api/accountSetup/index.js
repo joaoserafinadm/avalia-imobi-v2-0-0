@@ -4,6 +4,7 @@ import { ObjectId, ObjectID } from 'bson'
 import cookie from 'cookie'
 import baseUrl from '../../../utils/baseUrl'
 import e from 'express'
+import axios from 'axios'
 
 
 const authenticated = fn => async (req, res) => {
@@ -88,11 +89,20 @@ export default authenticated(async (req, res) => {
                 }
             )
 
+            const paymentMethodResponse = await axios.get('https://api.mercadopago.com/v1/payment_methods/search', {
+                headers: {
+                    'Content-Type': 'application/json', // Inclua o content-type se necessário
+                    Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`, // Substitua por sua variável de ambiente ou token direto
+                }
+            });
+
+            const paymentMethods = paymentMethodResponse.data.results
+
             if (!companyExist || !userExist) {
                 res.status(400).json({ message: "Company or user does not exist" })
             } else {
 
-                res.status(200).json({ company: companyExist, user: userExist, paymentHistory: history })
+                res.status(200).json({ company: companyExist, user: userExist, paymentHistory: history, paymentMethods: paymentMethods })
 
 
 
