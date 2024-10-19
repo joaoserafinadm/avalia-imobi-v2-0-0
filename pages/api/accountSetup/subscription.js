@@ -57,7 +57,7 @@ export default authenticated(async (req, res) => {
                     auto_recurring: {
                         frequency: 1,
                         frequency_type: 'months', // Frequência mensal
-                        transaction_amount: '10',
+                        transaction_amount: 10,
                         currency_id: "BRL", // Moeda
                         // start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
                     },
