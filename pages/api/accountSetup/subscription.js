@@ -40,7 +40,7 @@ export default authenticated(async (req, res) => {
 
         try {
             const startDate = new Date();
-            startDate.setHours(startDate.getHours() + 3)
+            startDate.setHours(startDate.getHours() + 5)
 
             const subscriptionResponse = await fetch('https://api.mercadopago.com/preapproval', {
                 method: 'POST',
@@ -59,7 +59,7 @@ export default authenticated(async (req, res) => {
                         frequency_type: 'months', // Frequência mensal
                         transaction_amount: 10,
                         currency_id: "BRL", // Moeda
-                        // start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
+                        start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
                     },
                     payment_type_id: 'master',
                     status: "authorized", // Definindo o status como autorizado
