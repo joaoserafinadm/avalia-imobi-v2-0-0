@@ -16,7 +16,7 @@ export default authenticated(async (req, res) => {
 
     if (req.method === 'POST') {
 
-        const { company_id, user_id, cardTokenId, last4, cardholderName,paymentMethodId, email } = req.body
+        const { company_id, user_id, cardTokenId, last4, cardholderName, paymentMethodId, email } = req.body
 
         console.log('cardTokenId:', cardTokenId);
 
@@ -50,6 +50,10 @@ export default authenticated(async (req, res) => {
                     // 'X-scope': 'stage'
                 },
                 body: JSON.stringify({
+                    payer: {
+                        first_name: cardholderName.split(' ')[0],
+                        last_name: cardholderName.split(' ')[cardholderName.split(' ').length - 1],
+                    },
                     payer_email: email,
                     card_token_id: cardTokenId,
                     reason: 'Assinatura mensal p/ 1 usuário - Avalia Imobi',
