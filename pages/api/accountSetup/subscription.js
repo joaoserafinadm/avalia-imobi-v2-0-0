@@ -50,6 +50,7 @@ export default authenticated(async (req, res) => {
                     // 'X-scope': 'stage'
                 },
                 body: JSON.stringify({
+                    payment_id: 91006166748,
                     payer: {
                         first_name: cardholderName.split(' ')[0],
                         last_name: cardholderName.split(' ')[cardholderName.split(' ').length - 1],
