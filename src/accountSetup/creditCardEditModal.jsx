@@ -44,9 +44,9 @@ export default function CreditCardEditModal(props) {
     useEffect(() => {
         const initializeMercadoPago = async () => {
             // Carregando o SDK do Mercado Pago
-            await loadMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
+            // await loadMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
             // Instanciando o objeto MercadoPago
-            const mp = new window.MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
+            const mp = new MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
 
             console.log('mp', mp)
             setMercadoPagoInstance(mp); // Armazena a instância
