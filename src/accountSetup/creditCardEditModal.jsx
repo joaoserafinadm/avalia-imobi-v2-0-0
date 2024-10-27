@@ -54,13 +54,13 @@ export default function CreditCardEditModal(props) {
 
             const cardNumberElement = mp.fields.create('cardNumber', {
                 placeholder: "Número do cartão"
-              }).mount('form-checkout__cardNumber');
-              const expirationDateElement = mp.fields.create('expirationDate', {
+            }).mount('form-checkout__cardNumber');
+            const expirationDateElement = mp.fields.create('expirationDate', {
                 placeholder: "MM/YY",
-              }).mount('form-checkout__expirationDate');
-              const securityCodeElement = mp.fields.create('securityCode', {
+            }).mount('form-checkout__expirationDate');
+            const securityCodeElement = mp.fields.create('securityCode', {
                 placeholder: "Código de segurança"
-              }).mount('form-checkout__securityCode');
+            }).mount('form-checkout__securityCode');
 
 
             console.log('mp', mp)
@@ -74,22 +74,23 @@ export default function CreditCardEditModal(props) {
 
 
     async function createCardToken2(event) {
-      try {
-        const tokenElement = document.getElementById('token');
-        if (!tokenElement.value) {
-          event.preventDefault();
-          const token = await mercadoPagoInstance.fields.createCardToken({
-            cardholderName: document.getElementById('form-checkout__cardholderName').value,
-            identificationType: 'CPF',
-            identificationNumber: document.getElementById('form-checkout__identificationNumber').value,
-          });
-          tokenElement.value = token.id;
-          formElement.requestSubmit();
-          handlePayment(token.id);
+        CONSOLE.LOG9('createCardToken2')
+        try {
+            const tokenElement = document.getElementById('token');
+            if (!tokenElement.value) {
+                event.preventDefault();
+                const token = await mercadoPagoInstance.fields.createCardToken({
+                    cardholderName: document.getElementById('form-checkout__cardholderName').value,
+                    identificationType: 'CPF',
+                    identificationNumber: document.getElementById('form-checkout__identificationNumber').value,
+                });
+                tokenElement.value = token.id;
+                formElement.requestSubmit();
+                handlePayment(token.id);
+            }
+        } catch (e) {
+            console.error('error creating card token: ', e)
         }
-      } catch (e) {
-        console.error('error creating card token: ', e)
-      }
     }
 
 
@@ -212,7 +213,7 @@ export default function CreditCardEditModal(props) {
                                 <select id="form-checkout__issuer" name="issuer">
                                     <option value="" disabled selected>Banco emissor</option>
                                 </select>
-                                
+
                                 <select id="form-checkout__identificationType" name="identificationType">
                                     <option value="" disabled selected>Tipo de documento</option>
                                 </select>
