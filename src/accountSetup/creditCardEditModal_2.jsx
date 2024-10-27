@@ -48,14 +48,21 @@ export default function CreditCardEditModal(props) {
 
 
             const cardNumberElement = mp.fields.create('cardNumber', {
-                placeholder: "Número do cartão"
-              }).mount('form-checkout__cardNumber');
-              const expirationDateElement = mp.fields.create('expirationDate', {
+                placeholder: "Número do cartão",
+                style: {
+                    height: "45px",
+                    fontFamily: "Montserrat",
+                }
+            }).mount('cardNumber');
+
+            const expirationDateElement = mp.fields.create('expirationDate', {
                 placeholder: "MM/YY",
-              }).mount('form-checkout__expirationDate');
-              const securityCodeElement = mp.fields.create('securityCode', {
+            }).mount('expirationDate');
+
+            const securityCodeElement = mp.fields.create('securityCode', {
                 placeholder: "Código de segurança"
-              }).mount('form-checkout__securityCode');
+            }).mount('securityCode');
+
 
 
             console.log('mp', mp)
@@ -64,31 +71,6 @@ export default function CreditCardEditModal(props) {
 
         initializeMercadoPago();
     }, []);
-
-
-    const formElement = document.getElementById('form-checkout');
-    formElement.addEventListener('submit', createCardToken2);
-
-    async function createCardToken2(event) {
-      try {
-        const tokenElement = document.getElementById('token');
-        if (!tokenElement.value) {
-          event.preventDefault();
-          const token = await mp.fields.createCardToken({
-            cardholderName: document.getElementById('form-checkout__cardholderName').value,
-            identificationType: 'CPF',
-            identificationNumber: document.getElementById('form-checkout__identificationNumber').value,
-          });
-          tokenElement.value = token.id;
-          formElement.requestSubmit();
-        }
-      } catch (e) {
-        console.error('error creating card token: ', e)
-      }
-    }
-
-
-
 
     // Função para criar o token do cartão
     const createCardToken = async (e) => {
@@ -199,27 +181,100 @@ export default function CreditCardEditModal(props) {
                                     <p><FontAwesomeIcon icon={faPlus} className="me-2 text-success" />Acima de 5 usuários: R$14,90 mensais por usuário adicional.</p>
                                 </div>
                             </div>
-                            <form id="form-checkout" action="/process_payment" method="POST">
-                                <div id="form-checkout__cardNumber" class="container"></div>
-                                <div id="form-checkout__expirationDate" class="container"></div>
-                                <div id="form-checkout__securityCode" class="container"></div>
-                                <input type="text" id="form-checkout__cardholderName" placeholder="Titular do cartão" />
-                                <select id="form-checkout__issuer" name="issuer">
-                                    <option value="" disabled selected>Banco emissor</option>
-                                </select>
-                                
-                                <select id="form-checkout__identificationType" name="identificationType">
-                                    <option value="" disabled selected>Tipo de documento</option>
-                                </select>
-                                <input type="text" id="form-checkout__identificationNumber" name="identificationNumber" placeholder="Número do documento" />
-                                <input type="email" id="form-checkout__email" name="email" placeholder="E-mail" />
+                            <form className="row" onSubmit={e => createCardToken(e)}>
+                                <div className="col-12 my-2">
+                                    <label className="small fw-bold" htmlFor="name">Nome do titular do cartão</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="name"
+                                        placeholder="Nome do titular do cartão"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                    />
+                                </div>
 
-                                <input id="token" name="token" type="hidden" />
-                                <input id="paymentMethodId" name="paymentMethodId" type="hidden" />
-                                <input id="transactionAmount" name="transactionAmount" type="hidden" value="100" />
-                                <input id="description" name="description" type="hidden" value="Nome do Produto" />
+                                <div className="col-12 my-2">
+                                    <label className="small fw-bold" htmlFor="cardNumber">Número do cartão</label>
+                                    {/* <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        className="form-control"
+                                        id="cardNumber"
+                                        placeholder="Número do cartão"
+                                        value={cardNumber}
+                                        onChange={(e) => setCardNumber(maskCreditCard(e.target.value))}
+                                    /> */}
+                                    <div id="cardNumber" className="form-control"></div>
+                                </div>
+                                <div className="col-6 d-flex align-items-end">
+                                    <div className="col-12">
 
-                                <button type="submit" id="form-checkout__submit">Pagar</button>
+                                        <label className="small fw-bold" htmlFor="expirationDate">Data de validade</label>
+                                        {/* <input
+                                            type="text"
+                                            inputMode="numeric"
+                                            className="form-control"
+                                            id="expirationDate"
+                                            placeholder="MM/YY"
+                                            value={expirationDate}
+                                            onChange={(e) => setExpirationDate(maskMonthDate(e.target.value))}
+                                        /> */}
+                                        <div id="expirationDate" className="form-control"></div>
+
+                                    </div>
+                                </div>
+                                <div className="col-6 d-flex align-items-end">
+                                    <div className="col-12">
+                                        <label className="small fw-bold" htmlFor="cvc">Código de segurança</label>
+                                        {/* <input
+                                            type="text"
+                                            inputMode="numeric"
+                                            className="form-control"
+                                            id="cvc"
+                                            placeholder="CVC"
+                                            value={cvc}
+                                            onChange={(e) => {
+                                                const newValue = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+                                                setCvc(newValue); // Atualiza o valor do CVC com apenas números
+                                                }}
+                                                maxLength="4" // Limita a quantidade de dígitos para 3 ou 4, dependendo do padrão do cartão
+                                                /> */}
+                                        <div id="securityCode" className="form-control"></div>
+
+                                    </div>
+                                </div>
+                                <div className="col-12 my-2">
+                                    <label className="small fw-bold" htmlFor="cnpj">CNPJ</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="cnpj"
+                                        placeholder="00.000.000/0000-00"
+                                        value={cnpj} disabled={cpf}
+                                        onChange={(e) => setCnpj(maskCnpj(e.target.value))}
+                                    />
+                                    <label className="small fw-bold" htmlFor="cpf">CPF</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="cpf"
+                                        placeholder="000.000.000-00"
+                                        value={cpf} disabled={cnpj}
+                                        onChange={(e) => setCpf(maskCpf(e.target.value))}
+                                    />
+                                </div>
+                                <div className="col-12 my-2">
+                                    <label className="small fw-bold" htmlFor="email">E-mail de cobrança</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="email"
+                                        placeholder="E-mail"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
                             </form>
                         </div>
                         <div className="modal-footer">
