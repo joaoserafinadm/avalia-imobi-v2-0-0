@@ -37,6 +37,11 @@ export default function CreditCardEditModal(props) {
     const [subscriptionError, setSubscriptionError] = useState('')
 
     useEffect(() => {
+
+        const formElement = document.getElementById('form-checkout');
+        formElement.addEventListener('submit', createCardToken2);
+
+
         const initializeMercadoPago = async () => {
             // Carregando o SDK do Mercado Pago
             await loadMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
@@ -66,15 +71,14 @@ export default function CreditCardEditModal(props) {
     }, []);
 
 
-    const formElement = document.getElementById('form-checkout');
-    formElement.addEventListener('submit', createCardToken2);
+
 
     async function createCardToken2(event) {
       try {
         const tokenElement = document.getElementById('token');
         if (!tokenElement.value) {
           event.preventDefault();
-          const token = await mp.fields.createCardToken({
+          const token = await mercadoPagoInstance.fields.createCardToken({
             cardholderName: document.getElementById('form-checkout__cardholderName').value,
             identificationType: 'CPF',
             identificationNumber: document.getElementById('form-checkout__identificationNumber').value,
