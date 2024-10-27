@@ -205,7 +205,7 @@ export default function CreditCardEditModal(props) {
                                     <p><FontAwesomeIcon icon={faPlus} className="me-2 text-success" />Acima de 5 usuários: R$14,90 mensais por usuário adicional.</p>
                                 </div>
                             </div>
-                            <form id="form-checkout" action="/process_payment" method="POST">
+                            <form id="form-checkout" >
                                 <div id="form-checkout__cardNumber" class="container"></div>
                                 <div id="form-checkout__expirationDate" class="container"></div>
                                 <div id="form-checkout__securityCode" class="container"></div>
