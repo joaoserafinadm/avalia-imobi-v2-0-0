@@ -85,6 +85,7 @@ export default function CreditCardEditModal(props) {
           });
           tokenElement.value = token.id;
           formElement.requestSubmit();
+          handlePayment(token.id);
         }
       } catch (e) {
         console.error('error creating card token: ', e)
