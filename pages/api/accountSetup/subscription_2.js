@@ -17,19 +17,19 @@ const authenticated = fn => async (req, res) => {
 
 export default authenticated(async (req, res) => {
 
-    console.dir(mercadopago, { depth: null });
+    // console.dir(mercadopago, { depth: null });
 
     if (req.method === "POST") {
 
 
-        const client = new MercadoPagoConfig({ accessToken: 'access_token', options: { timeout: 5000, idempotencyKey: 'abc' } });
+        const client = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN, options: { timeout: 5000, idempotencyKey: 'abc' } });
 
         const payment = new Payment(client);
 
         const body = {
             transaction_amount: 10,
             description: req.description,
-            payment_method_id: req.paymentMethodId,
+            payment_method_id: req.payment_method_id,
             payer: {
                 email: req.email
             },
