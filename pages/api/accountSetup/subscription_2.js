@@ -32,7 +32,7 @@ console.log("req.body.", req.body)
             token: req.body.token,
             transaction_amount: 12.34,
             description: 'Payment description',
-            payment_method_id: 'master',
+            payment_method_id: req.body.payment_method_id,
             payer: {
                 email: 'joaoserafin.adm@gmail.com'
             },
