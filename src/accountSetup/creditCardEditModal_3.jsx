@@ -81,14 +81,20 @@ export default function CreditCardEditModal(props) {
 
                         console.log("Form submitted", cardForm.getCardFormData(), cardForm);
 
-                        axios.post('/api/accountSetup/subscription', {
-                            company_id: token.company_id,
-                            user_id: token.sub,
-                            cardTokenId: token,
-                            last4: 123,
-                            cardholderName: "joao",
-                            paymentMethodId: payment_method_id,
-                            email: email
+                        axios.post('/api/accountSetup/subscription_2', {
+                            token,
+                            issuer_id,
+                            payment_method_id,
+                            transaction_amount: Number(amount),
+                            installments: Number(installments),
+                            description: "Descrição do produto",
+                            payer: {
+                              email,
+                              identification: {
+                                type: identificationType,
+                                number: identificationNumber,
+                              },
+                            },
                             // token,
                             // issuer_id,
                             // payment_method_id,

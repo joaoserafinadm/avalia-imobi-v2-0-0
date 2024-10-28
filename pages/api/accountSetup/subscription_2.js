@@ -2,7 +2,7 @@ import { connect } from '../../../utils/db'
 import { verify } from 'jsonwebtoken'
 import { ObjectId } from 'bson'
 import fetch from 'node-fetch'; // Para realizar chamadas HTTP para a API REST
-import mercadopago from 'mercadopago';
+import { MercadoPagoConfig, Payment } from 'mercadopago';
 
 
 
@@ -22,27 +22,27 @@ export default authenticated(async (req, res) => {
     if (req.method === "POST") {
 
 
-        // mercadopago.configurations.setAccessToken('<ACCESS_TOKEN>');
+        const client = new MercadoPagoConfig({ accessToken: 'access_token', options: { timeout: 5000, idempotencyKey: 'abc' } });
 
-        mercadopago.payment.create({
-            transaction_amount: req.transaction_amount,
-            token: req.token,
+        const payment = new Payment(client);
+
+        const body = {
+            transaction_amount: 10,
             description: req.description,
-            installments: req.installments,
             payment_method_id: req.paymentMethodId,
-            issuer_id: req.issuer,
             payer: {
-                email: req.email,
-                identification: {
-                    type: req.identificationType,
-                    number: req.number
-                }
-            }
-        }, {
-            idempotencyKey: '<SOME_UNIQUE_VALUE>'
-        })
-            .then((result) => console.log(result))
-            .catch((error) => console.log(error));
+                email: req.email
+            },
+        };
+
+        const requestOptions = {
+            idempotencyKey: '<IDEMPOTENCY_KEY>',
+        };
+
+        // Step 6: Make the request
+        payment.create({ body, requestOptions }).then(console.log).catch(console.log);
+
+        res.status(200).json({ message: 'ok' })
 
     }
 
