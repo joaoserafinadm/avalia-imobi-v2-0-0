@@ -3,7 +3,7 @@ import { verify } from 'jsonwebtoken'
 import { ObjectId } from 'bson'
 import fetch from 'node-fetch'; // Para realizar chamadas HTTP para a API REST
 import { MercadoPagoConfig, Payment } from 'mercadopago';
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 const authenticated = fn => async (req, res) => {
@@ -20,19 +20,23 @@ export default authenticated(async (req, res) => {
     // console.dir(mercadopago, { depth: null });
 
     if (req.method === "POST") {
+console.log("req.body.", req.body)
 
-
-        const client = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN, options: { timeout: 5000, idempotencyKey: 'abc' } });
-
+        const client = new MercadoPagoConfig({ 
+            accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN, 
+            options: { timeout: 5000, idempotencyKey: uuidv4() }
+          });
         const payment = new Payment(client);
 
         const body = {
-            transaction_amount: 10,
-            description: req.description,
-            payment_method_id: req.payment_method_id,
+            token: req.body.token,
+            transaction_amount: 12.34,
+            description: 'Payment description',
+            payment_method_id: 'master',
             payer: {
-                email: req.email
+                email: 'joaoserafin.adm@gmail.com'
             },
+            installments: 1
         };
 
         const requestOptions = {
@@ -40,7 +44,14 @@ export default authenticated(async (req, res) => {
         };
 
         // Step 6: Make the request
-        payment.create({ body, requestOptions }).then(console.log).catch(console.log);
+
+        try {
+            const response = await payment.create({ body, requestOptions });
+            res.status(200).json({ message: 'Payment created successfully', data: response });
+        } catch (error) {
+            console.error('Payment Error:', error);
+            res.status(500).json({ message: 'Payment failed', error });
+        }
 
         res.status(200).json({ message: 'ok' })
 
