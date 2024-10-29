@@ -48,7 +48,7 @@ export default authenticated(async (req, res) => {
                 // start_date: startDate.toISOString(), 
             },
             back_url: 'https://avaliaimobi.com.br',
-            external_reference: '123456789', //TESTE
+            external_reference: external_reference, //TESTE
             status: "authorized", // Definindo o status como autorizado
 
         };
@@ -59,7 +59,7 @@ export default authenticated(async (req, res) => {
                 'X-meli-session-id': deviceId, // Custom header for device ID
                 'Content-Type': 'application/json', // Make sure to set the Content-Type header as well
                 'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
-                "Idempotency-Key": uuidv4(), // Adding idempotency key if needed
+                // "Idempotency-Key": uuidv4(), // Adding idempotency key if needed
             }
         };
 
