@@ -12,6 +12,9 @@ export default function CreditCardEditModal(props) {
     const [subscriptionError, setSubscriptionError] = useState('')
 
 
+    const [subsId, setSubsId] = useState('')
+
+
     useEffect(() => {
 
         console.log("token", token.company_id)
@@ -111,7 +114,7 @@ export default function CreditCardEditModal(props) {
                             }
                         })
                             .then(response => {
-                                console.log(response.data);
+                                setSubsId(response.data)
                             })
                             .catch(error => {
                                 console.log(error);
@@ -134,6 +137,18 @@ export default function CreditCardEditModal(props) {
         }
 
     }, [token]);
+
+
+
+
+    const handleCheckout = async () => {
+
+        console.log("subsId", subsId)
+
+        // await axios.get('/api/accountSetup/subscription_2', {
+
+        // })
+    }
 
     return (
         <div className="modal fade" id="creditCardEditModal" tabIndex="-1" aria-labelledby="Modal" aria-hidden="true">
@@ -197,6 +212,12 @@ export default function CreditCardEditModal(props) {
                             <progress value="0" className="progress-bar d-none">Carregando...</progress>
                         </form>
                     </div>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-12">
+                    <button className="btn btn-orange " onClick={() => handleCheckout()}>TESTE</button>
                 </div>
             </div>
 

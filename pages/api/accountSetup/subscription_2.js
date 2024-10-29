@@ -25,7 +25,7 @@ export default authenticated(async (req, res) => {
         const payment = new PreApproval(client);
 
         const body = {
-            card_token_id: req.body.token,
+            card_token: req.body.token,
             payment_method_id: req.body.payment_method_id,
             payer_email: 'joaoserafin.adm@gmail.com', //TESTE
             reason: 'Assinatura Avalia Imobi',
@@ -58,21 +58,21 @@ export default authenticated(async (req, res) => {
                 requestOptions // Pass the options with headers
             });
 
-            const subscriptionResponse = await fetch(`https://api.mercadopago.com/preapproval/${response.data.id}`, {
-                method: 'GET',
-                headers: {
-                    'X-meli-session-id': req.body.deviceId, // Custom header for device ID
-                    'Content-Type': 'application/json', // Make sure to set the Content-Type header as well
-                    'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
-                    "Idempotency-Key": uuidv4(), // Adding idempotency key if needed
-                }
-            })
+            // const subscriptionResponse = await fetch(`https://api.mercadopago.com/preapproval/${response.data.id}`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'X-meli-session-id': req.body.deviceId, // Custom header for device ID
+            //         'Content-Type': 'application/json', // Make sure to set the Content-Type header as well
+            //         'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+            //         "Idempotency-Key": uuidv4(), // Adding idempotency key if needed
+            //     }
+            // })
 
 
-            console.log("subscriptionResponse", subscriptionResponse)
+            console.log("subscriptionResponse", response)
 
 
-            res.status(200).json({ message: 'Payment created successfully', data: subscriptionResponse });
+            res.status(200).json({ message: 'Payment created successfully', data: response });
         } catch (error) {
             console.error('Payment Error:', error);
             res.status(500).json({ message: 'Payment failed', error });
