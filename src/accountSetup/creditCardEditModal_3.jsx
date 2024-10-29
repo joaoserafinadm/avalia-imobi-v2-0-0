@@ -77,6 +77,7 @@ export default function CreditCardEditModal(props) {
                             paymentMethodId: payment_method_id,
                             issuerId: issuer_id,
                             cardholderEmail: email,
+                            externalReference: external_reference,
                             amount,
                             token,
                             installments,
