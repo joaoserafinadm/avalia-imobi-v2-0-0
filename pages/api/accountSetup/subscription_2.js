@@ -1,13 +1,28 @@
+import { connect } from '../../../utils/db'
+import { verify } from 'jsonwebtoken'
+import { ObjectId } from 'bson'
+import fetch from 'node-fetch'; // Para realizar chamadas HTTP para a API REST
+import { MercadoPagoConfig, PreApproval } from 'mercadopago';
+import { v4 as uuidv4 } from 'uuid';
+
+const authenticated = fn => async (req, res) => {
+    verify(req.cookies.auth, process.env.JWT_SECRET, async function (err, decoded) {
+        if (!err && decoded) {
+            return await fn(req, res)
+        }
+        res.status(500).json({ message: 'You are not authenticated.' });
+    })
+}
+
 export default authenticated(async (req, res) => {
 
     if (req.method === "POST") {
-        console.log("req.body.", req.body);
+        console.log("req.body.", req.body)
 
         const client = new MercadoPagoConfig({
             accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN
         });
         const payment = new PreApproval(client);
-        // Gerando um identificador único para cada pagamento
 
         const body = {
             card_token_id: req.body.token,
@@ -19,24 +34,29 @@ export default authenticated(async (req, res) => {
                 frequency_type: 'months', // Frequência mensal
                 transaction_amount: 10,
                 currency_id: "BRL", // Moeda
+                // start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
             },
+
             back_url: 'https://avaliaimobi.com.br',
-            external_reference: req.body.externalReference, // Utilizando o identificador gerado
+            external_reference: req.body.external_reference,
             status: "authorized", // Definindo o status como autorizado
+
         };
 
+        // Step 6: Make the request with custom headers
         const requestOptions = {
             headers: {
                 'X-meli-session-id': req.body.deviceId, // Custom header for device ID
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json', // Make sure to set the Content-Type header as well
                 'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
             }
+            // idempotencyKey: uuidv4(), // Adding idempotency key if needed
         };
 
         try {
             const response = await payment.create({
                 body,
-                requestOptions // Passando as opções com cabeçalhos
+                requestOptions // Pass the options with headers
             });
             res.status(200).json({ message: 'Payment created successfully', data: response });
         } catch (error) {
