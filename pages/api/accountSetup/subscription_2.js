@@ -30,7 +30,7 @@ export default authenticated(async (req, res) => {
 
         const body = {
             token: req.body.token,
-            transaction_amount: '12.34',
+            transaction_amount: 12.34,
             description: 'Payment description',
             payment_method_id: req.body.payment_method_id,
             payer: {
