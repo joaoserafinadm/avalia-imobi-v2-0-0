@@ -2,7 +2,7 @@ import { connect } from '../../../utils/db'
 import { verify } from 'jsonwebtoken'
 import { ObjectId } from 'bson'
 import fetch from 'node-fetch'; // Para realizar chamadas HTTP para a API REST
-import { MercadoPagoConfig, Payment } from 'mercadopago';
+import { MercadoPagoConfig, PreApproval } from 'mercadopago';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -20,17 +20,17 @@ export default authenticated(async (req, res) => {
     // console.dir(mercadopago, { depth: null });
 
     if (req.method === "POST") {
-console.log("req.body.", req.body)
+        console.log("req.body.", req.body)
 
-        const client = new MercadoPagoConfig({ 
-            accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN, 
-            options: { timeout: 5000, idempotencyKey: uuidv4() }
-          });
-        const payment = new Payment(client);
+        const client = new MercadoPagoConfig({
+            accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN
+            // options: { timeout: 5000, idempotencyKey: uuidv4() }
+        });
+        const payment = new PreApproval(client);
 
         const body = {
             token: req.body.token,
-            transaction_amount: 12.34,
+            transaction_amount: '12.34',
             description: 'Payment description',
             payment_method_id: req.body.payment_method_id,
             payer: {
@@ -46,7 +46,7 @@ console.log("req.body.", req.body)
         // Step 6: Make the request
 
         try {
-            const response = await payment.create({ body, requestOptions });
+            const response = await payment.create({ body });
             res.status(200).json({ message: 'Payment created successfully', data: response });
         } catch (error) {
             console.error('Payment Error:', error);
