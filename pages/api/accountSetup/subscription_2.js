@@ -79,48 +79,48 @@ export default authenticated(async (req, res) => {
             //     }
             // })
 
-            const subscriptionData = response
+            res.status(200).json({ message: 'Payment created successfully', data: response });
 
 
-            if (!subscriptionData.id) {
-                return res.status(400).json({ message: "Error creating subscription", details: subscriptionData })
-            } else {
+            // if (!subscriptionData?.id) {
+            //     return res.status(400).json({ message: "Error creating subscription", details: response })
+            // } else {
 
 
-                const data = {
-                    // user_id,
-                    cardToken: token,
-                    // last4,
-                    // cardholderName,
-                    // email,
-                    subscription_id: subscriptionData.id, // ID da assinatura
-                    // customer_status: subscriptionData.status,
-                    // paymentMethod_id: subscriptionData.payment_method_id,
-                    // amount: 79.90,
-                    // usersCount: 1,
-                    // amountPerUser: 0,
-                    // dateCreated: new Date(),
-                    // dateUpdated: new Date()
-                };
+            //     const data = {
+            //         // user_id,
+            //         cardToken: token,
+            //         // last4,
+            //         // cardholderName,
+            //         // email,
+            //         subscription_id: response, // ID da assinatura
+            //         // customer_status: subscriptionData.status,
+            //         // paymentMethod_id: subscriptionData.payment_method_id,
+            //         // amount: 79.90,
+            //         // usersCount: 1,
+            //         // amountPerUser: 0,
+            //         // dateCreated: new Date(),
+            //         // dateUpdated: new Date()
+            //     };
 
 
-                const db = await connect();
+            //     const db = await connect();
 
-                const DBresponse = await db.collection('companies').updateOne(
-                    { _id: ObjectId("67142d17e50f180bbe8a1162") },
-                    {
-                        $set: {
-                            "active": true,
-                            "errorStatus": false,
-                            "dateLimit": false,
-                            "paymentData": data
-                        }
-                    }
-                );
+            //     const DBresponse = await db.collection('companies').updateOne(
+            //         { _id: ObjectId("67142d17e50f180bbe8a1162") },
+            //         {
+            //             $set: {
+            //                 "active": true,
+            //                 "errorStatus": false,
+            //                 "dateLimit": false,
+            //                 "paymentData": data
+            //             }
+            //         }
+            //     );
 
 
-                res.status(200).json({ message: 'Payment created successfully', data: response });
-            }
+            //     res.status(200).json({ message: 'Payment created successfully', data: response });
+            // }
 
         } catch (error) {
             console.error('Payment Error:', error);
