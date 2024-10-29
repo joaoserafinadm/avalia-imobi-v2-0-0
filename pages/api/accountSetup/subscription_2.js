@@ -42,8 +42,9 @@ export default authenticated(async (req, res) => {
             headers: {
                 'X-meli-session-id': req.body.deviceId, // Custom header for device ID
                 'Content-Type': 'application/json', // Make sure to set the Content-Type header as well
-            },
-            idempotencyKey: uuidv4(), // Adding idempotency key if needed
+                'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+            }
+            // idempotencyKey: uuidv4(), // Adding idempotency key if needed
         };
 
         try {
