@@ -52,6 +52,9 @@ export default function CreditCardEditModal(props) {
                         id: "form-checkout__cardholderEmail",
                         placeholder: "E-mail",
                     },
+                    deviceId: {
+                        id: "deviceId",
+                    }
                 },
                 callbacks: {
                     onFormMounted: error => {
