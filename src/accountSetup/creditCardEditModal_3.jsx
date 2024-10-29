@@ -7,136 +7,136 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function CreditCardEditModal(props) {
-    const token = jwt.decode(Cookie.get('auth'));
-
+    const [companyId, setCompanyId] = useState(null); // Adicione um estado para o company_id
     const [subscriptionError, setSubscriptionError] = useState('')
 
-
     useEffect(() => {
-        if (token.sub) {
-            const mp = new window.MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
+        const authToken = Cookie.get('auth');
+        if (authToken) {
+            const token = jwt.decode(authToken);
+            if (token?.sub) {
+                setCompanyId(token.company_id); // Salve o company_id no estado
+                const mp = new window.MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
 
-            const external_reference = token.company_id
+                const cardForm = mp.cardForm({
+                    amount: "10",
+                    iframe: true,
+                    form: {
+                        id: "form-checkout",
+                        cardNumber: {
+                            id: "form-checkout__cardNumber",
+                            placeholder: "Número do cartão",
+                        },
+                        expirationDate: {
+                            id: "form-checkout__expirationDate",
+                            placeholder: "MM/YY",
+                        },
+                        securityCode: {
+                            id: "form-checkout__securityCode",
+                            placeholder: "CVC",
+                        },
+                        cardholderName: {
+                            id: "form-checkout__cardholderName",
+                            placeholder: "Titular do cartão",
+                        },
+                        issuer: {
+                            id: "form-checkout__issuer",
+                            placeholder: "Banco emissor",
+                        },
+                        installments: {
+                            id: "form-checkout__installments",
+                            placeholder: "Parcelas",
+                        },
+                        identificationType: {
+                            id: "form-checkout__identificationType",
+                            placeholder: "Tipo de documento",
+                        },
+                        identificationNumber: {
+                            id: "form-checkout__identificationNumber",
+                            placeholder: "Número do documento",
+                        },
+                        cardholderEmail: {
+                            id: "form-checkout__cardholderEmail",
+                            placeholder: "E-mail",
+                        },
+                        deviceId: {
+                            id: "deviceId", // Campo escondido para o device ID
+                        }
+                    },
+                    callbacks: {
+                        onFormMounted: error => {
+                            if (error) return console.warn("Form Mounted handling error: ", error);
+                            console.log("Form mounted");
+                        },
+                        onSubmit: event => {
+                            event.preventDefault();
 
-            const cardForm = mp.cardForm({
-                amount: "10",
-                iframe: true,
-                form: {
-                    id: "form-checkout",
-                    cardNumber: {
-                        id: "form-checkout__cardNumber",
-                        placeholder: "Número do cartão",
-                    },
-                    expirationDate: {
-                        id: "form-checkout__expirationDate",
-                        placeholder: "MM/YY",
-                    },
-                    securityCode: {
-                        id: "form-checkout__securityCode",
-                        placeholder: "CVC",
-                    },
-                    cardholderName: {
-                        id: "form-checkout__cardholderName",
-                        placeholder: "Titular do cartão",
-                    },
-                    issuer: {
-                        id: "form-checkout__issuer",
-                        placeholder: "Banco emissor",
-                    },
-                    installments: {
-                        id: "form-checkout__installments",
-                        placeholder: "Parcelas",
-                    },
-                    identificationType: {
-                        id: "form-checkout__identificationType",
-                        placeholder: "Tipo de documento",
-                    },
-                    identificationNumber: {
-                        id: "form-checkout__identificationNumber",
-                        placeholder: "Número do documento",
-                    },
-                    cardholderEmail: {
-                        id: "form-checkout__cardholderEmail",
-                        placeholder: "E-mail",
-                    },
-                    deviceId: {
-                        id: "deviceId", // Campo escondido para o device ID
-                    },
-                    externalReference: {
-                        id: "externalReference", // Campo escondido para o external reference
-                    },
-                },
-                callbacks: {
-                    onFormMounted: error => {
-                        if (error) return console.warn("Form Mounted handling error: ", error);
-                        console.log("Form mounted");
-                    },
-                    onSubmit: event => {
-                        event.preventDefault();
+                            const {
+                                paymentMethodId: payment_method_id,
+                                issuerId: issuer_id,
+                                cardholderEmail: email,
+                                cardholderName,
+                                amount,
+                                token,
+                                installments,
+                                identificationNumber,
+                                identificationType,
+                            } = cardForm.getCardFormData();
 
-                        const {
-                            paymentMethodId: payment_method_id,
-                            issuerId: issuer_id,
-                            cardholderEmail: email,
-                            cardholderName,
-                            amount,
-                            token,
-                            installments,
-                            identificationNumber,
-                            identificationType,
-                            externalReference,
-                        } = cardForm.getCardFormData();
+                            console.log("Form submitted", cardForm.getCardFormData(), cardForm);
 
-                        console.log("Form submitted", cardForm.getCardFormData(), cardForm, deviceId);
-
-                        axios.post('/api/accountSetup/subscription_2', {
-                            token,
-                            issuer_id,
-                            payment_method_id,
-                            transaction_amount: Number(amount),
-                            installments: Number(installments),
-                            description: "Descrição do produto",
-                            payer: {
-                                email,
-                                identification: {
-                                    type: identificationType,
-                                    number: identificationNumber,
-                                },
-                                first_name: cardholderName?.split(" ")[0],
-                                last_name: cardholderName?.split(" ")[cardholderName?.split(" ").length - 1],
-                            },
-                            deviceId,
-                            external_reference: externalReference,
-                            company_id: token.company_id
-                        }, {
-                            headers: {
-                                'Content-Type': 'application/json'
+                            // Verifique se o company_id foi carregado antes de prosseguir
+                            if (companyId) {
+                                axios.post('/api/accountSetup/subscription_2', {
+                                    token,
+                                    issuer_id,
+                                    payment_method_id,
+                                    transaction_amount: Number(amount),
+                                    installments: Number(installments),
+                                    description: "Descrição do produto",
+                                    payer: {
+                                        email,
+                                        identification: {
+                                            type: identificationType,
+                                            number: identificationNumber,
+                                        },
+                                        first_name: cardholderName?.split(" ")[0],
+                                        last_name: cardholderName?.split(" ")[cardholderName?.split(" ").length - 1],
+                                    },
+                                    deviceId: document.getElementById("deviceId").value,
+                                    external_reference: companyId,  // Agora companyId tem o valor correto
+                                    company_id: companyId
+                                }, {
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                    .then(response => {
+                                        console.log(response.data);
+                                    })
+                                    .catch(error => {
+                                        console.log(error);
+                                        setSubscriptionError('Houve um erro ao gerar a assinatura, por favor, tente novamente mais tarde! Caso o erro persista, clique <a href="/sac">aqui</a> para entrar em contato.');
+                                    });
+                            } else {
+                                console.error("Company ID is not loaded yet.");
                             }
-                        })
-                            .then(response => {
-                                console.log(response.data);
-                            })
-                            .catch(error => {
-                                console.log(error);
-                                setSubscriptionError('Houve um erro ao gerar a assinatura, por favor, tente novamente mais tarde! Caso o erro persista, clique <a href="/sac">aqui</a> para entrar em contato.');
+                        },
+                        onFetching: (resource) => {
+                            console.log("Fetching resource: ", resource);
 
-                            });
+                            const progressBar = document.querySelector(".progress-bar");
+                            progressBar.removeAttribute("value");
+
+                            return () => {
+                                progressBar.setAttribute("value", "0");
+                            };
+                        }
                     },
-                    onFetching: (resource) => {
-                        console.log("Fetching resource: ", resource);
-
-                        const progressBar = document.querySelector(".progress-bar");
-                        progressBar.removeAttribute("value");
-
-                        return () => {
-                            progressBar.setAttribute("value", "0");
-                        };
-                    }
-                },
-            });
+                });
+            }
         }
-
-    }, [token]);
+    }, [companyId]); // O useEffect será disparado novamente quando o companyId for atualizado
 
     return (
         <div className="modal fade" id="creditCardEditModal" tabIndex="-1" aria-labelledby="Modal" aria-hidden="true">
@@ -150,8 +150,7 @@ export default function CreditCardEditModal(props) {
                         {subscriptionError && (
                             <div className="row">
                                 <div className="col-12">
-                                    <div className="alert alert-danger" dangerouslySetInnerHTML={{ __html: subscriptionError }}>
-                                    </div>
+                                    <div className="alert alert-danger" dangerouslySetInnerHTML={{ __html: subscriptionError }}></div>
                                 </div>
                             </div>
                         )}
@@ -181,7 +180,6 @@ export default function CreditCardEditModal(props) {
 
                             <select id="form-checkout__issuer" className="d-none"></select>
                             <select id="form-checkout__installments" className="d-none"></select>
-                            <input id="externalReference" className="d-none" value={token.company_id}></input>
 
                             <label className="small fw-bold" htmlFor="form-checkout__identificationType">Documento</label>
                             <select id="form-checkout__identificationType" className="form-select mb-2"></select>

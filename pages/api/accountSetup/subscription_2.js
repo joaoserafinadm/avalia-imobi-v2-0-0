@@ -36,7 +36,6 @@ export default authenticated(async (req, res) => {
                 currency_id: "BRL", // Moeda
                 // start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
             },
-
             back_url: 'https://avaliaimobi.com.br',
             external_reference: req.body.external_reference,
             status: "authorized", // Definindo o status como autorizado
