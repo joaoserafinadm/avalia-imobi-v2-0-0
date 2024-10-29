@@ -104,7 +104,7 @@ export default authenticated(async (req, res) => {
                 };
 
                 const DBresponse = await db.collection('companies').updateOne(
-                    { _id: ObjectId(company_id) },
+                    { _id: ObjectId("67142d17e50f180bbe8a1162") },
                     {
                         $set: {
                             "active": true,
