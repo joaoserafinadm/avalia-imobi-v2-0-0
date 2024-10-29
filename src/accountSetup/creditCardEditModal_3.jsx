@@ -18,7 +18,7 @@ export default function CreditCardEditModal(props) {
             const mp = new window.MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
 
             const cardForm = mp.cardForm({
-                amount: "79.90",
+                amount: "12.34",
                 iframe: true,
                 form: {
                     id: "form-checkout",
