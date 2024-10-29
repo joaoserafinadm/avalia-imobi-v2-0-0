@@ -2,7 +2,7 @@ import { connect } from '../../../utils/db'
 import { verify } from 'jsonwebtoken'
 import { ObjectId } from 'bson'
 import fetch from 'node-fetch'; // Para realizar chamadas HTTP para a API REST
-import { MercadoPagoConfig, PreApproval } from 'mercadopago';
+import { MercadoPagoConfig, Payment } from 'mercadopago';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -26,7 +26,7 @@ export default authenticated(async (req, res) => {
             accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN
             // options: { timeout: 5000, idempotencyKey: uuidv4() }
         });
-        const payment = new PreApproval(client);
+        const payment = new Payment(client);
 
         const body = {
             token: req.body.token,
