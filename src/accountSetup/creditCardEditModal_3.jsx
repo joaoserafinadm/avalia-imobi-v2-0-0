@@ -1,20 +1,27 @@
 import axios from "axios";
-import { useEffect } from "react"
-import Cookie from 'js-cookie'
+import { useEffect } from "react";
+import Cookie from 'js-cookie';
 import jwt from 'jsonwebtoken';
 
-
-
-
 export default function CreditCardEditModal(props) {
-    const token = jwt.decode(Cookie.get('auth'))
-
+    const token = jwt.decode(Cookie.get('auth'));
 
     useEffect(() => {
+        // Função para adicionar o script de segurança do Mercado Pago
+        const addMercadoPagoSecurityScript = () => {
+            const script = document.createElement('script');
+            script.src = "https://www.mercadopago.com/v2/security.js";
+            script.setAttribute('view', 'checkout');
+            script.async = true;
+            document.body.appendChild(script);
+        };
 
-        if (token.sub) {
+        // Checa se o script já foi adicionado
+        if (!document.querySelector('script[src="https://www.mercadopago.com/v2/security.js"]')) {
+            addMercadoPagoSecurityScript();
+        }
 
-
+        if (token && token.sub) {
             const mp = new window.MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
 
             const cardForm = mp.cardForm({
@@ -67,7 +74,8 @@ export default function CreditCardEditModal(props) {
                     onSubmit: event => {
                         event.preventDefault();
 
-                        console.log("TESTE");
+                        console.log("Form submitted", cardForm.getCardFormData(), cardForm);
+
                         const {
                             paymentMethodId: payment_method_id,
                             issuerId: issuer_id,
@@ -79,8 +87,6 @@ export default function CreditCardEditModal(props) {
                             identificationType,
                         } = cardForm.getCardFormData();
 
-                        console.log("Form submitted", cardForm.getCardFormData(), cardForm);
-
                         axios.post('/api/accountSetup/subscription_2', {
                             token,
                             issuer_id,
@@ -89,43 +95,26 @@ export default function CreditCardEditModal(props) {
                             installments: Number(installments),
                             description: "Descrição do produto",
                             payer: {
-                              email,
-                              identification: {
-                                type: identificationType,
-                                number: identificationNumber,
-                              },
+                                email,
+                                identification: {
+                                    type: identificationType,
+                                    number: identificationNumber,
+                                },
                             },
-                            // token,
-                            // issuer_id,
-                            // payment_method_id,
-                            // transaction_amount: Number(amount),
-                            // installments: Number(installments),
-                            // description: "Descrição do produto",
-                            // payer: {
-                            //     email,
-                            //     identification: {
-                            //         type: identificationType,
-                            //         number: identificationNumber,
-                            //     },
-                            // },
                         }, {
                             headers: {
                                 'Content-Type': 'application/json',
                             }
                         })
                             .then(response => {
-                                // Tratamento do sucesso da requisição
                                 console.log(response.data);
                             })
                             .catch(error => {
-                                // Tratamento do erro da requisição
                                 console.error(error);
                             });
                     },
                     onFetching: (resource) => {
                         console.log("Fetching resource: ", resource);
-
-                        // Animate progress bar
                         const progressBar = document.querySelector(".progress-bar");
                         progressBar.removeAttribute("value");
 
@@ -137,10 +126,7 @@ export default function CreditCardEditModal(props) {
             });
         }
 
-    }, [token])
-
-
-
+    }, [token]);
 
     return (
         <div className="modal fade" id="creditCardEditModal" tabIndex="-1" aria-labelledby="Modal" aria-hidden="true">
@@ -152,9 +138,9 @@ export default function CreditCardEditModal(props) {
                     </div>
                     <div className="modal-body">
                         <form id="form-checkout">
-                            <div id="form-checkout__cardNumber" class="container"></div>
-                            <div id="form-checkout__expirationDate" class="container"></div>
-                            <div id="form-checkout__securityCode" class="container"></div>
+                            <div id="form-checkout__cardNumber" className="container"></div>
+                            <div id="form-checkout__expirationDate" className="container"></div>
+                            <div id="form-checkout__securityCode" className="container"></div>
                             <input type="text" id="form-checkout__cardholderName" />
                             <select id="form-checkout__issuer"></select>
                             <select id="form-checkout__installments"></select>
@@ -162,12 +148,12 @@ export default function CreditCardEditModal(props) {
                             <input type="text" id="form-checkout__identificationNumber" />
                             <input type="email" id="form-checkout__cardholderEmail" />
                             <input type="hidden" id="deviceId"/>
-                            <button type="submit" id="form-checkout__submit">Pagarr</button>
-                            <progress value="0" class="progress-bar">Carregando...</progress>
+                            <button type="submit" id="form-checkout__submit">Pagar</button>
+                            <progress value="0" className="progress-bar">Carregando...</progress>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
