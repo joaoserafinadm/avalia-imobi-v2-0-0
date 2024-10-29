@@ -27,17 +27,17 @@ export default authenticated(async (req, res) => {
         const body = {
             card_token_id: req.body.token,
             payment_method_id: req.body.payment_method_id,
-            payer_email: 'joaoserafin.adm@gmail.com',
+            payer_email: 'joaoserafin.adm@gmail.com', //TESTE
             reason: 'Assinatura Avalia Imobi',
             auto_recurring: {
                 frequency: 1,
                 frequency_type: 'months', // Frequência mensal
                 transaction_amount: 10,
                 currency_id: "BRL", // Moeda
-                // start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
+                // start_date: startDate.toISOString(), 
             },
             back_url: 'https://avaliaimobi.com.br',
-            external_reference: req.body.external_reference,
+            external_reference: '123456789', //TESTE
             status: "authorized", // Definindo o status como autorizado
 
         };
