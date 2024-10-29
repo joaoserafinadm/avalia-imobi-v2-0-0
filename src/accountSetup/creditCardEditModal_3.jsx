@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import Cookie from 'js-cookie';
 import jwt from 'jsonwebtoken';
-import Script from 'next/script'; // Importando Script do Next.js
+import Script from 'next/script';
 
 export default function CreditCardEditModal(props) {
     const token = jwt.decode(Cookie.get('auth'));
@@ -53,7 +53,7 @@ export default function CreditCardEditModal(props) {
                         placeholder: "E-mail",
                     },
                     deviceId: {
-                        id: "deviceId",
+                        id: "deviceId", // Campo escondido para o device ID
                     }
                 },
                 callbacks: {
@@ -64,7 +64,6 @@ export default function CreditCardEditModal(props) {
                     onSubmit: event => {
                         event.preventDefault();
 
-                        console.log("TESTE");
                         const {
                             paymentMethodId: payment_method_id,
                             issuerId: issuer_id,
@@ -74,6 +73,7 @@ export default function CreditCardEditModal(props) {
                             installments,
                             identificationNumber,
                             identificationType,
+                            deviceId, // Certifique-se de pegar o device ID
                         } = cardForm.getCardFormData();
 
                         console.log("Form submitted", cardForm.getCardFormData(), cardForm);
@@ -92,6 +92,7 @@ export default function CreditCardEditModal(props) {
                                 number: identificationNumber,
                               },
                             },
+                            device_id: deviceId, // Enviar o device ID na requisição
                         }, {
                             headers: {
                                 'Content-Type': 'application/json',
@@ -140,7 +141,7 @@ export default function CreditCardEditModal(props) {
                             <input type="text" id="form-checkout__identificationNumber" />
                             <input type="email" id="form-checkout__cardholderEmail" />
                             <input type="hidden" id="deviceId" />
-                            <button type="submit" id="form-checkout__submit">Pagarr</button>
+                            <button type="submit" id="form-checkout__submit">Pagar</button>
                             <progress value="0" className="progress-bar">Carregando...</progress>
                         </form>
                     </div>
