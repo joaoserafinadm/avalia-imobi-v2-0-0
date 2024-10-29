@@ -72,11 +72,10 @@ export default function CreditCardEditModal(props) {
                             token,
                             installments,
                             identificationNumber,
-                            identificationType,
-                            deviceId, // Certifique-se de pegar o device ID
+                            identificationType,// Certifique-se de pegar o device ID
                         } = cardForm.getCardFormData();
 
-                        console.log("Form submitted", cardForm.getCardFormData(), cardForm);
+                        console.log("Form submitted", cardForm.getCardFormData(), cardForm, deviceId);
 
                         axios.post('/api/accountSetup/subscription_2', {
                             token,
@@ -92,10 +91,10 @@ export default function CreditCardEditModal(props) {
                                 number: identificationNumber,
                               },
                             },
-                            device_id: deviceId, // Enviar o device ID na requisição
+                            deviceId,
                         }, {
                             headers: {
-                                'Content-Type': 'application/json',
+                                'Content-Type': 'application/json'
                             }
                         })
                             .then(response => {
@@ -149,7 +148,7 @@ export default function CreditCardEditModal(props) {
             </div>
 
             {/* Script de segurança do Mercado Pago */}
-            <Script src="https://www.mercadopago.com/v2/security.js" strategy="afterInteractive" />
+            {/* <Script src="https://www.mercadopago.com/v2/security.js" strategy="afterInteractive" output='deviceId'/> */}
         </div>
     );
 }
