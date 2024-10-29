@@ -25,7 +25,7 @@ export default authenticated(async (req, res) => {
         const payment = new PreApproval(client);
 
         const body = {
-            card_token: req.body.token,
+            card_token_id: req.body.token,
             payment_method_id: req.body.payment_method_id,
             payer_email: 'joaoserafin.adm@gmail.com', //TESTE
             reason: 'Assinatura Avalia Imobi',
