@@ -1,11 +1,16 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Cookie from 'js-cookie';
 import jwt from 'jsonwebtoken';
 import Script from 'next/script';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function CreditCardEditModal(props) {
     const token = jwt.decode(Cookie.get('auth'));
+
+    const [subscriptionError, setSubscriptionError] = useState('')
+
 
     useEffect(() => {
         if (token.sub) {
@@ -26,7 +31,7 @@ export default function CreditCardEditModal(props) {
                     },
                     securityCode: {
                         id: "form-checkout__securityCode",
-                        placeholder: "Código de segurança",
+                        placeholder: "CVC",
                     },
                     cardholderName: {
                         id: "form-checkout__cardholderName",
@@ -68,11 +73,12 @@ export default function CreditCardEditModal(props) {
                             paymentMethodId: payment_method_id,
                             issuerId: issuer_id,
                             cardholderEmail: email,
+                            cardholderName,
                             amount,
                             token,
                             installments,
                             identificationNumber,
-                            identificationType,// Certifique-se de pegar o device ID
+                            identificationType,
                         } = cardForm.getCardFormData();
 
                         console.log("Form submitted", cardForm.getCardFormData(), cardForm, deviceId);
@@ -85,13 +91,16 @@ export default function CreditCardEditModal(props) {
                             installments: Number(installments),
                             description: "Descrição do produto",
                             payer: {
-                              email,
-                              identification: {
-                                type: identificationType,
-                                number: identificationNumber,
-                              },
+                                email,
+                                identification: {
+                                    type: identificationType,
+                                    number: identificationNumber,
+                                },
+                                first_name: cardholderName?.split(" ")[0],
+                                last_name: cardholderName?.split(" ")[cardholderName?.split(" ").length - 1],
                             },
                             deviceId,
+                            company_id: token.company_id
                         }, {
                             headers: {
                                 'Content-Type': 'application/json'
@@ -101,7 +110,9 @@ export default function CreditCardEditModal(props) {
                                 console.log(response.data);
                             })
                             .catch(error => {
-                                console.error(error);
+                                console.log(error);
+                                setSubscriptionError('Houve um erro ao gerar a assinatura, por favor, tente novamente mais tarde! Caso o erro persista, clique <a href="/sac">aqui</a> para entrar em contato.');
+
                             });
                     },
                     onFetching: (resource) => {
@@ -128,20 +139,58 @@ export default function CreditCardEditModal(props) {
                         <h5 className="modal-title title-dark bold">Endereço de cobrança</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div className="modal-body">
+                    <div className="modal-body pb-5">
+                        {subscriptionError && (
+                            <div className="row">
+                                <div className="col-12">
+                                    <div className="alert alert-danger" dangerouslySetInnerHTML={{ __html: subscriptionError }}>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        <div className="row">
+                            <div className="col-12">
+                                <p><b>Importante:</b></p>
+                                <p>O valor inicial da assinatura é de <b>R$79,90 por mês</b>, correspondente ao plano básico com 1 usuário.</p>
+                                <p>O valor será ajustado automaticamente conforme novos usuários forem adicionados ao sistema:</p>
+
+                                <p><FontAwesomeIcon icon={faPlus} className="me-2 text-success" /> Até 5 usuários: R$19,90 mensais por usuário adicional.</p>
+                                <p><FontAwesomeIcon icon={faPlus} className="me-2 text-success" />Acima de 5 usuários: R$14,90 mensais por usuário adicional.</p>
+                            </div>
+                        </div>
+
                         <form id="form-checkout">
-                            <div id="form-checkout__cardNumber" className="container"></div>
-                            <div id="form-checkout__expirationDate" className="container"></div>
-                            <div id="form-checkout__securityCode" className="container"></div>
-                            <input type="text" id="form-checkout__cardholderName" />
-                            <select id="form-checkout__issuer"></select>
-                            <select id="form-checkout__installments"></select>
-                            <select id="form-checkout__identificationType"></select>
-                            <input type="text" id="form-checkout__identificationNumber" />
-                            <input type="email" id="form-checkout__cardholderEmail" />
+                            <label className="small fw-bold" htmlFor="form-checkout__cardholderName">Nome do titular do cartão</label>
+                            <input type="text" id="form-checkout__cardholderName" className="form-control mb-2" />
+
+                            <label className="small fw-bold" htmlFor="form-checkout__cardNumber">Número do cartão</label>
+                            <div id="form-checkout__cardNumber" className="form-control mb-2" style={{ height: "40px" }}></div>
+
+                            <label className="small fw-bold" htmlFor="form-checkout__expirationDate">Data de validade</label>
+                            <div id="form-checkout__expirationDate" className="form-control mb-2" style={{ height: "40px" }}></div>
+
+                            <label className="small fw-bold" htmlFor="form-checkout__securityCode">Código de segurança</label>
+                            <div id="form-checkout__securityCode" className="form-control mb-2" style={{ height: "40px" }}></div>
+
+                            <select id="form-checkout__issuer" className="d-none"></select>
+                            <select id="form-checkout__installments" className="d-none"></select>
+
+                            <label className="small fw-bold" htmlFor="form-checkout__identificationType">Documento</label>
+                            <select id="form-checkout__identificationType" className="form-select mb-2"></select>
+
+                            <label className="small fw-bold" htmlFor="form-checkout__identificationNumber">Número do documento</label>
+                            <input type="text" id="form-checkout__identificationNumber" className="form-control mb-2" />
+
+                            <label className="small fw-bold" htmlFor="form-checkout__cardholderEmail">E-mail</label>
+                            <input type="email" id="form-checkout__cardholderEmail" className="form-control mb-2" />
                             <input type="hidden" id="deviceId" />
-                            <button type="submit" id="form-checkout__submit">Pagar</button>
-                            <progress value="0" className="progress-bar">Carregando...</progress>
+                            <div className="row">
+                                <div className="col-12 d-flex justify-content-end">
+
+                                    <button type="submit" id="form-checkout__submit" className="btn btn-orange text-end">Salvar</button>
+                                </div>
+                            </div>
+                            <progress value="0" className="progress-bar d-none">Carregando...</progress>
                         </form>
                     </div>
                 </div>
