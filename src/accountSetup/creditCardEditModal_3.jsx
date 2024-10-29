@@ -114,7 +114,8 @@ export default function CreditCardEditModal(props) {
                             }
                         })
                             .then(response => {
-                                setSubsId(response.data)
+                                console.log(response);
+                                setSubsId(response)
                             })
                             .catch(error => {
                                 console.log(error);
@@ -145,9 +146,9 @@ export default function CreditCardEditModal(props) {
 
         console.log("subsId", subsId)
 
-        // await axios.get('/api/accountSetup/subscription_2', {
-
-        // })
+        await axios.get('/api/accountSetup/subscription_2', {
+            params: subsId
+        })
     }
 
     return (
@@ -209,17 +210,17 @@ export default function CreditCardEditModal(props) {
                                     <button type="submit" id="form-checkout__submit" className="btn btn-orange text-end">Salvar</button>
                                 </div>
                             </div>
-                            <progress value="0" className="progress-bar d-none">Carregando...</progress>
+                            <progress value="0" className="progress-bar">Carregando...</progress>
                         </form>
+                    </div>
+                    <div className="row">
+                        <div className="col-12">
+                            <button className="btn btn-orange " onClick={() => handleCheckout()}>TESTE</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div className="row">
-                <div className="col-12">
-                    <button className="btn btn-orange " onClick={() => handleCheckout()}>TESTE</button>
-                </div>
-            </div>
 
             {/* Script de segurança do Mercado Pago */}
             {/* <Script src="https://www.mercadopago.com/v2/security.js" strategy="afterInteractive" output='deviceId'/> */}

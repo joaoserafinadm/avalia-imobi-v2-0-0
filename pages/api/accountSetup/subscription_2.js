@@ -78,6 +78,14 @@ export default authenticated(async (req, res) => {
             res.status(500).json({ message: 'Payment failed', error });
         }
 
+    } else if (req.method === "GET") {
+
+        const { response } = req.query
+
+        res.status(200).json({ response })
+
+
+
     }
 });
 
