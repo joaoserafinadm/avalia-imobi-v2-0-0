@@ -36,7 +36,9 @@ export default authenticated(async (req, res) => {
             payer: {
                 email: 'joaoserafin.adm@gmail.com'
             },
-            installments: 1
+            installments: 1,
+            statement_descriptor: 'Mercado Pago',
+            external_reference: '123'
         };
 
         const requestOptions = {
