@@ -5,7 +5,6 @@ import fetch from 'node-fetch'; // Para realizar chamadas HTTP para a API REST
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 import { v4 as uuidv4 } from 'uuid';
 
-
 const authenticated = fn => async (req, res) => {
     verify(req.cookies.auth, process.env.JWT_SECRET, async function (err, decoded) {
         if (!err && decoded) {
@@ -17,14 +16,11 @@ const authenticated = fn => async (req, res) => {
 
 export default authenticated(async (req, res) => {
 
-    // console.dir(mercadopago, { depth: null });
-
     if (req.method === "POST") {
         console.log("req.body.", req.body)
 
         const client = new MercadoPagoConfig({
             accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN
-            // options: { timeout: 5000, idempotencyKey: uuidv4() }
         });
         const payment = new Payment(client);
 
@@ -41,25 +37,25 @@ export default authenticated(async (req, res) => {
             external_reference: '123'
         };
 
+        // Step 6: Make the request with custom headers
         const requestOptions = {
-            idempotencyKey: '<IDEMPOTENCY_KEY>',
+            headers: {
+                'X-meli-session-id': req.body.deviceId, // Custom header for device ID
+                'Content-Type': 'application/json', // Make sure to set the Content-Type header as well
+            },
+            idempotencyKey: uuidv4(), // Adding idempotency key if needed
         };
 
-        // Step 6: Make the request
-
         try {
-            const response = await payment.create({ body, header: { 'X-meli-session-id': req.body.device_id } });
+            const response = await payment.create({
+                body, 
+                requestOptions // Pass the options with headers
+            });
             res.status(200).json({ message: 'Payment created successfully', data: response });
         } catch (error) {
             console.error('Payment Error:', error);
             res.status(500).json({ message: 'Payment failed', error });
         }
 
-        res.status(200).json({ message: 'ok' })
-
     }
-
-
-
-
-})
+});
