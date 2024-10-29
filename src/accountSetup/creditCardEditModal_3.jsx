@@ -114,8 +114,7 @@ export default function CreditCardEditModal(props) {
                             }
                         })
                             .then(response => {
-                                console.log(response);
-                                setSubsId(response)
+                                dataFunction()
                             })
                             .catch(error => {
                                 console.log(error);
