@@ -70,11 +70,11 @@ export default authenticated(async (req, res) => {
 
 
             console.log("subscriptionResponse", response)
-            const subscriptionData = await response.json();
+            // const subscriptionData = await response.json();
 
 
 
-            res.status(200).json({ message: 'Payment created successfully', data: subscriptionData });
+            res.status(200).json({ message: 'Payment created successfully', data: response });
         } catch (error) {
             console.error('Payment Error:', error);
             res.status(500).json({ message: 'Payment failed', error });
