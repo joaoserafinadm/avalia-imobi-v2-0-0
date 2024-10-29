@@ -48,7 +48,7 @@ export default authenticated(async (req, res) => {
         // Step 6: Make the request
 
         try {
-            const response = await payment.create({ body, headers: { 'X-meli-session-id': req.body.device_id } });
+            const response = await payment.create({ body, header: { 'X-meli-session-id': req.body.device_id } });
             res.status(200).json({ message: 'Payment created successfully', data: response });
         } catch (error) {
             console.error('Payment Error:', error);
