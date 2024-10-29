@@ -61,7 +61,10 @@ export default function CreditCardEditModal(props) {
                     },
                     deviceId: {
                         id: "deviceId", // Campo escondido para o device ID
-                    }
+                    },
+                    externalReference: {
+                        id: "externalReference", // Campo escondido para o external reference
+                    },
                 },
                 callbacks: {
                     onFormMounted: error => {
@@ -81,6 +84,7 @@ export default function CreditCardEditModal(props) {
                             installments,
                             identificationNumber,
                             identificationType,
+                            externalReference,
                         } = cardForm.getCardFormData();
 
                         console.log("Form submitted", cardForm.getCardFormData(), cardForm, deviceId);
@@ -102,7 +106,7 @@ export default function CreditCardEditModal(props) {
                                 last_name: cardholderName?.split(" ")[cardholderName?.split(" ").length - 1],
                             },
                             deviceId,
-                            external_reference,
+                            external_reference: externalReference,
                             company_id: token.company_id
                         }, {
                             headers: {
@@ -177,6 +181,7 @@ export default function CreditCardEditModal(props) {
 
                             <select id="form-checkout__issuer" className="d-none"></select>
                             <select id="form-checkout__installments" className="d-none"></select>
+                            <input id="externalReference" className="d-none" value={token.company_id}></input>
 
                             <label className="small fw-bold" htmlFor="form-checkout__identificationType">Documento</label>
                             <select id="form-checkout__identificationType" className="form-select mb-2"></select>
