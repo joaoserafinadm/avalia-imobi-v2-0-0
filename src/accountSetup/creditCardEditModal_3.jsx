@@ -2,26 +2,13 @@ import axios from "axios";
 import { useEffect } from "react";
 import Cookie from 'js-cookie';
 import jwt from 'jsonwebtoken';
+import Script from 'next/script'; // Importando Script do Next.js
 
 export default function CreditCardEditModal(props) {
     const token = jwt.decode(Cookie.get('auth'));
 
     useEffect(() => {
-        // Função para adicionar o script de segurança do Mercado Pago
-        const addMercadoPagoSecurityScript = () => {
-            const script = document.createElement('script');
-            script.src = "https://www.mercadopago.com/v2/security.js";
-            script.setAttribute('view', 'checkout');
-            script.async = true;
-            document.body.appendChild(script);
-        };
-
-        // Checa se o script já foi adicionado
-        if (!document.querySelector('script[src="https://www.mercadopago.com/v2/security.js"]')) {
-            addMercadoPagoSecurityScript();
-        }
-
-        if (token && token.sub) {
+        if (token.sub) {
             const mp = new window.MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
 
             const cardForm = mp.cardForm({
@@ -74,8 +61,7 @@ export default function CreditCardEditModal(props) {
                     onSubmit: event => {
                         event.preventDefault();
 
-                        console.log("Form submitted", cardForm.getCardFormData(), cardForm);
-
+                        console.log("TESTE");
                         const {
                             paymentMethodId: payment_method_id,
                             issuerId: issuer_id,
@@ -87,6 +73,8 @@ export default function CreditCardEditModal(props) {
                             identificationType,
                         } = cardForm.getCardFormData();
 
+                        console.log("Form submitted", cardForm.getCardFormData(), cardForm);
+
                         axios.post('/api/accountSetup/subscription_2', {
                             token,
                             issuer_id,
@@ -95,11 +83,11 @@ export default function CreditCardEditModal(props) {
                             installments: Number(installments),
                             description: "Descrição do produto",
                             payer: {
-                                email,
-                                identification: {
-                                    type: identificationType,
-                                    number: identificationNumber,
-                                },
+                              email,
+                              identification: {
+                                type: identificationType,
+                                number: identificationNumber,
+                              },
                             },
                         }, {
                             headers: {
@@ -115,6 +103,7 @@ export default function CreditCardEditModal(props) {
                     },
                     onFetching: (resource) => {
                         console.log("Fetching resource: ", resource);
+
                         const progressBar = document.querySelector(".progress-bar");
                         progressBar.removeAttribute("value");
 
@@ -147,13 +136,16 @@ export default function CreditCardEditModal(props) {
                             <select id="form-checkout__identificationType"></select>
                             <input type="text" id="form-checkout__identificationNumber" />
                             <input type="email" id="form-checkout__cardholderEmail" />
-                            <input type="hidden" id="deviceId"/>
-                            <button type="submit" id="form-checkout__submit">Pagar</button>
+                            <input type="hidden" id="deviceId" />
+                            <button type="submit" id="form-checkout__submit">Pagarr</button>
                             <progress value="0" className="progress-bar">Carregando...</progress>
                         </form>
                     </div>
                 </div>
             </div>
+
+            {/* Script de segurança do Mercado Pago */}
+            <Script src="https://www.mercadopago.com/v2/security.js" strategy="afterInteractive" />
         </div>
     );
 }
