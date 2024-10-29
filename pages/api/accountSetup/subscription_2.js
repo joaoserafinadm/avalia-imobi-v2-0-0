@@ -17,18 +17,7 @@ const authenticated = fn => async (req, res) => {
 export default authenticated(async (req, res) => {
 
     if (req.method === "POST") {
-        const {
-            token,
-            issuer_id,
-            payment_method_id,
-            transaction_amount,
-            installments,
-            description,
-            payer,
-            deviceId,
-            external_reference,
-            company_id
-        } = req.body
+        console.log("req.body.", req.body)
 
         const client = new MercadoPagoConfig({
             accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN
@@ -36,19 +25,19 @@ export default authenticated(async (req, res) => {
         const payment = new PreApproval(client);
 
         const body = {
-            card_token_id: token,
-            payment_method_id: payment_method_id,
-            payer_email: 'joaoserafin.adm@gmail.com', //TESTE
+            card_token_id: req.body.token,
+            payment_method_id: req.body.payment_method_id,
+            payer_email: 'joaoserafin.adm@gmail.com',
             reason: 'Assinatura Avalia Imobi',
             auto_recurring: {
                 frequency: 1,
                 frequency_type: 'months', // Frequência mensal
                 transaction_amount: 10,
                 currency_id: "BRL", // Moeda
-                // start_date: startDate.toISOString(), 
+                // start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
             },
             back_url: 'https://avaliaimobi.com.br',
-            external_reference: external_reference, //TESTE
+            external_reference: "YG-1234",
             status: "authorized", // Definindo o status como autorizado
 
         };
@@ -56,11 +45,11 @@ export default authenticated(async (req, res) => {
         // Step 6: Make the request with custom headers
         const requestOptions = {
             headers: {
-                'X-meli-session-id': deviceId, // Custom header for device ID
+                'X-meli-session-id': req.body.deviceId, // Custom header for device ID
                 'Content-Type': 'application/json', // Make sure to set the Content-Type header as well
                 'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
-                // "Idempotency-Key": uuidv4(), // Adding idempotency key if needed
             }
+            // idempotencyKey: uuidv4(), // Adding idempotency key if needed
         };
 
         try {
@@ -68,72 +57,11 @@ export default authenticated(async (req, res) => {
                 body,
                 requestOptions // Pass the options with headers
             });
-
-            // const subscriptionResponse = await fetch(`https://api.mercadopago.com/preapproval/${response.data.id}`, {
-            //     method: 'GET',
-            //     headers: {
-            //         'X-meli-session-id': deviceId, // Custom header for device ID
-            //         'Content-Type': 'application/json', // Make sure to set the Content-Type header as well
-            //         'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
-            //         "Idempotency-Key": uuidv4(), // Adding idempotency key if needed
-            //     }
-            // })
-
             res.status(200).json({ message: 'Payment created successfully', data: response });
-
-
-            // if (!subscriptionData?.id) {
-            //     return res.status(400).json({ message: "Error creating subscription", details: response })
-            // } else {
-
-
-            //     const data = {
-            //         // user_id,
-            //         cardToken: token,
-            //         // last4,
-            //         // cardholderName,
-            //         // email,
-            //         subscription_id: response, // ID da assinatura
-            //         // customer_status: subscriptionData.status,
-            //         // paymentMethod_id: subscriptionData.payment_method_id,
-            //         // amount: 79.90,
-            //         // usersCount: 1,
-            //         // amountPerUser: 0,
-            //         // dateCreated: new Date(),
-            //         // dateUpdated: new Date()
-            //     };
-
-
-            //     const db = await connect();
-
-            //     const DBresponse = await db.collection('companies').updateOne(
-            //         { _id: ObjectId("67142d17e50f180bbe8a1162") },
-            //         {
-            //             $set: {
-            //                 "active": true,
-            //                 "errorStatus": false,
-            //                 "dateLimit": false,
-            //                 "paymentData": data
-            //             }
-            //         }
-            //     );
-
-
-            //     res.status(200).json({ message: 'Payment created successfully', data: response });
-            // }
-
         } catch (error) {
             console.error('Payment Error:', error);
             res.status(500).json({ message: 'Payment failed', error });
         }
-
-    } else if (req.method === "GET") {
-
-        const { response } = req.query
-
-        res.status(200).json({ response })
-
-
 
     }
 });
@@ -159,7 +87,7 @@ export default authenticated(async (req, res) => {
 // export default authenticated(async (req, res) => {
 
 //     if (req.method === "POST") {
-//         console.log("", req.body)
+//         console.log("req.body.", req.body)
 
 //         const client = new MercadoPagoConfig({
 //             accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN
@@ -167,10 +95,10 @@ export default authenticated(async (req, res) => {
 //         const payment = new Payment(client);
 
 //         const body = {
-//             token: token,
+//             token: req.body.token,
 //             transaction_amount: 12.34,
 //             description: 'Payment description',
-//             payment_method_id: payment_method_id,
+//             payment_method_id: req.body.payment_method_id,
 //             payer: {
 //                 email: 'joaoserafin.adm@gmail.com'
 //             },
@@ -182,7 +110,7 @@ export default authenticated(async (req, res) => {
 //         // Step 6: Make the request with custom headers
 //         const requestOptions = {
 //             headers: {
-//                 'X-meli-session-id': deviceId, // Custom header for device ID
+//                 'X-meli-session-id': req.body.deviceId, // Custom header for device ID
 //                 'Content-Type': 'application/json', // Make sure to set the Content-Type header as well
 //                 'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
 //             }
