@@ -23,6 +23,7 @@ export default function CreditCardEditModal(props) {
             const cardForm = mp.cardForm({
                 amount: "10",
                 iframe: true,
+                external_reference: '123',
                 form: {
                     id: "form-checkout",
                     cardNumber: {
@@ -63,7 +64,8 @@ export default function CreditCardEditModal(props) {
                     },
                     deviceId: {
                         id: "deviceId", // Campo escondido para o device ID
-                    }
+                    },
+
                 },
                 callbacks: {
                     onFormMounted: error => {
@@ -77,7 +79,6 @@ export default function CreditCardEditModal(props) {
                             paymentMethodId: payment_method_id,
                             issuerId: issuer_id,
                             cardholderEmail: email,
-                            externalReference: external_reference,
                             amount,
                             token,
                             installments,
@@ -85,7 +86,7 @@ export default function CreditCardEditModal(props) {
                             identificationType
                         } = cardForm.getCardFormData();
 
-                        console.log("Form submitted", cardForm.getCardFormData(), cardForm, deviceId);
+                        console.log("Form submitted", cardForm.getCardFormData(), cardForm, external_reference);
 
                         axios.post('/api/accountSetup/subscription_2', {
                             token,

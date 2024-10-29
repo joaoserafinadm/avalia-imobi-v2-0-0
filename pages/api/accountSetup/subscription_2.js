@@ -37,7 +37,7 @@ export default authenticated(async (req, res) => {
                 // start_date: startDate.toISOString(), // Incluindo a data de início para evitar o problema de fuso horário
             },
             back_url: 'https://avaliaimobi.com.br',
-            external_reference: req.body.external_reference,
+            external_reference: "YG-1234",
             status: "authorized", // Definindo o status como autorizado
 
         };
@@ -48,8 +48,8 @@ export default authenticated(async (req, res) => {
                 'X-meli-session-id': req.body.deviceId, // Custom header for device ID
                 'Content-Type': 'application/json', // Make sure to set the Content-Type header as well
                 'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+                "Idempotency-Key": uuidv4(), // Adding idempotency key if needed
             }
-            // idempotencyKey: uuidv4(), // Adding idempotency key if needed
         };
 
         try {
@@ -57,7 +57,22 @@ export default authenticated(async (req, res) => {
                 body,
                 requestOptions // Pass the options with headers
             });
-            res.status(200).json({ message: 'Payment created successfully', data: response });
+
+            const subscriptionResponse = await fetch(`https://api.mercadopago.com/preapproval/${response.data.id}`, {
+                method: 'GET',
+                headers: {
+                    'X-meli-session-id': req.body.deviceId, // Custom header for device ID
+                    'Content-Type': 'application/json', // Make sure to set the Content-Type header as well
+                    'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+                    "Idempotency-Key": uuidv4(), // Adding idempotency key if needed
+                }
+            })
+
+
+            console.log("subscriptionResponse", subscriptionResponse)
+
+
+            res.status(200).json({ message: 'Payment created successfully', data: subscriptionResponse });
         } catch (error) {
             console.error('Payment Error:', error);
             res.status(500).json({ message: 'Payment failed', error });
