@@ -7,8 +7,7 @@ export default authenticated(async (req, res) => {
             accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN
         });
         const payment = new PreApproval(client);
-
-        const externalReference = uuidv4(); // Gerando um identificador único para cada pagamento
+        // Gerando um identificador único para cada pagamento
 
         const body = {
             card_token_id: req.body.token,
@@ -22,7 +21,7 @@ export default authenticated(async (req, res) => {
                 currency_id: "BRL", // Moeda
             },
             back_url: 'https://avaliaimobi.com.br',
-            external_reference: externalReference, // Utilizando o identificador gerado
+            external_reference: req.body.externalReference, // Utilizando o identificador gerado
             status: "authorized", // Definindo o status como autorizado
         };
 

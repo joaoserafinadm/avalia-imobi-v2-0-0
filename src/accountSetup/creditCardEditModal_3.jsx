@@ -16,6 +16,8 @@ export default function CreditCardEditModal(props) {
         if (token.sub) {
             const mp = new window.MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
 
+            const external_reference = token.company_id
+
             const cardForm = mp.cardForm({
                 amount: "10",
                 iframe: true,
@@ -100,6 +102,7 @@ export default function CreditCardEditModal(props) {
                                 last_name: cardholderName?.split(" ")[cardholderName?.split(" ").length - 1],
                             },
                             deviceId,
+                            external_reference,
                             company_id: token.company_id
                         }, {
                             headers: {
