@@ -103,6 +103,9 @@ export default authenticated(async (req, res) => {
                     // dateUpdated: new Date()
                 };
 
+
+                const db = await connect();
+
                 const DBresponse = await db.collection('companies').updateOne(
                     { _id: ObjectId("67142d17e50f180bbe8a1162") },
                     {
