@@ -161,7 +161,7 @@ export default function CreditCardEditModal(props) {
                             <select id="form-checkout__identificationType"></select>
                             <input type="text" id="form-checkout__identificationNumber" />
                             <input type="email" id="form-checkout__cardholderEmail" />
-
+                            <input type="hidden" id="deviceId"/>
                             <button type="submit" id="form-checkout__submit">Pagarr</button>
                             <progress value="0" class="progress-bar">Carregando...</progress>
                         </form>
