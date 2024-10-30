@@ -1,53 +1,52 @@
 import { buffer } from 'micro';
 import Stripe from 'stripe';
+import { connect } from '../../../utils/db'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const config = {
-  api: {
-    bodyParser: false,
-  },
+    api: {
+        bodyParser: false, // Desativa o bodyParser para trabalhar com raw body
+    },
 };
 
-export default async function handler(req, res) {
-  const buf = await buffer(req);
-  const sig = req.headers['stripe-signature'];
+const webhookHandler = async (req, res) => {
+    if (req.method === 'POST') {
+        const buf = await buffer(req);
+        const sig = req.headers['stripe-signature'];
 
-  let event;
+        let event;
 
-  try {
-    // Verifique a assinatura do webhook para garantir que veio do Stripe
-    event = stripe.webhooks.constructEvent(buf, sig, process.env.STRIPE_WEBHOOK_SECRET);
-  } catch (err) {
-    res.status(400).send(`Webhook Error: ${err.message}`);
-    return;
-  }
+        try {
+            event = stripe.webhooks.constructEvent(buf, sig, process.env.STRIPE_WEBHOOK_SECRET);
+        } catch (err) {
+            console.error('Webhook signature verification failed.', err.message);
+            return res.status(400).send(`Webhook Error: ${err.message}`);
+        }
 
-  // Processando eventos específicos
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
+        // Processar o evento
+        if (event.type === 'invoice.payment_succeeded') {
+            const invoice = event.data.object;
+            const subscriptionId = invoice.subscription;
 
-    // Verifique se o pagamento foi bem-sucedido
-    const paymentStatus = session.payment_status;
+            
+            console.log(`Payment for subscription ${subscriptionId} was successful.`);
+        }
 
-    if (paymentStatus === 'paid') {
-      // O pagamento foi aprovado, você pode atualizar seu banco de dados
-      const customerId = session.customer;
-      const subscriptionId = session.subscription;
+        if (event.type === 'invoice.payment_failed') {
+            const invoice = event.data.object;
+            const subscriptionId = invoice.subscription;
 
-      // Atualize o status da assinatura no seu banco de dados
-      // Exemplo: await updateSubscriptionStatus(customerId, subscriptionId, 'active');
+            // Atualize o status da assinatura para "falha"
+            // Exemplo: await updateSubscriptionStatus(subscriptionId, 'payment_failed');
+            console.log(`Payment for subscription ${subscriptionId} failed.`);
+        }
 
-      console.log('Pagamento aprovado para o cliente:', customerId);
+        res.status(200).json({ received: true });
+    } else {
+        res.setHeader('Allow', 'POST');
+        res.status(405).end('Method Not Allowed');
     }
-  } else if (event.type === 'invoice.payment_failed') {
-    const invoice = event.data.object;
-    const customerId = invoice.customer;
+};
 
-    // O pagamento falhou, você pode registrar o erro no seu banco de dados
-    console.log('Pagamento falhou para o cliente:', customerId);
-  }
-
-  // Retorne uma resposta 200 para o Stripe confirmar que o evento foi recebido com sucesso
-  res.status(200).json({event});
-}
+export default webhookHandler;
