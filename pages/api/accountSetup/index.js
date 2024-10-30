@@ -5,7 +5,9 @@ import cookie from 'cookie'
 import baseUrl from '../../../utils/baseUrl'
 import e from 'express'
 import axios from 'axios'
+import Stripe from 'stripe';
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const authenticated = fn => async (req, res) => {
     verify(req.cookies.auth, process.env.JWT_SECRET, async function (err, decoded) {
@@ -49,18 +51,28 @@ export default authenticated(async (req, res) => {
             )
 
             let paymentHistoryResponse
+            let customer;
 
             if (companyExist?.paymentData) {
-                paymentHistoryResponse = await fetch(`https://api.mercadopago.com/preapproval/search?q=${companyExist?.paymentData?.subscription_id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    }
+                // paymentHistoryResponse = await fetch(`https://api.mercadopago.com/preapproval/search?q=${companyExist?.paymentData?.subscription_id}`, {
+                //     method: 'GET',
+                //     headers: {
+                //         'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+                //         'Content-Type': 'application/json'
+                //     }
+                // });
+
+
+                const existingCustomers = await stripe.customers.list({
+                    email: companyExist.email ? companyExist.email : userExist.email,
+                    limit: 1,
                 });
+
+                console.log("existingCustomers", existingCustomers)
+                customer = existingCustomers.data[0];
             }
 
-            const subscriptionData = await paymentHistoryResponse?.json();
+            const subscriptionData = customer || '';
 
             console.log(subscriptionData)
 

@@ -1,13 +1,45 @@
 import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { loadStripe } from '@stripe/stripe-js';
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken';
 
 
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function NoSubscriptionPage(props) {
 
+    const token = jwt.decode(Cookie.get('auth'))
 
 
+    const handleStripe = async () => {
+        const stripe = await stripePromise;
+
+        // Faz a chamada à API para criar a sessão de checkout
+        const response = await fetch('/api/accountSetup/stripe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                company_id: token.company_id,
+                user_id: token.sub
+            })
+        });
+        const session = await response.json();
+
+        // Redireciona para o checkout do Stripe
+        const result = await stripe.redirectToCheckout({
+            sessionId: session.sessionId,
+        });
+
+        if (result.error) {
+            // Exibe erro se algo der errado
+            console.error(result.error.message);
+        }
+    };
 
     return (
         <div className="row">
@@ -17,8 +49,7 @@ export default function NoSubscriptionPage(props) {
                 </div>
             </div>
             <div className="col-12 d-flex justify-content-center">
-                {/* <button className="btn btn-orange pulse" > */}
-                    <button className="btn btn-orange pulse" data-bs-toggle="modal" data-bs-target="#creditCardEditModal">
+                <button className="btn btn-orange pulse" onClick={handleStripe}>
                     Assinar o Avalia Imobi!
                 </button>
             </div>
@@ -83,10 +114,6 @@ export default function NoSubscriptionPage(props) {
                     Fique à vontade para ajustar seu plano conforme as necessidades da sua equipe!
                 </span>
             </div>
-
         </div>
-    )
-
-
-
+    );
 }
