@@ -11,7 +11,7 @@ export const config = {
 };
 
 const webhookHandler = async (req, res) => {
-    if (req.method === 'POST') {
+    // if (req.method === 'POST') {
         const buf = await buffer(req);
         const sig = req.headers['stripe-signature'];
 
@@ -43,10 +43,10 @@ const webhookHandler = async (req, res) => {
         }
 
         res.status(200).json({ received: true });
-    } else {
-        res.setHeader('Allow', 'POST');
-        res.status(405).end('Method Not Allowed');
-    }
+    // } else {
+    //     res.setHeader('Allow', 'POST');
+    //     res.status(405).end('Method Not Allowed');
+    // }
 };
 
 export default webhookHandler;
