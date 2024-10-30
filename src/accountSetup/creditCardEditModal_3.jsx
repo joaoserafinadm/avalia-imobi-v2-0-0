@@ -146,7 +146,7 @@ export default function CreditCardEditModal(props) {
         console.log("subsId", subsId)
 
         await axios.get('/api/accountSetup/subscription_2', {
-            params: subsId
+            params: { data: 'c67491020000492f9bfbf06b3092d603' }
         })
     }
 
