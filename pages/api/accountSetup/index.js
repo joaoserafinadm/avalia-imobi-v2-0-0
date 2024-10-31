@@ -92,7 +92,7 @@ export default authenticated(async (req, res) => {
                         "paymentData.subscriptionId": subscriptionData.subscription,
                         "paymentData.subscriptionValue":  subscriptionData.value
                     }
-                    }
+                    })
             }
 
 
