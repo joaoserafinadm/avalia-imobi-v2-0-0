@@ -102,7 +102,7 @@ export default authenticated(async (req, res) => {
                 customer: customer.id,
                 line_items: [
                   {
-                    price: 'price_1QFpnoAtBT5rPxqpGUp7j2qc', // ID do preço que você já criou
+                    price: 'price_1QG0jUAtBT5rPxqpQCXP2ahk', // ID do preço que você já criou
                     quantity: 1,
                   },
                 ],
