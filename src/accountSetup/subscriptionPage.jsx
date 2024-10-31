@@ -120,7 +120,7 @@ export default function SubscriptionPage(props) {
                         <div className="col-12  text-bold">
                             <div className="card">
                                 <div className="card-body">
-                                    {companyData?.paymentData?.invoices.map((elem, index) => (
+                                    {companyData?.paymentData?.invoices?.map((elem, index) => (
                                         <div className="row" key={index}>
                                             <div className="col-4 ">
                                                 {formatDate(elem.date)}
