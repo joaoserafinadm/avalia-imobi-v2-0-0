@@ -59,8 +59,8 @@ export default function ChargeAdressModal(props) {
                     <div className="modal-body">
                         <div className="row">
                             <div className="col-12">
-                                <label className="small fw-bold" htmlFor="email">E-mail de cobrança</label>
-                                <input
+                                <label className="small fw-bold">E-mail de cobrança</label>
+                                <input disabled
                                     type="text"
                                     className="form-control"
                                     id="email"

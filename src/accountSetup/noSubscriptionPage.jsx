@@ -4,6 +4,7 @@ import { useState } from "react";
 import { loadStripe } from '@stripe/stripe-js';
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken';
+import { SpinnerSM } from "../components/loading/Spinners";
 
 
 
@@ -13,10 +14,12 @@ export default function NoSubscriptionPage(props) {
 
     const token = jwt.decode(Cookie.get('auth'))
 
+    const [loading, setLoading] = useState(false);
+
 
     const handleStripe = async () => {
+        setLoading(true)
         const stripe = await stripePromise;
-
         // Faz a chamada à API para criar a sessão de checkout
         const response = await fetch('/api/accountSetup/stripe', {
             method: 'POST',
@@ -39,6 +42,8 @@ export default function NoSubscriptionPage(props) {
             // Exibe erro se algo der errado
             console.error(result.error.message);
         }
+
+        setLoading(false)
     };
 
     return (
@@ -49,9 +54,16 @@ export default function NoSubscriptionPage(props) {
                 </div>
             </div>
             <div className="col-12 d-flex justify-content-center">
-                <button className="btn btn-orange pulse" onClick={handleStripe}>
-                    Assinar o Avalia Imobi!
-                </button>
+                {loading ?
+                    <button className="btn btn-orange" disabled >
+                        Acessando checkout... <SpinnerSM className="ms-1" />
+                    </button>
+                    :
+                    <button className="btn btn-orange pulse" onClick={handleStripe} >
+                        Assinar o Avalia Imobi!
+                    </button>
+
+                }
             </div>
             <div className="col-12 mt-3">
                 <span className="fw-bold text-orange">Plano de assinatura</span>

@@ -139,9 +139,9 @@ export default function AccountSetup() {
                                     </div>
 
                                     <div className="carousel-item">
-                                        {companyData?.paymentData ?
+                                        {companyData?.paymentData?.subscriptionId ?
                                             // <SubscriptionPage companyData={companyData} paymentHistory={paymentHistory} />
-                                            <NoSubscriptionPage companyData={companyData} />
+                                            <SubscriptionPage companyData={companyData} />
                                             :
                                             <NoSubscriptionPage companyData={companyData} />
                                         }

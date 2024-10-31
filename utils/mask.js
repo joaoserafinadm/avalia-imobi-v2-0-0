@@ -105,3 +105,28 @@ export function maskCnpj(value) {
     return cleanedValue;
 }
 
+
+export function formatDate(date) {
+
+    const dateFormat = new Date(date)
+    const day = String(dateFormat.getDate()).padStart(2, '0');
+    const month = String(dateFormat.getMonth() + 1).padStart(2, '0'); // Mês em JavaScript começa em 0, por isso adicionamos 1
+    const year = String(dateFormat.getFullYear()).slice(-2); // Pega apenas os dois últimos dígitos do ano
+
+    return `${day}/${month}/${year}`;
+}
+
+
+export function maskNumberMoney(value) {
+    if (value) {
+
+        const inputNumero = value
+        const formatoMonetario = inputNumero.toLocaleString('pt-BR', {
+            style: 'decimal',
+            // currency: 'BRL',
+        });
+        return formatoMonetario;
+    } else {
+        return ''
+    }
+}

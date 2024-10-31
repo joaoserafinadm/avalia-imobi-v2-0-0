@@ -4,18 +4,52 @@ import Link from "next/link";
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken';
 import { isAdmin } from "../../utils/permissions";
+import { formatDate, maskMoney, maskNumberMoney } from "../../utils/mask";
+import { loadStripe } from '@stripe/stripe-js';
+import { useState } from "react";
+import { SpinnerSM } from "../components/loading/Spinners";
 
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 
 export default function SubscriptionPage(props) {
 
-
-    const { companyData, paymentHistory } = props
-
     const token = jwt.decode(Cookie.get('auth'))
 
-    console.log("companyData", companyData?.paymentData)
+    const { companyData } = props
 
+
+    const [loading, setLoading] = useState(false)
+
+    const handleCustomerSession = async () => {
+
+        setLoading(true)
+
+        // const stripe = await stripePromise;
+
+
+        const response = await fetch('/api/accountSetup/customerSession', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                company_id: token.company_id,
+                user_id: token.sub
+            })
+        });
+
+        const data = await response.json();
+        if (data.url) {
+            window.location.href = data.url; // Redireciona o usuário para o Stripe Customer Portal
+        } else {
+            console.error('Erro ao tentar abrir o portal de gerenciamento:', data.message);
+        }
+
+        setLoading(false)
+
+    }
 
 
 
@@ -29,28 +63,12 @@ export default function SubscriptionPage(props) {
                 </div>
                 <div className="col-12 col-md-9">
                     <div className="row border-bottom py-4">
-                        <div className="col-12 col-md-3 text-bold">
-                            Informações do cartão
-                        </div>
-                        <div className="col-12 col-md-9 mt-2 ">
-                            <div className="card">
-                                <div className="card-body">
-                                    <div className="row fw-bold">
-                                        <div className="col-12">
-                                            {companyData?.paymentData?.cardholderName}
-                                        </div>
-                                        <div className="col-12">
-                                            &#x2022;&#x2022;&#x2022;&#x2022; &#x2022;&#x2022;&#x2022;&#x2022; &#x2022;&#x2022;&#x2022;&#x2022; {companyData?.paymentData?.last4}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-12 mt-2 d-flex justify-content-end ">
-                                <button className="btn btn-outline-orange">
-                                    Alterar cartão
-                                </button>
-
-                            </div>
+                        <div className="col-12">
+                            {loading ?
+                                <button className="btn btn-outline-orange" disabled >Acessando portal... <SpinnerSM className="ms-1" /></button>
+                                :
+                                <button className="btn btn-outline-orange" onClick={handleCustomerSession}>Gerenciar assinatura</button>
+                            }
                         </div>
                     </div>
                     <div className="row border-bottom py-4">
@@ -60,7 +78,7 @@ export default function SubscriptionPage(props) {
                         <div className="col-12 col-md-9 mt-2 d-flex justify-content-between small">
                             <div>
                                 <p>
-                                    Assinatura mensal: R$79,90
+                                    Valor da assinatura: R$79,90
                                 </p>
                                 <p>
                                     Número de usuários: {companyData?.paymentData?.usersCount}
@@ -69,7 +87,7 @@ export default function SubscriptionPage(props) {
                                     Adicional por usuário: {companyData?.paymentData?.amountPerUser}
                                 </p>
                             </div>
-                            <span type="button" className="text-orange" data-bs-toggle="modal" data-bs-target="#chargeAdressModal"><FontAwesomeIcon icon={faPencil} className="editIcon" /></span>
+                            {/* <span type="button" className="text-orange" data-bs-toggle="modal" data-bs-target="#chargeAdressModal"><FontAwesomeIcon icon={faPencil} className="editIcon" /></span> */}
 
                         </div>
                     </div>
@@ -102,16 +120,18 @@ export default function SubscriptionPage(props) {
                         <div className="col-12  text-bold">
                             <div className="card">
                                 <div className="card-body">
-                                    {paymentHistory.map((elem, index) => (
+                                    {companyData?.paymentData?.invoices.map((elem, index) => (
                                         <div className="row" key={index}>
-                                            <div className="col-12 col-md-3">
-                                                {elem.date}
+                                            <div className="col-4 ">
+                                                {formatDate(elem.date)}
                                             </div>
-                                            <div className="col-12 col-md-3">
-                                                R$ {elem.value}
+                                            <div className="col-4 text-center">
+                                                R$ {maskNumberMoney(((+elem.total / 100).toFixed(2)).toString())}
                                             </div>
-                                            <div className="col-12 col-md-3">
-                                                R$ {elem.status}
+                                            <div className="col-4 d-flex justify-content-end">
+                                                <a className="btn btn-sm btn-outline-secondary" href={elem.url} target="_blank">
+                                                    Recibo
+                                                </a>
                                             </div>
                                         </div>
                                     ))}
@@ -120,12 +140,12 @@ export default function SubscriptionPage(props) {
                         </div>
                     </div>
 
-                    <hr />
+                    {/* <hr />
                     <div className="row mt-2">
                         <div className="col-12 d-flex justify-content-end">
-                            <button data-bs-toggle="modal" data-bs-target="#exitAccountModal" className="btn btn-sm btn-outline-danger">Sair da conta</button>
+                            <button data-bs-toggle="modal" data-bs-target="#exitAccountModal" className="btn btn-sm btn-outline-danger">Cancelar assinatura</button>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

@@ -75,6 +75,7 @@ export default authenticated(async (req, res) => {
                     {
                         $set: {
                             'paymentData.customerId': customer.id,
+                            'paymentData.email': companyExist.email ? companyExist.email : userExist.email,
                         },
                     }
                 );
@@ -100,21 +101,16 @@ export default authenticated(async (req, res) => {
                 mode: 'subscription',
                 customer: customer.id,
                 line_items: [
-                    {
-                        price_data: {
-                            currency: 'brl',
-                            product_data: { name: 'Assinatura Avalia Imobi' },
-                            unit_amount: 7990, // R$79,90 em centavos
-                            recurring: { interval: 'month' },
-                        },
-                        quantity: 1,
-                    },
+                  {
+                    price: 'price_1QFpnoAtBT5rPxqpGUp7j2qc', // ID do preço que você já criou
+                    quantity: 1,
+                  },
                 ],
                 metadata: { company_id: company_id },
                 success_url: `${req.headers.origin}/accountSetup`,
                 cancel_url: `${req.headers.origin}/accountSetup`,
                 locale: 'pt-BR',
-            });
+              });
 
             if (!session.url) {
                 return res.status(500).json({ error: 'Error creating Stripe checkout session' });
@@ -125,6 +121,7 @@ export default authenticated(async (req, res) => {
                 {
                     $set: {
                         'paymentData.sessionId': session.id,
+                        'paymentData.usersCount': 1,
                     },
                 }
             );
