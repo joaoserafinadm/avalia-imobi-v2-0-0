@@ -84,16 +84,16 @@ export default authenticated(async (req, res) => {
                 }
             })
 
-            if(!companyExist.paymentData?.subscriptionId) {
-
-                const companyUpdate = await db.collection('companies').updateOne(
-                    { _id: ObjectId(company_id) },
-                    { $set: {
-                        "paymentData.subscriptionId": subscriptionData.subscription,
-                        "paymentData.subscriptionValue":  subscriptionData.value
-                    }
-                    })
-            }
+//            if(!companyExist.paymentData?.subscriptionId) {
+//
+//                const companyUpdate = await db.collection('companies').updateOne(
+//                    { _id: ObjectId(company_id) },
+//                    { $set: {
+//                        "paymentData.subscriptionId": subscriptionData.subscription,
+//                        "paymentData.subscriptionValue":  subscriptionData.value
+//                    }
+//                    })
+//            }
 
 
             const userExist = await db.collection('users').findOne(
