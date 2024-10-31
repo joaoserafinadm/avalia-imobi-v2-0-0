@@ -125,7 +125,7 @@ export default authenticated(async (req, res) => {
                 res.status(400).json({ message: "Company or user does not exist" })
             } else {
 
-                res.status(200).json({ company: companyExist, user: userExist, paymentHistory: [], paymentMethods: paymentMethods })
+                res.status(200).json({ company: companyExist, user: userExist, paymentHistory: [], paymentMethods: [] })
 
 
 
