@@ -28,7 +28,7 @@ export default function MenuBar(props) {
         '/clientsManagement',
         '/tutorials',
         '/sac',
-        '/passwordChange',
+        // '/passwordChange',
         '/accountSetup',
         '/'
     ]
