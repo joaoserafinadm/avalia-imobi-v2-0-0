@@ -63,18 +63,13 @@ export default authenticated(async (req, res) => {
                 // });
 
 
-                const existingCustomers = await stripe.customers.list({
-                    email: companyExist.email ? companyExist.email : userExist.email,
-                    limit: 1,
-                });
-
-                console.log("existingCustomers", existingCustomers)
-                customer = existingCustomers.data[0];
+                const existingCustomer = await stripe.customers.retrieve(companyExist?.paymentData?.customerId);
+                customer = existingCustomer?.data[0];
             }
 
             const subscriptionData = customer || '';
 
-            console.log(subscriptionData)
+            res.status(200).json(subscriptionData)
 
             const history = subscriptionData?.results?.map(elem => {
                 return {
@@ -84,16 +79,17 @@ export default authenticated(async (req, res) => {
                 }
             })
 
-//            if(!companyExist.paymentData?.subscriptionId) {
-//
-//                const companyUpdate = await db.collection('companies').updateOne(
-//                    { _id: ObjectId(company_id) },
-//                    { $set: {
-//                        "paymentData.subscriptionId": subscriptionData.subscription,
-//                        "paymentData.subscriptionValue":  subscriptionData.value
-//                    }
-//                    })
-//            }
+            if (!companyExist.paymentData?.subscriptionId) {
+
+                const companyUpdate = await db.collection('companies').updateOne(
+                    { _id: ObjectId(company_id) },
+                    {
+                        $set: {
+                            "paymentData.subscriptionId": subscriptionData.subscription
+                            // "paymentData.subscriptionValue": subscriptionData.value
+                        }
+                    })
+            }
 
 
             const userExist = await db.collection('users').findOne(
@@ -112,14 +108,14 @@ export default authenticated(async (req, res) => {
                 }
             )
 
-//            const paymentMethodResponse = await axios.get('https://api.mercadopago.com/v1/payment_methods/search', {
-  //              headers: {
-    //                'Content-Type': 'application/json', // Inclua o content-type se necessário
-      //              Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`, // Substitua por sua variável de ambiente ou token direto
-        //        }
-          //  });
+            //            const paymentMethodResponse = await axios.get('https://api.mercadopago.com/v1/payment_methods/search', {
+            //              headers: {
+            //                'Content-Type': 'application/json', // Inclua o content-type se necessário
+            //              Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`, // Substitua por sua variável de ambiente ou token direto
+            //        }
+            //  });
 
-           // const paymentMethods = paymentMethodResponse.data.results
+            // const paymentMethods = paymentMethodResponse.data.results
 
             if (!companyExist || !userExist) {
                 res.status(400).json({ message: "Company or user does not exist" })
