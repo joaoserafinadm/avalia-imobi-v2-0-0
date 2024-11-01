@@ -53,44 +53,44 @@ export default authenticated(async (req, res) => {
             let paymentHistoryResponse
             let customer;
 
-            if (companyExist?.paymentData) {
-                // paymentHistoryResponse = await fetch(`https://api.mercadopago.com/preapproval/search?q=${companyExist?.paymentData?.subscription_id}`, {
-                //     method: 'GET',
-                //     headers: {
-                //         'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
-                //         'Content-Type': 'application/json'
-                //     }
-                // });
+            // if (companyExist?.paymentData) {
+            //     // paymentHistoryResponse = await fetch(`https://api.mercadopago.com/preapproval/search?q=${companyExist?.paymentData?.subscription_id}`, {
+            //     //     method: 'GET',
+            //     //     headers: {
+            //     //         'Authorization': `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+            //     //         'Content-Type': 'application/json'
+            //     //     }
+            //     // });
 
 
-                const existingCustomer = await stripe.customers.retrieve(companyExist?.paymentData?.customerId);
-                res.status(200).json({data: existingCustomer})
-                console.log('existingCustomer', existingCustomer)
-                // customer = existingCustomer?.data[0];
-            }
+            //     const existingCustomer = await stripe.customers.retrieve(companyExist?.paymentData?.customerId);
+            //     res.status(200).json({data: existingCustomer})
+            //     console.log('existingCustomer', existingCustomer)
+            //     // customer = existingCustomer?.data[0];
+            // }
 
-            const subscriptionData = customer || '';
+            // const subscriptionData = customer || '';
 
 
-            const history = subscriptionData?.results?.map(elem => {
-                return {
-                    date: elem.date_created,
-                    status: elem.status,
-                    summarized: elem.summarized
-                }
-            })
+            // const history = subscriptionData?.results?.map(elem => {
+            //     return {
+            //         date: elem.date_created,
+            //         status: elem.status,
+            //         summarized: elem.summarized
+            //     }
+            // })
 
-            if (!companyExist.paymentData?.subscriptionId) {
+            // if (!companyExist.paymentData?.subscriptionId) {
 
-                const companyUpdate = await db.collection('companies').updateOne(
-                    { _id: ObjectId(company_id) },
-                    {
-                        $set: {
-                            "paymentData.subscriptionId": subscriptionData.subscription
-                            // "paymentData.subscriptionValue": subscriptionData.value
-                        }
-                    })
-            }
+            //     const companyUpdate = await db.collection('companies').updateOne(
+            //         { _id: ObjectId(company_id) },
+            //         {
+            //             $set: {
+            //                 "paymentData.subscriptionId": subscriptionData.subscription
+            //                 // "paymentData.subscriptionValue": subscriptionData.value
+            //             }
+            //         })
+            // }
 
 
             const userExist = await db.collection('users').findOne(

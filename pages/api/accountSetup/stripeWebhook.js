@@ -68,8 +68,8 @@ const webhookHandler = async (req, res) => {
                         $set: {
                             "paymentData.status": status,
                             "paymentData.subscriptionId": subscriptionId,
-                            "paymentData.invoices": updatedInvoices,
-                            "paymentData.subscriptionValue": subscriptionValue,
+                            // "paymentData.invoices": updatedInvoices,
+                            // "paymentData.subscriptionValue": subscriptionValue,
                             "active": true,
                             "errorStatus": false,
                             "dateLimit": false
