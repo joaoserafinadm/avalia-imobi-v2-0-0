@@ -64,12 +64,13 @@ export default authenticated(async (req, res) => {
 
 
                 const existingCustomer = await stripe.customers.retrieve(companyExist?.paymentData?.customerId);
-                customer = existingCustomer?.data[0];
+                res.status(200).json({data: existingCustomer})
+                console.log('existingCustomer', existingCustomer)
+                // customer = existingCustomer?.data[0];
             }
 
             const subscriptionData = customer || '';
 
-            res.status(200).json(subscriptionData)
 
             const history = subscriptionData?.results?.map(elem => {
                 return {
