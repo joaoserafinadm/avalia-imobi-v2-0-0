@@ -71,7 +71,7 @@ export default function SubscriptionPage(props) {
                             }
                         </div>
                     </div>
-                    <div className="row border-bottom py-4">
+                    {/*<div className="row border-bottom py-4">
                         <div className="col-12 col-md-3 text-bold">
                             Plano
                         </div>
@@ -87,7 +87,7 @@ export default function SubscriptionPage(props) {
                                     Adicional por usuário: {companyData?.paymentData?.amountPerUser}
                                 </p>
                             </div>
-                            {/* <span type="button" className="text-orange" data-bs-toggle="modal" data-bs-target="#chargeAdressModal"><FontAwesomeIcon icon={faPencil} className="editIcon" /></span> */}
+                             <span type="button" className="text-orange" data-bs-toggle="modal" data-bs-target="#chargeAdressModal"><FontAwesomeIcon icon={faPencil} className="editIcon" /></span> 
 
                         </div>
                     </div>
@@ -107,10 +107,10 @@ export default function SubscriptionPage(props) {
                             <span type="button" className="text-orange" data-bs-toggle="modal" data-bs-target="#chargeAdressModal"><FontAwesomeIcon icon={faPencil} className="editIcon" /></span>
 
                         </div>
-                    </div>
+                    </div>*/}
                 </div>
             </div>
-            <div className="row mt-5">
+            {/* <div className="row mt-5">
                 <div className="col-12 col-md-3 pt-3 pb-4">
                     <span className="fs-4 text-bold text-orange" >Faturas</span> <br />
                 </div>
@@ -140,14 +140,14 @@ export default function SubscriptionPage(props) {
                         </div>
                     </div>
 
-                    {/* <hr />
+                     <hr />
                     <div className="row mt-2">
                         <div className="col-12 d-flex justify-content-end">
                             <button data-bs-toggle="modal" data-bs-target="#exitAccountModal" className="btn btn-sm btn-outline-danger">Cancelar assinatura</button>
                         </div>
-                    </div> */}
+                    </div> 
                 </div>
-            </div>
+            </div> */}
         </div>
 
     )
