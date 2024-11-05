@@ -46,6 +46,9 @@ export default function MainLayout({ children }) {
             if (data.data?.errorStatus === 1 && !modal.classList.contains('show')) {
                 showModal('dateLimitModal')
             }
+            if (data.data?.errorStatus === 2 && !modal.classList.contains('show')) {
+                showModal('dateLimitModal')
+            }
         }
 
         if (error) {

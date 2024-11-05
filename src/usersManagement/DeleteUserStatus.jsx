@@ -1,9 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { SpinnerSM } from "../components/loading/Spinners"
 import axios from "axios"
 import baseUrl from "../../utils/baseUrl"
 import { useDispatch, useSelector } from "react-redux"
 import { addAlert } from "../../store/Alerts/Alerts.actions"
+import { maskNumberMoney } from "../../utils/mask"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faRightLong } from "@fortawesome/free-solid-svg-icons"
 
 
 
@@ -12,14 +15,36 @@ export default function DeleteUserStatus(props) {
 
     const user = props.user
     const token = props.token
+    const usersCount = props.usersCount
 
     const dispatch = useDispatch()
     const alertsArray = useSelector(state => state.alerts)
 
+    const [newValue, setNewValue] = useState(0)
+    const [userValue, setUserValue] = useState(0)
 
     const [saveError, setSaveError] = useState('')
 
     const [loadingSave, setLoadingSave] = useState(false)
+
+    useEffect(() => {
+        if (usersCount) paymentCalc()
+    }, [usersCount])
+
+    const paymentCalc = () => {
+
+
+        let valuePerUser = +usersCount <= 5 ? 19.90 : 14.90
+        let tax = +usersCount <= 5 ? 60 : 65
+
+        const newValueResult = valuePerUser * (usersCount + 1) + tax
+
+        setNewValue(newValueResult.toFixed(2))
+
+        setUserValue(valuePerUser.toFixed(2))
+
+
+    }
 
 
     const handleSave = async () => {
@@ -46,7 +71,7 @@ export default function DeleteUserStatus(props) {
             props.handleCloseModal()
         }).then(res => {
 
-            
+
 
             props.dataFunction()
 
@@ -65,7 +90,22 @@ export default function DeleteUserStatus(props) {
                 <div className="row my-4">
                     <div className="col-12 justify-content-center">
                         <span className="bold">Tem certeza que deseja excluir "{user?.firstName} {user?.lastName}"?</span><br />
+                    </div>
+                    <div className="col-12 my-3">
+                        <span className="small fw-bold">
+                            Atualização da assinatura:
+                        </span>
+
+                    </div>
+                    <div className="col-12">
+                        &#x2022; {usersCount} usuários <FontAwesomeIcon icon={faRightLong} className="mx-2" /> {usersCount - 1} usuário{usersCount - 1 === 1 ? '' : 's'}
+                    </div>
+                    <div className="col-12">
+                        &#x2022; <b> {+usersCount - 1}</b> usuários: R$79,90 + ({+usersCount - 1} x R${maskNumberMoney(userValue)}) = <b>R${maskNumberMoney(newValue)}/mês</b>
+                    </div>
+                    <div className="col-12">
                         <small className="text-danger">{saveError}</small>
+
                     </div>
                 </div>
             </div>

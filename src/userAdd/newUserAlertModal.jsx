@@ -1,15 +1,17 @@
 import { faUserGear, faUserTie } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
+import { maskNumberMoney } from "../../utils/mask"
 
 
 
 export default function NewUserAlertModal(props) {
 
-    const { paymentData, handleSave, firstName, lastName, email, userStatus } = props
+    const { paymentData, handleSave, firstName, lastName, email, userStatus, usersCount } = props
 
     console.log("paymentData", paymentData)
 
+    const [subsValue, setSubsValue] = useState(0)
     const [newValue, setNewValue] = useState(0)
     const [userValue, setUserValue] = useState(0)
 
@@ -23,10 +25,13 @@ export default function NewUserAlertModal(props) {
         const usersCount = +paymentData.usersCount
 
         let valuePerUser = +usersCount <= 5 ? 19.90 : 14.90
+        let tax = +usersCount <= 5 ? 60 : 65
+
+        const newValueResult = valuePerUser * (usersCount + 1) + tax
+
+        setNewValue(newValueResult.toFixed(2))
 
         setUserValue(valuePerUser.toFixed(2))
-
-        setNewValue((valuePerUser * usersCount + (+paymentData.subscriptionValue / 100)).toFixed(2))
 
 
     }
@@ -48,7 +53,15 @@ export default function NewUserAlertModal(props) {
                                 <span>Você está prestes a cadastrar um novo usuário na sua conta! </span>
                             </div>
                             <div className="col-12">
-                                <span>Isso irá alterar o valor da sua assinatura mensal de <b className="text-nowrap">R$ {(paymentData.subscriptionValue / 100).toFixed(2)}</b> para <b className="text-nowrap">R$ {newValue}</b> .</span>
+                                {usersCount <= 5 ?
+                                    <>
+                                        <span>Será acrescentado R$ {maskNumberMoney(userValue)} no valor da sua assinatura.</span>
+                                    </>
+                                    :
+                                    <>
+                                        <span>Será acrescentado R${maskNumberMoney(userValue)} no valor da sua assinatura.</span>
+                                    </>
+                                }
                             </div>
                         </div>
                         <div className="row my-3">
@@ -86,9 +99,15 @@ export default function NewUserAlertModal(props) {
                                 </span>
 
                             </div>
-                            <div className="col-12">
-                                &#x2022; <b> {+paymentData.usersCount + 1}</b> usuários: R$79.90 + ({paymentData.usersCount} x R${userValue}) = <b>R${newValue}/mês</b>
+                            <div className="col-12 my-2">
+                                &#x2022; <b> {+paymentData.usersCount + 1}</b> usuários: R$79.90 + ({+paymentData.usersCount} x R${maskNumberMoney(userValue)}) = <b>R${maskNumberMoney(newValue)}/mês</b>
                             </div>
+                            <div className="col-12 my-2">
+                                &#x2022; Será adicionado um valor proporcional na próxima fatura referente ao uso do novo usuário até o final do período de faturamento atual.
+                            </div>
+                            {/* <div className="col-12 my-2">
+                                &#x2022; Para acessar os detalhes da assinatura, vá em: Configurações {'->'} Configuração da conta {'->'} Assinatura
+                            </div> */}
                         </div>
 
                     </div>

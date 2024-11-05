@@ -13,6 +13,7 @@ export default function ViewUserModal(props) {
     const token = jwt.decode(Cookies.get("auth"));
 
     const user = props.userSelected
+    const usersCount = props.usersCount
 
     const [editStatus, setEditStatus] = useState(false)
     const [deleteStatus, setDeleteStatus] = useState(false)
@@ -58,7 +59,7 @@ export default function ViewUserModal(props) {
                             dataFunction={() =>props.dataFunction()} />
                     )}
                     {deleteStatus && (
-                        <DeleteUserStatus user={user} token={token}
+                        <DeleteUserStatus user={user} token={token} usersCount={usersCount}
                             setDeleteStatus={value => setDeleteStatus(value)}
                             handleCloseModal={() => handleCloseModal()}
                             dataFunction={() => props.dataFunction()}/>

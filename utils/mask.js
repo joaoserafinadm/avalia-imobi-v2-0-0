@@ -119,14 +119,20 @@ export function formatDate(date) {
 
 export function maskNumberMoney(value) {
     if (value) {
-
-        const inputNumero = value
-        const formatoMonetario = inputNumero.toLocaleString('pt-BR', {
-            style: 'decimal',
-            // currency: 'BRL',
-        });
-        return formatoMonetario;
+        let BrlNumber = new Intl.NumberFormat("pt-BR", {
+            style: "decimal",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })
+        return BrlNumber.format(value);
     } else {
-        return ''
+        return '';
     }
+}
+
+
+export function maskEmail(value) {
+    return value
+        .replace(/\s/g, '')
+        .toLowerCase()
 }

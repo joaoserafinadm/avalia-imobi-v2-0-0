@@ -17,6 +17,7 @@ import baseUrl from "../utils/baseUrl";
 import { addAlert } from "../store/Alerts/Alerts.actions";
 import { useRouter } from "next/router";
 import NewUserAlertModal from "../src/userAdd/newUserAlertModal";
+import { maskEmail } from "../utils/mask";
 
 
 
@@ -44,10 +45,18 @@ export default function userAdd() {
     const [loadingSave, setLoadingSave] = useState(false)
     const [loadingPage, setLoadingPage] = useState(true)
 
+    const [subscriptionOn, setSubscriptionOn] = useState(true)
+
     useEffect(() => {
         navbarHide(dispatch)
         dataFunction()
     }, [])
+
+    useEffect(() => {
+        if (token) {
+            if (token.dateLimit || (!token.active && token.errorStatus)) setSubscriptionOn(false)
+        }
+    }, [token])
 
     const dataFunction = async () => {
 
@@ -114,64 +123,72 @@ export default function userAdd() {
 
     const handleSave = async (company_id) => {
 
-        if (token.dateLimit) router.push('/accountSetup?status=Assinatura')
-
-        else {
 
 
-            setLoadingSave(true)
 
-            const isValid = validate()
+        setLoadingSave(true)
 
-            if (isValid) {
+        const isValid = validate()
 
-                const data = {
-                    company_id: token.company_id,
-                    user_id: token.sub,
-                    firstName,
-                    lastName,
-                    email,
-                    userStatus: userStatus
-                }
+        if (isValid) {
 
-                await axios.post(`${baseUrl()}/api/userAdd`, data)
-                    .then(res => {
-
-                        const alert = {
-                            type: 'alert',
-                            message: `${firstName} adicionado com sucesso!`,
-                            link: res.data
-                        }
-
-                        dispatch(addAlert(alertsArray, [alert]))
-
-                        setLoadingSave(false)
-
-                        router.push('/usersManagement')
-
-
-                    })
-                    .catch(e => {
-                        if (e.response.data.error === 'User already exists') {
-                            setEmailError('Este e-mail ja é utilizado.')
-                            document.getElementById("email").classList.add('inputError')
-                        } else if (e.response.data.error === "Failed to update subscription") {
-                            setEmailError('Houve um erro ao adicionar o usuário. Tente novamente mais tarde.')
-
-                        }
-
-                        setLoadingSave(false)
-
-                    })
-
-
-                setLoadingSave(false)
+            const data = {
+                company_id: token.company_id,
+                user_id: token.sub,
+                firstName,
+                lastName,
+                email,
+                userStatus: userStatus
             }
+
+            await axios.post(`${baseUrl()}/api/userAdd`, data)
+                .then(res => {
+
+                    const alert = {
+                        type: 'alert',
+                        message: `${firstName} adicionado com sucesso!`,
+                        link: res.data
+                    }
+
+                    dispatch(addAlert(alertsArray, [alert]))
+
+                    setLoadingSave(false)
+
+                    router.push('/usersManagement')
+
+
+                })
+                .catch(e => {
+                    if (e.response.data.error === 'User already exists') {
+                        setEmailError('Este e-mail ja é utilizado.')
+                        document.getElementById("email").classList.add('inputError')
+                    } else if (e.response.data.error === "Failed to update subscription") {
+                        setEmailError('Houve um erro ao adicionar o usuário. Tente novamente mais tarde.')
+
+                    }
+
+                    setLoadingSave(false)
+
+                })
+
 
             setLoadingSave(false)
         }
 
+        setLoadingSave(false)
+
     }
+
+
+    const checkSubscription = () => {
+
+
+        if (token.dateLimit || (!token.active && token.errorStatus)) router.push('/accountSetup?status=Assinatura')
+
+
+    }
+
+
 
 
     return (
@@ -187,7 +204,8 @@ export default function userAdd() {
                         firstName={firstName}
                         lastName={lastName}
                         email={email}
-                        userStatus={userStatus} />
+                        userStatus={userStatus}
+                    />
 
 
                     <div className="row d-flex ">
@@ -203,7 +221,7 @@ export default function userAdd() {
                         </div>
                         <div className="col-12 col-lg-10 my-2">
                             <label for="email" className="form-label ">E-mail*</label>
-                            <input type="text" className="form-control form-control-sm" id="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="" />
+                            <input type="text" className="form-control form-control-sm" id="email" value={email} onChange={e => setEmail(maskEmail(e.target.value))} placeholder="" />
                             <small className="text-danger">{emailError}</small>
                         </div>
                     </div>
@@ -266,7 +284,7 @@ export default function userAdd() {
                                 {loadingSave ?
                                     <button className="ms-2 btn btn-sm btn-orange px-5" disabled><SpinnerSM /></button>
                                     :
-                                    <button className="ms-2 btn btn-sm btn-orange fadeItem" disabled={handleDisableSave()} data-bs-toggle="modal" data-bs-target="#newUserAlertModal">Cadastrar</button>
+                                    <button className="ms-2 btn btn-sm btn-orange fadeItem" disabled={handleDisableSave()} data-bs-toggle={subscriptionOn ? "modal" : ""} data-bs-target={subscriptionOn ? "#newUserAlertModal" : ""} onClick={() => checkSubscription()}>Cadastrar</button>
                                     // <button className="ms-2 btn btn-sm btn-orange fadeItem" disabled={handleDisableSave()} onClick={() => handleSave(token.company_id)}>Cadastrar</button>
                                 }
                             </div>

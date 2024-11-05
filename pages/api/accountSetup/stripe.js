@@ -95,22 +95,25 @@ export default authenticated(async (req, res) => {
                 });
             }
 
+            let priceId = company_id === "6668c78b5d0dfeb36eb9b008" || company_id === "66ec648cff4710f7aca19d1b" || company_id === "66fc999740dd9fbacc21060e" ? "price_1QGAmyAtBT5rPxqpqxLOoTDF" : "price_1QG0jUAtBT5rPxqpQCXP2ahk"
+
             // Passo 3: Criar a sessão de checkout para uma nova assinatura
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],
                 mode: 'subscription',
                 customer: customer.id,
                 line_items: [
-                  {
-                    price: 'price_1QG0jUAtBT5rPxqpQCXP2ahk', // ID do preço que você já criou
-                    quantity: 1,
-                  },
+                    {
+                        price: priceId || "price_1QG0jUAtBT5rPxqpQCXP2ahk", // ID do preço que você já criou
+                        // price: "price_1QFpnoAtBT5rPxqpGUp7j2qc", // ID do preço que você já criou
+                        quantity: 1,
+                    },
                 ],
                 metadata: { company_id: company_id },
                 success_url: `${req.headers.origin}/accountSetup`,
                 cancel_url: `${req.headers.origin}/accountSetup`,
                 locale: 'pt-BR',
-              });
+            });
 
             if (!session.url) {
                 return res.status(500).json({ error: 'Error creating Stripe checkout session' });

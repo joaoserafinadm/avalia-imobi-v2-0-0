@@ -53,32 +53,27 @@ export default authenticated(async (req, res) => {
 
                     const subscriptionId = companyExist.paymentData?.subscriptionId
                     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-                    const existingProductId = subscription.items.data[0].price.product; // Obtém o ID do produto
+                    // const existingProductId = subscription.items.data[0].price.product; // Obtém o ID do produto
 
                     console.log("subscription.items.data[0].price", subscription.items.data[0].price)
 
                     try {
                         // Recuperar a assinatura existente
-                        const usersCount = +companyExist.paymentData?.usersCount + 1 || 1;
-                        const valuePerUser = +usersCount <= 5 ? 19.90 : 14.90;
-                        const newValue = (valuePerUser * (usersCount - 1) + 79.90).toFixed(2);
+                        const usersCount = await db.collection('users').countDocuments({ company_id: company_id })
 
+                        console.log("usersCount", usersCount)
 
                         // Atualize a quantidade de usuários na assinatura
                         const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
                             items: [
                                 {
                                     id: subscription.items.data[0].id, // ID do item de assinatura
-                                    quantity: usersCount, // totalUsers representa o número total de usuários (incluindo adicionais)
+                                    quantity: usersCount + 1, // totalUsers representa o número total de usuários (incluindo adicionais)
                                 },
                             ],
                         });
 
                         console.log("updatedSubscription", updatedSubscription);
-                        // res.status(200).json({ message: "Subscription updated successfully" });
-
-                        // console.log("updatedSubscription", updatedSubscription);
-                        // res.status(200).json({ message: "Subscription updated successfully" });
 
                         if (updatedSubscription) {
                             const password = randomPassword()
@@ -169,16 +164,6 @@ export default authenticated(async (req, res) => {
                         res.status(500).json({ error: "Failed to update subscription" });
                     }
 
-
-
-
-
-
-
-
-
-
-
                 }
             }
         }
@@ -195,18 +180,19 @@ export default authenticated(async (req, res) => {
             const { db } = await connect()
 
             const companyExist = await db.collection('companies').findOne({ _id: ObjectId(company_id) })
-            const usersArrayCount = await db.collection('users').find({ company_id: company_id }).toArray()
+            const usersCount = await db.collection('users').countDocuments({ company_id: company_id })
 
-            console.log("usersArrayCount", usersArrayCount, companyExist.paymentData)
+
             if (!companyExist) {
 
                 res.status(400).json({ error: 'Company does not exist' })
 
             } else {
 
+
                 const data = {
                     subscriptionValue: companyExist.paymentData?.subscriptionValue,
-                    usersCount: usersArrayCount.length,
+                    usersCount: usersCount,
                 }
 
 

@@ -3,7 +3,9 @@ import { verify, sign } from 'jsonwebtoken'
 import { ObjectId, ObjectID } from 'bson'
 import cookie from 'cookie'
 import baseUrl from '../../../utils/baseUrl'
+import Stripe from 'stripe';
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const authenticated = fn => async (req, res) => {
     verify(req.cookies.auth, process.env.JWT_SECRET, async function (err, decoded) {
@@ -117,21 +119,51 @@ export default authenticated(async (req, res) => {
                 res.status(400).json({ message: "User does not exist" })
             } else {
 
+
+
                 const userSelectedExist = await db.collection('users').findOne({ _id: ObjectId(userSelected) })
 
                 if (!userSelectedExist) {
                     res.status(400).json({ message: "User selected does not exist" })
                 } else {
 
-                    const response = await db.collection('users').deleteOne(
-                        { _id: ObjectId(userSelected) }
-                    )
+                    try {
+                        const subscriptionId = companyExist.paymentData?.subscriptionId
+                        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+                        const existingProductId = subscription.items.data[0].price.product; // Obtém o ID do produto
 
-                    if (response.deletedCount) {
-                        res.status(200).json({ message: "User deleted" })
-                    } else {
+                        console.log("subscription.items.data[0].price", subscription.items.data[0].price)
+
+                        const usersCount = await db.collection('users').countDocuments({ company_id: company_id })
+
+                        console.log("usersCount", usersCount)
+
+                        // Atualize a quantidade de usuários na assinatura
+                        const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
+                            items: [
+                                {
+                                    id: subscription.items.data[0].id, // ID do item de assinatura
+                                    quantity: usersCount - 1, // totalUsers representa o número total de usuários (incluindo adicionais)
+                                },
+                            ],
+                        });
+
+                        console.log("updatedSubscription", updatedSubscription);
+
+
+                        const response = await db.collection('users').deleteOne(
+                            { _id: ObjectId(userSelected) }
+                        )
+
+                        if (response.deletedCount) {
+                            res.status(200).json({ message: "User deleted" })
+                        } else {
+                            res.status(400).json({ message: "Cant delete user" })
+                        }
+                    } catch (error) {
                         res.status(400).json({ message: "Cant delete user" })
                     }
+
 
 
                 }

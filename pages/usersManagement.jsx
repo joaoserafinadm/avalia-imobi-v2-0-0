@@ -26,6 +26,7 @@ export default function UsersManagement() {
     const [loadingPage, setLoadingPage] = useState(true)
     const [usersArray, setUsersArray] = useState([])
     const [userSelected, setUserSelected] = useState('')
+    const [usersCount, setUsersCount] = useState(0)
 
     useEffect(() => {
         dataFunction(token.company_id)
@@ -42,6 +43,7 @@ export default function UsersManagement() {
             }
         }).then(res => {
             setUsersArray(res.data)
+            setUsersCount(res.data.length)
             setLoadingPage(false)
             const selected = userSelected && res.data?.find(elem => elem._id === userSelected._id)
             setUserSelected(selected)
@@ -104,7 +106,7 @@ export default function UsersManagement() {
                         </div>
 
 
-                        <ViewUserModal userSelected={userSelected}
+                        <ViewUserModal userSelected={userSelected} usersCount={usersCount}
                             dataFunction={() => dataFunction(token.company_id)}
                             setUserSelected={value => setUserSelected(value)} />
 
