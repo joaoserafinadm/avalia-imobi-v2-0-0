@@ -13,6 +13,7 @@ import tippy from "tippy.js";
 import ContentPage from "./ContentPage";
 import DownloadPage from "./DownloadPage";
 import ErrorPage from "./ErrorPage";
+import ValuationPdf from "./valuationPdf";
 
 
 export default function ValuationPage() {
@@ -53,7 +54,7 @@ export default function ValuationPage() {
             else if (!avaliationStatus && answeredStatus) {
                 setSlide("finalPage")
 
-            } else if(clientData) {
+            } else if (clientData) {
                 setSlide("start")
             } else {
                 setSlide("errorPage")
@@ -143,9 +144,17 @@ export default function ValuationPage() {
                             </div>
                             <div class={`carousel-item ${slide === 'errorPage' ? 'active' : ''}`}>
 
-                                <ErrorPage/>
+                                <ErrorPage />
 
                             </div>
+
+                            <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
+                                <ValuationPdf
+                                    userData={userData}
+                                    clientData={clientData} />
+                            </div>
+
+
                         </div>
 
                     </div>

@@ -12,7 +12,7 @@ export default function PortraitCard(props) {
 
 
     return (
-        <div className={`${styles.main} shadow`}>
+        <div className={`${styles.main} shadow ${props.valuationPdf ? styles.valuationMain : ''}`} >
             <div className={`${styles.header}`} style={{ backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05)), url(${props.headerImg})` }}>
 
             </div>

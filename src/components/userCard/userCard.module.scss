@@ -5,6 +5,12 @@
     border-radius: 5px;
 }
 
+.valuationMain {
+    transform: scale(0.7); /* Reduz o tamanho do elemento e de seu conteúdo para 60% */
+    border: 1px solid #979797;
+    transform-origin: top left; /* Define a origem da transformação, ajustável conforme necessário */
+}
+
 .header {
     height: 200px;
     border-radius: 4px 4px 0 0;
@@ -113,6 +119,7 @@
     /* Ajusta a imagem para cobrir todo o espaço */
     background-position: center;
 }
+
 .mainBackLS {
     height: 192px;
     width: 340px;
@@ -154,7 +161,7 @@
 .bodyLS {
     position: relative;
     left: 15px !important;
-    width:calc(340px - 10px - 125px);
+    width: calc(340px - 10px - 125px);
 }
 
 .logoLS {
@@ -163,6 +170,7 @@
     bottom: 15px;
     height: 30px;
 }
+
 .logoBackLS {
     height: 100%;
     width: 100%;
@@ -173,11 +181,11 @@
 
 .logoImgLS {
     max-width: 200px;
-  max-height: 75px;
-  width: 100%;
-  height: auto;
+    max-height: 75px;
+    width: 100%;
+    height: auto;
 }
 
-.fontSize{
+.fontSize {
     font-size: 12px;
 }

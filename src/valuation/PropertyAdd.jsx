@@ -114,30 +114,43 @@ export default function PropertyAddModal(props) {
 
 
     const handleGetInfo = async (e) => {
-        setLinkError('')
-        setLoadingImage(true)
-        setImageUrl('')
+        setLinkError('');
+        setLoadingImage(true);
+        setImageUrl('');
 
         e.preventDefault();
 
-        await axios.get(`${baseUrl()}/api/valuation/htmlInfo`, {
+        const res = await axios.get(`${baseUrl()}/api/valuation/htmlInfo`, {
             params: {
-                url: newClientForm.propertyLink
-            }
-        }).then(res => {
-            if (!res.data.image && !res.data.title) {
-                setLinkError('Link inválido')
-            }
-            setImageUrl(res.data.image)
-            dispatch(setPropertyName(res.data.title))
-            setLoadingImage(false)
+                url: newClientForm.propertyLink,
+            },
+        });
 
-        }).catch(e => {
-            setLinkError('Link inválido')
-            setLoadingImage(false)
-        })
+        if (!res.data.image && !res.data.title) {
+            setLinkError('Link inválido');
+            setLoadingImage(false);
+        }
 
-    }
+        dispatch(setPropertyName(res.data.title));
+
+        // Verificar se o URL da imagem termina com uma extensão válida
+        const validImageExtensions = ['.jpeg', '.jpg', '.png', '.gif', '.bmp', '.webp'];
+        const imageUrl = res.data.image.toLowerCase();
+        const isValidImage = validImageExtensions.some(extension => imageUrl.endsWith(extension));
+
+        if (!isValidImage) {
+            setImageUrl('');
+            
+        } else {
+            setImageUrl(res.data.image);
+
+        }
+
+        dispatch(setPropertyName(res.data.title));
+
+
+        setLoadingImage(false);
+    };
 
 
 

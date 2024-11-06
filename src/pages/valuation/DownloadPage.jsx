@@ -10,6 +10,31 @@ export default function DownloadPage(props) {
         carousel.to(1)
     }
 
+    const generatePDF = async () => {
+        if (typeof window !== 'undefined') {
+            const html2pdf = (await import('html2pdf.js')).default;
+            const element = document.getElementById('valuationPdf');
+    
+            // Aguarde o carregamento das imagens
+            const images = Array.from(element.querySelectorAll('img'));
+            await Promise.all(images.map(img => new Promise(resolve => {
+                if (img.complete) resolve();
+                else img.onload = resolve;
+            })));
+    
+            const opt = {
+                margin: 1,
+                filename: `Avaliação - ${props.userData.companyName}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+    
+            html2pdf().set(opt).from(element).save();
+        }
+    };
+    
+
     return (
         <div className="col-12 ">
             <div className="row  d-flex justify-content-center align-items-center">
@@ -33,6 +58,11 @@ export default function DownloadPage(props) {
                                 <div className="col-12 mt-3">
                                     <button className="btn btn-outline-secondary btn-lg" onClick={() => handleRestartValuation()}>
                                         Visualizar novamente
+                                    </button>
+                                </div>
+                                <div className="col-12 mt-3">
+                                    <button className="btn btn-outline-secondary btn-lg" onClick={() => generatePDF()}>
+                                        Baixar PDF
                                     </button>
                                 </div>
 

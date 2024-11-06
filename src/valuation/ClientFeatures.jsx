@@ -1,4 +1,4 @@
-import { faEdit, faEye, faMoneyCheckDollar, faShare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEye, faLocationDot, faMoneyCheckDollar, faShare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
@@ -10,6 +10,7 @@ export default function ClientFeatures(props) {
 
 
     const client = props.client
+    const valuationPdf = props.valuationPdf
     console.log(client)
 
     const handleShowClientInfo = (elem) => {
@@ -24,7 +25,8 @@ export default function ClientFeatures(props) {
                 <>
                     <div className="row small">
 
-                        <div className="col-12 my-2">
+                        <div className="col-12 text-center my-2">
+                            <FontAwesomeIcon icon={faLocationDot} className="me-2" />
                             {client?.bairro && client?.cidade && client?.uf ?
                                 <>
                                     {client?.bairro}, {client?.cidade} / {client?.uf}
@@ -38,9 +40,12 @@ export default function ClientFeatures(props) {
 
 
                     </div>
-                    <div className="col-12 d-flex justify-content-center text-center">
-                        <span className="fs-4 text-orange me-1">R$</span> <span className="fs-4 text-secondary">{client?.propertyPrice},00</span>
-                    </div>
+                    {!valuationPdf && (
+                        <div className="col-12 d-flex justify-content-center text-center">
+                            <span className="fs-4 text-orange me-1">R$</span> <span className="fs-4 text-secondary">{client?.propertyPrice},00</span>
+                        </div>
+
+                    )}
                     <hr />
 
                     {client.propertyType === "Apartamento" && (

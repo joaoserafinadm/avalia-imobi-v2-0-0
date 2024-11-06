@@ -13,6 +13,7 @@ import { useSelector } from "react-redux"
 import formatDate from "../../utils/formatDate"
 import ClientFeatures from "./ClientFeatures"
 import PropertyUrlModal from "../pages/valuation/PropertyUrlModal"
+import Link from "next/link"
 
 export default function PropertyCard(props) {
 
@@ -100,7 +101,7 @@ export default function PropertyCard(props) {
                     <span className="text-secondary">Sem fotos</span>
                 </div>
                 :
-                <div className="card-img-top d-flex justify-content-center align-items-center bg-secondary " style={{overflow: 'hidden'}}>
+                <div className="card-img-top d-flex justify-content-center align-items-center bg-secondary " style={{ overflow: 'hidden' }}>
 
 
                     <img src={client?.imageUrl} className={`card-img-top  ${styles.clientCardImage}`} />
@@ -141,7 +142,7 @@ export default function PropertyCard(props) {
 
                 <ClientFeatures client={client} elem={props.elem} propertyAdd />
 
-                {!props.deleteHide && (
+                {!props.deleteHide && !props.valuationPdf && (
 
 
 
@@ -158,15 +159,13 @@ export default function PropertyCard(props) {
                                     onClick={() => props.setClientSelected(props.elem)}>
                                     <FontAwesomeIcon icon={faEye} className="icon  text-secondary" />
                                 </button> */}
-
-                                <button
-                                    type="button"
-                                    class="btn btn-light border"
-                                    data-bs-toggle="modal" data-bs-target="#propertyUrlModal"
-                                    id={"viewPropertyButton" + props.elem._id + props.section}
-                                    onClick={() => props.setPropertyUrl(props.elem.propertyLink)}>
-                                    <FontAwesomeIcon icon={faEye} className="icon text-secondary" />
-                                </button>
+                                    <a href={props.elem.propertyLink} target="_blank"
+                                        type="button"
+                                        class="btn btn-light border"
+                                        // data-bs-toggle="modal" data-bs-target="#propertyUrlModal"
+                                        id={"viewPropertyButton" + props.elem._id + props.section}>
+                                        <FontAwesomeIcon icon={faEye} className="icon text-secondary" />
+                                    </a>
                                 {!props.valuationView && (
                                     <button
                                         type="button"
