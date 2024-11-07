@@ -53,18 +53,18 @@ export default authenticated(async (req, res) => {
             let paymentHistoryResponse
             let customer;
 
-            if (companyExist?.paymentData) {
+            // if (companyExist?.paymentData) {
 
 
-                const existingCustomer = await stripe.customers.retrieve(companyExist?.paymentData?.customerId);
-                console.log('existingCustomer', existingCustomer);
+                // const existingCustomer = await stripe.customers.retrieve(companyExist?.paymentData?.customerId);
+                // console.log('existingCustomer', existingCustomer);
 
-                const subscriptions = await stripe.subscriptions.list({
-                    customer: existingCustomer.id,
-                });
-                console.log('subscriptions', subscriptions);
-                // customer = existingCustomer?.data[0];
-            }
+                // const subscriptions = await stripe.subscriptions.list({
+                //     customer: existingCustomer.id,
+                // });
+                // console.log('subscriptions', subscriptions);
+                // // customer = existingCustomer?.data[0];
+            // }
 
             // const subscriptionData = customer || '';
 

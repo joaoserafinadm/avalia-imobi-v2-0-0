@@ -60,11 +60,11 @@ export default function DownloadPage(props) {
                                         Visualizar novamente
                                     </button>
                                 </div>
-                                <div className="col-12 mt-3">
+                                {/* <div className="col-12 mt-3">
                                     <button className="btn btn-outline-secondary btn-lg" onClick={() => generatePDF()}>
                                         Baixar PDF
                                     </button>
-                                </div>
+                                </div> */}
 
 
 
