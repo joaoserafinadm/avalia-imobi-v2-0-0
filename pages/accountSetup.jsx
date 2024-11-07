@@ -19,7 +19,6 @@ import ExitAccountModal from "../src/accountSetup/ExitAccountModal";
 import AccountDetailsPage from "../src/accountSetup/AccountDetailsPage";
 import SubscriptionPage from "../src/accountSetup/subscriptionPage";
 import NoSubscriptionPage from "../src/accountSetup/noSubscriptionPage";
-import CreditCardEditModal from "../src/accountSetup/creditCardEditModal_3";
 import ChargeAdressModal from "../src/accountSetup/chargeAdressModal";
 
 
@@ -108,7 +107,6 @@ export default function AccountSetup() {
     return (
         <div>
 
-            <CreditCardEditModal companyData={companyData} paymentMethods={paymentMethods} />
 
             <ChargeAdressModal companyData={companyData} dataFunction={() => dataFunction(token.sub, token.company_id)} />
 
