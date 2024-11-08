@@ -13,32 +13,7 @@ import { SpinnerLG } from "../../components/loading/Spinners";
 export default function Login() {
   const [section, setSection] = useState("signIn");
 
-  const session = useSession()
-
-  const handleSocialAAuth = (user) => {
-
-    console.log("user", user)
-
-
-  }
-
-  if (session.status === "loading") {
-    return (
-      <div className={`${styles.container} container-fluid`}>
-        <SpinnerLG />
-      </div>
-    )
-  }
-
-  if(session.status === "authenticated") {
-    handleSocialAAuth(session?.data?.user)
-    return (
-      <div className={`${styles.container} container-fluid`}>
-        <SpinnerLG />
-      </div>
-    )
-  }
-
+  
   return (
     <>
       <div className={`${styles.container} container-fluid`}>

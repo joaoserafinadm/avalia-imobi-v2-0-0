@@ -5,22 +5,59 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import removeInputError from "../../../utils/removeInputError";
 import baseUrl from "../../../utils/baseUrl";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import { SpinnerSM } from "../../components/loading/Spinners";
 import Cookies from "js-cookie";
-import { signIn } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 
 export default function signInPage(props) {
+
+    const router = useRouter()
+
+
+    const { data: session } = useSession()
+
+    
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    
     //RENDER
     const [loadedImages, setLoadedImages] = useState(0);
     const [singInLoading, setSignInLoading] = useState(false);
-
+    const [loadingGoogle, setLoadingGoogle] = useState(false);
+    
     //ERROR
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [googleAuthError, setGoogleAuthError] = useState(false);
+    
+    
+    useEffect(() => {
+        if (session) {
+            // console.log("session", session)
+            handleGoogleLogin(session)
+        }
+
+    }, [session])
+
+    const handleGoogleLogin = async (session) => {
+        setLoadingGoogle(true)
+
+
+        await axios.post(`/api/login/google`, session)
+            .then(async res => {
+                await signOut()
+                router.push('/')
+                setLoadingGoogle(false)
+            }).catch(e => {
+                setGoogleAuthError(true)
+                setLoadingGoogle(false)
+            })
+        setLoadingGoogle(true)
+
+
+    }
 
     const validate = () => {
         removeInputError();
@@ -116,9 +153,10 @@ export default function signInPage(props) {
                     )}
 
                     <div className=" d-flex justify-content-center align-items-center">
-                        <form onSubmit={e => handleSignIn(e)}>
 
-                            <div className={`card `}>
+                        <div>
+
+                            <div className={`card `} style={{ maxWidth: "450px" }}>
                                 <div className={`card-body ${styles.cardSize} `}>
                                     <div className="row mb-3">
                                         <h1 className={`${styles.title} title-dark`}>Login</h1>
@@ -140,46 +178,48 @@ export default function signInPage(props) {
                                         </div>
                                     </div>
                                     <hr />
+                                    <form onSubmit={e => handleSignIn(e)}>
 
-                                    <div className="row mt-3 mb-3">
-                                        <input
-                                            type="email"
-                                            id="emailInput"
-                                            className="form-control"
-                                            placeholder="E-mail"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                        />
-                                        <span className="small text-danger fadeItem">{emailError}</span>
-                                    </div>
-                                    <div className="row mb-3">
-                                        <input
-                                            type="password"
-                                            id="passwordInput"
-                                            className="form-control"
-                                            placeholder="Senha"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                        />
-                                        <span className="small text-danger fadeItem">
-                                            {passwordError}
-                                        </span>
-                                    </div>
-                                    <div className="row mb-3">
-                                        {singInLoading ? (
-                                            <button
-                                                disabled
-                                                className="btn btn-orange"
-                                                onClick={() => handleSignIn()}
-                                            >
-                                                <SpinnerSM />
-                                            </button>
-                                        ) : (
-                                            <button className="btn btn-outline-orange" type="submit">
-                                                Entrar
-                                            </button>
-                                        )}
-                                    </div>
+                                        <div className="row mt-3 mb-3">
+                                            <input
+                                                type="email"
+                                                id="emailInput"
+                                                className="form-control"
+                                                placeholder="E-mail"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                            />
+                                            <span className="small text-danger fadeItem">{emailError}</span>
+                                        </div>
+                                        <div className="row mb-3">
+                                            <input
+                                                type="password"
+                                                id="passwordInput"
+                                                className="form-control"
+                                                placeholder="Senha"
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                            />
+                                            <span className="small text-danger fadeItem">
+                                                {passwordError}
+                                            </span>
+                                        </div>
+                                        <div className="row mb-3">
+                                            {singInLoading ? (
+                                                <button
+                                                    disabled
+                                                    className="btn btn-orange"
+                                                    onClick={() => handleSignIn()}
+                                                >
+                                                    <SpinnerSM />
+                                                </button>
+                                            ) : (
+                                                <button className="btn btn-outline-orange" disabled={loadingGoogle} type="submit">
+                                                    Entrar
+                                                </button>
+                                            )}
+                                        </div>
+                                    </form>
                                     <div className="row mb-1">
                                         <small>
                                             <span
@@ -205,26 +245,36 @@ export default function signInPage(props) {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <span className="card py-2 px-1 my-2 cardAnimation" type="button" onClick={() => signIn('google')}>
+                                        <button className="btn btn-outline-secondary" disabled={loadingGoogle} onClick={() => { setLoadingGoogle(true); signIn('google') }}>
                                             <div className="row ">
-                                                <div className="col-12 d-flex justify-content-center">
-                                                    <div className="icon-start">
-                                                        <img
-                                                            src="/ICON-GOOGLE.png"
-                                                            alt=""
-                                                            className="socialIcon"
-                                                        />
-                                                    </div>
+                                                <div className="col-12 d-flex text-center justify-content-center align-items-center">
+                                                    {/* <div className="icon-start"> */}
+                                                    <img
+                                                        src="/ICON_GOOGLE.png"
+                                                        alt=""
+                                                        className="socialIcon me-2"
+                                                    />
+                                                    {/* </div> */}
                                                     <div>
-                                                        <span >Continuar com o Google</span>
+                                                        <span className="text-center" >Continuar com o Google</span>
                                                     </div>
+                                                    {loadingGoogle && (
+                                                        <SpinnerSM className="ms-1" />
+
+                                                    )}
                                                 </div>
                                             </div>
-                                        </span>
+                                        </button>
+                                        {googleAuthError && (
+
+                                            <div className="col-12 fadeItem">
+                                                <p className="small text-danger">Não existe uma conta cadastrada com esse e-mail. Clique <span className="span" type="button" onClick={() => { props.setSection("signUp"); setGoogleAuthError(false) }}>aqui</span> para se cadastrar.</p>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
 
                     </div>
                 </div>

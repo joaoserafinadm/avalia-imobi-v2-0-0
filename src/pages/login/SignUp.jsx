@@ -11,7 +11,7 @@ import PolicyModal from "./PolicyModal";
 import AuthModal from "./AuthModal";
 import { SpinnerSM } from "../../components/loading/Spinners";
 import SignUpSuccessModal from "./SignUpSuccessModal";
-import { signIn } from 'next-auth/react'
+import { signIn, signOut } from 'next-auth/react'
 
 export default function SignUp(props) {
     const router = useRouter();
@@ -32,6 +32,8 @@ export default function SignUp(props) {
 
     //LOADING
     const [singUpLoading, setSignUpLoading] = useState(false);
+    const [loadingGoogle, setLoadingGoogle] = useState(false);
+
 
     const validate = (
         firstNameValue,
@@ -311,22 +313,22 @@ export default function SignUp(props) {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <span className="card py-2 px-1 my-2 cardAnimation" type="button" onClick={() => signIn('google')}>
+                                    <button className="btn btn-outline-secondary" disabled={loadingGoogle} onClick={() => { setLoadingGoogle(true); signIn('google') }}>
                                         <div className="row ">
-                                            <div className="col-12 d-flex justify-content-center">
-                                                <div className="icon-start">
-                                                    <img
-                                                        src="/ICON-GOOGLE.png"
-                                                        alt=""
-                                                        className="socialIcon"
-                                                    />
-                                                </div>
+                                            <div className="col-12 d-flex text-center justify-content-center align-items-center">
+                                                {/* <div className="icon-start"> */}
+                                                <img
+                                                    src="/ICON_GOOGLE.png"
+                                                    alt=""
+                                                    className="socialIcon me-2"
+                                                />
+                                                {/* </div> */}
                                                 <div>
-                                                    <span >Cadastre-se com o Google</span>
+                                                    <span className="text-center" >Continuar com o Google</span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </span>
+                                    </button>
                                 </div>
                             </form>
                         </div>
