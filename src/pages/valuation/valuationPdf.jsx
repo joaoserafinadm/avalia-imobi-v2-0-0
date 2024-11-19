@@ -36,7 +36,7 @@ export default function ValuationPdf(props) {
                         />
                     </div>
                 </div>
-                <div style={{ position: 'relative', top: '-125px' }}>
+                <div className={styles.firstPageContent}>
                     <hr />
 
                     <div className="row">
@@ -88,7 +88,7 @@ export default function ValuationPdf(props) {
                     </div>
 
                     <div className="row my-3">
-                        <div className="col-12  d-flex justify-content-center px-0 px-lg-5">
+                        <div className="col-12  d-flex justify-content-center px-0 px-5">
                             <div className="row ">
 
                                 <span className=" mt-3 text-main">O estudo é feito a partir de uma amostra de {clientData?.valuation?.propertyArray?.length} imóveis com características similares ao seu que nos permite entender o posicionamento do seu imóvel no mercado. São imóveis com áreas privativas, região, tipologias, itens de infraestrutura, idade de construção e condições parecidas com a do imóvel analisado.</span>
