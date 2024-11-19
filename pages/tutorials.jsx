@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import isMobile from "../utils/isMobile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
-
+import { closeModal, modalClose } from "../utils/modalControl";
 
 export default function Tutorials() {
 
@@ -33,6 +33,7 @@ export default function Tutorials() {
 
 
     useEffect(() => {
+        modalClose()
         navbarHide(dispatch)
     }, [])
 
