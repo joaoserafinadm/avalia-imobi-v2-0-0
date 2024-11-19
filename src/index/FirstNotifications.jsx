@@ -84,6 +84,11 @@ export default function FirstNotifications(props) {
                                 <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faStore} className="me-2" />Imobiliária</button>
                             </Link>
                         </div>
+                        <div className=" mt-2">
+                            <Link href="/tutorials">
+                                <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faBook} className="me-2" />Tutoriais</button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             )}

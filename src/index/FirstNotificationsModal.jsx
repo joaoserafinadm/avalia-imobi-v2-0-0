@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { showModal } from "../../utils/modalControl"
 import Link from "next/link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faStore, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faBook, faStore, faUser } from "@fortawesome/free-solid-svg-icons"
 
 
 
@@ -13,6 +13,7 @@ export default function FirstNotificationsModal(props) {
     const [notification, setNotification] = useState('')
 
     useEffect(() => {
+
 
         if (firstNotifications?.companyEdit) {
             setNotification("companyEdit")
@@ -46,9 +47,14 @@ export default function FirstNotificationsModal(props) {
                                 <span>
                                     O primeiro passo é cadastrar sua imobiliária. Clique no botão abaixo para começar e lembre-se de manter os dados sempre atualizados.
                                 </span>
-                                <div className=" my-4 text-center">
+                                <div className=" mb-2 mt-4 text-center">
                                     <Link href="/companyEdit">
                                         <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faStore} className="me-2" />Imobiliária</button>
+                                    </Link>
+                                </div>
+                                <div className=" mt-2 mb-4 text-center">
+                                    <Link href="/tutorials">
+                                        <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faBook} className="me-2" />Tutoriais</button>
                                     </Link>
                                 </div>
                             </div>
