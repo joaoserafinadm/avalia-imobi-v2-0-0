@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sections from "../components/Sections";
 import { useRouter } from "next/router";
 import handleShare from "../../utils/handleShare";
+import ValuationPdf from "../pages/valuation/valuationPdf";
 
 
 
@@ -14,15 +15,59 @@ export default function ShowValuationModal(props) {
 
     const token = props.token
 
+    const { userData, clientData } = props
+
     const [section, setSection] = useState('Apresentação')
+    const [pdfUrl, setPdfUrl] = useState(null);
 
+    useEffect(() => {
+        if (userData && clientData) {
 
+            generatePDF()
+        }
+    }, [userData, clientData])
 
+    const generatePDF = async () => {
+        if (typeof window !== 'undefined') {
+            const html2pdf = (await import('html2pdf.js')).default;
+            const element = document.getElementById('valuationPdf');
+
+            // Aguarde o carregamento das imagens
+            const images = Array.from(element.querySelectorAll('img'));
+            await Promise.all(images.map(img => new Promise(resolve => {
+                if (img.complete) resolve();
+                else img.onload = resolve;
+            })));
+
+            const opt = {
+                margin: 0,
+                filename: `Avaliação - ${userData?.companyName}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Gera o PDF como Blob
+            const pdfBlob = await html2pdf().set(opt).from(element).toPdf().get('pdf');
+            const blobUrl = pdfBlob && URL.createObjectURL(pdfBlob);
+
+            // Define o PDF no estado
+            setPdfUrl(blobUrl);
+        }
+    };
 
 
 
     return (
         <div class="modal fade" id="showValuationModal" tabindex="-1" aria-labelledby="Modal" aria-hidden="true">
+
+            <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
+                <ValuationPdf
+                    userData={userData}
+                    clientData={clientData} />
+            </div>
+
+
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -47,7 +92,7 @@ export default function ShowValuationModal(props) {
                             </div>
                             <div className="carousel-inner ">
                                 <div className="carousel-item ">
-                                    dsadsa{valuationUrl}
+                                    {pdfUrl && <iframe src={pdfUrl} width="100%" height="600px" />}
                                 </div>
                             </div>
                         </div>

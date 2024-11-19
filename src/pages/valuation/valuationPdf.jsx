@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PortraitCard from '../../components/userCard/PortraitCard'
 import styles from './valuation.module.scss'
-import { faCheck, faShoppingCart, faStar, faWarning } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faEnvelope, faPhone, faShoppingCart, faStar, faWarning } from '@fortawesome/free-solid-svg-icons'
 import ClientFeatures from '../../valuation/ClientFeatures'
 import PropertyCard from '../../valuation/PropertyCard'
 import Map from '../../valuation/Map'
@@ -15,7 +15,7 @@ export default function ValuationPdf(props) {
     return (
         <div id="valuationPdf" className={styles.reportContainer}>
             <div className={styles.page}>
-                <div className="row px-5">
+                <div className="row px-5 mt-3">
                     <div className="col-6 d-flex flex-column" >
                         <span className="fw-bold text-main">Olá, {clientData?.clientName}!</span>
                         <span className="mt-3 text-main">Entender qual a posição do seu imóvel no mercado é o primeiro passo para realizar a venda com qualidade e segurança. Para isso, realizei um estudo feito com base nas características do seu imóvel e das ofertas de imóveis similares na região.</span>
@@ -45,7 +45,7 @@ export default function ValuationPdf(props) {
                         </div>
 
                     </div>
-                    <div className="row my-5 px-5" >
+                    <div className="row mt-3 px-5" >
                         <div className="col-6 d-flex justify-content-center  ">
                             <div className="row ">
 
@@ -78,11 +78,11 @@ export default function ValuationPdf(props) {
             </div>
             <div className={styles.page}>
 
-                <div className="row d-flex">
+                <div className="row d-flex mt-3">
 
                     <div className="row ">
                         <div className="col-12 d-flex justify-content-center">
-                            <span className=" fw-bold text-main text-center me-3">Metodologia aplicada</span>
+                            <span className=" fw-bold text-main text-center ">Metodologia aplicada</span>
                         </div>
 
                     </div>
@@ -110,8 +110,8 @@ export default function ValuationPdf(props) {
                         </div>
                     </div>
 
-                    <div className="row d-flex justify-content-center">
-                        <div className="col-12 col-lg-12 col-xl-8 d-flex justify-content-center">
+                    <div className="row d-flex justify-content-center mt-3">
+                        <div className="col-12 col-xl-8 d-flex justify-content-center">
                             <div className="card">
                                 <div className="row">
                                     <div className="col-12  my-1">
@@ -128,16 +128,16 @@ export default function ValuationPdf(props) {
                                 <span className=" fw-bold text-main">Imagens do imóvel</span>
                             </div>
                         </div>
-                        <div className="col-12 d-flex justify-content-center flex-wrap">
-                            {clientData?.files?.slice(0, 20).map((elem, index) => (
-                                <img src={elem.url} height={'100px'} className="mx-1" key={index} />
+                        <div className="col-12 d-flex justify-content-center flex-wrap mt-3">
+                            {clientData?.files?.slice(0, 15).map((elem, index) => (
+                                <img src={elem.url} height={'100px'} className="m-1" key={index} />
                             ))}
                         </div>
                     </div>
                 </div>
             </div>
             <div className={styles.page}>
-                <div className="row ">
+                <div className="row mt-3">
                     <div className="col-12  d-flex justify-content-center">
                         <div className="row px-5">
                             <span className="fw-bold text-main">Imóveis de comparação</span>
@@ -173,67 +173,13 @@ export default function ValuationPdf(props) {
                                 </div>
                             </div>
                         ))}
-                        {clientData?.valuation?.propertyArray?.map((elem, index) => (
-                            <div
-                                key={index}
-                                className="mx-1 my-4"
-                                style={{ width: '180px' }} // Defina a largura e altura fixa
-                            >
-                                <div
-                                    style={{
-                                        transform: 'scale(0.6)',
-                                        transformOrigin: 'top left',
-
-                                        width: '300px', // Largura original do elemento
-                                        height: '300px', // Altura original do elemento
-                                    }}
-                                >
-                                    <PropertyCard
-                                        section="Todos Clientes"
-                                        valuationView
-                                        valuationPdf
-                                        elem={elem}
-                                        index={index}
-                                        setPropertyUrl={(value) => props.setPropertyUrl(value)}
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                        {clientData?.valuation?.propertyArray?.map((elem, index) => (
-                            <div
-                                key={index}
-                                className="mx-1 my-4"
-                                style={{ width: '180px' }} // Defina a largura e altura fixa
-                            >
-                                <div
-                                    style={{
-                                        transform: 'scale(0.6)',
-                                        transformOrigin: 'top left',
-
-                                        width: '300px', // Largura original do elemento
-                                        height: '300px', // Altura original do elemento
-                                    }}
-                                >
-                                    <PropertyCard
-                                        section="Todos Clientes"
-                                        valuationView
-                                        valuationPdf
-                                        elem={elem}
-                                        index={index}
-                                        setPropertyUrl={(value) => props.setPropertyUrl(value)}
-                                    />
-                                </div>
-                            </div>
-                        ))}
-
-
 
                     </div>
                 </div>
-                <div className="row d-flex justify-content-center mb-5 bg-danger">
-                    <div className="col-11 col-lg-8 ">
-                        <Map location={{ lat: clientData.latitude, lng: clientData.longitude }}
-                            zoom={30} height="350px" valuationPage
+                <div className="row d-flex justify-content-center mt-3">
+                    <div className="col-11 " id='mapPdf'>
+                        <Map location={{ lat: clientData?.latitude, lng: clientData?.longitude }}
+                            zoom={30} height="325px" valuationPage valuationPdf
                             porpertyLocations={clientData?.valuation?.propertyArray} />
                     </div>
                 </div>
@@ -241,35 +187,35 @@ export default function ValuationPdf(props) {
             </div>
 
             <div className={styles.page}>
-                <div className="row ">
+                <div className="row mt-5">
                     <div className="col-12 d-flex justify-content-center">
                         <span className=" fw-bold text-main text-center me-3">Valor de avaliação</span>
                     </div>
 
                 </div>
-                <div className="row d-flex justify-content-center mb-5">
-                    <div className="col-12 col-lg-8">
+                <div className="row d-flex justify-content-center mt-3 mb-5">
+                    <div className="col-8">
                         <div className="row d-flex">
-                            <div className="col-12  col-md-6 p-2">
+                            <div className="col-6 p-2">
                                 <div className="card">
 
                                     <div className="card-body text-center">
                                         <span className="bold ">Valor do m²</span>
                                         <div className="d-flex justify-content-center align-items-center">
-                                            <span className="text-success me-1 ">R$</span>
+                                            <span className="text-orange me-1 ">R$</span>
                                             <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.valorMetroQuadrado},00</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-12  col-md-6 p-2">
+                            <div className="col-6 p-2">
                                 <div className="card">
 
                                     <div className="card-body text-center">
                                         <span className="bold ">{clientData?.valuation?.valuationCalc?.areaPrivativa ? "Área privativa" : "Área total"}</span>
                                         <div className="d-flex justify-content-center align-items-center">
                                             <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.areaPrivativa ? clientData?.areaTotalPrivativa : clientData?.areaTotal}</span>
-                                            <span className="text-success ms-1 ">m²</span>
+                                            <span className="text-orange ms-1 ">m²</span>
                                         </div>
                                     </div>
                                 </div>
@@ -281,7 +227,7 @@ export default function ValuationPdf(props) {
                                     <div className="card-body text-center">
                                         <span className="bold ">Valor</span>
                                         <div className="d-flex justify-content-center align-items-center">
-                                            <span className="text-success me-1 ">R$</span>
+                                            <span className="text-orange me-1 ">R$</span>
                                             <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.valorAvaliacao},00</span>
                                         </div>
                                     </div>
@@ -290,73 +236,73 @@ export default function ValuationPdf(props) {
 
                         </div>
                     </div>
-                    <div className="col-12 d-flex justify-content-center">
+                    <div className="col-12 d-flex justify-content-center mt-5">
                         <span className=" fw-bold text-main text-center me-3">Valor de anúncio</span>
                     </div>
-                    <div className="col-12 mb-5 " >
+                    <div className="col-12  mt-3" >
 
 
-                        <div className="row d-flex justify-content-center px-2">
+                        <div className="row d-flex justify-content-center px-2 ">
                             <div className="col-4 px-1 my-1">
 
                                 <span className={`card rounded-pill shadow cardAnimation `} type="button" onClick={() => setValueSelected('curtoPrazoValue')}>
                                     <div className={"card-body text-center "}>
-                                        <div className={`${styles.cardIcon}`}>
+                                        <div className={`${styles.cardIconPdf}`}>
                                             <div style={{
                                                 backgroundColor: '#00c661',
                                             }}>
 
-                                                <FontAwesomeIcon icon={faStar} className=" fs-3 text-white" />
+                                                <FontAwesomeIcon icon={faStar} className="  text-white" />
                                             </div>
                                         </div>
 
-                                        <span className=" fw-bold me-1 fs-3 " style={{ color: "#00c661" }}>
+                                        <span className=" fw-bold me-1  " style={{ color: "#00c661" }}>
                                             Venda curto prazo
                                         </span> <br />
-                                        <span className="text-success me-1 fs-5">R$</span>
-                                        <span className="text-secondary fs-3 bold">{clientData?.valuation?.valuationCalc?.curtoPrazoValue !== 'NaN' ? clientData?.valuation?.valuationCalc?.curtoPrazoValue + ',00' : 0}</span>
+                                        <span className="text-secondary me-1 ">R$</span>
+                                        <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.curtoPrazoValue !== 'NaN' ? clientData?.valuation?.valuationCalc?.curtoPrazoValue + ',00' : 0}</span>
                                     </div>
                                 </span>
                             </div>
-                            <div className="col-12 col-xxl-4 px-1 my-1">
+                            <div className="col-4 px-1 my-1">
 
                                 <span className={`card rounded-pill shadow cardAnimation `} type="button" onClick={() => setValueSelected('valorIdealValue')}>
                                     <div className={"card-body text-center "}>
-                                        <div className={`${styles.cardIcon}`}>
+                                        <div className={`${styles.cardIconPdf}`}>
 
                                             <div style={{
                                                 backgroundColor: '#fbba27',
                                             }}>
 
-                                                <FontAwesomeIcon icon={faShoppingCart} className=" fs-3 text-white" />
+                                                <FontAwesomeIcon icon={faShoppingCart} className="  text-white" />
                                             </div>
                                         </div>
 
-                                        <span className=" fw-bold me-1 fs-3 " style={{ color: "#fbba27" }}>Venda ideal</span> <br />
-                                        <span className="text-success me-1 fs-5">R$</span>
-                                        <span className="text-secondary fs-3 bold">{clientData?.valuation?.valuationCalc?.valorIdealValue !== 'NaN' ? clientData?.valuation?.valuationCalc?.valorIdealValue + ',00' : 0}</span>
+                                        <span className=" fw-bold me-1  " style={{ color: "#fbba27" }}>Venda ideal</span> <br />
+                                        <span className="text-secondary me-1 ">R$</span>
+                                        <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.valorIdealValue !== 'NaN' ? clientData?.valuation?.valuationCalc?.valorIdealValue + ',00' : 0}</span>
                                     </div>
                                 </span>
                             </div>
-                            <div className="col-12 col-xxl-4 px-1 my-1">
+                            <div className="col-4 px-1 my-1">
 
                                 <span className={`card  rounded-pill shadow  cardAnimation `} type="button" onClick={() => setValueSelected('longoPrazoValue')}>
                                     <div className={"card-body text-center "}>
 
-                                        <div className={`${styles.cardIcon}`}>
+                                        <div className={`${styles.cardIconPdf}`}>
                                             <div style={{
                                                 backgroundColor: '#e9083f',
                                             }}>
 
-                                                <FontAwesomeIcon icon={faWarning} className=" fs-3 text-white" />
+                                                <FontAwesomeIcon icon={faWarning} className="  text-white" />
                                             </div>
                                         </div>
 
 
 
-                                        <span className=" fw-bold me-1 fs-3 " style={{ color: "#e9083f" }}>Venda longo prazo</span> <br />
-                                        <span className="text-success me-1 fs-5">R$</span>
-                                        <span className="text-secondary fs-3 bold">{clientData?.valuation?.valuationCalc?.longoPrazoValue !== 'NaN' ? clientData?.valuation?.valuationCalc?.longoPrazoValue + ',00' : 0}</span>
+                                        <span className=" fw-bold me-1  " style={{ color: "#e9083f" }}>Venda longo prazo</span> <br />
+                                        <span className="text-secondary me-1 ">R$</span>
+                                        <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.longoPrazoValue !== 'NaN' ? clientData?.valuation?.valuationCalc?.longoPrazoValue + ',00' : 0}</span>
                                     </div>
                                 </span>
                             </div>
@@ -372,6 +318,39 @@ export default function ValuationPdf(props) {
 
 
 
+
+            </div>
+            <div className={styles.page}>
+                <div className="row h-100 pb-3 ps-3">
+                    <div className="col-12 d-flex flex-column justify-content-between">
+                        <div>
+
+                        </div>
+                        <div className='d-flex justify-content-center'>
+                            <img src={userData?.logo} alt=""
+                                style={{
+                                    maxHeight: "400px",
+                                    maxWidth: "400px",
+                                    height: "auto",
+                                    width: "auto",
+                                    opacity: 0.5
+                                }} />
+                        </div>
+                        <div className="row">
+                            <div className="col-12">
+                                Para mais informações, entre em contato conosco.
+                            </div>
+                            <div className="col-12 mt-2">{userData?.companyName} - {userData?.firstName} {userData?.lastName}</div>
+                            <div className="col-12 mt-1">
+                                <FontAwesomeIcon icon={faPhone} className="me-2" /> {userData?.telefone} / {userData?.celular}
+                            </div>
+                            <div className="col-12 mt-1">
+                                <FontAwesomeIcon icon={faEnvelope} className="me-2" /> {userData?.workEmail}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
         </div>

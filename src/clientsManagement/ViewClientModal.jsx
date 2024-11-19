@@ -15,12 +15,20 @@ import Valuation from "./Valuation"
 
 export default function ViewClientModal(props) {
 
+
     const client = props.clientSelected
 
-    const [section, setSection] = useState('Informações')
+    const userData = props.userData
+
+    const modalSection = props.modalSection
+
+    const [section, setSection] = useState(modalSection || 'Informações')
 
     useEffect(() => {
-        setSection('Informações')
+        if (!modalSection) {
+
+            setSection('Informações')
+        }
     }, [client._id])
 
 
@@ -34,7 +42,7 @@ export default function ViewClientModal(props) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setSection('Informações')}></button>
                     </div>
                     <div className="modal-body-lg">
-                        <div className="container carousel slide " data-bs-touch="false" data-bs-interval='false' id="clientManage">
+                        <div className="container carousel  slide" data-bs-touch="false" data-bs-interval='false' id="clientManage">
 
                             <Sections
                                 section={section} idTarget="clientManage"
@@ -55,7 +63,7 @@ export default function ViewClientModal(props) {
                                 <div className="carousel-item ">
                                     <div className="row d-flex justify-content-center">
                                         <div className="col-12" >
-                                            <Valuation client={client} dataFunction={props.dataFunction} />
+                                            <Valuation client={client} dataFunction={props.dataFunction} userData={userData} />
 
                                         </div>
                                     </div>

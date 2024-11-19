@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Sections from "../components/Sections";
+import { generatePDF } from "../../utils/generatePdf";
 
 
 
@@ -7,6 +8,7 @@ import Sections from "../components/Sections";
 export default function ViewValuationModal(props) {
 
     const valuationUrl = props?.clientSelected?.valuation?.urlToken
+    const userData = props?.userData
 
     const token = props.token
 
@@ -66,7 +68,7 @@ export default function ViewValuationModal(props) {
                     </div>
                     <div className="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" onClick={() => props.setClientSelected('')}>Fechar</button>
-                        <button type="button" class="btn btn-orange btn-sm">Baixar PDF</button>
+                        <button type="button" class="btn btn-orange btn-sm" onClick={() => generatePDF('valuationPdf', userData?.companyName)}>Baixar PDF</button>
                         <button type="button" class="btn btn-orange btn-sm" onClick={() => handleShare(valuationUrl + '&userId=' + token.sub)}>Compartilhar apresentação</button>
                     </div>
                 </div>

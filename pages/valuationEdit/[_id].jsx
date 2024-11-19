@@ -18,6 +18,7 @@ import Link from "next/link";
 import isMobile from "../../utils/isMobile";
 import scrollTo from "../../utils/scrollTo";
 import ShowValuationModal from "../../src/valuationPage/ShowValuationModal";
+import { createImageUrlFromLink } from "../../utils/createImageUrlFromLink";
 
 
 
@@ -42,6 +43,8 @@ export default function ValuationPage(props) {
 
     const [valuationUrl, setValuationUrl] = useState('')
 
+    const [clientData, setClientData] = useState('')
+    const [userData, setUserData] = useState('')
 
 
 
@@ -79,10 +82,10 @@ export default function ValuationPage(props) {
             }
         }).then(res => {
             setClient(res.data.client)
-            console.log("valuation", res.data.client.valuation)
             setPropertyArray(res.data.client?.valuation?.propertyArray)
             setValuationCalc(res.data.client?.valuation?.valuationCalc)
             setCalcVariables(res.data.client?.valuation?.calcVariables)
+            setUserData(res.data.user)
             setLoadingPage(false)
         }).catch(e => {
             console.log(e)
@@ -119,11 +122,23 @@ export default function ValuationPage(props) {
 
             setLoadingSave(true)
 
+            const imageUrls = propertyArray
+                .filter(property => property.imageUrl) // Considerando que o campo de imagem se chama 'imageUrl'
+                .map(property => property.imageUrl);
+
+
+            const uploadedImages = await createImageUrlFromLink(imageUrls, "CLIENT_FILES"); // Substitua "nome_do_preset" pelo seu preset do Cloudinary
+
+            const updatedPropertyArray = propertyArray.map(property => {
+                const uploadedImage = uploadedImages.find(img => img.original_url === property.imageUrl);
+                return uploadedImage ? { ...property, imageUrl: uploadedImage.cloudinary_url } : property;
+            });
+
             const data = {
                 company_id,
                 user_id: token.sub,
                 client_id: _id,
-                propertyArray,
+                propertyArray: updatedPropertyArray,
                 calcVariables,
                 valuationCalc
             }
@@ -132,7 +147,7 @@ export default function ValuationPage(props) {
             await axios.post(`${baseUrl()}/api/valuation`, data)
                 .then(res => {
                     setLoadingSave(false)
-                    router.push('/clientsManagement')
+                    router.push('/clientsManagement?client_id=' + _id + '&section=Avaliação')
 
 
                 }).catch(e => {
@@ -155,13 +170,17 @@ export default function ValuationPage(props) {
             <Title title={client && client?.clientName + " " + client?.clientLastName} subtitle="Editar avaliação do imóvel" backButton='/' />
 
 
-            <ShowValuationModal valuationUrl={valuationUrl} token={token} />
 
 
             {loadingPage ?
                 <SpinnerLG />
                 :
                 <div className="pagesContent-lg shadow fadeItem" id="pageTop">
+
+
+                    <ShowValuationModal valuationUrl={valuationUrl} token={token} userData={userData} clientData={client} />
+
+
                     <div className="container carousel  " data-bs-touch="false" data-bs-interval='false' id="clientManage">
 
                         <Sections section={section} idTarget="clientManage"

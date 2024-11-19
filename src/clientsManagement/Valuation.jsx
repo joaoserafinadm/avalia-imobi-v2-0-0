@@ -11,12 +11,15 @@ import jwt from "jsonwebtoken";
 import SelectedValue from "./SelectedValue";
 import ServiceAvaliation from "./ServiceAvaliation";
 import handleShare from "../../utils/handleShare";
+import { generatePDF } from "../../utils/generatePdf";
 
 
 
 export default function Valuation(props) {
 
     const token = jwt.decode(Cookies.get("auth"));
+
+    const userData = props.userData
 
 
     const client = props.client
@@ -51,7 +54,7 @@ export default function Valuation(props) {
                 <div className="row">
                     {client?.status === 'evaluated' && (
 
-                        <div className="col-12 d-flex justify-content-end">
+                        <div className="col-12 d-flex justify-content-end mb-3">
 
                             <Link href={"/valuationEdit/" + client?._id}>
                                 <span className="span" data-bs-dismiss="modal">editar</span>
@@ -64,7 +67,7 @@ export default function Valuation(props) {
                             onClick={() => handleShare(client?.valuation?.urlToken + '&userId=' + token.sub)}>
                             Compartilhar avaliação
                         </button>
-                        <button className="btn btn-outline-orange mx-1">Baixar PDF</button>
+                        <button className="btn btn-outline-orange mx-1" onClick={() => generatePDF('valuationPdf', userData.companyName)}>Baixar PDF</button>
 
                     </div>
 

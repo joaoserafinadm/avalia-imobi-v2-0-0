@@ -14,8 +14,8 @@ export default function FinalPage(props) {
 
     const { queryClientId, queryUserId, clientData } = props
 
-    const [comment, setCommet] = useState('')
-    const [stars, setStars] = useState(0)
+    const [comment, setCommet] = useState(clientData?.valuation?.valuationComment)
+    const [stars, setStars] = useState(clientData?.valuation?.stars || 0)
 
     const [loadingSave, setLoadingSave] = useState(false)
 

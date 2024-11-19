@@ -18,6 +18,7 @@ import Link from "next/link";
 import isMobile from "../../utils/isMobile";
 import scrollTo from "../../utils/scrollTo";
 import ShowValuationModal from "../../src/valuationPage/ShowValuationModal";
+import { createImageUrlFromLink } from "../../utils/createImageUrlFromLink";
 
 
 
@@ -46,6 +47,9 @@ export default function ValuationPage(props) {
     const [section, setSection] = useState('Configurar avaliação')
 
     const [valuationUrl, setValuationUrl] = useState('')
+
+    const [clientData, setClientData] = useState('')
+    const [userData, setUserData] = useState('')
 
 
 
@@ -111,45 +115,54 @@ export default function ValuationPage(props) {
 
 
     const handleSave = async (company_id) => {
+        setSection('Configurar avaliação');
 
-        setSection('Configurar avaliação')
-
-        const isValid = validate()
+        const isValid = validate();
 
         if (isValid) {
+            setLoadingSave(true);
 
-            setLoadingSave(true)
+            // Extrai as URLs de imagem do propertyArray
+            const imageUrls = propertyArray
+                .filter(property => property.imageUrl) // Considerando que o campo de imagem se chama 'imageUrl'
+                .map(property => property.imageUrl);
 
-            const data = {
-                company_id,
-                user_id: token.sub,
-                client_id: _id,
-                propertyArray,
-                calcVariables,
-                valuationCalc
+            try {
+                // Faz o upload das imagens e obtém os novos links
+                const uploadedImages = await createImageUrlFromLink(imageUrls, "CLIENT_FILES"); // Substitua "nome_do_preset" pelo seu preset do Cloudinary
+
+                // Substitui as URLs antigas pelas novas URLs no propertyArray
+                const updatedPropertyArray = propertyArray.map(property => {
+                    const uploadedImage = uploadedImages.find(img => img.original_url === property.imageUrl);
+                    return uploadedImage ? { ...property, imageUrl: uploadedImage.cloudinary_url } : property;
+                });
+
+                // Monta o objeto de dados com o propertyArray atualizado
+                const data = {
+                    company_id,
+                    user_id: token.sub,
+                    client_id: _id,
+                    propertyArray: updatedPropertyArray,
+                    calcVariables,
+                    valuationCalc
+                };
+
+                // Envia os dados para a API
+                const response = await axios.post(`${baseUrl()}/api/valuation`, data);
+                setLoadingSave(false);
+                setValuationUrl(response.data.urlToken);
+                setClientData(response.data.clientData)
+                setUserData(response.data.userData)
+                router.push('/clientsManagement?client_id=' + _id + '&section=Avaliação')
+
+                // showModal('showValuationModal');
+
+            } catch (e) {
+                console.log("Erro ao carregar imagens ou salvar avaliação:", e);
+                setLoadingSave(false);
             }
-
-
-            await axios.post(`${baseUrl()}/api/valuation`, data)
-                .then(res => {
-                    setLoadingSave(false)
-                    setValuationUrl(res.data.urlToken)
-                    showModal('showValuationModal')
-
-
-                }).catch(e => {
-                    console.log(e)
-                    setLoadingSave(false)
-                })
-
-
-
-        } else {
-            return
         }
-
-
-    }
+    };
 
 
     return (
@@ -157,7 +170,7 @@ export default function ValuationPage(props) {
             <Title title={client && client?.clientName + " " + client?.clientLastName} subtitle="Avaliação do imóvel" backButton='/' />
 
 
-            <ShowValuationModal valuationUrl={valuationUrl} token={token} />
+            <ShowValuationModal valuationUrl={valuationUrl} token={token} userData={userData} clientData={clientData} />
 
 
             {loadingPage ?

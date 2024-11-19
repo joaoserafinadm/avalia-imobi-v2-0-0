@@ -75,7 +75,7 @@ export default function ValuationPage() {
         await axios.get(`${baseUrl()}/api/valuation/valuationView`, {
             params: data
         }).then(res => {
-            console.log(res)
+            console.log("res", res.data)
             setClientData(res.data.client)
             setUserData(res.data.user)
             setLoadingPage(false)

@@ -18,7 +18,7 @@ export default authenticated(async (req, res) => {
 
     if (req.method === "GET") {
 
-        const { company_id } = req.query
+        const { company_id, user_id } = req.query
 
         if (!company_id) {
             res.status(400).json({ message: "Missing parameters on request body" })
@@ -28,18 +28,33 @@ export default authenticated(async (req, res) => {
 
             const companyExist = await db.collection('companies').findOne({ _id: ObjectId(company_id) })
 
+            const userExist = await db.collection('users').findOne({ _id: ObjectId(user_id) })
+
             const usersArray = await db.collection('users').find({ company_id: company_id })
                 .project({ firstName: 1, lastName: 1, profileImageUrl: 1 }).toArray()
 
 
-            if (!companyExist) {
-                res.status(400).json({ message: "Company does not exist" })
+            if (!companyExist || !userExist) {
+                res.status(400).json({ message: "Company or user does not exist" })
             } else {
+
+                const userData = {
+                    firstName: userExist?.firstName,
+                    lastName: userExist?.lastName,
+                    workEmail: userExist?.workEmail,
+                    creci: userExist?.creci,
+                    telefone: userExist?.telefone,
+                    celular: userExist?.celular,
+                    profileImageUrl: userExist?.profileImageUrl,
+                    companyName: companyExist?.companyName,
+                    logo: companyExist?.logo,
+                    backgroundImageUrl: companyExist.backgroundImages.find(elem => elem._id.toString() === companyExist.backgroundImg_id)?.imageUrl,
+                }
 
 
                 const clients = companyExist.clients
 
-                res.status(200).json({clients, users: usersArray})
+                res.status(200).json({ clients, users: usersArray, userData })
 
             }
         }

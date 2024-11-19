@@ -15,7 +15,7 @@ export default function ClientFeatures(props) {
 
     const handleShowClientInfo = (elem) => {
 
-        if (elem.propertyType) return true
+        if (elem?.propertyType) return true
         else return false
     }
 

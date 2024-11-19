@@ -1,4 +1,5 @@
 
+import html2canvas from 'html2canvas'
 import styles from './valuation.module.scss'
 
 
@@ -9,6 +10,16 @@ export default function DownloadPage(props) {
         var carousel = new bootstrap.Carousel(myCarousel)
         carousel.to(1)
     }
+
+    const captureMapImage = async () => {
+        if (mapRef.current) {
+            // Captura o mapa como imagem com html2canvas
+            const canvas = await html2canvas(mapPdf, { useCORS: true });
+            const imgData = canvas.toDataURL("image/png");
+            setMapImage(imgData);
+            console.log("imgData", imgData) // Armazena a imagem capturada
+        }
+    };
 
     const generatePDF = async () => {
         if (typeof window !== 'undefined') {
@@ -23,7 +34,7 @@ export default function DownloadPage(props) {
             })));
     
             const opt = {
-                margin: 1,
+                margin: 0,
                 filename: `Avaliação - ${props.userData.companyName}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true },
@@ -60,19 +71,20 @@ export default function DownloadPage(props) {
                                         Visualizar novamente
                                     </button>
                                 </div>
-                                {/* <div className="col-12 mt-3">
-                                    <button className="btn btn-outline-secondary btn-lg" onClick={() => generatePDF()}>
-                                        Baixar PDF
-                                    </button>
-                                </div> */}
-
-
-
-                                {/* <div className="col-12 mt-3">
+                                <div className="col-12 mt-3">
                                     <span className="fs-4">
                                         Clique o botão abaixo para fazer o download do PDF completo da avaliação do seu imóvel
                                     </span>
                                 </div>
+                                <div className="col-12 mt-3">
+                                    <button className="btn btn-outline-secondary btn-lg" onClick={() => generatePDF()}>
+                                        Baixar PDF
+                                    </button>
+                                </div>
+
+
+
+                                {/* 
                                 <div className="col-12 mt-3">
 
 

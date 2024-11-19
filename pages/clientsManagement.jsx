@@ -23,6 +23,7 @@ import ViewValuationModal from "../src/clientsManagement/viewValuationModal";
 import MenuBar from "../src/components/menuBar";
 import tippy from "tippy.js";
 import { useRouter } from "next/router";
+import ValuationPdf from "../src/pages/valuation/valuationPdf";
 
 
 
@@ -35,6 +36,7 @@ export default function clientsManagement() {
     const router = useRouter()
 
     const client_id = router.query.client_id
+    const modalSection = router.query.section
 
 
     const [loadingPage, setLoadingPage] = useState(true)
@@ -46,6 +48,8 @@ export default function clientsManagement() {
     const [clientsOrder, setClientsOrder] = useState('newest')
     const [typeSearch, setTypeSearch] = useState('')
     const [statusSearch, setStatusSearch] = useState('')
+
+    const [userData, setUserData] = useState(null)
 
 
 
@@ -86,7 +90,8 @@ export default function clientsManagement() {
 
         await axios.get(`${baseUrl()}/api/clientsManagement`, {
             params: {
-                company_id: company_id
+                company_id: company_id,
+                user_id: token.sub
             }
         }).then(res => {
 
@@ -98,6 +103,7 @@ export default function clientsManagement() {
             setAllClients(newUnitsArray)
             setClientsArray(newUnitsArray)
             dispatch(usersArray(res.data.users))
+            setUserData(res.data.userData)
             setLoadingPage(false)
 
 
@@ -224,7 +230,7 @@ export default function clientsManagement() {
 
                         {/* <hr /> */}
 
-                        <div className="container carousel  " data-bs-touch="false" data-bs-interval='false' id="clientsManagementSection">
+                        <div className="container carousel  slide" data-bs-touch="false" data-bs-interval='false' id="clientsManagementSection">
                             <Sections
                                 section={section} idTarget="clientsManagementSection"
                                 setSection={value => setSection(value)}
@@ -260,12 +266,18 @@ export default function clientsManagement() {
 
                         </div>
 
+                        {clientSelected && (
+                            <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
+                                <ValuationPdf
+                                    userData={userData}
+                                    clientData={clientSelected} />
+                            </div>
+                        )}
 
 
-
-                        <ViewClientModal clientSelected={clientSelected} dataFunction={() => dataFunction(token.company_id)} />
+                        <ViewClientModal modalSection={modalSection || ''} clientSelected={clientSelected} userData={userData} dataFunction={() => dataFunction(token.company_id)} />
                         <DeleteClientModal clientSelected={clientSelected} dataFunction={() => dataFunction(token.company_id)} />
-                        <ViewValuationModal clientSelected={clientSelected} token={token} setClientSelected={value => setClientSelected(value)} />
+                        <ViewValuationModal clientSelected={clientSelected} userData={userData} token={token} setClientSelected={value => setClientSelected(value)} />
                     </>
 
                 }

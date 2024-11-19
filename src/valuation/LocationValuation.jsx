@@ -20,13 +20,15 @@ export default function LocationValuation(props) {
 
     const [zoom, setZoom] = useState(16)
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if ( newClientForm.cidade && newClientForm.uf) {
-            getCoordinates()
-        }
+        
+    //     console.log("newClientForm", newClientForm.bairro)
+    //     if ( newClientForm.cidade && newClientForm.uf) {
+    //         getCoordinates()
+    //     }
 
-    }, [newClientForm.logradouro, newClientForm.bairro, newClientForm.cidade, newClientForm.uf])
+    // }, [newClientForm.logradouro, newClientForm.bairro, newClientForm.cidade, newClientForm.uf])
 
 
 
@@ -97,6 +99,7 @@ export default function LocationValuation(props) {
                         className="form-control"
                         name="celularItem"
                         id="celularItem"
+                        onBlur={() => getCoordinates()}
                         value={newClientForm.bairro}
                         onChange={e => dispatch(setBairro(e.target.value))} />
                 </div>
@@ -108,6 +111,7 @@ export default function LocationValuation(props) {
                         className="form-control"
                         name="celularItem"
                         id="celularItem"
+                        onBlur={() => getCoordinates()}
                         value={newClientForm.cidade}
                         onChange={e => dispatch(setCidade(e.target.value))} />
                 </div>
@@ -118,7 +122,7 @@ export default function LocationValuation(props) {
 
                     <label for="geralForm" className="form-label">UF<b>*</b></label>
 
-                    <select className="form-select" placeholder="Estado" value={newClientForm.uf} onChange={(e) => dispatch(setUf(e.target.value))}>
+                    <select className="form-select" placeholder="Estado" value={newClientForm.uf} onChange={(e) => dispatch(setUf(e.target.value))} onBlur={() => getCoordinates()}>
                         <EstadosList />
                     </select>
                 </div>

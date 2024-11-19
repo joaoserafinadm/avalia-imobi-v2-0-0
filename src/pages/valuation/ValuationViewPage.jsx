@@ -28,9 +28,9 @@ export default function ValuationViewPage(props) {
     const disabled = router.query.disabled
 
 
-    const [valueSelected, setValueSelected] = useState('')
-    const [valueComment, setValueComment] = useState('')
-    const [customValue, setCustomValue] = useState('')
+    const [valueSelected, setValueSelected] = useState(clientData?.valuation?.valueSelected)
+    const [valueComment, setValueComment] = useState(clientData?.valuation?.valueComment)
+    const [customValue, setCustomValue] = useState(clientData?.valuation?.customValue)
 
 
     const [loadingSave, setLoadingSave] = useState(false)

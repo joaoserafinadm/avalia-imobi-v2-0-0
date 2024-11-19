@@ -30,26 +30,33 @@ export default async (req, res) => {
 
             } else {
 
-                const result = await db.collection('companies').updateOne(
-                    { _id: ObjectId(company_id), "clients._id": ObjectId(client_id) },
-                    {
+                if (clientExist?.valuation?.stars === stars && clientExist?.valuation?.valuationComment === comment) {
+                    res.status(200).json({ message: "valuation viewed" })
 
-                        $set: {
-                            "clients.$.valuation.stars": stars,
-                            "clients.$.valuation.valuationComment": comment
-                        },
-
-
-                    })
-
-                if (result.matchedCount > 0) {
-
-                    res.status(200).json({ message: "valuation updated" })
                 } else {
 
-                    res.status(400).json({ error: 'Error on updating valuation' })
-                }
 
+                    const result = await db.collection('companies').updateOne(
+                        { _id: ObjectId(company_id), "clients._id": ObjectId(client_id) },
+                        {
+
+                            $set: {
+                                "clients.$.valuation.stars": stars,
+                                "clients.$.valuation.valuationComment": comment
+                            },
+
+
+                        })
+
+                    if (result.matchedCount > 0) {
+
+                        res.status(200).json({ message: "valuation updated" })
+                    } else {
+
+                        res.status(400).json({ error: 'Error on updating valuation' })
+                    }
+
+                }
 
 
 

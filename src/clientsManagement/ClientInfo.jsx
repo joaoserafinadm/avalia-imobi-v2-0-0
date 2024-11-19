@@ -55,7 +55,11 @@ export default function ClientInfo(props) {
     return (
         <>
             <div className="row">
-
+                <div className="col-12 d-flex justify-content-end  mb-3">
+                    <Link href={`/clientEdit/${client?._id}`} onClick={() => console.log("edit", client)}>
+                        <span className="span">editar</span>
+                    </Link>
+                </div>
                 {
                     client?.files?.length === 0 ?
                         <div className="col-12 my-2 d-flex justify-content-center ">
@@ -104,11 +108,7 @@ export default function ClientInfo(props) {
 
                 }
 
-                <div className="col-12 d-flex justify-content-end">
-                    <Link href={`/clientEdit/${client?._id}`} onClick={() => console.log("edit", client)}>
-                        <span className="span">editar</span>
-                    </Link>
-                </div>
+
                 <div className="col-12  col-md-6 d-flex  justify-content-center my-2">
                     <PropertyTypeCard type={client?.propertyType} />
                 </div>

@@ -38,10 +38,26 @@ export default authenticated(async (req, res) => {
             const userExist = await db.collection('users').findOne({ _id: ObjectId(user_id) })
             const clientExist = companyExist.clients.find(elem => elem._id.toString() === client_id)
 
+
+
             if (!companyExist || !userExist || !clientExist) {
                 res.status(400).json({ message: "Company or user or client does not exist" })
             } else {
-                res.status(200).json({ client: clientExist })
+
+                const userData = {
+                    firstName: userExist?.firstName,
+                    lastName: userExist?.lastName,
+                    workEmail: userExist?.workEmail,
+                    creci: userExist?.creci,
+                    telefone: userExist?.telefone,
+                    celular: userExist?.celular,
+                    profileImageUrl: userExist?.profileImageUrl,
+                    companyName: companyExist?.companyName,
+                    logo: companyExist?.logo,
+                    backgroundImageUrl: companyExist?.backgroundImages.find(elem => elem._id.toString() === companyExist.backgroundImg_id)?.imageUrl,
+                }
+
+                res.status(200).json({ client: clientExist, userData })
             }
         }
 
@@ -99,20 +115,35 @@ export default authenticated(async (req, res) => {
                     }
 
 
-                    const result = await db.collection('companies').updateOne(
+                    const result = await db.collection('companies').findOneAndUpdate(
                         { _id: ObjectId(company_id), "clients._id": ObjectId(client_id) },
                         {
                             $set: {
                                 "clients.$.valuation": data,
                                 "clients.$.status": "evaluated"
                             }
-                        }
-                    )
+                        },
+                        { returnDocument: 'after' } // Retorna o documento atualizado
+                    );
 
-                    console.log("result", result)
+                    console.log(result.value)
+
+                    const userData = {
+                        firstName: userExist?.firstName,
+                        lastName: userExist?.lastName,
+                        workEmail: userExist?.workEmail,
+                        creci: userExist?.creci,
+                        telefone: userExist?.telefone,
+                        celular: userExist?.celular,
+                        profileImageUrl: userExist?.profileImageUrl,
+                        companyName: companyExist?.companyName,
+                        logo: companyExist?.logo,
+                        backgroundImageUrl: companyExist?.backgroundImages.find(elem => elem._id.toString() === companyExist.backgroundImg_id)?.imageUrl,
+                    }
+
 
                     if (result) {
-                        res.status(200).json({ urlToken })
+                        res.status(200).json({ urlToken, userData, client: clientExist })
                     } else {
                         res.status(400).json({ message: "Valuation not created" })
                     }

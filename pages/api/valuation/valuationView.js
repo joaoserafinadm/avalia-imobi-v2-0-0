@@ -12,7 +12,6 @@ export default async (req, res) => {
 
         const { user_id, client_id } = req.query
 
-        console.log("req.body", user_id, client_id)
 
         if (!user_id || !client_id) {
             res.status(400).json({ error: 'Missing parameters on request body.' })
@@ -76,50 +75,78 @@ export default async (req, res) => {
                 res.status(400).json({ error: 'User or company or client does not exist' })
 
             } else {
+                console.log("clientExist?.valuation", clientExist?.valuation)
 
-                const valuationCalc = {
-                    ...clientExist?.valuation?.valuationCalc,
-                    customValue: valueSelected === "customValue" ? customValue : ''
-                }
+                console.log("clientExist?.valuation?.valueSelected", clientExist?.valuation?.valueSelected, valueSelected)
+                console.log("clientExist?.valuation?.valueComment", clientExist?.valuation?.valueComment, valueComment)
+                console.log("clientExist?.valuation?.valuationCalc?.customValue", clientExist?.valuation?.valuationCalc?.customValue, customValue)
 
-                const result = await db.collection('companies').updateOne(
-                    { _id: ObjectId(company_id), "clients._id": ObjectId(client_id) },
-                    {
-
-                        $set: {
-                            "clients.$.valuation.valueSelected": valueSelected,
-                            "clients.$.valuation.valueComment": valueComment,
-                            "clients.$.valuation.valuationCalc": valuationCalc,
-                            "clients.$.status": 'answered',
-                            "clients.$.valuation.status": 'answered'
-                        },
-
-
-                    })
-
-                if (result.matchedCount > 0) {
-
-                    const notification = {
-                        user_id: userExist._id,
-                        subject: "clientUpdated",
-                        title: 'Avaliação respondida!',
-                        text: `A avaliação de '${clientExist.clientName}' foi respondida! Clique aqui para visualizá-la`,
-                        imageUrl: "https://res.cloudinary.com/joaoserafinadm/image/upload/v1718336973/AVALIA%20IMOBI/NOTIFICATION_IMG/jtfhhsqrgg5xar3nnhvh.png",
-                        link: "https://app.avaliaimobi.com.br/clientsManagement?client_id=" + client_id,
-                    }
-
-                    await axios.post(`${baseUrl()}/api/notifications`, {
-                        user_id: userExist._id,
-                        notification: notification
-                    })
-
-
-                    res.status(200).json({ message: "valuation updated" })
+                if (valueSelected === clientExist?.valuation?.valueSelected &&
+                    valueComment === clientExist?.valuation?.valueComment &&
+                    (customValue === clientExist?.valuation?.valuationCalc?.customValue || !customValue )
+                ) {
+                    res.status(200).json({ message: "valuation viewed" })
                 } else {
 
-                    res.status(400).json({ error: 'Error on updating valuation' })
-                }
 
+                    const valuationCalc = {
+                        ...clientExist?.valuation?.valuationCalc,
+                        customValue: valueSelected === "customValue" ? customValue : ''
+                    }
+
+                    const result = await db.collection('companies').updateOne(
+                        { _id: ObjectId(company_id), "clients._id": ObjectId(client_id) },
+                        {
+
+                            $set: {
+                                "clients.$.valuation.valueSelected": valueSelected,
+                                "clients.$.valuation.valueComment": valueComment,
+                                "clients.$.valuation.valuationCalc": valuationCalc,
+                                "clients.$.status": 'answered',
+                                "clients.$.valuation.status": 'answered'
+                            },
+
+
+                        })
+
+                    if (result.matchedCount > 0) {
+
+                        let notification
+
+                        if (clientExist?.valuation?.valueSelected) {
+                            notification = {
+                                user_id: userExist._id,
+                                subject: "clientUpdated",
+                                title: 'Avaliação respondida!',
+                                text: `A avaliação de '${clientExist.clientName}' foi atualizada! Clique aqui para visualizá-la`,
+                                imageUrl: "https://res.cloudinary.com/joaoserafinadm/image/upload/v1718336973/AVALIA%20IMOBI/NOTIFICATION_IMG/jtfhhsqrgg5xar3nnhvh.png",
+                                link: "https://app.avaliaimobi.com.br/clientsManagement?client_id=" + client_id,
+                            }
+                        } else {
+                            notification = {
+                                user_id: userExist._id,
+                                subject: "clientUpdated",
+                                title: 'Avaliação respondida!',
+                                text: `A avaliação de '${clientExist.clientName}' foi respondida! Clique aqui para visualizá-la`,
+                                imageUrl: "https://res.cloudinary.com/joaoserafinadm/image/upload/v1718336973/AVALIA%20IMOBI/NOTIFICATION_IMG/jtfhhsqrgg5xar3nnhvh.png",
+                                link: "https://app.avaliaimobi.com.br/clientsManagement?client_id=" + client_id,
+                            }
+                        }
+
+                        await axios.post(`${baseUrl()}/api/notifications`, {
+                            user_id: userExist._id,
+                            notification: notification
+                        })
+
+
+                        res.status(200).json({ message: "valuation updated" })
+
+                    } else {
+
+                        res.status(400).json({ error: 'Error on updating valuation' })
+                    }
+
+                }
 
 
 
