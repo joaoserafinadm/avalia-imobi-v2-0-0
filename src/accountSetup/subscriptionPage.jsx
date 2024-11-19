@@ -56,6 +56,17 @@ export default function SubscriptionPage(props) {
 
     return (
         <div className="fadeItem">
+            {!companyData?.active && +companyData?.errorStatus === 2(
+
+                <div className="row">
+
+                    <div className="col-12">
+                        <div className="alert alert-danger">
+                            <span>Sua assinatura está inativa!</span>
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className="row ">
                 <div className="col-12 col-md-3 pt-3">
                     <span className="fs-4 text-bold text-orange" >Assinatura</span> <br />

@@ -16,6 +16,7 @@ import useSWR from 'swr'
 import api from "../../../utils/api";
 import DateLimitModal from "./components/dateLimitModal";
 import { useRouter } from "next/router";
+import InactiveAccountModal from "./components/inactiveAccountModal";
 
 
 export default function MainLayout({ children }) {
@@ -47,7 +48,7 @@ export default function MainLayout({ children }) {
                 showModal('dateLimitModal')
             }
             if (data.data?.errorStatus === 2 && !modal.classList.contains('show')) {
-                showModal('dateLimitModal')
+                showModal('inactiveAccountModal')
             }
         }
 
@@ -107,6 +108,8 @@ export default function MainLayout({ children }) {
 
 
             <DateLimitModal />
+
+            <InactiveAccountModal />
 
 
         </body>
