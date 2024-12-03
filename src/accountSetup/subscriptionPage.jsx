@@ -56,7 +56,7 @@ export default function SubscriptionPage(props) {
 
     return (
         <div className="fadeItem">
-            {!companyData?.active && +companyData?.errorStatus === 2(
+            {!companyData?.active && +companyData?.errorStatus === 2 &&(
 
                 <div className="row">
 
