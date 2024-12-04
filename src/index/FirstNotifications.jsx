@@ -84,6 +84,9 @@ export default function FirstNotifications(props) {
                                 <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faStore} className="me-2" />Imobiliária</button>
                             </Link>
                         </div>
+                        <span className="mt-2">
+                            Clique no botão abaixo para acessar vídeos tutoriais com um passo a passo completo sobre como usar o aplicativo.
+                        </span>
                         <div className=" mt-2">
                             <Link href="/tutorials">
                                 <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faBook} className="me-2" />Tutoriais</button>
