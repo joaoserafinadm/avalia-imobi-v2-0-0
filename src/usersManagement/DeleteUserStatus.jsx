@@ -37,7 +37,7 @@ export default function DeleteUserStatus(props) {
         let valuePerUser = +usersCount <= 5 ? 19.90 : 14.90
         let tax = +usersCount <= 5 ? 60 : 65
 
-        const newValueResult = valuePerUser * (usersCount + 1) + tax
+        const newValueResult = valuePerUser * (usersCount - 1) + tax
 
         setNewValue(newValueResult.toFixed(2))
 
