@@ -31,6 +31,8 @@ export default authenticated(async (req, res) => {
         const companyExist = await db.collection('companies').findOne({ _id: ObjectId(company_id) });
         const userExist = await db.collection('users').findOne({ _id: ObjectId(user_id) });
 
+        const usersCount = await db.collection('users').find({ company_id: company_id }).count();
+
         if (!companyExist || !userExist) {
             return res.status(400).json({ message: "Company or user not found" });
         }
@@ -106,7 +108,7 @@ export default authenticated(async (req, res) => {
                     {
                         price: priceId || "price_1QG0jUAtBT5rPxqpQCXP2ahk", // ID do preço que você já criou
                         // price: "price_1QFpnoAtBT5rPxqpGUp7j2qc", // ID do preço que você já criou
-                        quantity: 1,
+                        quantity: usersCount,
                     },
                 ],
                 metadata: { company_id: company_id },

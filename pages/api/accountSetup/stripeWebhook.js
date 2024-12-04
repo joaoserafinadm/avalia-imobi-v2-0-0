@@ -93,8 +93,6 @@ const webhookHandler = async (req, res) => {
         if (event.type === 'customer.subscription.updated') {
             const invoice = event.data.object;
             console.log("invoice", invoice);
-
-
         }
 
         if (event.type === 'invoice.payment_failed') {
@@ -151,7 +149,7 @@ const webhookHandler = async (req, res) => {
                 {
                     $set: {
                         "paymentData.status": "canceled",
-                        "paymentData.subscriptionId": subscriptionId,
+                        "paymentData.subscriptionId": '',
                         "active": false,
                         "errorStatus": 2,
                         "dateLimit": false
