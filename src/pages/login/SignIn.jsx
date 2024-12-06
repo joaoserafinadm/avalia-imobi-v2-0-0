@@ -10,6 +10,14 @@ import { SpinnerSM } from "../../components/loading/Spinners";
 import Cookies from "js-cookie";
 import { signIn, signOut, useSession } from 'next-auth/react'
 
+
+function isInWebView() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /Instagram|FBAN|FBAV/.test(userAgent); // Detecta WebView do Instagram ou Facebook
+}
+
+
+
 export default function signInPage(props) {
 
     const router = useRouter()
@@ -23,6 +31,7 @@ export default function signInPage(props) {
     const [password, setPassword] = useState("");
     
     //RENDER
+    const [isWebView, setIsWebView] = useState(false);
     const [loadedImages, setLoadedImages] = useState(0);
     const [singInLoading, setSignInLoading] = useState(false);
     const [loadingGoogle, setLoadingGoogle] = useState(false);
@@ -31,9 +40,14 @@ export default function signInPage(props) {
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [googleAuthError, setGoogleAuthError] = useState(false);
+
     
     
     useEffect(() => {
+
+         setIsWebView(isInWebView());
+
+        
         if (session) {
             // console.log("session", session)
             handleGoogleLogin(session)
@@ -245,7 +259,7 @@ export default function signInPage(props) {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <button className="btn btn-outline-secondary" disabled={loadingGoogle} onClick={() => { setLoadingGoogle(true); signIn('google') }}>
+                                        <button className="btn btn-outline-secondary" disabled={loadingGoogle} onClick={() => { setLoadingGoogle(true); signIn('google') }} disabled={isWebView}>
                                             <div className="row ">
                                                 <div className="col-12 d-flex text-center justify-content-center align-items-center">
                                                     {/* <div className="icon-start"> */}
@@ -265,8 +279,12 @@ export default function signInPage(props) {
                                                 </div>
                                             </div>
                                         </button>
+                                        {isWebView && (
+                     <div className="col-12 fadeItem">
+                                                <p className="small ">O login com o Google não é suportado neste ambiente. Por favor, abra este link em um navegador externo como <strong>Chrome</strong> ou <strong>Safari</strong>.</p>
+                                            </div>
+                                        )}
                                         {googleAuthError && (
-
                                             <div className="col-12 fadeItem">
                                                 <p className="small text-danger">Não existe uma conta cadastrada com esse e-mail. Clique <span className="span" type="button" onClick={() => { props.setSection("signUp"); setGoogleAuthError(false) }}>aqui</span> para se cadastrar.</p>
                                             </div>
