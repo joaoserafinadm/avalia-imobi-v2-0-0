@@ -315,9 +315,9 @@ export default function companyEdit() {
                                                         src={handleHeaderIgmPreview(backgroundImg_id)} alt="header image" id="headerImgItem"
                                                         data-bs-toggle="modal" data-bs-target="#ImageHeaderModal" />
                                                     :
-                                                    <img src="https://res.cloudinary.com/joaoserafinadm/image/upload/v1695601556/PUBLIC/3_weeijf.png"
-                                                        alt="" className="headerImgEdit fadeItem"
-                                                        type="button" data-bs-toggle="modal" data-bs-target="#ImageHeaderModal" />
+                                                    <button className="btn btn-orange" data-bs-toggle="modal" data-bs-target="#ImageHeaderModal" >
+                                                        Selecionar imagem
+                                                    </button>
                                                 }
                                             </div>
 

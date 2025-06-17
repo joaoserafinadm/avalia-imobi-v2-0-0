@@ -155,7 +155,6 @@ export default function ImageHeaderModal(props) {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title title-dark" id="ImageHeaderModalLabel">
-                                <FontAwesomeIcon icon={faCrop} className="me-2 text-primary" />
                                 {currentSlide === 0 ? 'Imagem de capa' : 'Ajustar imagem'}
                             </h5>
                             <div className="d-flex align-items-center">
