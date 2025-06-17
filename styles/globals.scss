@@ -799,6 +799,7 @@ $akvo-color-hover: #4f5459;
 
 .cardAnimation:hover {
   transform: translate(1px, -3px);
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.14);
 }
 
 .akvo_CardHeader {
@@ -3111,7 +3112,7 @@ h1 {
 }
 
 .small {
-  font-size: 12px;
+  font-size: 13px !important;
 }
 
 .title {
@@ -3345,4 +3346,9 @@ h1 {
 }
 .zIndexMin {
   z-index: -1000001;
+}
+
+
+.border-orange {
+  border-color: var(--ai-primary) !important;
 }

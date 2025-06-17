@@ -39,7 +39,7 @@ export default function UsersCard(props) {
             <div className="card-body">
                 <div className="row  d-flex  ">
 
-                    <Link href='/clientsManagement'>
+                    <Link href='/usersManagement'>
 
                         <div className="col-12 d-flex justify-content-between align-items-center">
 

@@ -157,7 +157,7 @@ export default function companyEdit() {
 
         removeInputError()
 
-        if (!companyName  || !cidade || !celular || !email) {
+        if (!companyName || !cidade || !celular || !email) {
             if (!companyName) document.getElementById("companyNameItem").classList.add('inputError')
             if (!celular) document.getElementById("celularItem").classList.add('inputError')
             if (!cidade) document.getElementById("cidadeItem").classList.add('inputError')
@@ -268,7 +268,11 @@ export default function companyEdit() {
                                             <label className=" fw-bold">Logo</label>
                                             <label htmlFor="logoItem" className="span" type='button'>Editar</label>
                                         </div>
-                                        <StyledDropzone setFiles={array => { handleFileChange(array[0]) }} img>
+                                        <div>
+                                            <span className="small">Esta imagem será usada em seu cartão de visitas e nas suas apresentações.</span>
+
+                                        </div>
+                                        <StyledDropzone setFiles={array => { handleFileChange(array[0]) }} img baseStyle={(logo || logoPreview) ? false : true}>
                                             <div className="row mt-3 d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
 
                                                 <div className="col-12 d-flex justify-content-center align-items-center" >
@@ -279,9 +283,10 @@ export default function companyEdit() {
                                                             {logo ?
                                                                 <img src={logo} alt="logo" id="logoItem" className="logoEdit fadeItem" />
                                                                 :
-                                                                <img src="https://res.cloudinary.com/joaoserafinadm/image/upload/v1695257785/PUBLIC/companyLogoTemplate_xoeyar.png"
-                                                                    alt="" className="logoEdit"
-                                                                    type="button" />
+                                                                
+                                                                            <small className="text-center small">
+                                                                                Clique aqui ou arraste a imagem
+                                                                            </small>
                                                             }
                                                         </>
                                                     }
@@ -297,6 +302,10 @@ export default function companyEdit() {
                                         <div className="d-flex justify-content-between">
                                             <span className=" fw-bold" data-bs-toggle="modal" data-bs-target="#ImageHeaderModal">Imagem de capa</span>
                                             <span className="span" type='button' data-bs-toggle="modal" data-bs-target="#ImageHeaderModal">Editar</span>
+                                        </div>
+                                        <div>
+                                            <span className="small">Esta imagem será usada em seu cartão de visitas e nas suas apresentações.</span>
+
                                         </div>
 
                                         <div className="row mt-3 d-flex justify-content-center align-items-center" style={{ height: '150px' }}>

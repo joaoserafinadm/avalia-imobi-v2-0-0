@@ -10,18 +10,18 @@ import { Accordion } from "react-bootstrap";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import { AccordionContext } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { 
-  faAngleRight, 
-  faBook, 
-  faCommentAlt, 
-  faGear, 
-  faHome, 
-  faHouseUser, 
-  faShop, 
-  faUser, 
-  faUserGear, 
-  faUserTie, 
-  faUsers 
+import {
+    faAngleRight,
+    faBook,
+    faCommentAlt,
+    faGear,
+    faHome,
+    faHouseUser,
+    faShop,
+    faUser,
+    faUserGear,
+    faUserTie,
+    faUsers
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,17 +35,22 @@ export default function Nav(props) {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    function ContextAwareToggle({ children, eventKey, callback }) {
+    function ContextAwareToggle({ children, eventKey, callback, id }) {
         const { activeEventKey } = useContext(AccordionContext);
         const decoratedOnClick = useAccordionButton(
             eventKey,
             () => callback && callback(eventKey)
         );
-        const isCurrentEventKey = activeEventKey === eventKey;
+        // const isCurrentEventKey = activeEventKey === eventKey;
+
+        console.log("children", id, window.location.pathname)
+
+        const isCurrentPath = window.location.pathname === id;
+        const isCurrentEventKey = activeEventKey === eventKey || isCurrentPath;
 
         return (
             <div
-                className={`${styles.menuItem} ${isCurrentEventKey ? styles.menuItemActive : ''}`}
+                className={`${styles.menuItem} ${isCurrentPath ? styles.menuItemActive : ''}`}
                 onClick={decoratedOnClick}
             >
                 {children}
@@ -59,41 +64,46 @@ export default function Nav(props) {
                 {/* Toggle e Logo - mantidos inalterados */}
                 <Toggle />
                 <Logo />
-                
+
                 {/* Profile Section */}
                 <div className={`${styles.profileSection} fadeItem`}>
-                    <div className={styles.profileContainer}>
-                        {/* Profile Image */}
-                        <Link href={`/editProfile`}>
-                            <div className={styles.profileImageWrapper}>
-                                <img
-                                    src={token.profileImageUrl}
-                                    alt="User profile picture"
-                                    className={styles.profileImage}
-                                />
-                                <div className={styles.onlineIndicator}></div>
-                            </div>
-                        </Link>
-                        
-                        {/* User Info */}
-                        <div className={styles.userInfo}>
-                            <h3 className={styles.userName}>
-                                {token.firstName} {token.lastName}
-                            </h3>
-                            <div className={styles.userStatus}>
-                                <FontAwesomeIcon 
-                                    icon={token.userStatus === "admGlobal" ? faUserGear : faUserTie} 
-                                    className={styles.userStatusIcon}
-                                />
-                                <span>
-                                    {token.userStatus === 'admGlobal' ? 'Administrador' : 'Corretor'}
-                                </span>
+                    <Link href={`/editProfile`}>
+
+                        <div className={styles.companySection}>
+
+                            <div className={styles.profileContainer}>
+                                {/* Profile Image */}
+                                <div className={styles.profileImageWrapper}>
+                                    <img
+                                        src={token.profileImageUrl || "/USER.png"}
+                                        alt="User profile picture"
+                                        className={styles.profileImage}
+                                    />
+                                    <div className={styles.onlineIndicator}></div>
+                                </div>
+
+                                {/* User Info */}
+
+                                <div className={styles.userInfo}>
+                                    <h3 className={styles.userName}>
+                                        {token.firstName} {token.lastName}
+                                    </h3>
+                                    <div className={styles.userStatus}>
+                                        <FontAwesomeIcon
+                                            icon={token.userStatus === "admGlobal" ? faUserGear : faUserTie}
+                                            className={styles.userStatusIcon}
+                                        />
+                                        <span>
+                                            {token.userStatus === 'admGlobal' ? 'Administrador' : 'Corretor'}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
+                    </Link>
+
                     {/* Company Info */}
-                    {(token.logo || token.companyName) && (
+                    {(token.logo || token.companyName) ?
                         <Link href="/companyEdit">
                             <div className={styles.companySection}>
                                 {token.logo ? (
@@ -109,13 +119,21 @@ export default function Nav(props) {
                                 )}
                             </div>
                         </Link>
-                    )}
+                        :
+                        <Link href="/companyEdit">
+                            <div className={styles.companySection}>
+                                <span className={styles.companyName}>
+                                    Cadastrar Imobiliária
+                                </span>
+                            </div>
+                        </Link>
+                    }
                 </div>
 
                 {/* Navigation Menu */}
                 <div className={styles.navigationWrapper}>
                     <Scrollbars
-                        style={{ height: "calc(100vh - 200px)" }}
+                        style={{ height: "calc(100vh - 220px)" }}
                         autoHide
                         autoHideTimeout={3000}
                         autoHideDuration={200}
@@ -130,7 +148,7 @@ export default function Nav(props) {
                             <Accordion defaultActiveKey="0">
                                 {/* Início */}
                                 <div className={styles.navItem}>
-                                    <ContextAwareToggle eventKey="0">
+                                    <ContextAwareToggle eventKey="0" id="/">
                                         <div className={styles.navLink} onClick={() => router.push('/')}>
                                             <div className={styles.navIcon}>
                                                 <FontAwesomeIcon icon={faHome} />
@@ -141,8 +159,8 @@ export default function Nav(props) {
                                 </div>
 
                                 {/* Meu Perfil */}
-                                <div className={styles.navItem}>
-                                    <ContextAwareToggle eventKey="1">
+                                {/* <div className={styles.navItem}>
+                                    <ContextAwareToggle eventKey="1" id="/editProfile">
                                         <div className={styles.navLink} onClick={() => router.push('/editProfile')}>
                                             <div className={styles.navIcon}>
                                                 <FontAwesomeIcon icon={faUser} />
@@ -150,12 +168,12 @@ export default function Nav(props) {
                                             <span className={styles.navLabel}>Meu perfil</span>
                                         </div>
                                     </ContextAwareToggle>
-                                </div>
+                                </div> */}
 
                                 {/* Imobiliária - apenas para admGlobal */}
-                                {token.userStatus === "admGlobal" && (
+                                {/* {token.userStatus === "admGlobal" && (
                                     <div className={styles.navItem}>
-                                        <ContextAwareToggle eventKey="2">
+                                        <ContextAwareToggle eventKey="2" id="/companyEdit">
                                             <div className={styles.navLink} onClick={() => router.push('/companyEdit')}>
                                                 <div className={styles.navIcon}>
                                                     <FontAwesomeIcon icon={faShop} />
@@ -164,11 +182,11 @@ export default function Nav(props) {
                                             </div>
                                         </ContextAwareToggle>
                                     </div>
-                                )}
+                                )} */}
 
                                 {/* Clientes */}
                                 <div className={styles.navItem}>
-                                    <ContextAwareToggle eventKey="3">
+                                    <ContextAwareToggle eventKey="3" id="/clientsManagement">
                                         <div className={styles.navLinkWithSubmenu}>
                                             <div className={styles.navIcon}>
                                                 <FontAwesomeIcon icon={faHouseUser} />
@@ -194,8 +212,8 @@ export default function Nav(props) {
                                 </div>
 
                                 {/* Usuários */}
-                                <div className={styles.navItem}>
-                                    <ContextAwareToggle eventKey="4">
+                                <div className={styles.navItem} >
+                                    <ContextAwareToggle eventKey="4" id="/usersManagement">
                                         <div className={styles.navLinkWithSubmenu}>
                                             <div className={styles.navIcon}>
                                                 <FontAwesomeIcon icon={faUsers} />
@@ -224,7 +242,7 @@ export default function Nav(props) {
 
                                 {/* Configurações */}
                                 <div className={styles.navItem}>
-                                    <ContextAwareToggle eventKey="5">
+                                    <ContextAwareToggle eventKey="5" id="/passwordChange">
                                         <div className={styles.navLinkWithSubmenu}>
                                             <div className={styles.navIcon}>
                                                 <FontAwesomeIcon icon={faGear} />
@@ -250,8 +268,8 @@ export default function Nav(props) {
                                 </div>
 
                                 {/* Tutoriais */}
-                                <div className={styles.navItem}>
-                                    <ContextAwareToggle eventKey="6">
+                                <div className={styles.navItem} >
+                                    <ContextAwareToggle eventKey="6" id="/tutorials">
                                         <div className={styles.navLink} onClick={() => router.push('/tutorials')}>
                                             <div className={styles.navIcon}>
                                                 <FontAwesomeIcon icon={faBook} />
@@ -262,8 +280,8 @@ export default function Nav(props) {
                                 </div>
 
                                 {/* Fale Conosco */}
-                                <div className={`${styles.navItem} ${styles.lastNavItem}`}>
-                                    <ContextAwareToggle eventKey="7">
+                                <div className={`${styles.navItem} ${styles.lastNavItem} `} style={{marginBotton: "100px"}}>
+                                    <ContextAwareToggle eventKey="7" id="/sac">
                                         <div className={styles.navLink} onClick={() => router.push('/sac')}>
                                             <div className={styles.navIcon}>
                                                 <FontAwesomeIcon icon={faCommentAlt} />
@@ -277,12 +295,12 @@ export default function Nav(props) {
                     </Scrollbars>
                 </div>
 
-                
+
             </div>
-            
+
             {!window2Mobile() && toggleStatus === true && (
-                <div 
-                    className={`fadeItem ${styles.navbarBackground}`} 
+                <div
+                    className={`fadeItem ${styles.navbarBackground}`}
                     onClick={() => dispatch(toggleBarChange(toggleStatus))}
                 />
             )}
