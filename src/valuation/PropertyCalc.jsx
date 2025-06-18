@@ -42,18 +42,17 @@ export default function PropertyCalc(props) {
         <div className="col-12 my-5 fadeItem">
             <label htmlFor="" className="fw-bold mb-2">Cálculo</label>
             <div className="alert bg-orange">
-
-                    <div className="col-12 my-1">
-                        <span>
-                            &#x25CF; O cálculo retornará 3 valores que serão utilizados para estimar o valor ideal de venda do imóvel: <b>valor ideal</b>, <b>venda curto prazo</b> e <b>venda longo prazo</b>.
-                        </span>
-                    </div>
-                    <div className="col-12 my-1">
-                        <span>
-                            &#x25CF; Ajuste os valores conforme necessário.
-                        </span>
-                    </div>
+                <div className="col-12 my-1">
+                    <span>
+                        &#x25CF; A avaliação irá gerar três valores de referência para o imóvel: <b>Valor Ideal</b>, <b>Valor para Venda Rápida</b> e <b>Valor para Venda a Longo Prazo</b>.
+                    </span>
                 </div>
+                <div className="col-12 my-1">
+                    <span>
+                        &#x25CF; Você poderá ajustar esses valores conforme sua estratégia de venda ou conhecimento de mercado.
+                    </span>
+                </div>
+            </div>
 
             <div className="row">
                 <div className="col-12">
@@ -102,7 +101,7 @@ export default function PropertyCalc(props) {
                             <span className="text-orange me-1 fs-5">R$</span>
                             <span className="text-secondary fs-4 bold">{valuationCalc?.valorIdealValue !== 'NaN' ? valuationCalc?.valorIdealValue + ',00' : 0}</span>
                             <div className="d-flex mt-3">
-                                <input type="range" class="form-range" min="-50" max="50" step="1" id="valorIdealRange" value={calcVariables?.valorIdealRange} onChange={(e) => props.setCalcVariables({ ...calcVariables, valorIdealRange: e.target.value })}/>
+                                <input type="range" class="form-range" min="-50" max="50" step="1" id="valorIdealRange" value={calcVariables?.valorIdealRange} onChange={(e) => props.setCalcVariables({ ...calcVariables, valorIdealRange: e.target.value })} />
                                 <span class="badge bg-secondary ms-1">{calcVariables?.valorIdealRange}%</span>
                             </div>
                         </div>
