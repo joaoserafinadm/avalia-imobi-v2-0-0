@@ -41,7 +41,19 @@ export default function PropertyCalc(props) {
     return (
         <div className="col-12 my-5 fadeItem">
             <label htmlFor="" className="fw-bold mb-2">Cálculo</label>
-            {/*  */}
+            <div className="alert bg-orange">
+
+                    <div className="col-12 my-1">
+                        <span>
+                            &#x25CF; O cálculo retornará 3 valores que serão utilizados para estimar o valor ideal de venda do imóvel: <b>valor ideal</b>, <b>venda curto prazo</b> e <b>venda longo prazo</b>.
+                        </span>
+                    </div>
+                    <div className="col-12 my-1">
+                        <span>
+                            &#x25CF; Ajuste os valores conforme necessário.
+                        </span>
+                    </div>
+                </div>
 
             <div className="row">
                 <div className="col-12">

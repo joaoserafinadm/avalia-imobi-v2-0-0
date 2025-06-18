@@ -11,7 +11,7 @@ import ClientsManagementSections from "../src/clientsManagement/ClientsManagemen
 import Pagination from "../src/clientsManagement/Pagination";
 import ClientsPage from "../src/clientsManagement/ClientsPage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faHouseMedical, faHouseMedicalCircleCheck, faSearch, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import navbarHide from "../utils/navbarHide";
 import { useDispatch } from "react-redux";
 import DeleteClientModal from "../src/clientsManagement/DeleteClientModal";
@@ -150,15 +150,15 @@ export default function clientsManagement() {
 
     return (
         <div >
-            <Title title={'Gestão de Clientes'} backButton='/' />
+            <Title title={'Gestão de Imóveis'} backButton='/' />
 
             <div className="pagesContent-lg shadow fadeItem" id="pageTop">
                 <div className="row">
                     <div className="col-12 d-flex justify-content-end ">
 
                         <Link href='/clientAdd'>
-                            <button className="btn btn-sm btn-orange" id="teste">
-                                <FontAwesomeIcon icon={faUserPlus} /> Adicionar Cliente
+                            <button className="btn  btn-orange" id="teste">
+                                <FontAwesomeIcon icon={faHouseMedical} /> Adicionar Imóvel
                             </button>
                         </Link>
                     </div>
