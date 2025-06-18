@@ -103,15 +103,17 @@ export default function Nav(props) {
                     </Link>
 
                     {/* Company Info */}
-                    {(token.logo || token.companyName) ?
+                    {(token.logo || token.companyName) ? (
                         <Link href="/companyEdit">
                             <div className={styles.companySection}>
                                 {token.logo ? (
-                                    <img
-                                        src={token.logo}
-                                        className={styles.companyLogo}
-                                        alt="Company logo"
-                                    />
+                                    <div className={styles.logoWrapper} >
+                                        <img
+                                            src={token.logo}
+                                            className={styles.companyLogo}
+                                            alt="Company logo"
+                                        />
+                                    </div>
                                 ) : (
                                     <span className={styles.companyName}>
                                         {token.companyName}
@@ -119,7 +121,7 @@ export default function Nav(props) {
                                 )}
                             </div>
                         </Link>
-                        :
+                    ) : (
                         <Link href="/companyEdit">
                             <div className={styles.companySection}>
                                 <span className={styles.companyName}>
@@ -127,7 +129,7 @@ export default function Nav(props) {
                                 </span>
                             </div>
                         </Link>
-                    }
+                    )}
                 </div>
 
                 {/* Navigation Menu */}
@@ -191,7 +193,7 @@ export default function Nav(props) {
                                             <div className={styles.navIcon}>
                                                 <FontAwesomeIcon icon={faHouseUser} />
                                             </div>
-                                            <span className={styles.navLabel}>Clientes</span>
+                                            <span className={styles.navLabel}>Imóveis</span>
                                             <FontAwesomeIcon icon={faAngleRight} className={styles.expandIcon} />
                                         </div>
                                     </ContextAwareToggle>
@@ -199,12 +201,12 @@ export default function Nav(props) {
                                         <div className={styles.submenu}>
                                             <Link href={`/clientAdd`}>
                                                 <div className={styles.submenuItem}>
-                                                    <span>Adicionar cliente</span>
+                                                    <span>Adicionar imóvel</span>
                                                 </div>
                                             </Link>
                                             <Link href={`/clientsManagement`}>
                                                 <div className={styles.submenuItem}>
-                                                    <span>Gestão de clientes</span>
+                                                    <span>Gestão de imóveis</span>
                                                 </div>
                                             </Link>
                                         </div>
@@ -280,7 +282,7 @@ export default function Nav(props) {
                                 </div>
 
                                 {/* Fale Conosco */}
-                                <div className={`${styles.navItem} ${styles.lastNavItem} `} style={{marginBotton: "100px"}}>
+                                <div className={`${styles.navItem} ${styles.lastNavItem} `} style={{ marginBotton: "100px" }}>
                                     <ContextAwareToggle eventKey="7" id="/sac">
                                         <div className={styles.navLink} onClick={() => router.push('/sac')}>
                                             <div className={styles.navIcon}>

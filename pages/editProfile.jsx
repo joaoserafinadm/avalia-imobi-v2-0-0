@@ -138,7 +138,7 @@ export default function EditProfile() {
 
         if (!workEmail || !firstName || !lastName || !celular || !creci) {
             // if (!profileImageUrl) document.getElementById("profileImageUrlItem").classList.add('inputError')
-            if (!workEmail) document.getElementById("workEmailItem").classList.add('inputError')
+            if (!workEmail) document.getElementById("secondaEmailItem").classList.add('inputError')
             if (!firstName) document.getElementById("firstNameItem").classList.add('inputError')
             if (!lastName) document.getElementById("lastNameItem").classList.add('inputError')
             if (!celular) document.getElementById("celularItem").classList.add('inputError')
@@ -317,37 +317,37 @@ export default function EditProfile() {
 
                                     </div>
                                     <div className="row mt-3">
-                                        <label for="firstNameItem" className="form-label fw-bold">Identificação*</label>
+                                        <label for="firstNameItem" className="form-label fw-bold">Identificação</label>
                                         <div className="col-12 col-lg-4 my-2">
-                                            <label for="firstNameItem" className="form-label ">Nome*</label>
-                                            <input type="text" className="form-control form-control-sm" id="firstNameItem" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="" />
+                                            <label for="firstNameItem" className="form-label ">Nome *</label>
+                                            <input type="text" className="form-control " id="firstNameItem" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="" />
                                         </div>
                                         <div className="col-12 col-lg-4 my-2">
-                                            <label for="LastNameItem" className="form-label ">Sobrenome*</label>
-                                            <input type="text" className="form-control form-control-sm" id="lastNameItem" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="" />
+                                            <label for="LastNameItem" className="form-label ">Sobrenome *</label>
+                                            <input type="text" className="form-control " id="lastNameItem" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="" />
                                         </div>
                                         <div className="col-12 col-lg-4 my-2">
-                                            <label for="creciItem" className="form-label ">Creci*</label>
-                                            <input type="text" className="form-control form-control-sm" id="creciItem" value={creci} onChange={e => setCreci(e.target.value)} placeholder="" />
+                                            <label for="creciItem" className="form-label ">Creci *</label>
+                                            <input type="text" className="form-control " id="creciItem" value={creci} onChange={e => setCreci(e.target.value)} placeholder="" />
                                         </div>
                                     </div>
                                     <div className="row mt-3">
                                         <label for="workEmailItem" className="form-label fw-bold">Contato</label>
                                         <div className="col-12 col-lg-6 my-2">
                                             <label for="workEmailItem" className="form-label ">E-mail de cadastro</label>
-                                            <input type="text" className="form-control form-control-sm" disabled id="workEmailItem" value={Email} onChange={e => setEmail(e.target.value)} placeholder="" />
+                                            <input type="text" className="form-control " disabled id="workEmailItem" value={Email} onChange={e => setEmail(e.target.value)} placeholder="" />
                                         </div>
                                         <div className="col-12 col-lg-6 my-2">
-                                            <label for="secondaEmailItem" className="form-label ">E-mail de trabalho*</label>
-                                            <input type="text" className="form-control form-control-sm" id="secondaEmailItem" value={workEmail} onChange={e => setWorkEmail(e.target.value)} placeholder="" />
+                                            <label for="secondaEmailItem" className="form-label ">E-mail de trabalho *</label>
+                                            <input type="text" className="form-control " id="secondaEmailItem" value={workEmail} onChange={e => setWorkEmail(e.target.value)} placeholder="" />
                                         </div>
                                         <div className="col-12 col-lg-6 my-2">
                                             <label for="telefoneItem" className="form-label ">Telefone</label>
-                                            <input type="text" className="form-control form-control-sm" id="telefoneItem" value={telefone} onChange={e => maskTelefone(e.target.value)} placeholder="" />
+                                            <input type="text" className="form-control " id="telefoneItem" value={telefone} onChange={e => maskTelefone(e.target.value)} placeholder="" />
                                         </div>
                                         <div className="col-12 col-lg-6 my-2">
-                                            <label for="telefoneItem" className="form-label ">Celular*</label>
-                                            <input type="text" className="form-control form-control-sm" id="celularItem" value={celular} onChange={e => maskCelular(e.target.value)} placeholder="" />
+                                            <label for="telefoneItem" className="form-label ">Celular *</label>
+                                            <input type="text" className="form-control " id="celularItem" value={celular} onChange={e => maskCelular(e.target.value)} placeholder="" />
                                         </div>
                                     </div>
                                 </div>

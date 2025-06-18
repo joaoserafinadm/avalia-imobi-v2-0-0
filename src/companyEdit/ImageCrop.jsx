@@ -355,7 +355,7 @@ export default function ImageCrop({
                 {/* Crop Area */}
                 <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center p-3 position-relative">
                     <div
-                        className="position-relative overflow-hidden border border-light rounded"
+                        className="position-relative overflow-hidden border border-secondary rounded"
                         style={{
                             width: cropArea.width,
                             height: cropArea.height,
@@ -390,20 +390,21 @@ export default function ImageCrop({
                         <div className="position-absolute top-0 start-0 w-100 h-100 pointer-events-none">
                             <svg width="100%" height="100%" className="opacity-50">
                                 <defs>
-                                    <pattern id="grid" width="33.333%" height="33.333%" patternUnits="objectBoundingBox">
-                                        <path d="M 33.333 0 L 33.333 33.333 M 0 33.333 L 33.333 33.333"
+                                    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                                        <path d="M 50 0 L 50 50 M 0 50 L 50 50"
                                             fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
                                     </pattern>
                                 </defs>
                                 <rect width="100%" height="100%" fill="url(#grid)" />
                             </svg>
                         </div>
+
                     </div>
 
                     {/* Aspect ratio info */}
                     <div className="mt-2 text-center">
                         <small className="text-muted">
-                            Formato: {aspectRatio.toFixed(2)}:1 ({cropArea.width}×{cropArea.height}px)
+                            Formato: {aspectRatio.toFixed(2)}:1 ({cropArea.width.toFixed(0)}×{cropArea.height.toFixed(0)}px)
                         </small>
                     </div>
                 </div>
@@ -493,7 +494,7 @@ export default function ImageCrop({
                         </div>
                     </div>
 
-                    
+
                 </div>
 
                 {/* Action Buttons */}

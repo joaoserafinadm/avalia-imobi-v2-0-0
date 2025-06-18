@@ -18,26 +18,37 @@ export default function CropperImageModal(props) {
     })
 
     function getCroppedImg() {
-        const canvas = document.createElement('canvas');
-        const scaleX = image.naturalWidth / image.width;
-        const scaleY = image.naturalHeight / image.height;
-        canvas.width = crop.width * scaleX;
-        canvas.height = crop.height * scaleY;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(
-            image,
-            crop.x * scaleX,
-            crop.y * scaleY,
-            crop.width * scaleX,
-            crop.height * scaleY,
-            0,
-            0,
-            crop.width * scaleX,
-            crop.height * scaleY,
-        );
-        const base64Image = canvas.toDataURL('image/png');
-        props.setResult(base64Image)
-    }
+    const canvas = document.createElement('canvas');
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+
+    // Se não há crop válido, usar a imagem inteira
+    const isCropValid = crop?.width && crop?.height;
+
+    const cropX = isCropValid ? crop.x * scaleX : 0;
+    const cropY = isCropValid ? crop.y * scaleY : 0;
+    const cropWidth = isCropValid ? crop.width * scaleX : image.naturalWidth;
+    const cropHeight = isCropValid ? crop.height * scaleY : image.naturalHeight;
+
+    canvas.width = cropWidth;
+    canvas.height = cropHeight;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(
+        image,
+        cropX,
+        cropY,
+        cropWidth,
+        cropHeight,
+        0,
+        0,
+        cropWidth,
+        cropHeight
+    );
+
+    const base64Image = canvas.toDataURL('image/png');
+    props.setResult(base64Image);
+}
 
     return (
         <div className="modal fade" id="cropperImageModal" tabIndex="-1" aria-labelledby="ImageHeaderModalLabel" aria-hidden="true">

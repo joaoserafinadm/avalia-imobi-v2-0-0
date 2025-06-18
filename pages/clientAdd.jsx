@@ -37,7 +37,7 @@ export default function clientAdd() {
     const router = useRouter()
 
 
-    const [manualRegister, setManualRegister] = useState(false)
+    const [manualRegister, setManualRegister] = useState(true)
 
     const [loadingSave, setLoadingSave] = useState(false)
 
@@ -93,7 +93,7 @@ export default function clientAdd() {
                 dispatch(addAlert(alertsArray, [alert]))
 
 
-                router.push('/clientsManagement')
+                router.push(`/valuation/${res.data.id}`)
             }).catch(e => {
                 setLoadingSave(false)
             })
@@ -144,7 +144,7 @@ export default function clientAdd() {
 
     return (
         <div >
-            <Title title={'Adicionar cliente'} backButton />
+            <Title title={'Cadastrar imóvel'} backButton />
             <div className="pagesContent shadow fadeItem" id="pageTop">
                 <div className="row d-flex  mt-3">
                     <div className="col-12">
@@ -155,7 +155,7 @@ export default function clientAdd() {
 
                     <div className="col-6 my-2 ">
 
-                        <label for="geralForm" className="form-label">Nome<b>*</b></label>
+                        <label for="geralForm" className="form-label">Nome do cliente <b>*</b></label>
                         <input
                             type="text"
                             className="form-control"
@@ -166,7 +166,7 @@ export default function clientAdd() {
                     </div>
                     <div className="col-6 my-2 ">
 
-                        <label for="geralForm" className="form-label">Sobrenome</label>
+                        <label for="geralForm" className="form-label">Sobrenome <small className="small">(opcional)</small></label>
                         <input
                             type="text"
                             className="form-control"
@@ -179,7 +179,7 @@ export default function clientAdd() {
                         <>
                             <div className="col-6 my-2 fadeItem">
 
-                                <label for="geralForm" className="form-label">Celular<b>*</b></label>
+                                <label for="geralForm" className="form-label">Celular <b>*</b></label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -190,7 +190,7 @@ export default function clientAdd() {
                             </div>
                             <div className="col-6 my-2 fadeItem">
 
-                                <label for="geralForm" className="form-label">E-mail</label>
+                                <label for="geralForm" className="form-label">E-mail <small className="small">(opcional)</small></label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -292,8 +292,8 @@ export default function clientAdd() {
 
 
                             {manualRegister ?
-
-                                <button className="btn btn-sm btn-secondary ms-2 fadeItem" onClick={() => setManualRegister(false)}>Cadastro simplificado</button>
+                                <></>
+                                // <button className="btn btn-sm btn-secondary ms-2 fadeItem" onClick={() => setManualRegister(false)}>Cadastro simplificado</button>
                                 :
                                 <button className="btn btn-sm btn-secondary ms-2 fadeItem" onClick={() => setManualRegister(true)}>Cadastro manual</button>
 

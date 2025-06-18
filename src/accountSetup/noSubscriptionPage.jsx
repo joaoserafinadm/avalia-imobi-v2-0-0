@@ -55,11 +55,11 @@ export default function NoSubscriptionPage(props) {
             </div>
             <div className="col-12 d-flex justify-content-center">
                 {loading ?
-                    <button className="btn btn-orange" disabled >
+                    <button className="btn btn-orange btn-lg" disabled >
                         Acessando checkout... <SpinnerSM className="ms-1" />
                     </button>
                     :
-                    <button className="btn btn-orange pulse" onClick={handleStripe} >
+                    <button className="btn btn-orange btn-lg pulse" onClick={handleStripe} >
                         Assinar o Avalia Imobi!
                     </button>
 

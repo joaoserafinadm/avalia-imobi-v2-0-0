@@ -68,7 +68,7 @@ export default async function (req, res) {
 
 
                     if (result.matchedCount > 0) {
-                        res.status(200).json({ success: 'Client updated successfully' })
+                        res.status(200).json({ success: 'Client updated successfully', id:newId })
                     } else {
                         res.status(400).json({ error: 'Error updating client' })
                     }

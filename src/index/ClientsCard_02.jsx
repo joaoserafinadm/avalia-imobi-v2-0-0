@@ -47,7 +47,7 @@ export default function ClientsCard_02(props) {
 
                         <div className="col-12 d-flex justify-content-between align-items-center">
 
-                            <span className="fs-3 bold text-orange">Clientes</span>
+                            <span className="fs-3 bold text-orange">Imóveis</span>
                             <span className=" text-secondary small d-flex align-items-center span fw-bold">
                                 Acessar<Icons icon="a-r" className="ms-1" />
                             </span>
@@ -109,11 +109,11 @@ export default function ClientsCard_02(props) {
                             {!props.loading ?
                                 <div className="row my-5 fadeItem">
                                     <div className="col-12 d-flex justify-content-center text-center " >
-                                        <span className="small text-secondary">Nenhum cliente cadastrado</span>
+                                        <span className="small text-secondary">Nenhum imóvel cadastrado</span>
                                     </div>
                                     <div className="col-12 d-flex justify-content-center text-center " >
-                                        <Link href={'/clientsManagement'}>
-                                            <button className="btn btn-orange">Cadastrar cliente</button>
+                                        <Link href={'/clientAdd'}>
+                                            <button className="btn btn-orange">Cadastrar imóvel</button>
                                         </Link>
                                     </div>
                                 </div>

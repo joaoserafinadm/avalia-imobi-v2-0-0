@@ -18,7 +18,7 @@ export default function LastClientsCard(props) {
 
         <div className="row d-flex mt-3  " >
             <span className="fw-bold text-light">
-                Ultimos clientes cadastrados
+                Ultimos imóveis cadastrados
             </span>
             {loading ?
                 <SpinnerLG />
@@ -58,7 +58,7 @@ export default function LastClientsCard(props) {
                                                 <div>
                                                     <Link href={'/clientsManagement'}>
                                                         <button className="btn btn-outline-orange">
-                                                            Visualizar todos os clientes
+                                                            Visualizar todos os imóveis
                                                         </button>
                                                     </Link>
                                                 </div>
@@ -71,7 +71,7 @@ export default function LastClientsCard(props) {
                         </Swiper>
                         :
                         <div className="col-12 d-flex justify-content-center text-center py-5">
-                            <span className="text-white small">Nenhum cliente cadastrado</span>
+                            <span className="text-white small">Nenhum imóvel cadastrado</span>
 
                         </div>
                     }

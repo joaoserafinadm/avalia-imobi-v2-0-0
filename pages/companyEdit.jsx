@@ -251,7 +251,7 @@ export default function companyEdit() {
                 :
                 <>
 
-                    <CropperImageModal selectFile={selectFile} setResult={value => setLogoPreview(value)} />
+                    <CropperImageModal selectFile={selectFile} setResult={value => {setLogoPreview(value);console.log("value", value)}} />
 
 
                     <ImageHeaderModal backgroundImages={backgroundImages} backgroundImg_id={backgroundImg_id} setBackgroundImg_id={value => setBackgroundImg_id(value)} backgroundImagesData={() => backgroundImagesData(token.company_id)} />
@@ -272,7 +272,7 @@ export default function companyEdit() {
                                             <span className="small">Esta imagem será usada em seu cartão de visitas e nas suas apresentações.</span>
 
                                         </div>
-                                        <StyledDropzone setFiles={array => { handleFileChange(array[0]) }} img baseStyle={(logo || logoPreview) ? false : true}>
+                                        <StyledDropzone setFiles={array => { handleFileChange(array[0]) }} img baseStyle={(!logo && !logoPreview) ? true : false}>
                                             <div className="row mt-3 d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
 
                                                 <div className="col-12 d-flex justify-content-center align-items-center" >
@@ -340,10 +340,12 @@ export default function companyEdit() {
                                     <div className="row">
                                         <label for="companyNameItem" className="form-label fw-bold">Imobiliária</label>
                                         <div className="col-12 col-lg-8 my-2">
-                                            <input type="text" className="form-control form-control-sm" id="companyNameItem" value={companyName} onChange={e => setCompanyName(e.target.value)} placeholder="Nome da Imobiliária *" />
+                                            <label htmlFor="companyNameItem">Nome da Imobiliária *</label>
+                                            <input type="text" className="form-control" id="companyNameItem" value={companyName} onChange={e => setCompanyName(e.target.value)} placeholder="Digite aqui..." />
                                         </div>
                                         <div className="col-12 col-lg-4 my-2">
-                                            <input type="text" className="form-control form-control-sm" id="companyCreciItem" value={companyCreci} onChange={e => setCompanyCreci(e.target.value)} placeholder="Creci" />
+                                            <label htmlFor="companyCreciItem">Creci da Imobiliária</label>
+                                            <input type="text" className="form-control" id="companyCreciItem" value={companyCreci} onChange={e => setCompanyCreci(e.target.value)} placeholder="Creci" />
                                         </div>
                                     </div>
                                     {!window2Mobile() && (<hr />)}
@@ -351,22 +353,27 @@ export default function companyEdit() {
                                     <div className="row mt-3">
                                         <label for="cepItem" className="form-label fw-bold">Endereço</label>
                                         <div className="col-12 col-lg-4 my-2">
-                                            <input type="text" className="form-control form-control-sm" id="cepItem" value={cep} onChange={e => maskCep(e.target.value)} onBlur={e => onBlurCep(e)} placeholder="CEP" />
+                                            <label htmlFor="cepItem">CEP</label>
+                                            <input type="text" className="form-control" id="cepItem" value={cep} onChange={e => maskCep(e.target.value)} onBlur={e => onBlurCep(e)} placeholder="CEP" />
                                         </div>
                                         <div className="col-12 col-lg-8 my-2">
-                                            <input type="text" className="form-control form-control-sm" id="logradouroItem" value={logradouro} onChange={e => setLogradouro(e.target.value)} placeholder="Logradouro" />
+                                            <label htmlFor="logradouroItem">Logradouro</label>
+                                            <input type="text" className="form-control" id="logradouroItem" value={logradouro} onChange={e => setLogradouro(e.target.value)} placeholder="Logradouro" />
                                         </div>
                                         <div className="col-12 col-lg-4 my-2">
-                                            <input type="text" className="form-control form-control-sm" id="numeroItem" value={numero} onChange={e => setNumero(e.target.value)} placeholder="Número" />
+                                            <label htmlFor="bairroItem">Número</label>
+                                            <input type="text" className="form-control" id="numeroItem" value={numero} onChange={e => setNumero(e.target.value)} placeholder="Número" />
                                         </div>
                                         <div className="col-12 col-lg-6 my-2">
-                                            <input type="text" className="form-control form-control-sm" id="cidadeItem" value={cidade} onChange={e => setCidade(e.target.value)} placeholder="Cidade *" />
+                                            <label htmlFor="cidadeItem">Cidade *</label>
+                                            <input type="text" className="form-control" id="cidadeItem" value={cidade} onChange={e => setCidade(e.target.value)} placeholder="Cidade *" />
                                         </div>
                                         <div className="col-12 col-lg-2 my-2">
-                                            <select className="form-select form-select-sm" placeholder="Estado" value={estado} onChange={(e) => setEstado(e.target.value)}>
+                                            <label htmlFor="estadoItem">Estado *</label>
+                                            <select className="form-select " placeholder="Estado" value={estado} onChange={(e) => setEstado(e.target.value)}>
                                                 <EstadosList />
                                             </select>
-                                            {/* <input type="text" className="form-control form-control-sm" id="estadoItem" value={estado} onChange={e => setEstado(e.target.value)} placeholder="Estado *" /> */}
+                                            {/* <input type="text" className="form-control" id="estadoItem" value={estado} onChange={e => setEstado(e.target.value)} placeholder="Estado *" /> */}
                                         </div>
                                     </div>
                                     {!window2Mobile() && (<hr />)}
@@ -374,15 +381,21 @@ export default function companyEdit() {
                                     <div className="row mt-3">
                                         <label for="telefoneItem" className="form-label fw-bold">Contatos</label>
                                         <div className="col-12 col-lg-6 my-2">
-                                            <input type="text" className="form-control form-control-sm" id="telefoneItem" value={telefone} onChange={e => maskTelefone(e.target.value)} placeholder="Telefone" />
+                                            <label htmlFor="telefoneItem">Telefone</label>
+                                            <input type="text" className="form-control" id="telefoneItem" value={telefone} onChange={e => maskTelefone(e.target.value)} placeholder="Telefone" />
                                         </div>
                                         <div className="col-12 col-lg-6 my-2">
-                                            <input type="text" className="form-control form-control-sm" id="celularItem" value={celular} onChange={e => maskCelular(e.target.value)} placeholder="Celular *" />
+                                            <label htmlFor="celularItem">Celular *</label>
+                                            <input type="text" className="form-control" id="celularItem" value={celular} onChange={e => maskCelular(e.target.value)} placeholder="Celular *" />
                                         </div>
                                         <div className="col-12 col-lg-12 my-2">
-                                            <input type="text" className="form-control form-control-sm" id="emailItem" value={email} onChange={e => setEmail(e.target.value)} placeholder="E-mail *" />
+                                            <label htmlFor="emailItem">E-mail *</label>
+                                            <input type="text" className="form-control" id="emailItem" value={email} onChange={e => setEmail(e.target.value)} placeholder="E-mail *" />
                                         </div>
                                     </div>
+                                    <span className="small">
+                                        * Campos obrigatórios
+                                    </span>
                                 </div>
                             </div>
                         </div>

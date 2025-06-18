@@ -35,10 +35,10 @@ export default function PortraitCard(props) {
                         {props.email}
                     </span>
                 </div>
-                <div className="col-12 mt-4 d-flex justify-content-center">
+                <div className="col-12 mt-3 d-flex justify-content-center">
                     <img src={props.logo} alt="" style={{
-                        maxHeight: "50px",
-                        maxWidth: "130px",
+                        maxHeight: "100px",
+                        maxWidth: "230px",
                         height: "auto",
                         width: "auto"
                     }} />

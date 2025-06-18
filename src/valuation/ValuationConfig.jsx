@@ -25,6 +25,24 @@ export default function ValuationConfig(props) {
         <>
             <div className="col-12">
                 <label htmlFor="" className="fw-bold mb-2">Imóveis para comparação</label>
+                <div className="alert bg-orange">
+
+                    <div className="col-12 my-1">
+                        <span>
+                            &#x25CF; Esta avaliação utiliza o <strong>método comparativo direto</strong>, uma técnica que estima o valor de um imóvel com base na análise de imóveis semelhantes.
+                        </span>
+                    </div>
+                    <div className="col-12 my-1">
+                        <span>
+                           &#x25CF; Para obter um valor justo de mercado, adicione <strong>imóveis</strong> com características <strong>semelhantes</strong> ao imóvel avaliado. 
+                        </span>
+                    </div>
+                    <div className="col-12 my-1">
+                        <span>
+                           &#x25CF; O sistema calculará o <strong>preço ideal</strong> de venda com base nessas comparações.
+                        </span>
+                    </div>
+                </div>
 
                 <PropertyCollection
                     propertyArray={props.propertyArray}

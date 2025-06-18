@@ -102,28 +102,38 @@
     transition: all 0.2s ease;
     text-align: center;
     backdrop-filter: blur(10px);
-    
-    &:hover {
-        background: rgba(255, 255, 255, 0.15);
-        transform: translateY(-1px);
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    .companyLogo {
-        max-height: 24px;
-        max-width: 100px;
-        height: auto;
-        width: auto;
-        object-fit: contain;
-    }
-    
-    .companyName {
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: rgba(255, 255, 255, 0.95);
-        line-height: 1.2;
-    }
 }
+
+.companySection:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logoWrapper {
+    background-color: rgba(255, 255, 255, 0.85); /* fundo para destacar o logo */
+    border-radius: 0.5rem;
+    padding: 6px;
+    display: inline-block;
+}
+
+.companyLogo {
+    max-height: 40px;
+    max-width: 200px;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    border: 1px solid rgba(0, 0, 0, 0.08); /* borda sutil */
+    border-radius: 4px;
+}
+
+.companyName {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.2;
+}
+
 
 // Navigation
 .navigationWrapper {
