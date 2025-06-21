@@ -23,6 +23,12 @@ export default function ValuationConfig(props) {
 
     return (
         <>
+             <PropertyAddModal
+                    client={client}
+                    setPropertyArray={value => props.setPropertyArray(value)}
+                    setForceUpdate={() => setForceUpdate(forceUpdate + 1)}
+                    propertyArray={props.propertyArray} />
+                    
             <div className="col-12">
                 <label htmlFor="" className="fw-bold mb-2">Imóveis para comparação</label>
                 <div className="alert bg-orange">
@@ -51,11 +57,7 @@ export default function ValuationConfig(props) {
 
 
 
-                <PropertyAddModal
-                    client={client}
-                    setPropertyArray={value => props.setPropertyArray(value)}
-                    setForceUpdate={() => setForceUpdate(forceUpdate + 1)}
-                    propertyArray={props.propertyArray} />
+           
             </div>
 
             {props.propertyArray.length > 0 && (

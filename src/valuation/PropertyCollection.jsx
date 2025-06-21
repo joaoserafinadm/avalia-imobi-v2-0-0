@@ -27,7 +27,7 @@ export default function PropertyCollection(props) {
                     slidesPerView={1}
                     pagination={{ clickable: false }}
                     navigation>
-                    <div className="row px-2 d-flex" style={{ height: '100%' }}>
+                    <div className="row px-2 d-flex justify-content-center" style={{ height: '100%' }}>
 
 
                         {propertyArray.map((elem, index) => {

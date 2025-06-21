@@ -53,7 +53,7 @@ export default function ViewClientModal(props) {
                                 <div className="carousel-item active">
                                     <div className="row d-flex justify-content-center">
                                         <div className="col-12" >
-                                            <ClientInfo client={client} />
+                                            <ClientInfo client={client} valuationButton/>
 
                                         </div>
                                     </div>

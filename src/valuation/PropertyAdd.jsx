@@ -114,6 +114,8 @@ export default function PropertyAddModal(props) {
 
 
     const handleGetInfo = async (e) => {
+
+        if(!newClientForm.propertyLink) return
         setLinkError('');
         setLoadingImage(true);
         setImageUrl('');
@@ -300,8 +302,8 @@ export default function PropertyAddModal(props) {
 
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-sm btn-secondary" data-bs-dismiss="modal" onClick={() => clearValues()}>Cancelar</button>
-                        <button type="button" className="btn btn-sm btn-orange" data-bs-dismiss="modal" onClick={() => handlePropertyAdd(newClientForm)}>Salvar</button>
+                        <button type="button" className="btn  btn-secondary" data-bs-dismiss="modal" onClick={() => clearValues()}>Cancelar</button>
+                        <button type="button" className="btn  btn-orange" data-bs-dismiss="modal" onClick={() => handlePropertyAdd(newClientForm)}>Salvar</button>
                     </div>
                 </div>
             </div>
