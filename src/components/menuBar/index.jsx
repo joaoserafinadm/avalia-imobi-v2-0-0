@@ -42,7 +42,7 @@ export default function MenuBar(props) {
         {
             href: '/clientsManagement',
             icon: faHomeUser,
-            label: 'Clientes',
+            label: 'Imóveis',
             path: '/clientsManagement'
         },
         {
