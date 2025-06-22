@@ -258,23 +258,23 @@ $shadow-color: rgba(90, 90, 90, 0.15);
 }
 
 // Modo escuro (opcional)
-@media (prefers-color-scheme: dark) {
-    .container {
-        background: linear-gradient(135deg, $dark-gray 0%, #4a4a4a 100%);
-        border-top-color: $secondary-orange;
-    }
+// @media (prefers-color-scheme: dark) {
+//     .container {
+//         background: linear-gradient(135deg, $dark-gray 0%, #4a4a4a 100%);
+//         border-top-color: $secondary-orange;
+//     }
     
-    .menuLink {
-        color: $light-gray;
+//     .menuLink {
+//         color: $light-gray;
         
-        &:hover {
-            color: $secondary-orange;
-        }
+//         &:hover {
+//             color: $secondary-orange;
+//         }
         
-        &.active {
-            .label {
-                color: $secondary-orange;
-            }
-        }
-    }
-}
+//         &.active {
+//             .label {
+//                 color: $secondary-orange;
+//             }
+//         }
+//     }
+// }
