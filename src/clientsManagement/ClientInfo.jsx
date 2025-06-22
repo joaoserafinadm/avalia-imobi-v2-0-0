@@ -67,6 +67,7 @@ export default function ClientInfo(props) {
             rgba(250, 169, 84, 0.05)
           );
           position: relative;
+          border-radius: 20px ;
         }
 
         .edit-button-modern {
@@ -213,16 +214,11 @@ export default function ClientInfo(props) {
         .info-section {
           background: rgba(255, 255, 255, 0.7);
           backdrop-filter: blur(10px);
-          border-radius: 16px;
           margin-bottom: 25px;
-          border: 1px solid rgba(245, 135, 79, 0.1);
           transition: all 0.3s ease;
         }
 
-        .info-section:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        }
+      
 
         .section-title {
           color: #5a5a5a;
@@ -446,6 +442,8 @@ export default function ClientInfo(props) {
         {/* Conteúdo Principal */}
         <div >
           {/* Informações Específicas do Tipo de Propriedade */}
+
+          <hr />
           <div className="info-section">
             {client?.propertyType === "Apartamento" && (
               <ClientInfoApartamento client={client} />
@@ -461,7 +459,7 @@ export default function ClientInfo(props) {
             )}
           </div>
 
-          <hr className="divider" />
+          <hr  />
 
           {/* Características Gerais */}
           <div className="info-section">
@@ -475,6 +473,7 @@ export default function ClientInfo(props) {
             </div>
           </div>
 
+<hr />
           {/* Observações */}
           <div className="info-section">
             <h3 className="section-title"><MessageSquare className="me-2" size={20}/> Observações</h3>
@@ -487,7 +486,7 @@ export default function ClientInfo(props) {
             />
           </div>
 
-          <hr className="divider" />
+          <hr  />
 
           {/* Localização */}
           <div className="info-section">
