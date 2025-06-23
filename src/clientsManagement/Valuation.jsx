@@ -4,7 +4,7 @@ import ValuationPropertyCalc from "./ValuationPropertyCalc";
 import ValuationStatus from "./ValuationStatus";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserGear, faUserTie, faShare, faDownload, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faUserGear, faUserTie, faShare, faDownload, faEdit, faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { userStatusName } from "../../utils/permissions";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
@@ -12,6 +12,7 @@ import SelectedValue from "./SelectedValue";
 import ServiceAvaliation from "./ServiceAvaliation";
 import handleShare from "../../utils/handleShare";
 import { generatePDF } from "../../utils/generatePdf";
+import { useState } from "react";
 
 export default function Valuation(props) {
     const token = jwt.decode(Cookies.get("auth"));
@@ -20,6 +21,47 @@ export default function Valuation(props) {
     const propertyArray = props?.client?.valuation?.propertyArray;
     const users = useSelector(state => state.users);
     const valuationUser = users?.find(elem => elem._id === client?.valuation?.user_id);
+
+    const [shareButton, setShareButton] = useState(false);
+    const [copied, setCopied] = useState(false);
+
+     const shareUrl = `${client?.valuation?.urlToken}?userId=${token.sub}`;
+    
+    const handleCopyLink = async (url) => {
+        try {
+            await navigator.clipboard.writeText(url);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000); // Reset após 2 segundos
+        } catch (err) {
+            console.error('Erro ao copiar link:', err);
+            // Fallback para navegadores mais antigos
+            const textArea = document.createElement('textarea');
+            textArea.value = url;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
+
+    const handleShareNative = async (url) => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: `Avaliação - ${userData.companyName}`,
+                    text: 'Confira esta avaliação',
+                    url: url,
+                });
+            } catch (err) {
+                console.error('Erro ao compartilhar:', err);
+            }
+        } else {
+            // Fallback: abrir opções de compartilhamento manual
+            handleCopyLink(client?.valuation?.urlToken + '&userId=' + token.sub);
+        }
+    };
 
     return (
         <>
@@ -308,36 +350,93 @@ export default function Valuation(props) {
                 <div className="">
                     <div className="actions-header d-flex justify-content-between">
                         <div className="d-flex">
-
                             <button
                                 className="action-button-modern me-2"
-                                onClick={() => handleShare(client?.valuation?.urlToken + '&userId=' + token.sub)}
+                                onClick={() => setShareButton(true)}
                             >
                                 <FontAwesomeIcon icon={faShare} />
                                 Compartilhar
                             </button>
 
                             <button
-                                className="action-button-modern "
+                                className="action-button-modern"
                                 onClick={() => generatePDF('valuationPdf', userData.companyName)}
                             >
                                 <FontAwesomeIcon icon={faDownload} />
                                 Baixar PDF
                             </button>
                         </div>
-                        {/* {client?.status === 'evaluated' && ( */}
-                            <div>
-                                <Link href={"/valuationEdit/" + client?._id} >
-                                <button className="btn  btn-outline-orange" data-bs-dismiss="modal">
 
+                        <div>
+                            <Link href={"/valuationEdit/" + client?._id}>
+                                <button className="btn btn-outline-orange" data-bs-dismiss="modal">
                                     Editar Avaliação
                                 </button>
-                                </Link>
-                            </div>
-                        {/* )} */}
-
-                        
+                            </Link>
+                        </div>
                     </div>
+
+                    {shareButton && (
+                        <div className="row fadeItem mt-3">
+                            <div className="col-12">
+                                <div className="alert alert-secondary">
+                                    <div className="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 className="mb-0">Compartilhar Avaliação</h6>
+                                        <button
+                                            type="button"
+                                            className="btn-close"
+                                            onClick={() => setShareButton(false)}
+                                            aria-label="Fechar"
+                                        ></button>
+                                    </div>
+
+                                    {/* Campo do link */}
+                                    <div className="input-group mb-3">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={client?.valuation?.urlToken + '&userId=' + token.sub}
+                                            readOnly
+                                            placeholder="Link para compartilhamento"
+                                        />
+                                        <button
+                                            className="btn btn-outline-secondary"
+                                            type="button"
+                                            onClick={() =>handleCopyLink(client?.valuation?.urlToken + '&userId=' + token.sub)}
+                                        >
+                                            <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
+                                            {copied ? 'Copiado!' : 'Copiar'}
+                                        </button>
+                                    </div>
+
+                                    {/* Botões de ação */}
+                                    <div className="d-flex gap-2">
+                                        <button
+                                            className="action-button-modern flex-fill"
+                                            onClick={() =>handleCopyLink(client?.valuation?.urlToken + '&userId=' + token.sub)}
+                                        >
+                                            <FontAwesomeIcon icon={faCopy} />
+                                            Copiar Link
+                                        </button>
+
+                                        <button
+                                            className="action-button-modern flex-fill"
+                                            onClick={() =>handleShareNative(client?.valuation?.urlToken + '&userId=' + token.sub)}
+                                        >
+                                            <FontAwesomeIcon icon={faShare} />
+                                            Compartilhar
+                                        </button>
+                                    </div>
+
+                                    {copied && (
+                                        <div className="alert alert-success mt-2 mb-0 py-2">
+                                            <small>✅ Link copiado para a área de transferência!</small>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="status-section">
                         <div className="status-label">Status da Avaliação</div>
