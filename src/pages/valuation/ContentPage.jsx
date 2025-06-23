@@ -1,135 +1,242 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LandscapeCard from "../../components/userCard/LandscapeCard";
 import PortraitCard from "../../components/userCard/PortraitCard";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faChartLine, faBullhorn, faHandshake, faClock, faUsers, faTrophy } from "@fortawesome/free-solid-svg-icons";
 import Icons from "../../components/icons";
-
-
-
+import { ChevronRight } from "lucide-react";
 
 export default function ContentPage(props) {
-
     const userData = props.userData
     const clientData = props.clientData
 
-
-
     return (
-        <div className="col-12 ">
-
-
-
-            <div className="row  d-flex justify-content-center align-items-center">
-                <div className="card " style={{ height: '98vh', width: '98vw', overflowY: 'scroll' }} >
-                    <div className="row d-flex " >
-
-
-
-                        <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center my-5 px-0 px-lg-5">
-                            <div className="row px-5">
-
-                                <span className="fs-3 fw-bold text-main">Olá, {clientData?.clientName}!</span>
-                                <span className="fs-5 mt-3 text-main">Entender qual a posição do seu imóvel no mercado é o primeiro passo para realizar a venda com qualidade e segurança. Para isso, realizei um estudo feito com base nas características do seu imóvel e das ofertas de imóveis similares na região.</span>
-                                <span className="fs-5 mt-3 text-main">O objetivo principal deste estudo é identificar qual o valor correto de venda. É este valor que irá posicionar o seu imóvel com destaque no mercado, não fazendo com que ele ajude a vender os imóveis concorrentes.</span>
-                            </div>
-                        </div>
-                        <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center my-5  px-0 px-lg-5">
-                            <div className="row">
-                                <div className="col-12 d-flex justify-content-center align-items-center">
-
-                                    <span className="fw-bold text-main">Estudo feito por:</span>
-                                </div>
-                                <div className="col-12 d-flex justify-content-center align-items-center">
-
-                                    <PortraitCard
-                                        firstName={userData?.firstName}
-                                        lastName={userData?.lastName}
-                                        creci={userData?.creci}
-                                        email={userData?.workEmail}
-                                        celular={userData?.celular}
-                                        telefone={userData?.telefone}
-                                        profileImageUrl={userData?.profileImageUrl}
-                                        headerImg={userData?.backgroundImageUrl}
-                                        logo={userData?.logo}
-                                    />
+        <div className="container-fluid p-0">
+            <div className="row justify-content-center align-items-center min-vh-100 m-0">
+                <div className="col-12 col-xxl-10">
+                    <div className="card shadow-lg border-0" style={{ minHeight: '95vh', borderRadius: '20px' }}>
+                        <div className="card-body p-0" style={{ overflowY: 'auto', maxHeight: '95vh' }}>
+                            
+                            {/* Header Section */}
+                            <div className="text-center py-5" style={{ background: 'linear-gradient(135deg, #f5874f 0%, #faa954 100%)', borderRadius: '20px 20px 0 0' }}>
+                                <div className="container">
+                                    <h1 className="display-4 fw-bold text-white mb-3">
+                                        <FontAwesomeIcon icon={faHandshake} className="me-3" />
+                                        Olá, {clientData?.clientName}!
+                                    </h1>
+                                    <p className="lead text-white opacity-90 mb-0">Seu estudo de mercado personalizado está pronto</p>
                                 </div>
                             </div>
 
-                        </div>
+                            <div className="container py-5">
+                                {/* Introduction Section */}
+                                <div className="row justify-content-center mb-5">
+                                    <div className="col-lg-6 mb-4 mb-lg-0">
+                                        <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
+                                            <div className="card-body p-4 d-flex flex-column justify-content-center">
+                                                <div className="mb-4">
+                                                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                                         style={{ width: '60px', height: '60px', backgroundColor: '#f5874f' }}>
+                                                        <FontAwesomeIcon icon={faChartLine} className="fs-4 text-white" />
+                                                    </div>
+                                                </div>
+                                                <h3 className="fw-bold mb-3" style={{ color: '#5a5a5a' }}>Avaliação Profissional</h3>
+                                                <p className="mb-3" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
+                                                    Entender qual a posição do seu imóvel no mercado é o primeiro passo para realizar a venda com qualidade e segurança. 
+                                                </p>
+                                                <p className="mb-0" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
+                                                    Realizei um estudo baseado nas características do seu imóvel e das ofertas similares na região para identificar o valor correto de venda.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="col-lg-6">
+                                        <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
+                                            <div className="card-body p-4">
+                                                <div className="text-center mb-4">
+                                                    <h4 className="fw-bold" style={{ color: '#5a5a5a' }}>Estudo feito por:</h4>
+                                                </div>
+                                                <div className="d-flex justify-content-center">
+                                                    <PortraitCard
+                                                        firstName={userData?.firstName}
+                                                        lastName={userData?.lastName}
+                                                        creci={userData?.creci}
+                                                        email={userData?.workEmail}
+                                                        celular={userData?.celular}
+                                                        telefone={userData?.telefone}
+                                                        profileImageUrl={userData?.profileImageUrl}
+                                                        headerImg={userData?.backgroundImageUrl}
+                                                        logo={userData?.logo}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                    </div>
-                    <hr />
-                    <div className="row">
-                        <div className="col-12 d-flex justify-content-center  px-0 px-lg-5">
-                            <span className="fs-2 fw-bold text-main text-center me-3">Estudo de mercado</span>
-                        </div>
+                                <hr className="my-5" style={{ height: '3px', backgroundColor: '#f5874f', border: 'none', borderRadius: '2px' }} />
 
-                    </div>
-                    <div className="row my-5">
-                        <div className="col-12 col-lg-6 d-flex justify-content-center  px-0 px-lg-5">
-                            <div className="row px-5">
+                                {/* Market Study Section */}
+                                <div className="text-center mb-5">
+                                    <h2 className="display-5 fw-bold mb-4" style={{ color: '#5a5a5a' }}>
+                                        <FontAwesomeIcon icon={faChartLine} className="me-3" style={{ color: '#f5874f' }} />
+                                        Estudo de Mercado
+                                    </h2>
+                                </div>
 
-                                <span className="fs-4 fw-bold text-main">Relação do preço com a velocidade de venda.</span>
-                                <span className="fs-5 mt-3 text-main">A velocidade de venda do seu imóvel está diretamente relacionada a precificação correta. Nosso histórico de vendas mostra que, imóveis com avaliações acima do preço de mercado, tem como resultado um processo de venda mais lento. Além de demorar mais, muitas vezes o valor final de venda é ainda inferior ao valor real de mercado, o que ocasiona perda de patrimônio.</span>
-                                <div className="col-12 mt-4">
-                                    <img src='/GIF_VALUATION_01.gif' alt="" className="w-100" />
+                                <div className="row align-items-center mb-5">
+                                    <div className="col-lg-6 mb-4 mb-lg-0">
+                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px' }}>
+                                            <div className="card-body p-4">
+                                                <h3 className="fw-bold mb-4" style={{ color: '#f5874f' }}>
+                                                    <FontAwesomeIcon icon={faClock} className="me-2" />
+                                                    Relação Preço × Velocidade
+                                                </h3>
+                                                <p className="mb-4" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
+                                                    A velocidade de venda do seu imóvel está diretamente relacionada à precificação correta. 
+                                                    Nosso histórico mostra que imóveis com avaliações acima do preço de mercado resultam em processos mais lentos.
+                                                </p>
+                                                <div className="alert alert-warning border-0" style={{ backgroundColor: '#fff3cd', borderRadius: '10px' }}>
+                                                    <small className="text-warning-emphasis">
+                                                        <FontAwesomeIcon icon={faHandshake} className="me-2" />
+                                                        <strong>Dica:</strong> Além de demorar mais, o valor final pode ser inferior ao valor real de mercado.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-6">
+                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px', overflow: 'hidden' }}>
+                                            <img src='/GIF_VALUATION_01.gif' alt="Gráfico de velocidade de venda" className="h-100 p-2" style={{ height: '300px', objectFit: 'cover' }} />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Benefits Section */}
+                                <div className="row justify-content-center mb-5">
+                                    <div className="col-lg-10">
+                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px', background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)' }}>
+                                            <div className="card-body p-5">
+                                                <h3 className="fw-bold text-white text-center mb-4">
+                                                    <FontAwesomeIcon icon={faTrophy} className="me-2" />
+                                                    Benefícios da Precificação Correta
+                                                </h3>
+                                                <div className="row g-3">
+                                                    <div className="col-md-6">
+                                                        <div className="d-flex align-items-center">
+                                                            <FontAwesomeIcon icon={faCheck} className="me-3 text-white" style={{ fontSize: '1.2rem' }} />
+                                                            <span className="text-white">Venda dentro de um prazo mais curto</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="d-flex align-items-center">
+                                                            <FontAwesomeIcon icon={faCheck} className="me-3 text-white" style={{ fontSize: '1.2rem' }} />
+                                                            <span className="text-white">Menos inconvenientes</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="d-flex align-items-center">
+                                                            <FontAwesomeIcon icon={faCheck} className="me-3 text-white" style={{ fontSize: '1.2rem' }} />
+                                                            <span className="text-white">Mais clientes interessados e visitas</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="d-flex align-items-center">
+                                                            <FontAwesomeIcon icon={faCheck} className="me-3 text-white" style={{ fontSize: '1.2rem' }} />
+                                                            <span className="text-white">Corretores motivados</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="d-flex align-items-center">
+                                                            <FontAwesomeIcon icon={faCheck} className="me-3 text-white" style={{ fontSize: '1.2rem' }} />
+                                                            <span className="text-white">Ofertas mais altas</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="d-flex align-items-center">
+                                                            <FontAwesomeIcon icon={faCheck} className="me-3 text-white" style={{ fontSize: '1.2rem' }} />
+                                                            <span className="text-white">Menos chances de perder dinheiro</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="text-center mt-4">
+                                                    <div className="d-flex align-items-center justify-content-center">
+                                                        <FontAwesomeIcon icon={faCheck} className="me-3 text-white" style={{ fontSize: '1.2rem' }} />
+                                                        <span className="text-white fw-bold">Seu imóvel representado por apenas um corretor</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr className="my-5" style={{ height: '3px', backgroundColor: '#f5874f', border: 'none', borderRadius: '2px' }} />
+
+                                {/* Marketing Plan Section */}
+                                <div className="text-center mb-5">
+                                    <h2 className="display-5 fw-bold mb-4" style={{ color: '#5a5a5a' }}>
+                                        <FontAwesomeIcon icon={faBullhorn} className="me-3" style={{ color: '#faa954' }} />
+                                        Plano de Marketing
+                                    </h2>
+                                </div>
+
+                                <div className="row align-items-center mb-5">
+                                    <div className="col-lg-6 mb-4 mb-lg-0">
+                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px' }}>
+                                            <div className="card-body p-4">
+                                                <div className="mb-4">
+                                                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                                         style={{ width: '60px', height: '60px', backgroundColor: '#faa954' }}>
+                                                        <FontAwesomeIcon icon={faUsers} className="fs-4 text-white" />
+                                                    </div>
+                                                </div>
+                                                <h3 className="fw-bold mb-3" style={{ color: '#faa954' }}>Marketing Digital de Alta Performance</h3>
+                                                <p className="mb-0" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
+                                                    Nosso plano contempla todos os aspectos básicos de divulgação e, através de marketing digital 
+                                                    de alta performance, colocamos seu imóvel para o maior número de clientes compradores possível.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-6">
+                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px', overflow: 'hidden' }}>
+                                            <img src='/GIF_VALUATION_02.gif' alt="Estratégias de marketing" className="h-100" style={{ height: '300px', objectFit: 'cover' }} />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Continue Button */}
+                                <div className="text-center py-5">
+                                    <button 
+                                        className="btn btn-lg px-5 py-3 fw-bold fs-5" 
+                                        data-bs-target="#valuationCarousel" 
+                                        data-bs-slide-to={2}
+                                        style={{ 
+                                            backgroundColor: '#f5874f',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '25px',
+                                            transition: 'all 0.3s ease',
+                                            boxShadow: '0 4px 15px rgba(245, 135, 79, 0.3)'
+                                        }}
+                                        onMouseOver={e => {
+                                            e.target.style.backgroundColor = '#faa954';
+                                            e.target.style.transform = 'translateY(-2px)';
+                                            e.target.style.boxShadow = '0 6px 20px rgba(245, 135, 79, 0.4)';
+                                        }}
+                                        onMouseOut={e => {
+                                            e.target.style.backgroundColor = '#f5874f';
+                                            e.target.style.transform = 'translateY(0)';
+                                            e.target.style.boxShadow = '0 4px 15px rgba(245, 135, 79, 0.3)';
+                                        }}>
+                                        Continuar 
+                                    </button>
                                 </div>
                             </div>
-
-
-                        </div>
-                        <div className="col-12 col-lg-6 d-flex justify-content-center  px-0 px-lg-5">
-                            <div className="row px-5 py-5">
-
-                                <span className="fs-5 my-1 text-main"><FontAwesomeIcon icon={faCheck} className="me-1" style={{ color: '#00c661' }} />Venda dentro de um prazo mais curto.</span>
-                                <span className="fs-5 my-1 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Menos inconvenientes.</span>
-                                <span className="fs-5 my-1 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Mais clientes interessados, logo, um maior número de visitas.</span>
-                                <span className="fs-5 my-1 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Corretores motivados em mostrar o imóvel aos seus clientes.</span>
-                                <span className="fs-5 my-1 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Ofertas mais altas.</span>
-                                <span className="fs-5 my-1 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Menos chances de perder dinheiro.</span>
-                                <span className="fs-5 my-1 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Seu imóvel representado por apenas um corretor.</span>
-
-
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-
-                    <div className="row">
-                        <div className="col-12 d-flex justify-content-center  px-0 px-lg-5">
-                            <span className="fs-2 fw-bold text-main text-center me-3">Plano de Marketing</span>
-                        </div>
-
-                    </div>
-
-                    <div className="row my-5">
-                        <div className="col-12 col-lg-6 d-flex justify-content-center  px-0 px-lg-5">
-                            <div className="row px-5 py-4">
-                                <span className="fs-5 mt-3 text-main">Com nosso plano de marketing contemplamos todos os aspectos básicos necessários de divulgação e, através de um marketing digital de alta performance, colocarmos o seu imóvel para o maior número de clientes compradores possíveis.</span>
-
-                            </div>
-                        </div>
-
-                        <div className="col-12 col-lg-6 d-flex justify-content-center  px-0 px-lg-5">
-                            <div className="row px-5 py-4">
-                                <div className="col-12 mt-4">
-                                    <img src='/GIF_VALUATION_02.gif' alt="" className="w-100" />
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className="row my-5">
-                        <div className="col-12 d-flex justify-content-center  px-0 px-lg-5">
-
-                            <button className="btn btn-light btn-lg fw-bold"
-                                data-bs-target="#valuationCarousel" data-bs-slide-to={2}>
-                                Continuar <Icons icon='a-r' />
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }

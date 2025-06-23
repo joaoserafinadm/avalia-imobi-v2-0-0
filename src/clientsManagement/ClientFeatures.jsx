@@ -1,422 +1,190 @@
-import { faEdit, faEye, faMoneyCheckDollar, faShare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt, faRulerCombined, faBed, faBath, faHome, faCar, faBuilding, faWarehouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { showClientInfo } from "../../utils/showClientInfo";
 import { valueShow } from "../../utils/valueShow";
 
-
-
-
-
-
 export default function ClientFeatures(props) {
+    const client = props.client;
 
+    // Função para formatar valor monetário
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(value);
+    };
 
-    const client = props.client
-
+    if (!showClientInfo(client)) {
+        return (
+            <div className="text-center py-3">
+                <span className="text-muted ">Informações Desatualizadas</span>
+            </div>
+        );
+    }
 
     return (
-        <>
-            {showClientInfo(client) ?
-                <>
-                    {valueShow(client?.valuation?.valueSelected, client?.valuation?.valuationCalc) && (
-
-                        <div className="row">
-                            <div className="col-12 mt-2">
-                                <div className="card">
-                                    <div className="card-body px-0 text-center py-2">
-                                        <span className="text-orange me-1 fs-5 ">R$</span>
-                                        <span className="text-secondary fs-5 bold">{valueShow(client?.valuation?.valueSelected, client?.valuation?.valuationCalc)},00</span>
-                                    </div>
-                                </div>
-
-                            </div>
+        <div className="client-features">
+            {/* Valor */}
+            {/* {valueShow(client?.valuation?.valueSelected, client?.valuation?.valuationCalc) && (
+                <div className="row mb-3">
+                    <div className="col-12">
+                        <div className="text-center py-2 px-3 rounded" style={{
+                            backgroundColor: '#f5874f',
+                            color: 'white'
+                        }}>
+                            <span className="fw-bold fs-5">
+                                {formatCurrency(valueShow(client?.valuation?.valueSelected, client?.valuation?.valuationCalc))}
+                            </span>
                         </div>
-                    )}
-                    <div className="row small">
+                    </div>
+                </div>
+            )} */}
 
-                        <div className="col-12 my-2">
-                            {client?.bairro && client?.cidade && client?.uf ?
-                                <>
-                                    {client?.bairro}, {client?.cidade} / {client?.uf}
-                                </>
-                                :
-                                <>
-                                    Endereço não informado
-                                </>
+            {/* Localização */}
+            <div className="row mb-3">
+                <div className="col-12">
+                    <div className="d-flex align-items-center justify-content-center text-center" style={{ color: '#5a5a5a' }}>
+                        <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" style={{ color: '#faa954' }} />
+                        <span>
+                            {client?.bairro && client?.cidade && client?.uf ? 
+                                `${client.bairro}, ${client.cidade} / ${client.uf}` : 
+                                'Endereço não informado'
                             }
-                        </div>
-
-
+                        </span>
                     </div>
-                    <hr />
-
-                    {client.propertyType === "Apartamento" && (
-                        <>
-                            <div className="row  small d-flex align-items-center">
-
-                                <div className="col-6 text-center  my-2">
-                                    {/* {client?.areaTotal && ( */}
-                                    <>
-                                        <div className="bold">
-                                            Área Total:
-                                        </div>
-                                        <div>
-
-                                            {client?.areaTotal ? client?.areaTotal : 0} m²
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-                                <div className="col-6  text-center   my-2">
-                                    {/* {client?.areaTotal && ( */}
-                                    <>
-                                        <div className="bold">
-                                            Área Total Privativa:
-                                        </div>
-                                        <div>
-
-                                            {client?.areaTotalPrivativa ? client?.areaTotalPrivativa : 0} m²
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-                            </div>
-
-
-
-
-                            <div className="row small d-flex justify-content-center ">
-
-                                <div className="col-6 justify-content-center d-flex  my-2">
-                                    {/* {client?.quartos && ( */}
-                                    <>
-                                        <div>
-                                            {client.quartos ? client.quartos : 0}
-
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            quarto{client.quartos != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-                                <div className="col-6 justify-content-center d-flex  my-2">
-
-                                    {/* {client?.banheiros && ( */}
-                                    <>
-                                        <div>
-
-                                            {client.banheiros ? client.banheiros : 0}
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            banheiro{client.banheiros != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-
-                                </div>
-                                <div className="col-6 justify-content-center d-flex  my-2">
-
-                                    {/* {client?.suites && ( */}
-                                    <>
-                                        <div>
-
-                                            {client.suites ? client.suites : 0}
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            suíte{client.suites != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-
-                                </div>
-                                <div className="col-6 justify-content-center d-flex  my-2">
-
-                                    {/* {client?.vagasGaragem && ( */}
-                                    <>
-                                        <div>
-                                            {client.vagasGaragem ? client.vagasGaragem : 0}
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            vaga{client.vagasGaragem != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-
-                                </div>
-                            </div>
-                        </>
-                    )}
-
-
-                    {client.propertyType === "Casa" && (
-                        <>
-                            <div className="row  small d-flex align-items-center">
-
-                                <div className="col-6 text-center  my-2">
-                                    {/* {client?.areaTotal && ( */}
-                                    <>
-                                        <div className="bold">
-                                            Área do terreno:
-                                        </div>
-                                        <div>
-
-                                            {client?.areaTotal ? client?.areaTotal : 0} m²
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-                                <div className="col-6  text-center   my-2">
-                                    {/* {client?.areaTotal && ( */}
-                                    <>
-                                        <div className="bold">
-                                            Área privativa - Casa:
-                                        </div>
-                                        <div>
-
-                                            {client?.areaTotalPrivativa ? client?.areaTotalPrivativa : 0} m²
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-                            </div>
-
-
-
-
-                            <div className="row small d-flex justify-content-center ">
-
-                                <div className="col-6 justify-content-center d-flex  my-2">
-                                    {/* {client?.pavimentos && ( */}
-                                    <>
-                                        <div>
-                                            {client.pavimentos ? client.pavimentos : 0}
-
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            pavimento{client.pavimentos != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-                                <div className="col-6 justify-content-center d-flex  my-2">
-                                    {/* {client?.quartos && ( */}
-                                    <>
-                                        <div>
-                                            {client.quartos ? client.quartos : 0}
-
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            quarto{client.quartos != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-                                <div className="col-6 justify-content-center d-flex  my-2">
-
-                                    {/* {client?.banheiros && ( */}
-                                    <>
-                                        <div>
-
-                                            {client.banheiros ? client.banheiros : 0}
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            banheiro{client.banheiros != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-
-                                </div>
-                                <div className="col-6 justify-content-center d-flex  my-2">
-
-                                    {/* {client?.suites && ( */}
-                                    <>
-                                        <div>
-
-                                            {client.suites ? client.suites : 0}
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            suíte{client.suites != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-
-                                </div>
-                                <div className="col-6 justify-content-center d-flex  my-2">
-
-                                    {/* {client?.vagasGaragem && ( */}
-                                    <>
-                                        <div>
-                                            {client.vagasGaragem ? client.vagasGaragem : 0}
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            vaga{client.vagasGaragem != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-
-                                </div>
-                            </div>
-                        </>
-                    )}
-
-
-
-                    {client.propertyType === "Comercial" && (
-                        <>
-                            <div className="row  small d-flex align-items-center">
-
-                                <div className="col-6 text-center  my-2">
-                                    {/* {client?.areaTotal && ( */}
-                                    <>
-                                        <div className="bold">
-                                            Área Total:
-                                        </div>
-                                        <div>
-
-                                            {client?.areaTotal ? client?.areaTotal : 0} m²
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-                                <div className="col-6  text-center   my-2">
-                                    {/* {client?.areaTotal && ( */}
-                                    <>
-                                        <div className="bold">
-                                            Área Total Privativa:
-                                        </div>
-                                        <div>
-
-                                            {client?.areaTotalPrivativa ? client?.areaTotalPrivativa : 0} m²
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-                            </div>
-
-
-
-
-                            <div className="row small d-flex justify-content-center ">
-
-                                <div className="col-6 justify-content-center d-flex  my-2">
-                                    {/* {client?.pavimentos && ( */}
-                                    <>
-                                        <div>
-                                            {client.pavimentos ? client.pavimentos : 0}
-
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            pavimento{client.pavimentos != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-
-                                <div className="col-6 justify-content-center d-flex  my-2">
-                                    {/* {client?.salas && ( */}
-                                    <>
-                                        <div>
-                                            {client.salas ? client.salas : 0}
-
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            sala{client.salas != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-
-                                <div className="col-6 justify-content-center d-flex  my-2">
-
-                                    {/* {client?.banheiros && ( */}
-                                    <>
-                                        <div>
-
-                                            {client.banheiros ? client.banheiros : 0}
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            banheiro{client.banheiros != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-
-                                </div>
-
-                                <div className="col-6 justify-content-center d-flex  my-2">
-
-                                    {/* {client?.vagasGaragem && ( */}
-                                    <>
-                                        <div>
-                                            {client.vagasGaragem ? client.vagasGaragem : 0}
-                                        </div>
-                                        <div className="ms-1 bold">
-
-                                            vaga{client.vagasGaragem != 1 ? 's' : ''}
-                                        </div>
-                                    </>
-                                    {/* )} */}
-
-                                </div>
-                            </div>
-                        </>
-                    )}
-
-
-
-                    {client.propertyType === "Terreno" && (
-                        <>
-                            <div className="row  small d-flex align-items-center">
-
-                                <div className="col-12 text-center  my-2">
-                                    {/* {client?.areaTotal && ( */}
-                                    <>
-                                        <div className="bold">
-                                            Área Total:
-                                        </div>
-                                        <div>
-
-                                            {client?.areaTotal ? client?.areaTotal : 0} m²
-                                        </div>
-                                    </>
-                                    {/* )} */}
-                                </div>
-                            </div>
-
-
-                        </>
-                    )}
-
-
-
-
-
-                </>
-
-                :
-                <>
-                    <div className="row my-5 ">
-                        <div className="col-12 d-flex justify-content-center">
-                            <span>Desatualizado</span>
-
+                </div>
+            </div>
+
+            <hr className="my-2" style={{ borderColor: '#faa954' }} />
+
+            {/* Características por Tipo */}
+            {client.propertyType === "Apartamento" && (
+                <div className="row d-flex justify-content-center">
+                    <div className="col-6 my-5">
+                        <div className="text-center">
+                            <div className="fw-bold ">Área Total</div>
+                            <div style={{ color: '#f5874f' }}>{client?.areaTotal || 0} m²</div>
                         </div>
                     </div>
+                    <div className="col-6 my-5">
+                        <div className="text-center">
+                            <div className="fw-bold ">Área Privativa</div>
+                            <div style={{ color: '#f5874f' }}>{client?.areaTotalPrivativa || 0} m²</div>
+                        </div>
+                    </div>
+                    <div className="col-4 text-center">
+                        
+                        <span className="fw-bold">{client.quartos || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>quarto{client.quartos != 1 ? 's' : ''}</div>
+                    </div>
+                    <div className="col-4 text-center">
+                        
+                        <span className="fw-bold">{client.banheiros || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>banheiro{client.banheiros != 1 ? 's' : ''}</div>
+                    </div>
+                    <div className="col-4 text-center">
+                        
+                        <span className="fw-bold">{client.suites || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>suíte{client.suites != 1 ? 's' : ''}</div>
+                    </div>
+                    <div className="col-4 text-center">
+                        
+                        <span className="fw-bold">{client.vagasGaragem || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>vaga{client.vagasGaragem != 1 ? 's' : ''}</div>
+                    </div>
+                </div>
+            )}
 
-                </>
-            }
-        </>
+            {client.propertyType === "Casa" && (
+                <div className="row d-flex justify-content-center">
+                    <div className="col-6 my-5">
+                        <div className="text-center">
+                            <div className="fw-bold ">Área do Terreno</div>
+                            <div style={{ color: '#f5874f' }}>{client?.areaTotal || 0} m²</div>
+                        </div>
+                    </div>
+                    <div className="col-6 my-5">
+                        <div className="text-center">
+                            <div className="fw-bold ">Área da Casa</div>
+                            <div style={{ color: '#f5874f' }}>{client?.areaTotalPrivativa || 0} m²</div>
+                        </div>
+                    </div>
+                    <div className="col-4 col-lg-2 text-center">
+                        
+                        <span className="fw-bold">{client.pavimentos || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>pavimento{client.pavimentos != 1 ? 's' : ''}</div>
+                    </div>
+                    <div className="col-4 col-lg-2 text-center">
+                        
+                        <span className="fw-bold">{client.quartos || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>quarto{client.quartos != 1 ? 's' : ''}</div>
+                    </div>
+                    <div className="col-4 col-lg-2 text-center">
+                        
+                        <span className="fw-bold">{client.banheiros || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>banheiro{client.banheiros != 1 ? 's' : ''}</div>
+                    </div>
+                    <div className="col-4 col-lg-2 text-center">
+                        
+                        <span className="fw-bold">{client.suites || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>suíte{client.suites != 1 ? 's' : ''}</div>
+                    </div>
+                    <div className="col-4 col-lg-2 text-center">
+                        
+                        <span className="fw-bold">{client.vagasGaragem || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>vaga{client.vagasGaragem != 1 ? 's' : ''}</div>
+                    </div>
+                </div>
+            )}
 
-    )
+            {client.propertyType === "Comercial" && (
+                <div className="row d-flex justify-content-center">
+                    <div className="col-6 my-5">
+                        <div className="text-center">
+                            <div className="fw-bold ">Área Total</div>
+                            <div style={{ color: '#f5874f' }}>{client?.areaTotal || 0} m²</div>
+                        </div>
+                    </div>
+                    <div className="col-6 my-5">
+                        <div className="text-center">
+                            <div className="fw-bold ">Área Privativa</div>
+                            <div style={{ color: '#f5874f' }}>{client?.areaTotalPrivativa || 0} m²</div>
+                        </div>
+                    </div>
+                    <div className="col-3 text-center">
+                        
+                        <span className="fw-bold">{client.pavimentos || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>pavimento{client.pavimentos != 1 ? 's' : ''}</div>
+                    </div>
+                    <div className="col-3 text-center">
+                        
+                        <span className="fw-bold">{client.salas || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>sala{client.salas != 1 ? 's' : ''}</div>
+                    </div>
+                    <div className="col-3 text-center">
+                        
+                        <span className="fw-bold">{client.banheiros || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>banheiro{client.banheiros != 1 ? 's' : ''}</div>
+                    </div>
+                    <div className="col-3 text-center">
+                        
+                        <span className="fw-bold">{client.vagasGaragem || 0}</span>
+                        <div className=" text-muted" style={{fontSize: '13px'}}>vaga{client.vagasGaragem != 1 ? 's' : ''}</div>
+                    </div>
+                </div>
+            )}
+
+            {client.propertyType === "Terreno" && (
+                <div className="row d-flex justify-content-center">
+                    <div className="col-12 text-center">
+                        <FontAwesomeIcon icon={faRulerCombined} className="me-2" style={{ color: '#faa954' }} />
+                        <span className="fw-bold">Área Total: </span>
+                        <span style={{ color: '#f5874f', fontSize: '1.1rem' }}>{client?.areaTotal || 0} m²</span>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
 }

@@ -81,7 +81,7 @@ export default function Map(props) {
             <div className="row">
                 {props.valuationPdf ? (
                     <div className="col-12 ">
-                        <img src={staticMapUrl} alt="Imagem do Mapa"  height={props.height}/>
+                        <img src={staticMapUrl} alt="Imagem do Mapa"  height={props.height} width={props.width}/>
                     </div>
                 ) : (
                     <div className="col-12 fadeItem">

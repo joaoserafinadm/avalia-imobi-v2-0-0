@@ -61,14 +61,14 @@ export default function NotificationsSM(props) {
 
                 </div>
 
-                <div className={`row mb-2 ${styles.notificationsFooter}`}>
+                {/* <div className={`row mb-2 ${styles.notificationsFooter}`}>
                     <hr className='py-0 my-0' />
                     <div className="col-12 d-flex justify-content-center align-itens-center">
 
 
-                        <span type='button' className='span p'>Visualizar todas as notificações <Icons icon='a-l' /></span>
+                        <span type='button' className='span p'>Visualizar todas as notificações <Icons icon='a-r' /></span>
                     </div>
-                </div>
+                </div> */}
 
 
 

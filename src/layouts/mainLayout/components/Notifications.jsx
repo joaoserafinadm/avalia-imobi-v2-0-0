@@ -49,14 +49,14 @@ export default function Notifications(props) {
 
             </div>
 
-            <hr />
+           {/* <hr />
 
-            <div className="row mb-2">
+             <div className="row mb-2">
                 <div className="col-12 d-flex justify-content-center align-itens-center">
 
                     <span type='button' className='span p'>Visualizar todas as notificações <FontAwesomeIcon icon={faAngleRight} /></span>
                 </div>
-            </div>
+            </div> */}
 
 
 

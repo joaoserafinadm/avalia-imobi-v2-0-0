@@ -144,7 +144,7 @@ export default function FirstNotifications(props) {
             )}
             {firstNotifications?.dateLimit && (
 
-                <div style={{ maxWidth: '90vw' }} class={`toast my-2 bg-light ${(!firstNotifications?.companyEdit && !firstNotifications?.profileEdit) ? '' : ''}`} role="alert" data-bs-autohide="false" aria-live="assertive" aria-atomic="true">
+                <div style={{ maxWidth: '90vw' }} class={`toast my-2 mb-md-0 mb-4 bg-light ${(!firstNotifications?.companyEdit && !firstNotifications?.profileEdit) ? '' : ''}`} role="alert" data-bs-autohide="false" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header">
                         {/* <img src="..." class="rounded me-2" alt="..."> */}
                         <span class="me-auto text-orange fw-bold">Restam {handleDateLimit(firstNotifications?.dateLimit)} dias para acabar seu teste gratuito!</span>

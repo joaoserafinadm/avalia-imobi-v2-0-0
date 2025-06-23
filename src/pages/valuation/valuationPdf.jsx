@@ -1,357 +1,643 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PortraitCard from '../../components/userCard/PortraitCard'
 import styles from './valuation.module.scss'
-import { faCheck, faEnvelope, faPhone, faShoppingCart, faStar, faWarning } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faEnvelope, faPhone, faShoppingCart, faStar, faWarning, faHome, faRulerCombined, faMapMarkerAlt, faBuilding, faChartLine, faCalculator, faEye, faClock, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import ClientFeatures from '../../valuation/ClientFeatures'
 import PropertyCard from '../../valuation/PropertyCard'
 import Map from '../../valuation/Map'
-
+import { Home } from 'lucide-react'
 
 export default function ValuationPdf(props) {
-
     const { userData, clientData } = props
 
+    // Função para organizar imagens em grupos para melhor distribuição
+    const organizeImages = (images, maxPerPage = 12) => {
+        const imageGroups = []
+        for (let i = 0; i < images.length; i += maxPerPage) {
+            imageGroups.push(images.slice(i, i + maxPerPage))
+        }
+        return imageGroups
+    }
+
+    const imageGroups = organizeImages(clientData?.files || [], 16)
+
+    // Componente de rodapé
+    const Footer = () => (
+        <div className="position-absolute bottom-0 start-0 end-0 text-center py-2"
+            style={{ backgroundColor: '#f8f9fa', borderTop: '1px solid #dee2e6', fontSize: '12px', color: '#666' }}>
+            <span>www.avaliaimobi.com.br | Relatório de Avaliação Imobiliária</span>
+        </div>
+    )
 
     return (
         <div id="valuationPdf" className={styles.reportContainer}>
-            <div className={styles.page}>
-                <div className="row px-5 mt-3">
-                    <div className="col-6 d-flex flex-column" >
-                        <span className="fw-bold text-main">Olá, {clientData?.clientName}!</span>
-                        <span className="mt-3 text-main">Entender qual a posição do seu imóvel no mercado é o primeiro passo para realizar a venda com qualidade e segurança. Para isso, realizei um estudo feito com base nas características do seu imóvel e das ofertas de imóveis similares na região.</span>
-                        <span className="mt-3 text-main">O objetivo principal deste estudo é identificar qual o valor correto de venda. É este valor que irá posicionar o seu imóvel com destaque no mercado, não fazendo com que ele ajude a vender os imóveis concorrentes.</span>
-                    </div>
-                    <div className="col-6 px-5">
-                        <label htmlFor="" className="fw-bold small">Estudo feito por:</label>
-                        <PortraitCard valuationPdf
-                            firstName={userData?.firstName}
-                            lastName={userData?.lastName}
-                            creci={userData?.creci}
-                            email={userData?.workEmail}
-                            celular={userData?.celular}
-                            telefone={userData?.telefone}
-                            profileImageUrl={userData?.profileImageUrl}
-                            headerImg={userData?.backgroundImageUrl}
-                            logo={userData?.logo}
-                        />
+            {/* PÁGINA 1 - CAPA E INTRODUÇÃO */}
+            <div className={`${styles.page} position-relative`} style={{ paddingBottom: '40px' }}>
+                {/* Header com gradient - reduzido */}
+                <div className="position-relative mb-3" style={{
+                    background: 'linear-gradient(135deg, #f5874f 0%, #faa954 100%)',
+                    padding: '30px 25px',
+                    borderRadius: '20px 20px',
+                    marginBottom: '20px'
+                }}>
+                    <div className="row align-items-center">
+                        <div className="col-12">
+                            <h1 className="text-white fw-bold mb-2" style={{ fontSize: '26px' }}>
+                                <Home className="me-3" />
+                                Relatório de Avaliação Imobiliária
+                            </h1>
+                            <p className="text-white opacity-90 mb-0" style={{ fontSize: '15px' }}>
+                                Análise técnica e posicionamento de mercado
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div className={styles.firstPageContent}>
-                    <hr />
 
+                {/* Saudação e Introdução - otimizado */}
+                <div className="px-4 mb-3">
                     <div className="row">
-                        <div className="col-12 d-flex justify-content-center  ">
-                            <span className=" fw-bold text-main text-center ">Estudo de mercado</span>
-                        </div>
-
-                    </div>
-                    <div className="row mt-3 px-5" >
-                        <div className="col-6 d-flex justify-content-center  ">
-                            <div className="row ">
-
-                                <span className="fw-bold text-main">Relação do preço com a velocidade de venda.</span>
-                                <span className="mt-3 text-main">A velocidade de venda do seu imóvel está diretamente relacionada a precificação correta. Nosso histórico de vendas mostra que, imóveis com avaliações acima do preço de mercado, tem como resultado um processo de venda mais lento. Além de demorar mais, muitas vezes o valor final de venda é ainda inferior ao valor real de mercado, o que ocasiona perda de patrimônio.</span>
-                                <div className="col-12 mt-4">
-                                    <img src='/VALUATION_PDF_1.png' alt="" className="w-100" />
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div className="col-6 d-flex justify-content-center  ">
-                            <div className="row small">
-
-                                <span className="my-0 py-0 text-main"><FontAwesomeIcon icon={faCheck} className="me-1" style={{ color: '#00c661' }} />Venda dentro de um prazo mais curto.</span>
-                                <span className="my-0 py-0 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Menos inconvenientes.</span>
-                                <span className="my-0 py-0 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Mais clientes interessados, logo, um maior número de visitas.</span>
-                                <span className="my-0 py-0 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Corretores motivados em mostrar o imóvel aos seus clientes.</span>
-                                <span className="my-0 py-0 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Ofertas mais altas.</span>
-                                <span className="my-0 py-0 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Menos chances de perder dinheiro.</span>
-                                <span className="my-0 py-0 text-main"><FontAwesomeIcon icon={faCheck} className=" me-1" style={{ color: '#00c661' }} />Seu imóvel representado por apenas um corretor.</span>
-
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div className={styles.page}>
-
-                <div className="row d-flex mt-3">
-
-                    <div className="row ">
-                        <div className="col-12 d-flex justify-content-center">
-                            <span className=" fw-bold text-main text-center ">Metodologia aplicada</span>
-                        </div>
-
-                    </div>
-
-                    <div className="row my-3">
-                        <div className="col-12  d-flex justify-content-center px-0 px-5">
-                            <div className="row ">
-
-                                <span className=" mt-3 text-main">O estudo é feito a partir de uma amostra de {clientData?.valuation?.propertyArray?.length} imóveis com características similares ao seu que nos permite entender o posicionamento do seu imóvel no mercado. São imóveis com áreas privativas, região, tipologias, itens de infraestrutura, idade de construção e condições parecidas com a do imóvel analisado.</span>
-                                <span className=" mt-3 text-main">As informações obtidas são cruzadas, sofrem ações de variáveis que influenciam diretamente no preço final do imóvel, para então chegarmos em uma sugestão de precificação mais assertiva.</span>
-
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <hr />
-
-                    <div className="row mt-3">
-                        <div className="col-12  d-flex justify-content-center">
-                            <div className="row ">
-                                <span className=" fw-bold text-main">Características do seu imóvel</span>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row d-flex justify-content-center mt-3">
-                        <div className="col-12 col-xl-8 d-flex justify-content-center">
-                            <div className="card">
-                                <div className="row">
-                                    <div className="col-12  my-1">
-                                        <ClientFeatures client={clientData} valuationPdf />
-                                    </div>
+                        <div className="col-7 d-flex align-items-start">
+                            <div>
+                                <h2 className="fw-bold mb-2" style={{ color: '#2c3e50', fontSize: '22px' }}>
+                                    Olá, {clientData?.clientName}!
+                                </h2>
+                                <div className="text-justify lh-base" style={{ color: '#5a5a5a', fontSize: '13px' }}>
+                                    <p className="mb-2">
+                                        Entender qual a posição do seu imóvel no mercado é o primeiro passo para realizar
+                                        a venda com qualidade e segurança. Para isso, realizei um estudo baseado nas
+                                        características do seu imóvel e das ofertas similares na região.
+                                    </p>
+                                    <p className="mb-2">
+                                        O objetivo principal deste estudo é identificar qual o valor correto de venda.
+                                        É este valor que irá posicionar o seu imóvel com destaque no mercado, não fazendo
+                                        com que ele ajude a vender os imóveis concorrentes.
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="row mt-3">
-                        <div className="col-12  d-flex justify-content-center">
-                            <div className="row ">
-                                <span className=" fw-bold text-main">Imagens do imóvel</span>
-                            </div>
-                        </div>
-                        <div className="col-12 d-flex justify-content-center flex-wrap mt-3">
-                            {clientData?.files?.slice(0, 15).map((elem, index) => (
-                                <img src={elem.url} height={'100px'} className="m-1" key={index} />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className={styles.page}>
-                <div className="row mt-3">
-                    <div className="col-12  d-flex justify-content-center">
-                        <div className="row px-5">
-                            <span className="fw-bold text-main">Imóveis de comparação</span>
-
-                        </div>
-                    </div>
-                </div>
-                <div className="row ">
-                    <div className="d-flex col-12 flex-wrap ">
-                        {clientData?.valuation?.propertyArray?.map((elem, index) => (
-                            <div
-                                key={index}
-                                className="mx-1 my-4"
-                                style={{ width: '180px' }} // Defina a largura e altura fixa
-                            >
-                                <div
-                                    style={{
-                                        transform: 'scale(0.6)',
-                                        transformOrigin: 'top left',
-
-                                        width: '300px', // Largura original do elemento
-                                        height: '300px', // Altura original do elemento
-                                    }}
-                                >
-                                    <PropertyCard
-                                        section="Todos Clientes"
-                                        valuationView
+                        <div className="col-5 d-flex flex-column justify-content-center align-items-center">
+                            <h6 className="fw-bold text-start mb-2" style={{ color: '#5a5a5a', fontSize: '14px' }}>
+                                Estudo realizado por:
+                            </h6>
+                            <div className="row">
+                                <div className="col-12 d-flex justify-content-center">
+                                    <PortraitCard
                                         valuationPdf
-                                        elem={elem}
-                                        index={index}
-                                        setPropertyUrl={(value) => props.setPropertyUrl(value)}
+                                        firstName={userData?.firstName}
+                                        lastName={userData?.lastName}
+                                        creci={userData?.creci}
+                                        email={userData?.workEmail}
+                                        celular={userData?.celular}
+                                        telefone={userData?.telefone}
+                                        profileImageUrl={userData?.profileImageUrl}
+                                        headerImg={userData?.backgroundImageUrl}
+                                        logo={userData?.logo}
                                     />
                                 </div>
                             </div>
-                        ))}
-
-                    </div>
-                </div>
-                <div className="row d-flex justify-content-center mt-3">
-                    <div className="col-11 " id='mapPdf'>
-                        <Map location={{ lat: clientData?.latitude, lng: clientData?.longitude }}
-                            zoom={30} height="325px" valuationPage valuationPdf
-                            porpertyLocations={clientData?.valuation?.propertyArray} />
+                        </div>
                     </div>
                 </div>
 
-            </div>
-
-            <div className={styles.page}>
-                <div className="row mt-5">
-                    <div className="col-12 d-flex justify-content-center">
-                        <span className=" fw-bold text-main text-center me-3">Valor de avaliação</span>
-                    </div>
-
-                </div>
-                <div className="row d-flex justify-content-center mt-3 mb-5">
-                    <div className="col-8">
-                        <div className="row d-flex">
-                            <div className="col-6 p-2">
-                                <div className="card">
-
-                                    <div className="card-body text-center">
-                                        <span className="bold ">Valor do m²</span>
-                                        <div className="d-flex justify-content-center align-items-center">
-                                            <span className="text-orange me-1 ">R$</span>
-                                            <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.valorMetroQuadrado},00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-6 p-2">
-                                <div className="card">
-
-                                    <div className="card-body text-center">
-                                        <span className="bold ">{clientData?.valuation?.valuationCalc?.areaPrivativa ? "Área privativa" : "Área total"}</span>
-                                        <div className="d-flex justify-content-center align-items-center">
-                                            <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.areaPrivativa ? clientData?.areaTotalPrivativa : clientData?.areaTotal}</span>
-                                            <span className="text-orange ms-1 ">m²</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-12   p-2">
-                                <div className="card">
-
-                                    <div className="card-body text-center">
-                                        <span className="bold ">Valor</span>
-                                        <div className="d-flex justify-content-center align-items-center">
-                                            <span className="text-orange me-1 ">R$</span>
-                                            <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.valorAvaliacao},00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div className="col-12 d-flex justify-content-center mt-5">
-                        <span className=" fw-bold text-main text-center me-3">Valor de anúncio</span>
-                    </div>
-                    <div className="col-12  mt-3" >
-
-
-                        <div className="row d-flex justify-content-center px-2 ">
-                            <div className="col-4 px-1 my-1">
-
-                                <span className={`card rounded-pill shadow cardAnimation `} type="button" onClick={() => setValueSelected('curtoPrazoValue')}>
-                                    <div className={"card-body text-center "}>
-                                        <div className={`${styles.cardIconPdf}`}>
-                                            <div style={{
-                                                backgroundColor: '#00c661',
-                                            }}>
-
-                                                <FontAwesomeIcon icon={faStar} className="  text-white" />
-                                            </div>
-                                        </div>
-
-                                        <span className=" fw-bold me-1  " style={{ color: "#00c661" }}>
-                                            Venda curto prazo
-                                        </span> <br />
-                                        <span className="text-secondary me-1 ">R$</span>
-                                        <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.curtoPrazoValue !== 'NaN' ? clientData?.valuation?.valuationCalc?.curtoPrazoValue + ',00' : 0}</span>
-                                    </div>
-                                </span>
-                            </div>
-                            <div className="col-4 px-1 my-1">
-
-                                <span className={`card rounded-pill shadow cardAnimation `} type="button" onClick={() => setValueSelected('valorIdealValue')}>
-                                    <div className={"card-body text-center "}>
-                                        <div className={`${styles.cardIconPdf}`}>
-
-                                            <div style={{
-                                                backgroundColor: '#fbba27',
-                                            }}>
-
-                                                <FontAwesomeIcon icon={faShoppingCart} className="  text-white" />
-                                            </div>
-                                        </div>
-
-                                        <span className=" fw-bold me-1  " style={{ color: "#fbba27" }}>Venda ideal</span> <br />
-                                        <span className="text-secondary me-1 ">R$</span>
-                                        <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.valorIdealValue !== 'NaN' ? clientData?.valuation?.valuationCalc?.valorIdealValue + ',00' : 0}</span>
-                                    </div>
-                                </span>
-                            </div>
-                            <div className="col-4 px-1 my-1">
-
-                                <span className={`card  rounded-pill shadow  cardAnimation `} type="button" onClick={() => setValueSelected('longoPrazoValue')}>
-                                    <div className={"card-body text-center "}>
-
-                                        <div className={`${styles.cardIconPdf}`}>
-                                            <div style={{
-                                                backgroundColor: '#e9083f',
-                                            }}>
-
-                                                <FontAwesomeIcon icon={faWarning} className="  text-white" />
-                                            </div>
-                                        </div>
-
-
-
-                                        <span className=" fw-bold me-1  " style={{ color: "#e9083f" }}>Venda longo prazo</span> <br />
-                                        <span className="text-secondary me-1 ">R$</span>
-                                        <span className="text-secondary  fw-bold">{clientData?.valuation?.valuationCalc?.longoPrazoValue !== 'NaN' ? clientData?.valuation?.valuationCalc?.longoPrazoValue + ',00' : 0}</span>
-                                    </div>
-                                </span>
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-                </div>
-
-
-
-
-
-
-            </div>
-            <div className={styles.page}>
-                <div className="row h-100 pb-3 ps-3">
-                    <div className="col-12 d-flex flex-column justify-content-between">
-                        <div>
-
-                        </div>
-                        <div className='d-flex justify-content-center'>
-                            <img src={userData?.logo} alt=""
-                                style={{
-                                    maxHeight: "400px",
-                                    maxWidth: "400px",
-                                    height: "auto",
-                                    width: "auto",
-                                    opacity: 0.5
-                                }} />
-                        </div>
+                {/* Seção de Estudo de Mercado - otimizado */}
+                <div className="px-4">
+                    <div className="bg-light rounded p-3 mb-3" style={{ borderLeft: '5px solid #f5874f' }}>
+                        <h3 className="fw-bold mb-2" style={{ color: '#2c3e50', fontSize: '18px' }}>
+                            Estudo de Mercado
+                        </h3>
                         <div className="row">
-                            <div className="col-12">
-                                Para mais informações, entre em contato conosco.
+                            <div className="col-6">
+                                <h5 className="fw-bold mb-2" style={{ color: '#5a5a5a', fontSize: '15px' }}>
+                                    Relação do preço com a velocidade de venda
+                                </h5>
+                                <p className="text-justify mb-2" style={{ color: '#666', fontSize: '12px', lineHeight: '1.4' }}>
+                                    A velocidade de venda do seu imóvel está diretamente relacionada à precificação correta.
+                                    Nosso histórico de vendas mostra que imóveis com avaliações acima do preço de mercado
+                                    têm como resultado um processo de venda mais lento.
+                                </p>
+                                <div className="text-center">
+                                    <img src='/VALUATION_PDF_1.png' alt="Gráfico de velocidade de venda"
+                                        className="img-fluid" style={{ maxHeight: '160px' }} />
+                                </div>
                             </div>
-                            <div className="col-12 mt-2">{userData?.companyName} - {userData?.firstName} {userData?.lastName}</div>
-                            <div className="col-12 mt-1">
-                                <FontAwesomeIcon icon={faPhone} className="me-2" /> {userData?.telefone} / {userData?.celular}
-                            </div>
-                            <div className="col-12 mt-1">
-                                <FontAwesomeIcon icon={faEnvelope} className="me-2" /> {userData?.workEmail}
+                            <div className="col-6">
+                                <h5 className="fw-bold mb-2" style={{ color: '#5a5a5a', fontSize: '15px' }}>
+                                    Benefícios da precificação correta:
+                                </h5>
+                                <div style={{ fontSize: '12px', lineHeight: '1.6' }}>
+                                    <div className="mb-1">
+                                        <FontAwesomeIcon icon={faCheck} className="me-2" style={{ color: '#28a745' }} />
+                                        <span style={{ color: '#666' }}>Venda dentro de um prazo mais curto</span>
+                                    </div>
+                                    <div className="mb-1">
+                                        <FontAwesomeIcon icon={faCheck} className="me-2" style={{ color: '#28a745' }} />
+                                        <span style={{ color: '#666' }}>Menos inconvenientes durante o processo</span>
+                                    </div>
+                                    <div className="mb-1">
+                                        <FontAwesomeIcon icon={faCheck} className="me-2" style={{ color: '#28a745' }} />
+                                        <span style={{ color: '#666' }}>Maior número de clientes interessados</span>
+                                    </div>
+                                    <div className="mb-1">
+                                        <FontAwesomeIcon icon={faCheck} className="me-2" style={{ color: '#28a745' }} />
+                                        <span style={{ color: '#666' }}>Corretores motivados a mostrar o imóvel</span>
+                                    </div>
+                                    <div className="mb-1">
+                                        <FontAwesomeIcon icon={faCheck} className="me-2" style={{ color: '#28a745' }} />
+                                        <span style={{ color: '#666' }}>Ofertas mais competitivas</span>
+                                    </div>
+                                    <div className="mb-1">
+                                        <FontAwesomeIcon icon={faCheck} className="me-2" style={{ color: '#28a745' }} />
+                                        <span style={{ color: '#666' }}>Menor risco de desvalorização</span>
+                                    </div>
+                                    <div className="mb-1">
+                                        <FontAwesomeIcon icon={faCheck} className="me-2" style={{ color: '#28a745' }} />
+                                        <span style={{ color: '#666' }}>Representação exclusiva por corretor</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <Footer />
+            </div>
 
+            {/* PÁGINA 2 - METODOLOGIA, CARACTERÍSTICAS E ANÁLISE TÉCNICA */}
+            <div className={`${styles.page} position-relative`} style={{ paddingBottom: '40px' }}>
+                {/* Metodologia - otimizado */}
+                <div className="px-4 mb-3" style={{ paddingTop: '15px' }}>
+                    <div className="text-center mb-3">
+                        <h2 className="fw-bold" style={{ color: '#2c3e50', fontSize: '22px' }}>
+                            Metodologia e Análise Técnica
+                        </h2>
+                        <div style={{ width: '80px', height: '3px', backgroundColor: '#f5874f', margin: '8px auto' }}></div>
+                    </div>
+
+                    <div className="row mb-3">
+                        <div className="col-6">
+                            <div className="bg-light rounded p-3 h-100">
+                                <div className="d-flex align-items-center mb-2">
+                                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style={{ width: '50px', height: '50px', backgroundColor: '#f5874f' }}>
+                                        <span className="fw-bold text-white" style={{ fontSize: '18px' }}>
+                                            {clientData?.valuation?.propertyArray?.length}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <h5 className="fw-bold mb-1" style={{ color: '#2c3e50', fontSize: '14px' }}>
+                                            Imóveis Analisados
+                                        </h5>
+                                        <p className="mb-0" style={{ color: '#666', fontSize: '12px' }}>
+                                            Amostra representativa
+                                        </p>
+                                    </div>
+                                </div>
+                                <p className="mb-0" style={{ color: '#666', fontSize: '12px', lineHeight: '1.4' }}>
+                                    O estudo é baseado em uma amostra de imóveis similares ao seu, considerando localização,
+                                    tipologia, área e características físicas.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="col-6">
+                            <div className="bg-light rounded p-3 h-100">
+                                <div className="d-flex align-items-center mb-2">
+                                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style={{ width: '50px', height: '50px', backgroundColor: '#28a745' }}>
+                                        <FontAwesomeIcon icon={faCalculator} className="text-white" style={{ fontSize: '16px' }} />
+                                    </div>
+                                    <div>
+                                        <h5 className="fw-bold mb-1" style={{ color: '#2c3e50', fontSize: '14px' }}>
+                                            Análise Comparativa
+                                        </h5>
+                                        <p className="mb-0" style={{ color: '#666', fontSize: '12px' }}>
+                                            Método técnico aplicado
+                                        </p>
+                                    </div>
+                                </div>
+                                <p className="mb-0" style={{ color: '#666', fontSize: '12px', lineHeight: '1.4' }}>
+                                    Utilizamos fatores de homogeneização para ajustar diferenças entre os imóveis
+                                    e obter valores mais precisos.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                {/* Características do Imóvel - otimizado e expandido */}
+                <div className="px-4 mb-3">
+                    <h3 className="fw-bold mb-2 text-center" style={{ color: '#2c3e50', fontSize: '18px' }}>
+                        Características do Seu Imóvel
+                    </h3>
+
+                    <div className="card border-0 shadow-sm" style={{ borderRadius: '12px' }}>
+                        <div className="card-body p-2">
+                            <ClientFeatures client={clientData} valuationPdf />
+                        </div>
                     </div>
                 </div>
 
+                {/* Imagens do imóvel - layout otimizado sem distorção */}
+                {imageGroups.length > 0 && (
+                    <div className="mb-2 px-2">
+                        <h4 className="fw-bold mb-2 text-center" style={{ color: '#2c3e50', fontSize: '14px' }}>
+                            Imagens do Imóvel Avaliado
+                        </h4>
+                        {(() => {
+                            const totalImages = imageGroups[0].length;
+                            const displayImages = Math.min(totalImages, 12);
+
+                            // Configurações otimizadas baseadas na quantidade de imagens
+                            let colClass, containerHeight, aspectRatio;
+                            if (displayImages <= 4) {
+                                colClass = 'col-6'; // 2 por linha
+                                containerHeight = '100px';
+                                aspectRatio = '4/3';
+                            } else if (displayImages <= 6) {
+                                colClass = 'col-4'; // 3 por linha  
+                                containerHeight = '85px';
+                                aspectRatio = '4/3';
+                            } else if (displayImages <= 9) {
+                                colClass = 'col-4'; // 3 por linha
+                                containerHeight = '70px';
+                                aspectRatio = '3/2';
+                            } else {
+                                colClass = 'col-3'; // 4 por linha
+                                containerHeight = '60px';
+                                aspectRatio = '3/2';
+                            }
+
+                            return (
+                                <div className="row g-1">
+                                    {imageGroups[0].slice(0, displayImages).map((elem, index) => (
+                                        <div key={index} className={colClass}>
+                                            <div
+                                                className="position-relative overflow-hidden rounded"
+                                                style={{
+                                                    width: '100%',
+                                                    aspectRatio: aspectRatio, // Mantém proporção consistente
+                                                    minHeight: containerHeight,
+                                                    border: '1px solid #e0e0e0',
+                                                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                                                }}
+                                            >
+                                                <img
+                                                    src={elem.url}
+                                                    style={{
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        objectFit: 'cover',
+                                                        objectPosition: 'center center' // Centraliza o recorte
+                                                    }}
+                                                    alt={`Imóvel ${index + 1}`}
+                                                    onError={(e) => {
+                                                        // Fallback caso a imagem não carregue
+                                                        e.target.style.display = 'none';
+                                                        e.target.parentNode.innerHTML = `
+                                            <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                                                <small class="text-muted">Sem imagem</small>
+                                            </div>
+                                        `;
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            );
+                        })()}
+
+                        {/* Indicador se há mais imagens */}
+                        {imageGroups[0].length > 12 && (
+                            <div className="text-center mt-1">
+                                <small className="text-muted" style={{ fontSize: '10px' }}>
+                                    Exibindo 12 de {imageGroups[0].length} imagens disponíveis
+                                </small>
+                            </div>
+                        )}
+                    </div>
+                )}
+                <Footer />
+            </div>
+
+            {/* PÁGINA 3 - IMÓVEIS DE COMPARAÇÃO E ANÁLISE DETALHADA */}
+            <div className={`${styles.page} position-relative`} style={{ paddingBottom: '40px' }}>
+                <div className="px-4 mb-2" style={{ paddingTop: '15px' }}>
+                    <div className="text-center mb-2">
+                        <h2 className="fw-bold" style={{ color: '#2c3e50', fontSize: '22px' }}>
+                            Imóveis de Comparação
+                        </h2>
+                        <div style={{ width: '80px', height: '3px', backgroundColor: '#f5874f', margin: '6px auto' }}></div>
+                        <p style={{ color: '#666', fontSize: '12px', marginBottom: '10px' }}>
+                            Análise comparativa com imóveis similares na região
+                        </p>
+                    </div>
+
+                    {/* Lista de propriedades de comparação - mais compacta */}
+                    <div className="card border-0 shadow-sm mb-2" style={{ borderRadius: '8px' }}>
+                        <div className="card-body p-2">
+                            <div className="table-responsive">
+                                <table className="table table-sm mb-0" style={{ fontSize: '10px' }}>
+                                    <thead>
+                                        <tr style={{ backgroundColor: '#f8f9fa' }}>
+                                            <th className="border-0 fw-bold py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '35%' }}>Imóvel</th>
+                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '8%' }}>Área</th>
+                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '8%' }}>Qtos</th>
+                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '8%' }}>Banh</th>
+                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '8%' }}>Gar</th>
+                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '18%' }}>Preço</th>
+                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '15%' }}>R$/m²</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {clientData?.valuation?.propertyArray?.slice(0, 10).map((elem, index) => (
+                                            <tr key={index} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                                                <td className="border-0 py-1">
+                                                    <div className="d-flex align-items-center">
+                                                        <div style={{ width: '32px', height: '24px', overflow: 'hidden', borderRadius: '3px', marginRight: '6px', flexShrink: 0 }}>
+                                                            <img src={elem.imageUrl} alt={`Imóvel ${index + 1}`}
+                                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                        <div style={{ minWidth: 0 }}>
+                                                            <div className="fw-bold text-truncate" style={{ fontSize: '10px', color: '#2c3e50', maxWidth: '120px' }}>
+                                                                {elem.propertyName || `Imóvel ${index + 1}`}
+                                                            </div>
+                                                            <div className="text-truncate" style={{ fontSize: '9px', color: '#666', maxWidth: '120px' }}>
+                                                                {elem.logradouro}, {elem.bairro}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="border-0 text-center py-1" style={{ color: '#666', fontSize: '10px' }}>
+                                                    {elem.areaTotal}m²
+                                                </td>
+                                                <td className="border-0 text-center py-1" style={{ color: '#666', fontSize: '10px' }}>
+                                                    {elem.quartos || '-'}
+                                                </td>
+                                                <td className="border-0 text-center py-1" style={{ color: '#666', fontSize: '10px' }}>
+                                                    {elem.banheiros || '-'}
+                                                </td>
+                                                <td className="border-0 text-center py-1" style={{ color: '#666', fontSize: '10px' }}>
+                                                    {elem.vagasGaragem || '-'}
+                                                </td>
+                                                <td className="border-0 text-center py-1 fw-bold" style={{ color: '#f5874f', fontSize: '10px' }}>
+                                                    R$ {parseFloat(elem.propertyPrice).toLocaleString('pt-BR')}
+                                                </td>
+                                                <td className="border-0 text-center py-1" style={{ color: '#666', fontSize: '10px' }}>
+                                                    R$ {elem.areaTotal ? Math.round(parseFloat(elem.propertyPrice) / parseFloat(elem.areaTotal)).toLocaleString('pt-BR') : '-'}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    {/* Mapa - altura dinâmica baseada no espaço restante */}
+                    <div className="card border-0 shadow-sm" style={{ borderRadius: '8px', overflow: 'hidden' }}>
+                        <div className="card-header bg-gradient text-center py-1" style={{ backgroundColor: '#f5874f' }}>
+                            <h5 className="text-white mb-0 fw-bold" style={{ fontSize: '14px' }}>
+                                <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" />
+                                Localização dos Imóveis Comparados
+                            </h5>
+                        </div>
+                        <div className="card-body p-0">
+                            {(() => {
+                                // Calcula a altura do mapa baseada no espaço usado
+                                const totalImages = imageGroups.length > 0 ? Math.min(imageGroups[0].length, 12) : 0;
+                                let mapHeight;
+
+                                if (totalImages <= 4) {
+                                    mapHeight = '160px'; // Menos imagens = mapa menor
+                                } else if (totalImages <= 8) {
+                                    mapHeight = '140px'; // Médio número de imagens
+                                } else {
+                                    mapHeight = '120px'; // Muitas imagens = mapa mais compacto
+                                }
+
+                                return (
+                                    <Map
+                                        location={{ lat: clientData?.latitude, lng: clientData?.longitude }}
+                                        zoom={30}
+                                        height={mapHeight}
+                                        width="100%"
+                                        valuationPage
+                                        valuationPdf
+                                        porpertyLocations={clientData?.valuation?.propertyArray}
+                                    />
+                                );
+                            })()}
+                        </div>
+                    </div>
+                </div>
+                <Footer />
+            </div>
+
+
+            {/* PÁGINA 5 - RESULTADOS DA AVALIAÇÃO E CONTATO */}
+            <div className={`${styles.page} position-relative`} style={{ paddingBottom: '40px' }}>
+                <div className="px-4" style={{ paddingTop: '15px' }}>
+                    {/* Valor de Anúncio - otimizado */}
+                    <div className="text-center mb-3">
+                        <h2 className="fw-bold" style={{ color: '#2c3e50', fontSize: '22px' }}>
+                            Resultado da Avaliação
+                        </h2>
+                        <div style={{ width: '80px', height: '3px', backgroundColor: '#f5874f', margin: '8px auto' }}></div>
+                        <p style={{ color: '#666', fontSize: '13px' }}>
+                            Sugestões de precificação baseadas no tempo de venda desejado
+                        </p>
+                    </div>
+
+                    <div className="row justify-content-center mb-4">
+                        <div className="col-11">
+                            <div className="row g-2">
+                                {/* Venda Curto Prazo */}
+                                <div className="col-4">
+                                    <div className="card border-0 shadow-sm text-center" style={{ borderRadius: '15px', border: '2px solid #28a745' }}>
+                                        <div className="card-body p-2">
+                                            <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
+                                                style={{ width: '50px', height: '50px', backgroundColor: '#28a745' }}>
+                                                <FontAwesomeIcon icon={faStar} className="text-white" style={{ fontSize: '16px' }} />
+                                            </div>
+                                            <h6 className="fw-bold mb-1" style={{ color: '#28a745', fontSize: '12px' }}>
+                                                Venda Curto Prazo
+                                            </h6>
+                                            <div className="d-flex justify-content-center align-items-center">
+                                                <span className="me-1" style={{ color: '#666', fontSize: '12px' }}>R$</span>
+                                                <span className="fw-bold" style={{ color: '#2c3e50', fontSize: '16px' }}>
+                                                    {clientData?.valuation?.valuationCalc?.curtoPrazoValue !== 'NaN' ?
+                                                        clientData?.valuation?.valuationCalc?.curtoPrazoValue + ',00' : '0,00'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Venda Ideal */}
+                                <div className="col-4">
+                                    <div className="card border-0 shadow-sm text-center" style={{ borderRadius: '15px', border: '2px solid #faa954' }}>
+                                        <div className="card-body p-2">
+                                            <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
+                                                style={{ width: '50px', height: '50px', backgroundColor: '#faa954' }}>
+                                                <FontAwesomeIcon icon={faShoppingCart} className="text-white" style={{ fontSize: '16px' }} />
+                                            </div>
+                                            <h6 className="fw-bold mb-1" style={{ color: '#faa954', fontSize: '12px' }}>
+                                                Venda Ideal
+                                            </h6>
+                                            <div className="d-flex justify-content-center align-items-center">
+                                                <span className="me-1" style={{ color: '#666', fontSize: '12px' }}>R$</span>
+                                                <span className="fw-bold" style={{ color: '#2c3e50', fontSize: '16px' }}>
+                                                    {clientData?.valuation?.valuationCalc?.valorIdealValue !== 'NaN' ?
+                                                        clientData?.valuation?.valuationCalc?.valorIdealValue + ',00' : '0,00'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Venda Longo Prazo */}
+                                <div className="col-4">
+                                    <div className="card border-0 shadow-sm text-center" style={{ borderRadius: '15px', border: '2px solid #dc3545' }}>
+                                        <div className="card-body p-2">
+                                            <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
+                                                style={{ width: '50px', height: '50px', backgroundColor: '#dc3545' }}>
+                                                <FontAwesomeIcon icon={faWarning} className="text-white" style={{ fontSize: '16px' }} />
+                                            </div>
+                                            <h6 className="fw-bold mb-1" style={{ color: '#dc3545', fontSize: '12px' }}>
+                                                Venda Longo Prazo
+                                            </h6>
+                                            <div className="d-flex justify-content-center align-items-center">
+                                                <span className="me-1" style={{ color: '#666', fontSize: '12px' }}>R$</span>
+                                                <span className="fw-bold" style={{ color: '#2c3e50', fontSize: '16px' }}>
+                                                    {clientData?.valuation?.valuationCalc?.longoPrazoValue !== 'NaN' ?
+                                                        clientData?.valuation?.valuationCalc?.longoPrazoValue + ',00' : '0,00'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Explicação dos valores */}
+                    <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '12px' }}>
+                        <div className="card-body p-3">
+                            <h5 className="fw-bold mb-2 text-center" style={{ color: '#2c3e50', fontSize: '16px' }}>
+                                Entenda os Valores Sugeridos
+                            </h5>
+                            <div className="row">
+                                <div className="col-4 text-center">
+                                    <div className="mb-2">
+                                        <div className="d-inline-block p-2 rounded" style={{ backgroundColor: '#e8f5e8' }}>
+                                            <FontAwesomeIcon icon={faStar} style={{ color: '#28a745', fontSize: '20px' }} />
+                                        </div>
+                                    </div>
+                                    <p style={{ color: '#666', fontSize: '11px', lineHeight: '1.4' }}>
+                                        <strong>Curto Prazo:</strong> Valor mais agressivo para venda rápida,
+                                        ideal para quem tem urgência ou flexibilidade no preço.
+                                    </p>
+                                </div>
+                                <div className="col-4 text-center">
+                                    <div className="mb-2">
+                                        <div className="d-inline-block p-2 rounded" style={{ backgroundColor: '#fff3e0' }}>
+                                            <FontAwesomeIcon icon={faShoppingCart} style={{ color: '#faa954', fontSize: '20px' }} />
+                                        </div>
+                                    </div>
+                                    <p style={{ color: '#666', fontSize: '11px', lineHeight: '1.4' }}>
+                                        <strong>Valor Ideal:</strong> Preço equilibrado que concilia
+                                        valor justo e tempo razoável de venda. Recomendado.
+                                    </p>
+                                </div>
+                                <div className="col-4 text-center">
+                                    <div className="mb-2">
+                                        <div className="d-inline-block p-2 rounded" style={{ backgroundColor: '#ffeaea' }}>
+                                            <FontAwesomeIcon icon={faWarning} style={{ color: '#dc3545', fontSize: '20px' }} />
+                                        </div>
+                                    </div>
+                                    <p style={{ color: '#666', fontSize: '11px', lineHeight: '1.4' }}>
+                                        <strong>Longo Prazo:</strong> Valor mais alto, mas pode
+                                        resultar em tempo prolongado no mercado.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Seção de Contato - integrada na mesma página */}
+                    <div className="mt-4">
+                        {/* Logo centralizada - menor */}
+
+
+                        {/* Informações de contato - compactas */}
+                        <div className="card border-0 mb-4 shadow-sm" style={{ borderRadius: '15px', backgroundColor: '#f8f9fa' }}>
+                            <div className="card-body p-3">
+                                <div className="text-center mb-2">
+                                    <h4 className="fw-bold" style={{ color: '#2c3e50', fontSize: '18px' }}>
+                                        Próximos Passos
+                                    </h4>
+                                    <div style={{ width: '50px', height: '2px', backgroundColor: '#f5874f', margin: '8px auto' }}></div>
+                                    <p style={{ color: '#666', fontSize: '12px' }}>
+                                        Vamos conversar sobre a estratégia ideal para seu imóvel
+                                    </p>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-6">
+                                        <div className="mb-2">
+                                            <h6 className="fw-bold mb-1" style={{ color: '#5a5a5a', fontSize: '14px' }}>Profissional</h6>
+                                            <p className="mb-1 fw-bold" style={{ color: '#2c3e50', fontSize: '15px' }}>
+                                                {userData?.firstName} {userData?.lastName}
+                                            </p>
+                                            <p className="mb-0" style={{ color: '#666', fontSize: '13px' }}>
+                                                {userData?.companyName}
+                                            </p>
+                                            {userData?.creci && (
+                                                <p className="mb-0" style={{ color: '#666', fontSize: '12px' }}>
+                                                    CRECI: {userData?.creci}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="col-6">
+                                        <div className="mb-2">
+                                            <h6 className="fw-bold mb-1" style={{ color: '#5a5a5a', fontSize: '14px' }}>Contatos</h6>
+                                            <div className="mb-1">
+                                                <FontAwesomeIcon icon={faPhone} className="me-2" style={{ color: '#f5874f' }} />
+                                                <span style={{ color: '#2c3e50', fontSize: '13px' }}>
+                                                    {userData?.telefone} / {userData?.celular}
+                                                </span>
+                                            </div>
+                                            <div className="mb-1">
+                                                <FontAwesomeIcon icon={faEnvelope} className="me-2" style={{ color: '#f5874f' }} />
+                                                <span style={{ color: '#2c3e50', fontSize: '13px' }}>
+                                                    {userData?.workEmail}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div className="text-center ">
+                            {userData?.logo && (
+                                <img src={userData?.logo} alt="Logo"
+                                    style={{
+                                        maxHeight: "225px",
+                                        maxWidth: "275px",
+                                        height: "auto",
+                                        width: "auto",
+                                    }} />
+                            )}
+                        </div>
+                    </div>
+                </div>
+                <Footer />
             </div>
         </div>
     )
