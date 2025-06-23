@@ -15,6 +15,7 @@ import { SpinnerSM } from "../../components/loading/Spinners"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { maskMoney } from "../../../utils/mask"
+import ClientFeaturesValuation from "../../clientsManagement/ClientFeaturesValuation"
 
 export default function ValuationViewPage(props) {
     const clientData = props.clientData
@@ -137,7 +138,7 @@ export default function ValuationViewPage(props) {
                                                         </div>
                                                     </div>
                                                     <div className="col-lg-6 p-4 d-flex align-items-start">
-                                                        <ClientFeatures client={clientData} propertyAdd />
+                                                        <ClientFeaturesValuation client={clientData} propertyAdd />
                                                     </div>
                                                 </div>
                                             </div>
