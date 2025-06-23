@@ -54,9 +54,9 @@ export default function ValuationPdf(props) {
                 </div>
 
                 {/* Saudação e Introdução - otimizado */}
-                <div className="px-4 mb-3">
+                <div className="px-4 mb-3" style={{height: '400px'}}>
                     <div className="row">
-                        <div className="col-7 d-flex align-items-start">
+                        <div className="col-7 d-flex align-items-center h-100">
                             <div>
                                 <h2 className="fw-bold mb-2" style={{ color: '#2c3e50', fontSize: '22px' }}>
                                     Olá, {clientData?.clientName}!
@@ -75,7 +75,7 @@ export default function ValuationPdf(props) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-5 d-flex flex-column justify-content-center align-items-center">
+                        <div className="col-5 ">
                             <h6 className="fw-bold text-start mb-2" style={{ color: '#5a5a5a', fontSize: '14px' }}>
                                 Estudo realizado por:
                             </h6>
@@ -334,70 +334,48 @@ export default function ValuationPdf(props) {
                     </div>
 
                     {/* Lista de propriedades de comparação - mais compacta */}
-                    <div className="card border-0 shadow-sm mb-2" style={{ borderRadius: '8px' }}>
-                        <div className="card-body p-2">
-                            <div className="table-responsive">
-                                <table className="table table-sm mb-0" style={{ fontSize: '10px' }}>
-                                    <thead>
-                                        <tr style={{ backgroundColor: '#f8f9fa' }}>
-                                            <th className="border-0 fw-bold py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '35%' }}>Imóvel</th>
-                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '8%' }}>Área</th>
-                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '8%' }}>Qtos</th>
-                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '8%' }}>Banh</th>
-                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '8%' }}>Gar</th>
-                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '18%' }}>Preço</th>
-                                            <th className="border-0 fw-bold text-center py-1" style={{ color: '#2c3e50', fontSize: '10px', width: '15%' }}>R$/m²</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {clientData?.valuation?.propertyArray?.slice(0, 10).map((elem, index) => (
-                                            <tr key={index} style={{ borderBottom: '1px solid #f0f0f0' }}>
-                                                <td className="border-0 py-1">
-                                                    <div className="d-flex align-items-center">
-                                                        <div style={{ width: '32px', height: '24px', overflow: 'hidden', borderRadius: '3px', marginRight: '6px', flexShrink: 0 }}>
-                                                            <img src={elem.imageUrl} alt={`Imóvel ${index + 1}`}
-                                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                                        </div>
-                                                        <div style={{ minWidth: 0 }}>
-                                                            <div className="fw-bold text-truncate" style={{ fontSize: '10px', color: '#2c3e50', maxWidth: '120px' }}>
-                                                                {elem.propertyName || `Imóvel ${index + 1}`}
-                                                            </div>
-                                                            <div className="text-truncate" style={{ fontSize: '9px', color: '#666', maxWidth: '120px' }}>
-                                                                {elem.logradouro}, {elem.bairro}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="border-0 text-center py-1" style={{ color: '#666', fontSize: '10px' }}>
-                                                    {elem.areaTotal}m²
-                                                </td>
-                                                <td className="border-0 text-center py-1" style={{ color: '#666', fontSize: '10px' }}>
-                                                    {elem.quartos || '-'}
-                                                </td>
-                                                <td className="border-0 text-center py-1" style={{ color: '#666', fontSize: '10px' }}>
-                                                    {elem.banheiros || '-'}
-                                                </td>
-                                                <td className="border-0 text-center py-1" style={{ color: '#666', fontSize: '10px' }}>
-                                                    {elem.vagasGaragem || '-'}
-                                                </td>
-                                                <td className="border-0 text-center py-1 fw-bold" style={{ color: '#f5874f', fontSize: '10px' }}>
-                                                    R$ {parseFloat(elem.propertyPrice).toLocaleString('pt-BR')}
-                                                </td>
-                                                <td className="border-0 text-center py-1" style={{ color: '#666', fontSize: '10px' }}>
-                                                    R$ {elem.areaTotal ? Math.round(parseFloat(elem.propertyPrice) / parseFloat(elem.areaTotal)).toLocaleString('pt-BR') : '-'}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div className="row mb-4">
+                        <div className="d-flex col-12 flex-wrap justify-content-center ">
+                            {clientData?.valuation?.propertyArray?.map((elem, index, array) => {
+
+                                const customWidth = array.length === 4 ? '160px' : '180px';
+                                const customScale = array.length === 4 ? 'scale(0.55)' : 'scale(0.6)';
+
+                                return (
+                                    <div
+                                        key={index}
+                                        className="mx-1 my-2"
+                                        style={{ width: customWidth }} // Defina a largura e altura fixa
+                                    >
+                                        <div
+                                            style={{
+                                                transform: customScale,
+                                                transformOrigin: 'top left',
+
+                                                width: '300px', // Largura original do elemento
+                                                height: '300px', // Altura original do elemento
+                                            }}
+                                        >
+                                            <PropertyCard
+                                                section="Todos Clientes"
+                                                valuationView
+                                                valuationPdf
+                                                elem={elem}
+                                                index={index}
+                                                setPropertyUrl={(value) => props.setPropertyUrl(value)}
+                                            />
+                                        </div>
+                                    </div>
+                                )
+                            })}
+
                         </div>
                     </div>
 
 
 
                     {/* Mapa - altura dinâmica baseada no espaço restante */}
-                    <div className="card border-0 shadow-sm" style={{ borderRadius: '8px', overflow: 'hidden' }}>
+                    <div className="card border-0 shadow-sm mt-4" style={{ borderRadius: '8px', overflow: 'hidden' }}>
                         <div className="card-header bg-gradient text-center py-1" style={{ backgroundColor: '#f5874f' }}>
                             <h5 className="text-white mb-0 fw-bold" style={{ fontSize: '14px' }}>
                                 <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" />
@@ -405,31 +383,16 @@ export default function ValuationPdf(props) {
                             </h5>
                         </div>
                         <div className="card-body p-0">
-                            {(() => {
-                                // Calcula a altura do mapa baseada no espaço usado
-                                const totalImages = imageGroups.length > 0 ? Math.min(imageGroups[0].length, 12) : 0;
-                                let mapHeight;
 
-                                if (totalImages <= 4) {
-                                    mapHeight = '160px'; // Menos imagens = mapa menor
-                                } else if (totalImages <= 8) {
-                                    mapHeight = '140px'; // Médio número de imagens
-                                } else {
-                                    mapHeight = '120px'; // Muitas imagens = mapa mais compacto
-                                }
-
-                                return (
-                                    <Map
-                                        location={{ lat: clientData?.latitude, lng: clientData?.longitude }}
-                                        zoom={30}
-                                        height={mapHeight}
-                                        width="100%"
-                                        valuationPage
-                                        valuationPdf
-                                        porpertyLocations={clientData?.valuation?.propertyArray}
-                                    />
-                                );
-                            })()}
+                            <Map
+                                location={{ lat: clientData?.latitude, lng: clientData?.longitude }}
+                                zoom={20}
+                                height={'100%'}
+                                width="100%"
+                                valuationPage
+                                valuationPdf
+                                porpertyLocations={clientData?.valuation?.propertyArray}
+                            />
                         </div>
                     </div>
                 </div>
