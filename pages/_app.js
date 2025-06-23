@@ -14,6 +14,8 @@ import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 import 'swiper/css/scrollbar'
 
+import { Analytics } from "@vercel/analytics/next"
+
 if (typeof window !== "undefined") {
     window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
     require('apexcharts/dist/apexcharts.common.js')
@@ -234,5 +236,5 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps} }
         }
     };
 
-    return <div>{render()}</div>;
+    return <div><Analytics />{render()}</div>;
 }
