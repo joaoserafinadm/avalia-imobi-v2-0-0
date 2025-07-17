@@ -92,11 +92,9 @@ export default function NoSubscriptionPage(props) {
             <div className="col-12">
                 <div className="row">
                     <div className="col-12 mt-3">
-                        <FontAwesomeIcon icon={faPlus} className="me-2 text-success" /><b>Até 5 usuários:</b> Se você precisar de mais pessoas utilizando o sistema, cada usuário terá um custo adicional de <b>R$19,90 por mês</b>.
+                        <FontAwesomeIcon icon={faPlus} className="me-2 text-success" /> Se você precisar de mais pessoas utilizando o sistema, cada usuário terá um custo adicional de <b>R$19,90 por mês</b>.
                     </div>
-                    <div className="col-12 mt-3">
-                        <FontAwesomeIcon icon={faPlus} className="me-2 text-success" /><b>Mais de 5 usuários:</b> Para equipes maiores, a partir do 6º usuário, o custo por usuário adicional é reduzido para <b>R$14,90 por mês</b>.
-                    </div>
+                  
                 </div>
             </div>
 
@@ -114,9 +112,6 @@ export default function NoSubscriptionPage(props) {
                     </div>
                     <div className="col-12 mt-3">
                         <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />5 usuários: R$79,90 + (4 x R$19,90) = R$159,50/mês
-                    </div>
-                    <div className="col-12 mt-3">
-                        <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />6 usuários: R$79,90 + (5 x R$14,90) = R$154,40/mês
                     </div>
                 </div>
             </div>
