@@ -113,27 +113,36 @@ export default function ValuationPage(props) {
 
 
     const handleSave = async (company_id) => {
+        setSection('Configurar avaliação');
 
-        setSection('Configurar avaliação')
-
-        const isValid = validate()
+        const isValid = validate();
 
         if (isValid) {
+            setLoadingSave(true);
 
-            setLoadingSave(true)
-
+            // Extrai as URLs de imagem do propertyArray
             const imageUrls = propertyArray
                 .filter(property => property.imageUrl) // Considerando que o campo de imagem se chama 'imageUrl'
                 .map(property => property.imageUrl);
 
+            let updatedPropertyArray = propertyArray;
 
-            const uploadedImages = await createImageUrlFromLink(imageUrls, "CLIENT_FILES"); // Substitua "nome_do_preset" pelo seu preset do Cloudinary
+            // Verifica se há imagens para fazer upload
+            if (imageUrls.length > 0) {
+                console.log("Fazendo upload de imagens...");
 
-            const updatedPropertyArray = propertyArray.map(property => {
-                const uploadedImage = uploadedImages.find(img => img.original_url === property.imageUrl);
-                return uploadedImage ? { ...property, imageUrl: uploadedImage.cloudinary_url } : property;
-            });
+                const uploadedImages = await createImageUrlFromLink(imageUrls, "CLIENT_FILES");
 
+                // Substitui as URLs antigas pelas novas URLs no propertyArray
+                updatedPropertyArray = propertyArray.map(property => {
+                    const uploadedImage = uploadedImages.find(img => img.original_url === property.imageUrl);
+                    return uploadedImage ? { ...property, imageUrl: uploadedImage.cloudinary_url } : property;
+                });
+            } else {
+                console.log("Nenhuma imagem encontrada para upload");
+            }
+
+            // Monta o objeto de dados com o propertyArray atualizado
             const data = {
                 company_id,
                 user_id: token.sub,
@@ -141,28 +150,22 @@ export default function ValuationPage(props) {
                 propertyArray: updatedPropertyArray,
                 calcVariables,
                 valuationCalc
-            }
+            };
 
-
+            // Envia os dados para a API
             await axios.post(`${baseUrl()}/api/valuation`, data)
                 .then(res => {
-                    setLoadingSave(false)
-                    router.push('/clientsManagement?client_id=' + _id + '&section=Avaliação')
-
-
+                    setLoadingSave(false);
+                    router.push('/clientsManagement?client_id=' + _id + '&section=Avaliação');
                 }).catch(e => {
-                    console.log(e)
-                    setLoadingSave(false)
-                })
-
-
+                    console.log(e);
+                    setLoadingSave(false);
+                });
 
         } else {
-            return
+            return;
         }
-
-
-    }
+    };
 
 
     return (
