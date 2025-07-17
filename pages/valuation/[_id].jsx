@@ -128,14 +128,28 @@ export default function ValuationPage(props) {
                 .map(property => property.imageUrl);
 
             try {
-                // Faz o upload das imagens e obtém os novos links
-                const uploadedImages = await createImageUrlFromLink(imageUrls, "CLIENT_FILES"); // Substitua "nome_do_preset" pelo seu preset do Cloudinary
+                console.log(1);
 
-                // Substitui as URLs antigas pelas novas URLs no propertyArray
-                const updatedPropertyArray = propertyArray.map(property => {
-                    const uploadedImage = uploadedImages.find(img => img.original_url === property.imageUrl);
-                    return uploadedImage ? { ...property, imageUrl: uploadedImage.cloudinary_url } : property;
-                });
+                let updatedPropertyArray = propertyArray;
+
+                // Verifica se há imagens para fazer upload
+                if (imageUrls.length > 0) {
+                    console.log("Fazendo upload de imagens...");
+
+                    // Faz o upload das imagens e obtém os novos links
+                    const uploadedImages = await createImageUrlFromLink(imageUrls, "CLIENT_FILES");
+                    console.log(2);
+
+                    // Substitui as URLs antigas pelas novas URLs no propertyArray
+                    updatedPropertyArray = propertyArray.map(property => {
+                        const uploadedImage = uploadedImages.find(img => img.original_url === property.imageUrl);
+                        return uploadedImage ? { ...property, imageUrl: uploadedImage.cloudinary_url } : property;
+                    });
+                } else {
+                    console.log("Nenhuma imagem encontrada para upload");
+                }
+
+                console.log(3);
 
                 // Monta o objeto de dados com o propertyArray atualizado
                 const data = {
@@ -151,9 +165,9 @@ export default function ValuationPage(props) {
                 const response = await axios.post(`${baseUrl()}/api/valuation`, data);
                 setLoadingSave(false);
                 setValuationUrl(response.data.urlToken);
-                setClientData(response.data.clientData)
-                setUserData(response.data.userData)
-                router.push('/clientsManagement?client_id=' + _id + '&section=Avaliação')
+                setClientData(response.data.clientData);
+                setUserData(response.data.userData);
+                router.push('/clientsManagement?client_id=' + _id + '&section=Avaliação');
 
                 // showModal('showValuationModal');
 
