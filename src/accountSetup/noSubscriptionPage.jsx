@@ -13,7 +13,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function NoSubscriptionPage(props) {
 
-      const { createMercadoPagoCheckout } = useMercadoPago();
+    const { createMercadoPagoCheckout } = useMercadoPago();
 
 
     const token = jwt.decode(Cookie.get('auth'))
@@ -73,20 +73,49 @@ export default function NoSubscriptionPage(props) {
 
     }
 
+    // Função para verificar se o plano teste ainda está ativo
+    const isSubscriptionActive = (subscriptionLimitDate) => {
+        if (!subscriptionLimitDate) return false;
+
+        const limitDate = new Date(subscriptionLimitDate);
+        const currentDate = new Date();
+
+        return currentDate <= limitDate;
+    };
+
+    // Função para formatar data para exibição
+    const formatDateToBrazilian = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    };
 
 
     return (
         <div className="row">
             <div className="col-12">
-                {/* {companyData.pixPaymentData?.subscription_limit_date ? */}
-                     {/* <div className="alert alert-danger">
-                         <span>Seu plano teste expirou em {companyData.pixPaymentData?.subscription_limit_date}!</span>
-                     </div>
-                     : */}
+                {companyData.pixPaymentData?.subscription_limit_date ? (
+                    isSubscriptionActive(companyData.pixPaymentData.subscription_limit_date) ? (
+                        <div className="alert alert-success">
+                            <span>
+                                Seu plano teste está ativo até {formatDateToBrazilian(companyData.pixPaymentData.subscription_limit_date)}!
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="alert alert-danger">
+                            <span>
+                                Seu plano teste expirou em {formatDateToBrazilian(companyData.pixPaymentData.subscription_limit_date)}!
+                            </span>
+                        </div>
+                    )
+                ) : (
                     <div className="alert alert-danger">
                         <span>Você ainda não possui uma assinatura!</span>
                     </div>
-                {/* } */}
+                )}
             </div>
 
             {/* Seletor de Planos */}
