@@ -6,8 +6,15 @@ const withPWA = require("next-pwa")({
 
 const nextConfig = {
   reactStrictMode: false,
+  experimental: {
+    esmExternals: false,
+  },
+  transpilePackages: ['@mercadopago/sdk-react'],
   webpack: (config) => {
-    config.resolve.fallback = { fs: false };
+    config.resolve.fallback = { 
+      ...config.resolve.fallback,
+      fs: false 
+    };
 
     return config;
   },
@@ -17,8 +24,4 @@ const nextConfig = {
   },
 };
 
-
-
 module.exports = withPWA(nextConfig);
-
-

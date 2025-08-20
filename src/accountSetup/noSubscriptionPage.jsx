@@ -1,3 +1,5 @@
+'use client'
+
 import { faCheck, faPlus, faCreditCard, faQrcode } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
