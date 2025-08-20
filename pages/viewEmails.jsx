@@ -1,5 +1,5 @@
 
-import SignInAuth from '../src/emails/signInAuth'
+// import SignInAuth from '../src/emails/signInAuth'
 
 
 export default function ViewEmails(props) {
@@ -10,7 +10,7 @@ export default function ViewEmails(props) {
 
 
         <>
-            <SignInAuth />
+            {/* <SignInAuth /> */}
         </>
     )
 }
