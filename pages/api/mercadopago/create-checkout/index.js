@@ -85,7 +85,7 @@ export default authenticated(async (req, res) => {
           back_urls: {
             success: `https://app.avaliaimobi.com.br/accountSetup?status=Assinatura`,
             failure: `https://app.avaliaimobi.com.br/accountSetup?status=Assinatura`,
-            pending: `https://www.lovescan.app/api/mercadopago/pending`, // Criamos uma rota para lidar com pagamentos pendentes
+            pending: `https://app.avaliaimobi.com.br/api/mercadopago/pending`, // Criamos uma rota para lidar com pagamentos pendentes
           },
         },
       });
