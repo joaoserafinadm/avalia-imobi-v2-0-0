@@ -1,21 +1,26 @@
-import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPlus, faCreditCard, faQrcode } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { loadStripe } from '@stripe/stripe-js';
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken';
 import { SpinnerSM } from "../components/loading/Spinners";
-
-
+import useMercadoPago from "../../hooks/useMercadoPago";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function NoSubscriptionPage(props) {
 
+      const { createMercadoPagoCheckout } = useMercadoPago();
+
+
     const token = jwt.decode(Cookie.get('auth'))
 
-    const [loading, setLoading] = useState(false);
+    const { companyData } = props
 
+    const [loading, setLoading] = useState(false);
+    const [loadingPix, setLoadingPix] = useState(false);
+    const [selectedPlan, setSelectedPlan] = useState('mensal'); // 'mensal' ou 'teste'
 
     const handleStripe = async () => {
         setLoading(true)
@@ -46,79 +51,226 @@ export default function NoSubscriptionPage(props) {
         setLoading(false)
     };
 
+
+    const handlePixPayment = async () => {
+
+        setLoadingPix(true);
+
+        console.log("token", token)
+
+        await createMercadoPagoCheckout({
+            user_id: token?.sub,
+            email: token?.email,
+        });
+
+        setTimeout(() => {
+            setLoadingPix(false);
+        }, 7000);
+
+
+
+    }
+
+
+
     return (
         <div className="row">
             <div className="col-12">
-                <div className="alert alert-danger">
-                    <span>Você ainda não possui uma assinatura!</span>
-                </div>
-            </div>
-            <div className="col-12 d-flex justify-content-center">
-                {loading ?
-                    <button className="btn btn-orange btn-lg" disabled >
-                        Acessando checkout... <SpinnerSM className="ms-1" />
-                    </button>
+                {companyData.pixPaymentData?.subscription_limit_date ?
+                    <div className="alert alert-danger">
+                        <span>Seu plano teste expirou em {companyData.pixPaymentData?.subscription_limit_date}!</span>
+                    </div>
                     :
-                    <button className="btn btn-orange btn-lg pulse" onClick={handleStripe} >
-                        Assinar o Avalia Imobi!
-                    </button>
-
+                    <div className="alert alert-danger">
+                        <span>Você ainda não possui uma assinatura!</span>
+                    </div>
                 }
             </div>
-            <div className="col-12 mt-3">
-                <span className="fw-bold text-orange">Plano de assinatura</span>
-            </div>
 
-            <div className="col-12">
-                <div className="row">
-                    <div className="col-12 mt-3">
-                        Nosso <b>plano básico</b> começa com um valor de <b>R$79,90 por mês.</b>
+            {/* Seletor de Planos */}
+            <div className="col-12 mb-4">
+                <div className="row justify-content-center">
+                    <div className="col-md-8">
+                        <div className="card">
+                            <div className="card-header">
+                                <h5 className="mb-0 text-center">Escolha seu plano</h5>
+                            </div>
+                            <div className="card-body">
+                                <div className="row">
+                                    {/* Plano Teste */}
+                                    <div className="col-md-6 mb-3">
+                                        <div
+                                            className={`card ${companyData.pixPaymentData?.subscription_limit_date ? 'disabled' : ''} h-100 cursor-pointer ${selectedPlan === 'teste' ? 'border-success' : 'border-light'}`}
+                                            onClick={() => setSelectedPlan('teste')}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            <div className="card-body text-center">
+                                                <div className="mb-3">
+                                                    <FontAwesomeIcon icon={faQrcode} size="2x" className="text-success" />
+                                                </div>
+                                                <h6 className="card-title text-success">Plano Teste</h6>
+                                                <h4 className="text-success mb-2">R$ 79,90</h4>
+                                                <p className="text-muted ">30 dias de acesso completo</p>
+                                                <div className="badge bg-success mb-2">PIX Exclusivo</div>
+                                                <ul className="list-unstyled text-start ">
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-success" />Todos os recursos</li>
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-success" />1 usuário incluído</li>
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-success" />30 dias de teste</li>
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-success" />Pagamento único</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Plano Mensal */}
+                                    <div className="col-md-6 mb-3">
+                                        <div
+                                            className={`card h-100 cursor-pointer ${selectedPlan === 'mensal' ? 'border-orange' : 'border-light'}`}
+                                            onClick={() => setSelectedPlan('mensal')}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            <div className="card-body text-center">
+                                                <div className="mb-3">
+                                                    <FontAwesomeIcon icon={faCreditCard} size="2x" className="text-orange" />
+                                                </div>
+                                                <h6 className="card-title text-orange">Plano Mensal</h6>
+                                                <h4 className="text-orange mb-2">R$ 79,90<small>/mês</small></h4>
+                                                <p className="text-muted ">Renovação automática</p>
+                                                <div className="badge bg-orange mb-2">Cartão de Crédito</div>
+                                                <ul className="list-unstyled text-start ">
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-orange" />Todos os recursos</li>
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-orange" />1 usuário incluído</li>
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-orange" />Usuários extras R$ 19,90</li>
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-orange" />Cancelamento a qualquer momento</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Botão de Ação */}
+                                <div className="text-center mt-3">
+                                    {selectedPlan === 'teste' ? (
+                                        loadingPix ? (
+                                            <button className="btn btn-success btn-lg" disabled>
+                                                Gerando PIX... <SpinnerSM className="ms-1" />
+                                            </button>
+                                        ) : (
+                                            <button className="btn btn-success btn-lg pulse" onClick={handlePixPayment}>
+                                                <FontAwesomeIcon icon={faQrcode} className="me-2" />
+                                                Pagar com PIX - R$ 79,90
+                                            </button>
+                                        )
+                                    ) : (
+                                        loading ? (
+                                            <button className="btn btn-orange btn-lg" disabled>
+                                                Acessando checkout... <SpinnerSM className="ms-1" />
+                                            </button>
+                                        ) : (
+                                            <button className="btn btn-orange btn-lg pulse" onClick={handleStripe}>
+                                                <FontAwesomeIcon icon={faCreditCard} className="me-2" />
+                                                Assinar por R$ 79,90/mês
+                                            </button>
+                                        )
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="col-12 mt-3">
-                        Esse plano permite que voce tenha acesso a <b>todos os recursos do Avalia Imobi</b>
-                    </div>
-                    {/* <div className="col-12 mt-3">
-                        <FontAwesomeIcon icon={faPlus} className="me-2 text-success" />Avaliações ilimitadas.
-                    </div>
-                    <div className="col-12 mt-3">
-                        <FontAwesomeIcon icon={faPlus} className="me-2 text-success" /><b>Mais de 5 usuários:</b> Para equipes maiores, a partir do 6º usuário, o custo por usuário adicional é reduzido para <b>R$14,90 por mês</b>.
-                    </div> */}
                 </div>
             </div>
 
-            <div className="col-12 mt-3">
-                <span className="fw-bold text-orange">Adição de usuários</span>
-            </div>
-            <div className="col-12">
-                <div className="row">
+            {/* Informações detalhadas do plano selecionado */}
+            {selectedPlan === 'mensal' && (
+                <>
                     <div className="col-12 mt-3">
-                        <FontAwesomeIcon icon={faPlus} className="me-2 text-success" /> Se você precisar de mais pessoas utilizando o sistema, cada usuário terá um custo adicional de <b>R$19,90 por mês</b>.
+                        <span className="fw-bold text-orange">Plano Mensal - Detalhes</span>
                     </div>
-                  
-                </div>
-            </div>
 
-            <div className="col-12 mt-3">
-                <span className="fw-bold text-orange">Exemplo</span>
-            </div>
+                    <div className="col-12">
+                        <div className="row">
+                            <div className="col-12 mt-3">
+                                Nosso <b>plano mensal</b> começa com um valor de <b>R$79,90 por mês.</b>
+                            </div>
+                            <div className="col-12 mt-3">
+                                Esse plano permite que você tenha acesso a <b>todos os recursos do Avalia Imobi</b>
+                            </div>
+                        </div>
+                    </div>
 
-            <div className="col-12">
-                <div className="row">
-                    <div className="col-12 mt-3" >
-                        <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />1 usuário (plano básico): R$79,90/mês
-                    </div>
                     <div className="col-12 mt-3">
-                        <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />2 usuários: R$79,90 + R$19,90 = R$99,80/mês
+                        <span className="fw-bold text-orange">Adição de usuários</span>
                     </div>
+                    <div className="col-12">
+                        <div className="row">
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faPlus} className="me-2 text-success" />
+                                Se você precisar de mais pessoas utilizando o sistema, cada usuário terá um custo adicional de <b>R$19,90 por mês</b>.
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="col-12 mt-3">
-                        <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />5 usuários: R$79,90 + (4 x R$19,90) = R$159,50/mês
+                        <span className="fw-bold text-orange">Exemplos de preços</span>
                     </div>
-                </div>
-            </div>
+
+                    <div className="col-12">
+                        <div className="row">
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />1 usuário (plano básico): R$79,90/mês
+                            </div>
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />2 usuários: R$79,90 + R$19,90 = R$99,80/mês
+                            </div>
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />5 usuários: R$79,90 + (4 x R$19,90) = R$159,50/mês
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+
+            {selectedPlan === 'teste' && (
+                <>
+                    <div className="col-12 mt-3">
+                        <span className="fw-bold text-success">Plano Teste - Detalhes</span>
+                    </div>
+
+                    <div className="col-12">
+                        <div className="row">
+                            <div className="col-12 mt-3">
+                                O <b>plano teste</b> oferece <b>30 dias de acesso completo</b> por apenas <b>R$79,90</b>.
+                            </div>
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />
+                                Acesso a <b>todos os recursos</b> do Avalia Imobi
+                            </div>
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />
+                                <b>Pagamento único</b> via PIX - sem renovação automática
+                            </div>
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />
+                                Somente <b>1 usuário</b> incluído no plano teste
+                            </div>
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />
+                                Ideal para <b>conhecer a plataforma</b> antes de assinar mensalmente
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-12 mt-3">
+                        <div className="alert alert-info">
+                            <strong>💡 Dica:</strong> Após os 30 dias, você pode migrar para o plano mensal a qualquer momento para continuar usando todos os recursos.
+                        </div>
+                    </div>
+                </>
+            )}
 
             <div className="col-12 my-5 d-flex justify-content-center text-center">
                 <span className="fw-bold">
-                    Fique à vontade para ajustar seu plano conforme as necessidades da sua equipe!
+                    Escolha o plano que melhor se adapta às suas necessidades!
                 </span>
             </div>
         </div>

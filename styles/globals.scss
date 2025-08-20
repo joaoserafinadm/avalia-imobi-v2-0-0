@@ -3352,3 +3352,13 @@ h1 {
 .border-orange {
   border-color: var(--ai-primary) !important;
 }
+
+
+.disabled {
+	opacity: 0.5;
+	/* Reduz a opacidade para 50% */
+	pointer-events: none;
+	/* Desabilita eventos de clique e hover */
+	cursor: not-allowed;
+	/* Muda o cursor para indicar que não é clicável */
+}
