@@ -223,7 +223,8 @@ export default async function handler(req, res) {
             {
               $set: {
                 active: true,
-                dateLimit:false,
+                dateLimit: false,
+                errorStatus: false,
                 pixPaymentData: {
                   subscription_limit_date: limitDate,
                   subscription_activated_at: new Date(),

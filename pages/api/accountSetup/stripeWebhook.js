@@ -101,27 +101,27 @@ const webhookHandler = async (req, res) => {
             console.log(invoice);
             console.log(`Payment for subscription ${subscriptionId} failed.`);
 
-            // const { db } = await connect();
+            const { db } = await connect();
 
-            // const company = await db.collection('companies').findOne(
-            //     {
-            //         "paymentData.subscriptionId": subscriptionId
-            //     }
-            // )
+            const company = await db.collection('companies').findOne(
+                {
+                    "paymentData.subscriptionId": subscriptionId
+                }
+            )
 
 
-            // await db.collection('companies').updateOne(
-            //     { _id: ObjectId(company._id) },
-            //     {
-            //         $set: {
-            //             "paymentData.status": "canceled",
-            //             "paymentData.subscriptionId": subscriptionId,
-            //             "active": false,
-            //             "errorStatus": 3,
-            //             "dateLimit": false
-            //         }
-            //     }
-            // );
+            await db.collection('companies').updateOne(
+                { _id: ObjectId(company._id) },
+                {
+                    $set: {
+                        "paymentData.status": "canceled",
+                        "paymentData.subscriptionId": subscriptionId,
+                        "active": false,
+                        "errorStatus": 3,
+                        "dateLimit": false
+                    }
+                }
+            );
 
 
         }
