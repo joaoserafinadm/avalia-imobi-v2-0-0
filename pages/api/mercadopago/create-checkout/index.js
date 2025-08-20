@@ -30,7 +30,8 @@ export default authenticated(async (req, res) => {
         title: "Assinatura Avalia Imobi PIX",
         description:
           "Assinatura da plataforma Avalia Imobi por 30 dias",
-        price: 79.90,
+        // price: 79.90,
+        price: 1,
         recommended: false,
       }
 
