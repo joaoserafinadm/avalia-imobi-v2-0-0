@@ -78,15 +78,15 @@ export default function NoSubscriptionPage(props) {
     return (
         <div className="row">
             <div className="col-12">
-                {companyData.pixPaymentData?.subscription_limit_date ?
-                    <div className="alert alert-danger">
-                        <span>Seu plano teste expirou em {companyData.pixPaymentData?.subscription_limit_date}!</span>
-                    </div>
-                    :
+                {/* {companyData.pixPaymentData?.subscription_limit_date ? */}
+                     {/* <div className="alert alert-danger">
+                         <span>Seu plano teste expirou em {companyData.pixPaymentData?.subscription_limit_date}!</span>
+                     </div>
+                     : */}
                     <div className="alert alert-danger">
                         <span>Você ainda não possui uma assinatura!</span>
                     </div>
-                }
+                {/* } */}
             </div>
 
             {/* Seletor de Planos */}

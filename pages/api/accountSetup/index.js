@@ -47,7 +47,8 @@ export default authenticated(async (req, res) => {
                         companyCreci: 1,
                         paymentData: 1,
                         active: 1,
-                        errorStatus: 1
+                        errorStatus: 1,
+                        pixPaymentData: 1
                     }
                 }
             )
