@@ -18,17 +18,20 @@ export default function ValuationConfig(props) {
 
 
     const [forceUpdate, setForceUpdate] = useState(0)
+    const [loadingAdd, setLoadingAdd] = useState(false)
 
 
 
     return (
         <>
-             <PropertyAddModal
-                    client={client}
-                    setPropertyArray={value => props.setPropertyArray(value)}
-                    setForceUpdate={() => setForceUpdate(forceUpdate + 1)}
-                    propertyArray={props.propertyArray} />
-                    
+            <PropertyAddModal
+                client={client}
+                setPropertyArray={value => props.setPropertyArray(value)}
+                setForceUpdate={() => setForceUpdate(forceUpdate + 1)}
+                propertyArray={props.propertyArray}
+                loadingAdd={loadingAdd}
+                setLoadingAdd={value => setLoadingAdd(value)} />
+
             <div className="col-12">
                 <label htmlFor="" className="fw-bold mb-2">Imóveis para comparação</label>
                 <div className="alert bg-orange">
@@ -40,24 +43,24 @@ export default function ValuationConfig(props) {
                     </div>
                     <div className="col-12 my-1">
                         <span>
-                           &#x25CF; Para obter um valor justo de mercado, adicione <strong>imóveis</strong> com características <strong>semelhantes</strong> ao imóvel avaliado. 
+                            &#x25CF; Para obter um valor justo de mercado, adicione <strong>imóveis</strong> com características <strong>semelhantes</strong> ao imóvel avaliado.
                         </span>
                     </div>
                     <div className="col-12 my-1">
                         <span>
-                           &#x25CF; O sistema calculará o <strong>preço ideal</strong> de venda com base nessas comparações.
+                            &#x25CF; O sistema calculará o <strong>preço ideal</strong> de venda com base nessas comparações.
                         </span>
                     </div>
                 </div>
 
                 <PropertyCollection
                     propertyArray={props.propertyArray}
-                    setPropertyArray={value => props.setPropertyArray(value)} />
+                    setPropertyArray={value => props.setPropertyArray(value)} loadingAdd={loadingAdd} />
                 <small className="text-danger">{props.propertyArrayError}</small>
 
 
 
-           
+
             </div>
 
             {props.propertyArray.length > 0 && (

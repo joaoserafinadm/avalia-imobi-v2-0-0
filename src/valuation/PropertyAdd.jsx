@@ -1,4 +1,3 @@
-
 import { useDispatch, useSelector } from "react-redux"
 import Title from "../components/title/Title2"
 import { useEffect, useState } from "react"
@@ -28,8 +27,12 @@ import { maskMoney } from "../../utils/mask"
 import htmlInfo from "../../utils/htmlInfo"
 import LocationValuation from "./LocationValuation"
 import TypeTerrenoValuation from "../pages/valuation/TypeTerrenoValuation"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrashAlt, faUpload } from "@fortawesome/free-solid-svg-icons"
 
 export default function PropertyAddModal(props) {
+
+    const { loadingAdd, setLoadingAdd } = props
 
 
     const newClientForm = useSelector(state => state.newClientForm)
@@ -40,6 +43,8 @@ export default function PropertyAddModal(props) {
     const [imageUrl, setImageUrl] = useState('')
     const [linkError, setLinkError] = useState('')
     const [loadingImage, setLoadingImage] = useState(false)
+    const [manualImageFile, setManualImageFile] = useState(null)
+    const [previewUrl, setPreviewUrl] = useState('')
 
 
 
@@ -53,7 +58,6 @@ export default function PropertyAddModal(props) {
         dispatch(setPropertyType(props.client.propertyType))
 
         navbarHide(dispatch)
-
     }, [])
 
     const clearValues = () => {
@@ -62,21 +66,75 @@ export default function PropertyAddModal(props) {
         setImageUrl('')
         setLinkError('')
         setLoadingImage(false)
-
+        setManualImageFile(null)
+        setPreviewUrl('')
     }
 
 
+    const handleManualImageUpload = (e) => {
+        const file = e.target.files[0]
 
-    const handlePropertyAdd = (property) => {
+        if (!file) return
 
+        // Validar tipo de arquivo
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/webp']
+        if (!validTypes.includes(file.type)) {
+            // dispatch(addAlert({ type: 'danger', message: 'Por favor, selecione uma imagem válida (JPEG, PNG, GIF, BMP ou WEBP)' }))
+            return
+        }
+
+        // Validar tamanho (máx 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            // dispatch(addAlert({ type: 'danger', message: 'A imagem deve ter no máximo 5MB' }))
+            return
+        }
+
+        // Criar URL de preview local
+        const localPreviewUrl = URL.createObjectURL(file)
+        setPreviewUrl(localPreviewUrl)
+        setManualImageFile(file)
+        setImageUrl('') // Limpar imageUrl da busca automática se existir
+        setLinkError('')
+    }
+
+    const handleRemoveManualImage = () => {
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl) // Liberar memória
+        }
+        setPreviewUrl('')
+        setManualImageFile(null)
+        setImageUrl('')
+        // Limpar o input file
+        const fileInput = document.getElementById('manualImageUpload')
+        if (fileInput) fileInput.value = ''
+    }
+
+
+    const handlePropertyAdd = async (property) => {
+
+        setLoadingAdd(true)
         const newPropertyArray = props.propertyArray
+
+        // Fazer upload da imagem manual se existir
+        let finalImageUrl = imageUrl // Usar imageUrl da busca automática por padrão
+
+        if (manualImageFile) {
+            try {
+                const fileUrl = await createImageUrl([manualImageFile], 'CLIENT_FILES')
+                finalImageUrl = fileUrl[0].url
+            } catch (error) {
+                console.error('Erro ao fazer upload da imagem:', error)
+                // dispatch(addAlert({ type: 'danger', message: 'Erro ao fazer upload da imagem. Tente novamente.' }))
+                return // Não salvar se falhar o upload
+            }
+        }
 
         const data = {
             propertyName: property.propertyName,
             propertyPrice: property.propertyPrice,
             propertyType: property.propertyType,
             propertyLink: property.propertyLink,
-            imageUrl: imageUrl,
+            imageUrl: finalImageUrl,
             areaTotal: property.areaTotal,
             areaTotalPrivativa: property.areaTotalPrivativa,
             quartos: property.quartos,
@@ -110,12 +168,15 @@ export default function PropertyAddModal(props) {
         dispatch(initialValues())
 
         clearValues()
+
+        setLoadingAdd(false)
+
     }
 
 
     const handleGetInfo = async (e) => {
 
-        if(!newClientForm.propertyLink) return
+        if (!newClientForm.propertyLink) return
         setLinkError('');
         setLoadingImage(true);
         setImageUrl('');
@@ -126,29 +187,36 @@ export default function PropertyAddModal(props) {
             params: {
                 url: newClientForm.propertyLink,
             },
+        }).then(res => {
+            console.log('res', res)
+            if (!res?.data?.image && !res?.data?.title) {
+                setLinkError('Não foi possivel obter o nome e a imagem do imóvel. Por favor, adicione manualmente.');
+                setLoadingImage(false);
+            }
+            dispatch(setPropertyName(res.data.title));
+
+            // Verificar se o URL da imagem termina com uma extensão válida
+            const validImageExtensions = ['.jpeg', '.jpg', '.png', '.gif', '.bmp', '.webp'];
+            const imageUrl = res.data.image.toLowerCase();
+            const isValidImage = validImageExtensions.some(extension => imageUrl.endsWith(extension));
+
+            if (!isValidImage) {
+                setImageUrl('');
+
+            } else {
+                setImageUrl(res.data.image);
+
+            }
+
+            dispatch(setPropertyName(res.data.title));
+
+            setLoadingImage(false)
+        }).catch(e => {
+            setLinkError('Não foi possivel obter o nome e a imagem do imóvel. Por favor, adicione manualmente.');
+            setLoadingImage(false)
         });
 
-        if (!res.data.image && !res.data.title) {
-            setLinkError('Link inválido');
-            setLoadingImage(false);
-        }
 
-        dispatch(setPropertyName(res.data.title));
-
-        // Verificar se o URL da imagem termina com uma extensão válida
-        const validImageExtensions = ['.jpeg', '.jpg', '.png', '.gif', '.bmp', '.webp'];
-        const imageUrl = res.data.image.toLowerCase();
-        const isValidImage = validImageExtensions.some(extension => imageUrl.endsWith(extension));
-
-        if (!isValidImage) {
-            setImageUrl('');
-            
-        } else {
-            setImageUrl(res.data.image);
-
-        }
-
-        dispatch(setPropertyName(res.data.title));
 
 
         setLoadingImage(false);
@@ -241,15 +309,45 @@ export default function PropertyAddModal(props) {
 
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-4 my-2  pe-1 d-flex justify-content-center align-items-center">
-                                {!imageUrl ?
-                                    <div className="fadeItem border rounded-1 d-flex justify-content-center align-items-center py-5" style={{ width: '80%', height: '80%', border: '1px dashed' }}>
-                                        <span className="text-secondary text-center">
-                                            {loadingImage ? <SpinnerSM /> : 'Imovél sem imagem'}
+                            <div className="col-12 col-lg-4 my-2  pe-1 d-flex flex-column justify-content-center align-items-center">
+                                {!imageUrl && !previewUrl ?
+                                    <div className="fadeItem border rounded-1 d-flex flex-column justify-content-center align-items-center py-5" style={{ width: '80%', minHeight: '200px', border: '1px dashed' }}>
+                                        <span className="text-secondary text-center mb-3">
+                                            {loadingImage ? <SpinnerSM /> : 'Imóvel sem imagem'}
                                         </span>
+                                        {!loadingImage && (
+                                            <div className="d-flex flex-column align-items-center">
+                                                <label htmlFor="manualImageUpload" className="btn btn-sm btn-outline-secondary">
+                                                    <FontAwesomeIcon icon={faUpload} className="me-2" />
+                                                    Adicionar Imagem
+                                                </label>
+                                                <input
+                                                    type="file"
+                                                    id="manualImageUpload"
+                                                    accept="image/*"
+                                                    onChange={handleManualImageUpload}
+                                                    style={{ display: 'none' }}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                     :
-                                    <img src={imageUrl} alt="" className="rounded-1 fadeItem" style={{ width: '80%' }} />
+                                    <div className="position-relative" style={{ width: '80%' }}>
+                                        <img src={previewUrl || imageUrl} alt="" className="rounded-1 fadeItem w-100" />
+                                        <button
+                                            type="button"
+                                            className="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
+                                            onClick={handleRemoveManualImage}
+                                            title="Remover imagem"
+                                        >
+                                            <FontAwesomeIcon icon={faTrashAlt} />
+                                        </button>
+                                        {manualImageFile && (
+                                            <small className="text-muted d-block text-center mt-2">
+                                                {manualImageFile.name}
+                                            </small>
+                                        )}
+                                    </div>
                                 }
 
                             </div>

@@ -4,10 +4,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faHouseMedical } from "@fortawesome/free-solid-svg-icons"
 import ClientCard_02 from "../clientsManagement/ClientCard_02"
 import PropertyCard from "./PropertyCard"
+import { SpinnerSM } from "../components/loading/Spinners"
 
 
 
 export default function PropertyCollection(props) {
+
+    const { loadingAdd } = props
+
+    console.log("loadingAdd", loadingAdd)
 
     const propertyArray = props.propertyArray
 
@@ -44,6 +49,33 @@ export default function PropertyCollection(props) {
                                 </div>
                             )
                         })}
+                        {loadingAdd && (
+                            <div className="col-12 col-sm-6 col-xl-4 col-xxl-3 d-flex justify-content-center fadeItem" >
+
+                                <SwiperSlide key={1000} >
+
+                                    <div className="card cardAnimation shadow mx-1 my-2" type="button" data-bs-toggle="modal" data-bs-target="#propertyAddModal" style={{ height: '100%' }} >
+                                        <div className="card-body"  >
+                                            <div className="row my-5" style={{ height: "100%" }}>
+                                                <div className="col-12 d-flex justify-content-center align-items-center text-center">
+                                                    <div>
+
+                                                        <div className="col-12">
+                                                            <SpinnerSM />
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <span>Carregando imóvel</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </SwiperSlide>
+                            </div>
+                        )}
+
                         <div className="col-12 col-sm-6 col-xl-4 col-xxl-3 d-flex justify-content-center " >
 
                             <SwiperSlide key={0} >
@@ -90,6 +122,35 @@ export default function PropertyCollection(props) {
 
                         )
                     })}
+
+                    {loadingAdd && (
+                        <div className="col-12 col-sm-6 col-xl-4 col-xxl-3 d-flex justify-content-center fadeItem" >
+
+                            <SwiperSlide key={1000} >
+
+                                <div className="card cardAnimation shadow mx-1 my-2" type="button" data-bs-toggle="modal" data-bs-target="#propertyAddModal" style={{ height: '100%' }} >
+                                    <div className="card-body"  >
+                                        <div className="row my-5" style={{ height: "100%" }}>
+                                            <div className="col-12 d-flex justify-content-center align-items-center text-center">
+                                                <div>
+
+                                                    <div className="col-12">
+                                                        <SpinnerSM />
+                                                    </div>
+                                                    <div className="col-12">
+                                                        <span>Carregando imóvel</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </SwiperSlide>
+                        </div>
+                    )}
+
+
 
                     <div className="col-12 col-sm-6 col-xl-4 col-xxl-3 d-flex justify-content-center px-1 py-2">
 
