@@ -39,6 +39,7 @@ export default function NoSubscriptionPage(props) {
         });
         const session = await response.json();
 
+        setLoading(false)
         const result = await stripe.redirectToCheckout({
             sessionId: session.sessionId,
         });
@@ -128,7 +129,7 @@ export default function NoSubscriptionPage(props) {
                         <div className="col-12 col-md-6 col-lg-4">
                             <div
                                 className={`card h-100  shadow-sm position-relative ${companyData.pixPaymentData?.subscription_limit_date ? 'opacity-50' : ''} ${selectedPlan === 'teste' ? 'border-success border-2' : 'border-0'}`}
-                               onClick={() => !companyData.pixPaymentData?.subscription_limit_date && setSelectedPlan('teste')}
+                                onClick={() => !companyData.pixPaymentData?.subscription_limit_date && setSelectedPlan('teste')}
                                 style={{
                                     cursor: companyData.pixPaymentData?.subscription_limit_date ? 'not-allowed' : 'pointer',
                                     borderRadius: '16px',
