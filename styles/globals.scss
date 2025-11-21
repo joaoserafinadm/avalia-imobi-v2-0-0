@@ -802,6 +802,16 @@ $akvo-color-hover: #4f5459;
   box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.14);
 }
 
+.cardAnimationGrow {
+  transition: 0.3s ease;
+}
+
+.cardAnimationGrow:hover {
+  transform: translate(1px, -1px);
+  scale: 1.05;
+  // box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.14);
+}
+
 .akvo_CardHeader {
   background-color: var(--akvo-btn-primary);
 }
