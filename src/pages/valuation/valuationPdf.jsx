@@ -54,7 +54,7 @@ export default function ValuationPdf(props) {
                 </div>
 
                 {/* Saudação e Introdução - otimizado */}
-                <div className="px-4 mb-3" style={{height: '400px'}}>
+                <div className="px-4 mb-3" style={{ height: '400px' }}>
                     <div className="row">
                         <div className="col-7 d-flex align-items-center h-100">
                             <div>
@@ -62,15 +62,14 @@ export default function ValuationPdf(props) {
                                     Olá, {clientData?.clientName}!
                                 </h2>
                                 <div className="text-justify lh-base" style={{ color: '#5a5a5a', fontSize: '13px' }}>
-                                    <p className="mb-2">
-                                        Entender qual a posição do seu imóvel no mercado é o primeiro passo para realizar
-                                        a venda com qualidade e segurança. Para isso, realizei um estudo baseado nas
-                                        características do seu imóvel e das ofertas similares na região.
+                                    <p className="mb-3" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
+                                        Entender qual a posição do seu imóvel no mercado é o primeiro passo para realizar a venda com qualidade e segurança.
                                     </p>
-                                    <p className="mb-2">
-                                        O objetivo principal deste estudo é identificar qual o valor correto de venda.
-                                        É este valor que irá posicionar o seu imóvel com destaque no mercado, não fazendo
-                                        com que ele ajude a vender os imóveis concorrentes.
+                                    <p className="mb-3" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
+                                        Realizei um estudo baseado nas características do seu imóvel e das ofertas similares na região para identificar o valor correto de venda.
+                                    </p>
+                                    <p className="mb-0" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
+                                        O método comparativo direto de dados de mercado, conforme a NBR 14653, avalia um imóvel comparando-o com outros semelhantes vendidos recentemente ou em oferta. O processo envolve coletar dados, analisar os atributos (qualitativos e quantitativos) e realizar tratamentos técnicos (como homogeneização por fatores ou inferência estatística) para ajustar as diferenças e chegar ao valor do imóvel de forma objetiva.
                                     </p>
                                 </div>
                             </div>

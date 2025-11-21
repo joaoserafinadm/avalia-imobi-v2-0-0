@@ -24,7 +24,7 @@ export default function NoSubscriptionPage(props) {
     const [loadingPix, setLoadingPix] = useState(false);
     const [selectedPlan, setSelectedPlan] = useState('mensal'); // 'mensal' ou 'teste'
 
-    const handleStripe = async () => {
+    const handleStripe = async (type) => {
         setLoading(true)
         const stripe = await stripePromise;
         // Faz a chamada à API para criar a sessão de checkout
@@ -35,7 +35,8 @@ export default function NoSubscriptionPage(props) {
             },
             body: JSON.stringify({
                 company_id: token.company_id,
-                user_id: token.sub
+                user_id: token.sub,
+                type
             })
         });
         const session = await response.json();
@@ -58,7 +59,7 @@ export default function NoSubscriptionPage(props) {
 
         setLoadingPix(true);
 
-        console.log("token", token)
+        // console.log("token", token)
 
         await createMercadoPagoCheckout({
             user_id: token?.sub,
@@ -121,7 +122,7 @@ export default function NoSubscriptionPage(props) {
             {/* Seletor de Planos */}
             <div className="col-12 mb-4">
                 <div className="row justify-content-center">
-                    <div className="col-md-8">
+                    <div className="col-md-12">
                         <div className="card">
                             <div className="card-header">
                                 <h5 className="mb-0 text-center">Escolha seu plano</h5>
@@ -129,7 +130,7 @@ export default function NoSubscriptionPage(props) {
                             <div className="card-body">
                                 <div className="row">
                                     {/* Plano Teste */}
-                                    <div className="col-md-6 mb-3">
+                                    <div className="col-md-4 mb-3">
                                         <div
                                             className={`card ${companyData.pixPaymentData?.subscription_limit_date ? 'disabled' : ''} h-100 cursor-pointer ${selectedPlan === 'teste' ? 'border-success' : 'border-light'}`}
                                             onClick={() => setSelectedPlan('teste')}
@@ -139,8 +140,8 @@ export default function NoSubscriptionPage(props) {
                                                 <div className="mb-3">
                                                     <FontAwesomeIcon icon={faQrcode} size="2x" className="text-success" />
                                                 </div>
-                                                <h6 className="card-title text-success">Plano Teste</h6>
-                                                <h4 className="text-success mb-2">R$ 79,90</h4>
+                                                <h6 className="card-title text-success">Plano <b>Teste</b></h6>
+                                                <h4 className="text-success mb-2">R$ 39,90</h4>
                                                 <p className="text-muted ">30 dias de acesso completo</p>
                                                 <div className="badge bg-success mb-2">PIX Exclusivo</div>
                                                 <ul className="list-unstyled text-start ">
@@ -154,7 +155,7 @@ export default function NoSubscriptionPage(props) {
                                     </div>
 
                                     {/* Plano Mensal */}
-                                    <div className="col-md-6 mb-3">
+                                    <div className="col-md-4 mb-3">
                                         <div
                                             className={`card h-100 cursor-pointer ${selectedPlan === 'mensal' ? 'border-orange' : 'border-light'}`}
                                             onClick={() => setSelectedPlan('mensal')}
@@ -164,8 +165,8 @@ export default function NoSubscriptionPage(props) {
                                                 <div className="mb-3">
                                                     <FontAwesomeIcon icon={faCreditCard} size="2x" className="text-orange" />
                                                 </div>
-                                                <h6 className="card-title text-orange">Plano Mensal</h6>
-                                                <h4 className="text-orange mb-2">R$ 79,90<small>/mês</small></h4>
+                                                <h6 className="card-title text-orange">Plano <b>Mensal</b></h6>
+                                                <h4 className="text-orange mb-2">R$ 39,90<small>/mês</small></h4>
                                                 <p className="text-muted ">Renovação automática</p>
                                                 <div className="badge bg-orange mb-2">Cartão de Crédito</div>
                                                 <ul className="list-unstyled text-start ">
@@ -177,11 +178,36 @@ export default function NoSubscriptionPage(props) {
                                             </div>
                                         </div>
                                     </div>
+
+
+                                    <div className="col-md-4 mb-3">
+                                        <div
+                                            className={`card h-100 cursor-pointer ${selectedPlan === 'anual' ? 'border-primary' : 'border-light'}`}
+                                            onClick={() => setSelectedPlan('anual')}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            <div className="card-body text-center">
+                                                <div className="mb-3">
+                                                    <FontAwesomeIcon icon={faCreditCard} size="2x" className="text-primary" />
+                                                </div>
+                                                <h6 className="card-title text-primary">Plano <b>Anual</b></h6>
+                                                <h4 className="text-primary mb-2">R$ 199,90<small>/ano</small></h4>
+                                                <p className="text-muted ">Renovação automática</p>
+                                                <div className="badge bg-primary mb-2">Cartão de Crédito</div>
+                                                <ul className="list-unstyled text-start ">
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-primary" />Todos os recursos</li>
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-primary" />1 usuário incluído</li>
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-primary" />Usuários extras R$ 19,90</li>
+                                                    <li><FontAwesomeIcon icon={faCheck} className="me-2 text-primary" />Cancelamento a qualquer momento</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {/* Botão de Ação */}
                                 <div className="text-center mt-3">
-                                    {selectedPlan === 'teste' ? (
+                                    {selectedPlan === 'teste' && (
                                         loadingPix ? (
                                             <button className="btn btn-success btn-lg" disabled>
                                                 Gerando PIX... <SpinnerSM className="ms-1" />
@@ -189,18 +215,33 @@ export default function NoSubscriptionPage(props) {
                                         ) : (
                                             <button className="btn btn-success btn-lg pulse" onClick={handlePixPayment}>
                                                 <FontAwesomeIcon icon={faQrcode} className="me-2" />
-                                                Pagar com PIX - R$ 79,90
+                                                Pagar com PIX - R$ 39,90
                                             </button>
                                         )
-                                    ) : (
+                                    )}
+
+                                    {selectedPlan === 'mensal' && (
                                         loading ? (
                                             <button className="btn btn-orange btn-lg" disabled>
                                                 Acessando checkout... <SpinnerSM className="ms-1" />
                                             </button>
                                         ) : (
-                                            <button className="btn btn-orange btn-lg pulse" onClick={handleStripe}>
+                                            <button className="btn btn-orange btn-lg pulse" onClick={() => handleStripe('mensal')}>
                                                 <FontAwesomeIcon icon={faCreditCard} className="me-2" />
-                                                Assinar por R$ 79,90/mês
+                                                Assinar por R$ 39,90/mês
+                                            </button>
+                                        )
+                                    )}
+
+                                    {selectedPlan === 'anual' && (
+                                        loading ? (
+                                            <button className="btn btn-primary btn-lg" disabled>
+                                                Acessando checkout... <SpinnerSM className="ms-1" />
+                                            </button>
+                                        ) : (
+                                            <button className="btn btn-primary btn-lg pulse" onClick={() => handleStripe('anual')}>
+                                                <FontAwesomeIcon icon={faCreditCard} className="me-2" />
+                                                Assinar por R$ 199,90/ano
                                             </button>
                                         )
                                     )}
@@ -221,7 +262,7 @@ export default function NoSubscriptionPage(props) {
                     <div className="col-12">
                         <div className="row">
                             <div className="col-12 mt-3">
-                                Nosso <b>plano mensal</b> começa com um valor de <b>R$79,90 por mês.</b>
+                                Nosso <b>plano mensal</b> começa com um valor de <b>R$39,90 por mês.</b>
                             </div>
                             <div className="col-12 mt-3">
                                 Esse plano permite que você tenha acesso a <b>todos os recursos do Avalia Imobi</b>
@@ -248,13 +289,61 @@ export default function NoSubscriptionPage(props) {
                     <div className="col-12">
                         <div className="row">
                             <div className="col-12 mt-3">
-                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />1 usuário (plano básico): R$79,90/mês
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />1 usuário (plano básico): R$39,90/mês
                             </div>
                             <div className="col-12 mt-3">
-                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />2 usuários: R$79,90 + R$19,90 = R$99,80/mês
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />2 usuários: R$39,90 + R$19,90 = R$59,80/mês
                             </div>
                             <div className="col-12 mt-3">
-                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />5 usuários: R$79,90 + (4 x R$19,90) = R$159,50/mês
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />5 usuários: R$39,90 + (4 x R$19,90) = R$119,50/mês
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+            {selectedPlan === 'anual' && (
+                <>
+                    <div className="col-12 mt-3">
+                        <span className="fw-bold text-orange">Plano Anual - Detalhes</span>
+                    </div>
+
+                    <div className="col-12">
+                        <div className="row">
+                            <div className="col-12 mt-3">
+                                Nosso <b>plano mensal</b> começa com um valor de <b>R$199,90 por mês.</b>
+                            </div>
+                            <div className="col-12 mt-3">
+                                Esse plano permite que você tenha acesso a <b>todos os recursos do Avalia Imobi</b>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-12 mt-3">
+                        <span className="fw-bold text-orange">Adição de usuários</span>
+                    </div>
+                    <div className="col-12">
+                        <div className="row">
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faPlus} className="me-2 text-success" />
+                                Se você precisar de mais pessoas utilizando o sistema, cada usuário terá um custo adicional de <b>R$19,90 por ano</b>.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-12 mt-3">
+                        <span className="fw-bold text-orange">Exemplos de preços</span>
+                    </div>
+
+                    <div className="col-12">
+                        <div className="row">
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />1 usuário (plano básico): R$199,90/ano
+                            </div>
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />2 usuários: R$199,90 + R$19,90 = R$219,80/ano
+                            </div>
+                            <div className="col-12 mt-3">
+                                <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />5 usuários: R$199,90 + (4 x R$19,90) = R$276,50/ano
                             </div>
                         </div>
                     </div>
@@ -270,7 +359,7 @@ export default function NoSubscriptionPage(props) {
                     <div className="col-12">
                         <div className="row">
                             <div className="col-12 mt-3">
-                                O <b>plano teste</b> oferece <b>30 dias de acesso completo</b> por apenas <b>R$79,90</b>.
+                                O <b>plano teste</b> oferece <b>30 dias de acesso completo</b> por apenas <b>R$39,90</b>.
                             </div>
                             <div className="col-12 mt-3">
                                 <FontAwesomeIcon icon={faCheck} className="me-2 text-success" />

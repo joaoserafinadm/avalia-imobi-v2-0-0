@@ -61,7 +61,7 @@ export default function ViewValuationModal(props) {
                             </div>
                             <div className="carousel-inner ">
                                 <div className="carousel-item ">
-                                    dsadsa{valuationUrl}
+                                    {valuationUrl}
                                 </div>
                             </div>
                         </div>

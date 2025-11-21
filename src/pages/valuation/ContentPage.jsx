@@ -15,7 +15,7 @@ export default function ContentPage(props) {
                 <div className="col-12 col-xxl-10">
                     <div className="card shadow-lg border-0" style={{ minHeight: '95vh', borderRadius: '20px' }}>
                         <div className="card-body p-0" style={{ overflowY: 'auto', maxHeight: '95vh' }}>
-                            
+
                             {/* Header Section */}
                             <div className="text-center py-5" style={{ background: 'linear-gradient(135deg, #f5874f 0%, #faa954 100%)', borderRadius: '20px 20px 0 0' }}>
                                 <div className="container">
@@ -32,24 +32,27 @@ export default function ContentPage(props) {
                                 <div className="row justify-content-center mb-5">
                                     <div className="col-lg-6 mb-4 mb-lg-0">
                                         <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
-                                            <div className="card-body p-4 d-flex flex-column justify-content-center">
+                                            <div className="card-body p-4 d-flex flex-column justify-content-center aling-items-start">
                                                 <div className="mb-4">
                                                     <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                                         style={{ width: '60px', height: '60px', backgroundColor: '#f5874f' }}>
+                                                        style={{ width: '60px', height: '60px', backgroundColor: '#f5874f' }}>
                                                         <FontAwesomeIcon icon={faChartLine} className="fs-4 text-white" />
                                                     </div>
                                                 </div>
                                                 <h3 className="fw-bold mb-3" style={{ color: '#5a5a5a' }}>Avaliação Profissional</h3>
                                                 <p className="mb-3" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
-                                                    Entender qual a posição do seu imóvel no mercado é o primeiro passo para realizar a venda com qualidade e segurança. 
+                                                    Entender qual a posição do seu imóvel no mercado é o primeiro passo para realizar a venda com qualidade e segurança.
+                                                </p>
+                                                <p className="mb-3" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
+                                                    Realizei um estudo baseado nas características do seu imóvel e das ofertas similares na região para identificar o valor correto de venda.
                                                 </p>
                                                 <p className="mb-0" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
-                                                    Realizei um estudo baseado nas características do seu imóvel e das ofertas similares na região para identificar o valor correto de venda.
+                                                    O método comparativo direto de dados de mercado, conforme a NBR 14653, avalia um imóvel comparando-o com outros semelhantes vendidos recentemente ou em oferta. O processo envolve coletar dados, analisar os atributos (qualitativos e quantitativos) e realizar tratamentos técnicos (como homogeneização por fatores ou inferência estatística) para ajustar as diferenças e chegar ao valor do imóvel de forma objetiva.
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="col-lg-6">
                                         <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
                                             <div className="card-body p-4">
@@ -93,7 +96,7 @@ export default function ContentPage(props) {
                                                     Relação Preço × Velocidade
                                                 </h3>
                                                 <p className="mb-4" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
-                                                    A velocidade de venda do seu imóvel está diretamente relacionada à precificação correta. 
+                                                    A velocidade de venda do seu imóvel está diretamente relacionada à precificação correta.
                                                     Nosso histórico mostra que imóveis com avaliações acima do preço de mercado resultam em processos mais lentos.
                                                 </p>
                                                 <div className="alert alert-warning border-0" style={{ backgroundColor: '#fff3cd', borderRadius: '10px' }}>
@@ -186,13 +189,13 @@ export default function ContentPage(props) {
                                             <div className="card-body p-4">
                                                 <div className="mb-4">
                                                     <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                                         style={{ width: '60px', height: '60px', backgroundColor: '#faa954' }}>
+                                                        style={{ width: '60px', height: '60px', backgroundColor: '#faa954' }}>
                                                         <FontAwesomeIcon icon={faUsers} className="fs-4 text-white" />
                                                     </div>
                                                 </div>
                                                 <h3 className="fw-bold mb-3" style={{ color: '#faa954' }}>Marketing Digital de Alta Performance</h3>
                                                 <p className="mb-0" style={{ color: '#5a5a5a', lineHeight: '1.6' }}>
-                                                    Nosso plano contempla todos os aspectos básicos de divulgação e, através de marketing digital 
+                                                    Nosso plano contempla todos os aspectos básicos de divulgação e, através de marketing digital
                                                     de alta performance, colocamos seu imóvel para o maior número de clientes compradores possível.
                                                 </p>
                                             </div>
@@ -207,11 +210,11 @@ export default function ContentPage(props) {
 
                                 {/* Continue Button */}
                                 <div className="text-center py-5">
-                                    <button 
-                                        className="btn btn-lg px-5 py-3 fw-bold fs-5" 
-                                        data-bs-target="#valuationCarousel" 
+                                    <button
+                                        className="btn btn-lg px-5 py-3 fw-bold fs-5"
+                                        data-bs-target="#valuationCarousel"
                                         data-bs-slide-to={2}
-                                        style={{ 
+                                        style={{
                                             backgroundColor: '#f5874f',
                                             color: 'white',
                                             border: 'none',
@@ -229,7 +232,7 @@ export default function ContentPage(props) {
                                             e.target.style.transform = 'translateY(0)';
                                             e.target.style.boxShadow = '0 4px 15px rgba(245, 135, 79, 0.3)';
                                         }}>
-                                        Continuar 
+                                        Continuar
                                     </button>
                                 </div>
                             </div>

@@ -20,9 +20,9 @@ const authenticated = fn => async (req, res) => {
 
 export default authenticated(async (req, res) => {
     if (req.method === 'POST') {
-        const { company_id, user_id } = req.body;
+        const { company_id, user_id, type } = req.body;
 
-        if (!company_id || !user_id) {
+        if (!company_id || !user_id || !type) {
             return res.status(400).json({ message: "Missing parameters on request body" });
         }
 
@@ -98,7 +98,8 @@ export default authenticated(async (req, res) => {
             }
 
             // let priceId = company_id === "6668c78b5d0dfeb36eb9b008" || company_id === "66ec648cff4710f7aca19d1b" || company_id === "66fc999740dd9fbacc21060e" ? "price_1QGAmyAtBT5rPxqpqxLOoTDF" : "price_1QG0jUAtBT5rPxqpQCXP2ahk"
-            let priceId = company_id === "6668c78b5d0dfeb36eb9b008" || company_id === "66ec648cff4710f7aca19d1b" || company_id === "66fc999740dd9fbacc21060e" ? "price_1QGAmyAtBT5rPxqpqxLOoTDF" : "price_1Rdc6QAtBT5rPxqpSQBoUomC"
+            // let priceId = company_id === "6668c78b5d0dfeb36eb9b008" || company_id === "66ec648cff4710f7aca19d1b" || company_id === "66fc999740dd9fbacc21060e" ? "price_1QGAmyAtBT5rPxqpqxLOoTDF" : "price_1Rdc6QAtBT5rPxqpSQBoUomC" // 79,90
+            let priceId = company_id === "6668c78b5d0dfeb36eb9b008" || company_id === "66ec648cff4710f7aca19d1b" || company_id === "66fc999740dd9fbacc21060e" ? "price_1QGAmyAtBT5rPxqpqxLOoTDF" : type === "mensal" ? "price_1SVijcAtBT5rPxqpg1zoRhlQ": "price_1SVijcAtBT5rPxqpg1zoRhlQ" // 39,90
 
             // Passo 3: Criar a sessão de checkout para uma nova assinatura
             const session = await stripe.checkout.sessions.create({
