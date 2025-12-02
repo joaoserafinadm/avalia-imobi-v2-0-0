@@ -72,7 +72,8 @@ const webhookHandler = async (req, res) => {
                             "paymentData.subscriptionId": subscriptionId,
                             "active": true,
                             "errorStatus": false,
-                            "dateLimit": false
+                            "dateLimit": false,
+                            "pixPaymentData": null
                         }
                     }
                 );
