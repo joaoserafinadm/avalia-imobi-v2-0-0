@@ -24,8 +24,10 @@ export default function NewUserAlertModal(props) {
 
         const usersCount = +paymentData.usersCount
 
-        let valuePerUser = +usersCount <= 5 ? 19.90 : 14.90
-        let tax = +usersCount <= 5 ? 60 : 65
+        // let valuePerUser = +usersCount <= 5 ? 19.90 : 14.90
+        // let tax = +usersCount <= 5 ? 60 : 65
+        let valuePerUser = 19.90
+        let tax = 20
 
         const newValueResult = valuePerUser * (usersCount + 1) + tax
 
@@ -100,7 +102,7 @@ export default function NewUserAlertModal(props) {
 
                             </div>
                             <div className="col-12 my-2">
-                                &#x2022; <b> {+paymentData.usersCount + 1}</b> usuários: R$79.90 + ({+paymentData.usersCount} x R${maskNumberMoney(userValue)}) = <b>R${maskNumberMoney(newValue)}/mês</b>
+                                &#x2022; <b> {+paymentData.usersCount + 1}</b> usuários: R$39,90 + ({+paymentData.usersCount} x R${maskNumberMoney(userValue)}) = <b>R${maskNumberMoney(newValue)}/mês</b>
                             </div>
                             <div className="col-12 my-2">
                                 &#x2022; Será adicionado um valor proporcional na próxima fatura referente ao uso do novo usuário até o final do período de faturamento atual.
