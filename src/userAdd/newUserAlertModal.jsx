@@ -1,4 +1,4 @@
-import { faUserGear, faUserTie } from "@fortawesome/free-solid-svg-icons"
+import { faUserGear, faUserTie, faInfoCircle, faCheckCircle } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import { maskNumberMoney } from "../../utils/mask"
@@ -24,8 +24,6 @@ export default function NewUserAlertModal(props) {
 
         const usersCount = +paymentData.usersCount
 
-        // let valuePerUser = +usersCount <= 5 ? 19.90 : 14.90
-        // let tax = +usersCount <= 5 ? 60 : 65
         let valuePerUser = 19.90
         let tax = 20
 
@@ -43,79 +41,123 @@ export default function NewUserAlertModal(props) {
 
     return (
         <div className="modal fade" id="newUserAlertModal" tabIndex="-1" aria-labelledby="Modal" aria-hidden="true">
-            <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title title-dark bold">Alerta!</h5>
+            <div className="modal-dialog modal-dialog-centered modal-lg">
+                <div className="modal-content border-0 shadow-lg">
+                    <div className="modal-header border-0 bg-light pb-3">
+                        <div>
+                            <h5 className="modal-title fw-bold mb-1" style={{ color: '#2c3e50' }}>
+                                <FontAwesomeIcon icon={faInfoCircle} className="text-orange me-2" />
+                                Confirmar novo usuário
+                            </h5>
+                            <p className="text-muted small mb-0">Revise as informações antes de prosseguir</p>
+                        </div>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div className="modal-body">
-                        <div className="row">
-                            <div className="col-12">
-                                <span>Você está prestes a cadastrar um novo usuário na sua conta! </span>
-                            </div>
-                            <div className="col-12">
-                                {usersCount <= 5 ?
-                                    <>
-                                        <span>Será acrescentado R$ {maskNumberMoney(userValue)} no valor da sua assinatura.</span>
-                                    </>
-                                    :
-                                    <>
-                                        <span>Será acrescentado R${maskNumberMoney(userValue)} no valor da sua assinatura.</span>
-                                    </>
-                                }
+                    
+                    <div className="modal-body px-4 py-4">
+                        {/* Alerta Info */}
+                        <div className="alert alert-info border-0 d-flex align-items-start mb-4" style={{ backgroundColor: '#e8f4f8' }}>
+                            <FontAwesomeIcon icon={faInfoCircle} className="text-info mt-1 me-2" />
+                            <div>
+                                <span className="fw-semibold">Novo usuário será adicionado à sua conta</span>
+                                <div className="small mt-1">
+                                    Será acrescentado <span className="fw-bold text-primary">R$ {maskNumberMoney(userValue)}</span> no valor da sua assinatura mensal.
+                                </div>
                             </div>
                         </div>
-                        <div className="row my-3">
-                            <div className="col-12">
-                                <span className="small fw-bold">
-                                    Verifique os dados do usuário:
-                                </span>
-                            </div>
-                            <div className="col-12">
-                                <div className="card">
-                                    <div className="card-body">
-                                        <div className="row">
-                                            <div className="col-12">
-                                                <span className="small me-1">Nome: </span><span className="fw-bold">{firstName} {lastName}</span>
-                                            </div>
-                                            <div className="col-12 d-flex align-items-center">
-                                                <span className="small me-1">E-mail: </span><span className="fw-bold">{email}</span>
-                                            </div>
-                                            <div className="col-12 d-flex align-items-center">
-                                                <span className="small me-1">Categoria: </span>
-                                                {userStatus === "admGlobal" ? <FontAwesomeIcon icon={faUserGear} className="me-1" /> : <FontAwesomeIcon icon={faUserTie} className="me-1" />} {userStatus === 'admGlobal' ? 'Administrador' : 'Corretor'}
 
+                        {/* Dados do Usuário */}
+                        <div className="mb-4">
+                            <h6 className="fw-bold mb-3 text-secondary">
+                                <FontAwesomeIcon icon={faCheckCircle} className="me-2" style={{ fontSize: '0.9rem' }} />
+                                Dados do usuário
+                            </h6>
+                            <div className="card border-0 shadow-sm">
+                                <div className="card-body p-4" style={{ backgroundColor: '#f8f9fa' }}>
+                                    <div className="row g-3">
+                                        <div className="col-12">
+                                            <div className="d-flex align-items-center">
+                                                <div className="rounded-circle bg-white d-flex align-items-center justify-content-center me-3" 
+                                                     style={{ width: '45px', height: '45px' }}>
+                                                    <FontAwesomeIcon 
+                                                        icon={userStatus === "admGlobal" ? faUserGear : faUserTie} 
+                                                        className="text-orange" 
+                                                        style={{ fontSize: '1.2rem' }}
+                                                    />
+                                                </div>
+                                                <div className="flex-grow-1">
+                                                    <div className="fw-bold" style={{ fontSize: '1.1rem' }}>
+                                                        {firstName} {lastName}
+                                                    </div>
+                                                    <div className="text-muted small">{email}</div>
+                                                    <span className="badge bg-orange px-3 py-2 mt-2">
+                                                        {userStatus === 'admGlobal' ? 'Administrador' : 'Corretor'}
+                                                    </span>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
-                        <div className="row my-3">
-                            <div className="col-12">
-                                <span className="small fw-bold">
-                                    Detalhes da assinatura:
-                                </span>
 
+                        {/* Detalhes da Assinatura */}
+                        <div className="mb-3">
+                            <h6 className="fw-bold mb-3 text-secondary">
+                                <FontAwesomeIcon icon={faInfoCircle} className="me-2" style={{ fontSize: '0.9rem' }} />
+                                Detalhes da assinatura
+                            </h6>
+                            <div className="card border-0" style={{ backgroundColor: '#fff9f0' }}>
+                                <div className="card-body p-4">
+                                    <div className="row g-3">
+                                        <div className="col-12">
+                                            <div className="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                                                <div>
+                                                    <div className="text-muted small mb-1">Usuários ativos</div>
+                                                    <div className="fw-bold" style={{ fontSize: '1.1rem' }}>
+                                                        {+paymentData.usersCount} → {+paymentData.usersCount + 1}
+                                                    </div>
+                                                </div>
+                                                <div className="text-end">
+                                                    <div className="text-muted small mb-1">Novo valor mensal</div>
+                                                    <div className="fw-bold text-orange" style={{ fontSize: '1.3rem' }}>
+                                                        R$ {maskNumberMoney(newValue)}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="small">
+                                                <div className="d-flex mb-2">
+                                                    <span className="text-orange me-2">•</span>
+                                                    <span>
+                                                        <strong>Cálculo:</strong> R$ 39,90 (taxa base) + ({+paymentData.usersCount} usuários × R$ {maskNumberMoney(userValue)}) = 
+                                                        <span className="fw-bold text-primary ms-1">R$ {maskNumberMoney(newValue)}/mês</span>
+                                                    </span>
+                                                </div>
+                                                <div className="d-flex">
+                                                    <span className="text-orange me-2">•</span>
+                                                    <span className="text-muted">
+                                                        Será cobrado um valor proporcional na próxima fatura referente ao período restante do ciclo atual.
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="col-12 my-2">
-                                &#x2022; <b> {+paymentData.usersCount + 1}</b> usuários: R$39,90 + ({+paymentData.usersCount} x R${maskNumberMoney(userValue)}) = <b>R${maskNumberMoney(newValue)}/mês</b>
-                            </div>
-                            <div className="col-12 my-2">
-                                &#x2022; Será adicionado um valor proporcional na próxima fatura referente ao uso do novo usuário até o final do período de faturamento atual.
-                            </div>
-                            {/* <div className="col-12 my-2">
-                                &#x2022; Para acessar os detalhes da assinatura, vá em: Configurações {'->'} Configuração da conta {'->'} Assinatura
-                            </div> */}
                         </div>
 
                     </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button className="btn btn-orange" onClick={() => handleSave()} data-bs-dismiss="modal">Cadastrar usuário</button>
+                    
+                    <div className="modal-footer border-0 bg-light px-4 py-3">
+                        <button type="button" className="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button className="btn btn-orange px-4 shadow-sm" onClick={() => handleSave()} data-bs-dismiss="modal">
+                            <FontAwesomeIcon icon={faCheckCircle} className="me-2" />
+                            Confirmar e cadastrar
+                        </button>
                     </div>
                 </div>
             </div>
