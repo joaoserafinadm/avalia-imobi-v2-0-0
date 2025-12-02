@@ -227,46 +227,98 @@ export default function userAdd() {
                     </div>
 
 
-                    <div className="row d-flex mt-3">
-                        <label for="telefoneItem" className="form-label fw-bold">Categoria*</label>
-                        <small className="text-danger">{userStatusError}</small>
+                    <div className="row d-flex mt-4">
+                        <label for="telefoneItem" className="form-label fw-bold mb-3">Categoria*</label>
+                        <small className="text-danger mb-2">{userStatusError}</small>
 
                         <div className="col-12 col-lg-5 my-2">
-                            <div className={`card cardAnimation  ${userStatus === 'admGlobal' ? 'border-selected' : ''}`} type="button" onClick={() => setUserStatus('admGlobal')}>
-                                <div className="card-body">
-                                    <div className="row">
-
-
-                                        <h5 class="card-title text-orange d-flex align-items-center"> <FontAwesomeIcon icon={faUserGear} className="icon me-2" />Administrador</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">O maestro do sistema</h6>
-                                        <div className="col-12 small">
-                                            <span>
-                                                Administradores têm controle total sobre todas as funcionalidades da plataforma, podendo adicionar, gerenciar usuários e ajustar configurações.
-
-                                            </span>
+                            <div className={`card cardAnimation h-100 ${userStatus === 'admGlobal' ? 'border-selected shadow-sm' : ''}`}
+                                type="button"
+                                onClick={() => setUserStatus('admGlobal')}
+                                style={{ transition: 'all 0.3s ease', cursor: 'pointer' }}>
+                                <div className="card-body p-4">
+                                    <div className="d-flex align-items-center mb-3">
+                                        <div className={`rounded-circle d-flex align-items-center justify-content-center me-3 ${userStatus === 'admGlobal' ? 'bg-orange' : 'bg-light'}`}
+                                            style={{ width: '50px', height: '50px', transition: 'all 0.3s ease' }}>
+                                            <FontAwesomeIcon
+                                                icon={faUserGear}
+                                                className={userStatus === 'admGlobal' ? 'text-white' : 'text-orange'}
+                                                style={{ fontSize: '1.5rem' }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <h5 className="card-title mb-0 text-orange fw-bold">Administrador</h5>
+                                            <h6 className="card-subtitle text-muted small mb-0">Acesso total ao sistema</h6>
                                         </div>
                                     </div>
+
+                                    <div className="mb-3">
+                                        <p className="small mb-2 text-secondary">Permissões completas para gerenciar toda a plataforma:</p>
+                                    </div>
+
+                                    <ul className="small text-secondary mb-0 ps-3" style={{ listStyle: 'none' }}>
+                                        <li className="mb-2">
+                                            <span className="text-orange me-2">✓</span>
+                                            Configuração da imobiliária
+                                        </li>
+                                        <li className="mb-2">
+                                            <span className="text-orange me-2">✓</span>
+                                            Adicionar e gerenciar usuários
+                                        </li>
+                                        <li className="mb-2">
+                                            <span className="text-orange me-2">✓</span>
+                                            Cadastro e avaliação de imóveis
+                                        </li>
+                                        <li className="mb-0">
+                                            <span className="text-orange me-2">✓</span>
+                                            Ajustes de configurações da plataforma
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
 
                         <div className="col-12 col-lg-5 my-2">
-                            <div className={`card cardAnimation  ${userStatus === 'user' ? 'border-selected' : ''}`} type="button" onClick={() => setUserStatus('user')}>
-                                <div className="card-body">
-                                    <div className="row">
-
-
-                                        <h5 class="card-title text-orange d-flex align-items-center"> <FontAwesomeIcon icon={faUserTie} className="icon me-2" />Corretor</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Especialistas em avaliação</h6>
-                                        <div className="col-12 small">
-                                            <span>
-                                                Corretores focam na criação e gestão de avaliações, contribuindo para a qualidade e confiabilidade do sistema, moldando a reputação dos clientes.
-                                            </span>
+                            <div className={`card cardAnimation h-100 ${userStatus === 'user' ? 'border-selected shadow-sm' : ''}`}
+                                type="button"
+                                onClick={() => setUserStatus('user')}
+                                style={{ transition: 'all 0.3s ease', cursor: 'pointer' }}>
+                                <div className="card-body p-4">
+                                    <div className="d-flex align-items-center mb-3">
+                                        <div className={`rounded-circle d-flex align-items-center justify-content-center me-3 ${userStatus === 'user' ? 'bg-orange' : 'bg-light'}`}
+                                            style={{ width: '50px', height: '50px', transition: 'all 0.3s ease' }}>
+                                            <FontAwesomeIcon
+                                                icon={faUserTie}
+                                                className={userStatus === 'user' ? 'text-white' : 'text-orange'}
+                                                style={{ fontSize: '1.5rem' }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <h5 className="card-title mb-0 text-orange fw-bold">Corretor</h5>
+                                            <h6 className="card-subtitle text-muted small mb-0">Focado em imóveis</h6>
                                         </div>
                                     </div>
+
+                                    <div className="mb-3">
+                                        <p className="small mb-2 text-secondary">Acesso dedicado às operações essenciais:</p>
+                                    </div>
+
+                                    <ul className="small text-secondary mb-0 ps-3" style={{ listStyle: 'none' }}>
+                                        <li className="mb-2">
+                                            <span className="text-orange me-2">✓</span>
+                                            Cadastro e avaliação de imóveis
+                                        </li>
+                                        <li className="mb-2 text-muted">
+                                            <span className="me-2">✗</span>
+                                            Sem acesso a configurações
+                                        </li>
+                                        <li className="mb-0 text-muted">
+                                            <span className="me-2">✗</span>
+                                            Sem gerenciamento de usuários
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-
                         </div>
 
                     </div>
