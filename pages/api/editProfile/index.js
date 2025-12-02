@@ -93,6 +93,8 @@ export default authenticated(async (req, res) => {
 
         const clains = {
             ...token,
+            firstName: updateObject.firstName,
+            lastName: updateObject.lastName,
             profileImageUrl: updateObject.profileImageUrl
         }
 
