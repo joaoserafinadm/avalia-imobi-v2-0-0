@@ -9,61 +9,34 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Headers mais realistas e completos
-    const headers = {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-      'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
-      'Accept-Encoding': 'gzip, deflate, br',
-      'Connection': 'keep-alive',
-      'Upgrade-Insecure-Requests': '1',
-      'Sec-Fetch-Dest': 'document',
-      'Sec-Fetch-Mode': 'navigate',
-      'Sec-Fetch-Site': 'none',
-      'Sec-Fetch-User': '?1',
-      'Cache-Control': 'max-age=0',
-      'DNT': '1',
-      'Referer': new URL(url).origin,
-    };
+    const response = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-User': '?1',
+        'Cache-Control': 'max-age=0',
+        'Referer': 'https://www.google.com/'
+      },
+      timeout: 15000,
+      maxRedirects: 5,
+      validateStatus: (status) => status < 500, // Aceita 403, 429, etc.
+    });
 
-    // Tenta com axios primeiro
-    let response;
-    try {
-      response = await axios.get(url, {
-        headers,
-        timeout: 15000,
-        maxRedirects: 5,
-        validateStatus: (status) => status < 500, // Aceita até erros 4xx
-      });
-    } catch (axiosError) {
-      // Se falhar, tenta com fetch nativo (às vezes contorna bloqueios)
-      console.log('Axios failed, trying fetch...');
-      const fetchResponse = await fetch(url, {
-        headers,
-        redirect: 'follow',
-      });
-      
-      if (!fetchResponse.ok && fetchResponse.status === 403) {
-        throw new Error('Site bloqueou o acesso (403 Forbidden)');
-      }
-      
-      response = {
-        data: await fetchResponse.text(),
-        status: fetchResponse.status
-      };
-    }
-
-    // Se recebeu 403 mesmo assim
-    if (response.status === 403) {
-      return res.status(403).json({
-        error: 'Access forbidden',
-        message: 'O site bloqueou o acesso. Isso pode acontecer devido a proteções anti-bot. Considere usar um serviço de scraping terceirizado.',
-        suggestions: [
-          'Usar APIs oficiais do site quando disponível',
-          'Usar serviços como ScrapingBee, ScraperAPI ou Bright Data',
-          'Implementar um proxy rotativo',
-          'Usar Puppeteer/Playwright para simular um navegador real'
-        ]
+    // Se recebeu 403 ou página de desafio do Cloudflare
+    if (response.status === 403 || response.data.includes('cf-browser-verification')) {
+      return res.status(403).json({ 
+        error: 'Cloudflare Protection',
+        message: 'Site protegido - use scraping do cliente',
+        useClientScraping: true,
+        url: url
       });
     }
     
@@ -190,7 +163,7 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error('Error fetching URL:', error.message);
     
-    // Detecta tipo de erro
+    // Detecta se foi timeout
     if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
       return res.status(408).json({ 
         error: 'Request timeout',
@@ -198,11 +171,13 @@ export default async function handler(req, res) {
       });
     }
 
-    if (error.message.includes('403')) {
-      return res.status(403).json({
-        error: 'Access forbidden',
-        message: 'O site bloqueou o acesso. Use uma solução alternativa como Puppeteer ou serviços de scraping.',
-        hint: 'Sites de imóveis como OLX, VivaReal, etc costumam ter proteções anti-bot fortes'
+    // Se for erro de rede/conexão, sugere scraping do cliente
+    if (error.code === 'ECONNREFUSED' || error.response?.status === 403) {
+      return res.status(403).json({ 
+        error: 'Cloudflare Protection',
+        message: 'Site protegido - use scraping do cliente',
+        useClientScraping: true,
+        url: url
       });
     }
 
