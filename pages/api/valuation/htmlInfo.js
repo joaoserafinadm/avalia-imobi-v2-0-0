@@ -29,10 +29,12 @@ export default async function handler(req, res) {
 
     // Detecta proteção do Cloudflare
     if (response.status === 403 || 
-        response.status === 503 || 
-        response.data.includes('cf-browser-verification') ||
-        response.data.includes('Checking your browser') ||
-        response.data.includes('Just a moment')) {
+        response.status === 503 
+        // || 
+        // response.data.includes('cf-browser-verification') ||
+        // response.data.includes('Checking your browser') ||
+        // response.data.includes('Just a moment')
+      ) {
       
       return res.status(403).json({ 
         error: 'Cloudflare Protection Detected',
