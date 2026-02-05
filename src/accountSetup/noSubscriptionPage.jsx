@@ -256,70 +256,7 @@ export default function NoSubscriptionPage(props) {
                             </div>
                         </div>
 
-                        {/* Plano Anual */}
-                         {/*<div className="col-12 col-md-6 col-lg-4">
-                            <div
-                                className={`card h-100  shadow position-relative  ${selectedPlan === 'anual' ? 'border-primary border-2' : 'border-0'}`}
-                                onClick={() => setSelectedPlan('anual')}
-                                style={{
-                                    cursor: 'pointer',
-                                    borderRadius: '16px',
-                                    transform: selectedPlan === 'anual' ? 'scale(1.02)' : 'scale(1)',
-                                    transition: 'all 0.3s ease',
-                                    border: selectedPlan === 'anual' ? '3px solid #0d6efd' : '3px solid transparent'
-                                }}
-                            >
-                                {selectedPlan === 'anual' && (
-                                    <div className="position-absolute top-0 end-0 mt-3 me-3">
-                                        <span className="badge bg-primary rounded-pill px-3 py-2">
-                                            <FontAwesomeIcon icon={faCheck} className="me-1" /> Selecionado
-                                        </span>
-                                    </div>
-                                )}
-
-                                <div className="card-body p-4">
-                                    <div className="text-center mb-4">
-                                        <div className="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
-                                            style={{ width: '70px', height: '70px', background: 'linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%)' }}>
-                                            <FontAwesomeIcon icon={faCrown} size="2x" className="text-white" />
-                                        </div>
-                                        <h5 className="fw-bold mb-2 text-primary">Plano Anual</h5>
-                                        <div className="mb-2">
-                                            <span className="h2 fw-bold text-primary">R$ 199,90</span>
-                                            <span className="text-muted">/ano</span>
-                                        </div>
-                                        <span className="badge" style={{ background: 'rgba(13, 110, 253, 0.1)', color: '#0d6efd', padding: '6px 16px', borderRadius: '20px' }}>
-                                            Economize 58% 💰
-                                        </span>
-                                    </div>
-
-                                    <ul className="list-unstyled mb-0">
-                                        <li className="mb-3 d-flex align-items-start">
-                                            <FontAwesomeIcon icon={faCheck} className="text-primary me-2 mt-1" />
-                                            <span>Todos os recursos incluídos</span>
-                                        </li>
-                                        <li className="mb-3 d-flex align-items-start">
-                                            <FontAwesomeIcon icon={faCheck} className="text-primary me-2 mt-1" />
-                                            <span>1 usuário incluído</span>
-                                        </li>
-                                        <li className="mb-3 d-flex align-items-start">
-                                            <FontAwesomeIcon icon={faCheck} className="text-primary me-2 mt-1" />
-                                            <span>Usuários extras R$ 19,90</span>
-                                        </li>
-                                        <li className="mb-3 d-flex align-items-start">
-                                            <FontAwesomeIcon icon={faCheck} className="text-primary me-2 mt-1" />
-                                            <span>Pagamento via cartão</span>
-                                        </li>
-                                        <li className="mb-0 d-flex align-items-start">
-                                            <FontAwesomeIcon icon={faCheck} className="text-primary me-2 mt-1" />
-                                            <span>Melhor custo-benefício</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-*/}
+                   
                     {/* Botão de Ação */}
                     <div className="row mb-5">
                         <div className="col-12">
