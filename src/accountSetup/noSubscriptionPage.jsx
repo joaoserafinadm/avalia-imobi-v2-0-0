@@ -126,7 +126,7 @@ export default function NoSubscriptionPage(props) {
                     {/* Cards de Planos */}
                     <div className="row g-4 mb-5">
                         {/* Plano Teste */}
-                        <div className="col-12 col-md-6 col-lg-4">
+                        <div className="col-12 col-md-6 col-lg-6">
                             <div
                                 className={`card h-100  shadow-sm position-relative ${companyData.pixPaymentData?.subscription_limit_date ? 'opacity-50' : ''} ${selectedPlan === 'teste' ? 'border-success border-2' : 'border-0'}`}
                                 onClick={() => !companyData.pixPaymentData?.subscription_limit_date && setSelectedPlan('teste')}
@@ -188,7 +188,7 @@ export default function NoSubscriptionPage(props) {
                         </div>
 
                         {/* Plano Mensal */}
-                        <div className="col-12 col-md-6 col-lg-4">
+                        <div className="col-12 col-md-6 col-lg-6">
                             <div
                                 className={`card h-100  shadow position-relative  ${selectedPlan === 'mensal' ? 'border-orange border-2' : 'border-0'}`}
                                 onClick={() => setSelectedPlan('mensal')}
