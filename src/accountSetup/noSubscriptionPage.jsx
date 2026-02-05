@@ -257,7 +257,7 @@ export default function NoSubscriptionPage(props) {
                         </div>
 
                         {/* Plano Anual */}
-                        <div className="col-12 col-md-6 col-lg-4">
+                         {/*<div className="col-12 col-md-6 col-lg-4">
                             <div
                                 className={`card h-100  shadow position-relative  ${selectedPlan === 'anual' ? 'border-primary border-2' : 'border-0'}`}
                                 onClick={() => setSelectedPlan('anual')}
@@ -319,7 +319,7 @@ export default function NoSubscriptionPage(props) {
                             </div>
                         </div>
                     </div>
-
+*/}
                     {/* Botão de Ação */}
                     <div className="row mb-5">
                         <div className="col-12">
