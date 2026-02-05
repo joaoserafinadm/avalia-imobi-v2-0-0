@@ -255,7 +255,7 @@ export default function NoSubscriptionPage(props) {
                                 </div>
                             </div>
                         </div>
-
+</div>
                    
                     {/* Botão de Ação */}
                     <div className="row mb-5">
