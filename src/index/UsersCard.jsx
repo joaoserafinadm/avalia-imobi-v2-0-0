@@ -1,256 +1,191 @@
 import Link from "next/link";
 import Icons from "../components/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalculator, faCrown, faFaceSadTear, faKey, faLightbulb, faStar, faUsers } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCalculator, faCrown, faFaceSadTear,
+    faKey, faLightbulb, faStar,
+} from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import CountUp from 'react-countup';
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import isMobile from "../../utils/isMobile";
-
+import styles from "./UsersCard.module.scss";
 
 
 export default function UsersCard(props) {
 
     const { clientsStatus, clientsArray, rankedUserResults,
-        rankedUserValuationResults, companyData, loading } = props
+        rankedUserValuationResults, companyData, loading } = props;
 
-    const [totalStatus, setTotalStatus] = useState(0)
-
-
-
-
-
-
-
-
-
-
-
-
-
+    const [totalStatus, setTotalStatus] = useState(0);
 
 
     return (
-        <div className="card cardAnimation shadow my-2" style={{ height: '100%' }}>
+        <div className={styles.card}>
 
             {loading && <Loading />}
 
-            <div className="card-body">
-                <div className="row  d-flex  ">
+            <div className={styles.cardBody}>
 
-                    <Link href='/usersManagement'>
+                {/* ── Header ── */}
+                <Link href='/usersManagement' style={{ textDecoration: 'none' }}>
+                    <div className={styles.header}>
+                        <span className={styles.title}>Usuários</span>
+                        <span className={styles.accessLink}>
+                            Acessar <Icons icon="a-r" />
+                        </span>
+                    </div>
+                    <p className={styles.subtitle}>
+                        Visualize todos os usuários cadastrados
+                    </p>
+                </Link>
 
-                        <div className="col-12 d-flex justify-content-between align-items-center">
+                <hr className={styles.divider} />
 
-                            <span className="fs-3 bold text-orange">Usuários</span>
-                            <span className=" text-secondary small d-flex align-items-center span fw-bold">
-                                Acessar<Icons icon="a-r" className="ms-1" />
+                {/* ── Campeão de captações ── */}
+                <p className={styles.sectionLabel}>Campeão de captações</p>
+
+                {rankedUserResults.firstName ? (
+                    <div className={styles.rankedCard}>
+                        <div className={styles.profileWrap}>
+                            <span
+                                className={styles.iconDecor}
+                                style={{ right: '-2px', top: '-14px', transform: 'rotate(20deg)', color: '#f7bc06' }}
+                            >
+                                <FontAwesomeIcon icon={faCrown} />
                             </span>
-
+                            <span
+                                className={styles.iconDecor}
+                                style={{ left: '-8px', top: '56px', transform: 'rotate(70deg)', color: 'rgba(255,255,255,0.3)' }}
+                            >
+                                <FontAwesomeIcon icon={faKey} />
+                            </span>
+                            <img
+                                src={rankedUserResults?.profileImageUrl}
+                                className={styles.profileImg}
+                                alt=""
+                            />
+                            <span className={styles.profileName}>
+                                {rankedUserResults?.firstName} {rankedUserResults?.lastName}
+                            </span>
                         </div>
-                        <div className="col-12 d-flex justify-content-start align-items-top mb-3">
 
-                            <span className="small text-secondary">Visualize todos os usuários cadastrados</span>
-
-                        </div>
-                    </Link>
-
-                    <hr />
-
-                    <div className="col-12 d-flex justify-content-center text-center" >
-
-                        <span className="small text-secondary fw-bold">Campeão de captações</span>
-                    </div>
-                    {rankedUserResults.firstName ?
-                        <div className="col-12 mt-2 ">
-
-                            <div className="card">
-                                <div className="card-body">
-                                    <div className="col-12 mt-2 ">
-                                        <div className="row d-flex justify-content-center">
-
-                                            <div className="position-relative text-center" style={{ width: '150px' }}>
-                                                <div className="col-12 d-flex justify-content-center">
-
-                                                    <span style={{ position: 'absolute', right: '20px', top: '-15px', transform: 'rotate(20deg)' }}>
-                                                        <FontAwesomeIcon icon={faCrown} className="text-warning fs-2" />
-                                                    </span>
-                                                    <span style={{ position: 'absolute', left: '10px', top: '90px', transform: 'rotate(70deg)' }}>
-                                                        <FontAwesomeIcon icon={faKey} className="text-secondary fs-2" />
-                                                    </span>
-
-                                                    <img src={rankedUserResults?.profileImageUrl}
-                                                        className="rounded-circle" alt="" height={125} />
-                                                </div>
-                                                <span className="small fw-bold text-secondary">
-                                                    {rankedUserResults?.firstName} {rankedUserResults?.lastName}
-                                                </span>
-                                            </div>
-
-                                            <div className="col-lg col-12">
-                                                <div className="row d-flex h-100">
-
-
-                                                    <div className="col-6 d-flex justify-content-center align-items-center my-2 text-center text-secondary">
-                                                        <div>
-                                                            <span className="fw-bold fs-3 "><CountUp end={rankedUserResults?.clientsLength} separator="." duration={2} /></span><br />
-                                                            <span className="bold text-orange ">{rankedUserResults?.clientsLength === 1 ? 'Cliente' : 'Cliente'}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="col-6 d-flex justify-content-center align-items-center my-2 text-center text-secondary">
-                                                        <div>
-
-
-                                                            <span className="fw-bold fs-3"><CountUp end={rankedUserResults?.clientsRating} separator="." duration={2} /> <FontAwesomeIcon icon={faStar} className="text-warning" /></span><br />
-                                                            <span className="bold text-orange">Nota de atendimento</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div className={styles.statsRow}>
+                            <div className={styles.statBlock}>
+                                <div className={styles.statValue}>
+                                    <CountUp end={rankedUserResults?.clientsLength} separator="." duration={2} />
+                                </div>
+                                <div className={styles.statLabel}>
+                                    {rankedUserResults?.clientsLength === 1 ? 'Cliente' : 'Clientes'}
                                 </div>
                             </div>
-                        </div>
-
-                        :
-                        <div className="row my-3">
-                            <div className="col-12 d-flex justify-content-center text-center">
-                                <span className="text-secondary">Nenhuma captação feita <FontAwesomeIcon icon={faFaceSadTear} className="text-secondary" /></span>
+                            <div className={styles.statBlock}>
+                                <div className={styles.statValue}>
+                                    <CountUp end={rankedUserResults?.clientsRating} separator="." duration={2} />
+                                    <FontAwesomeIcon icon={faStar} className={styles.starIcon} />
+                                </div>
+                                <div className={styles.statLabel}>Nota de atendimento</div>
                             </div>
                         </div>
-                    }
-
-
-
-
-                    <div className="col-12 d-flex justify-content-center text-center mt-4" >
-
-                        <span className="small text-secondary fw-bold">Mestre de avaliações</span>
                     </div>
+                ) : (
+                    <p className={styles.emptyStateText}>
+                        Nenhuma captação feita
+                    </p>
+                )}
 
-                    {rankedUserValuationResults.firstName ?
+                {/* ── Mestre de avaliações ── */}
+                <p className={styles.sectionLabel} style={{ marginTop: '0.85rem' }}>Mestre de avaliações</p>
 
+                {rankedUserValuationResults.firstName ? (
+                    <div className={styles.rankedCard}>
+                        <div className={styles.profileWrap}>
+                            <span
+                                className={styles.iconDecor}
+                                style={{ left: '-6px', top: '-12px', transform: 'rotate(-20deg)', color: '#4D88BB' }}
+                            >
+                                <FontAwesomeIcon icon={faLightbulb} />
+                            </span>
+                            <span
+                                className={styles.iconDecor}
+                                style={{ right: '-6px', top: '58px', transform: 'rotate(10deg)', color: 'rgba(255,255,255,0.3)' }}
+                            >
+                                <FontAwesomeIcon icon={faCalculator} />
+                            </span>
+                            <img
+                                src={rankedUserValuationResults?.profileImageUrl}
+                                className={styles.profileImg}
+                                alt=""
+                            />
+                            <span className={styles.profileName}>
+                                {rankedUserValuationResults?.firstName} {rankedUserValuationResults?.lastName}
+                            </span>
+                        </div>
 
-                        <div className="col-12 mt-2 ">
-
-                            <div className="card">
-                                <div className="card-body">
-                                    <div className="col-12 mt-2 ">
-                                        <div className="row d-flex justify-content-center">
-
-                                            <div className="position-relative text-center" style={{ width: '150px' }}>
-                                                <div className="col-12 d-flex justify-content-center">
-
-                                                    <span style={{ position: 'absolute', left: '20px', top: '-10px', transform: 'rotate(-20deg)' }}>
-                                                        <FontAwesomeIcon icon={faLightbulb} className="text-primary fs-2" />
-                                                    </span>
-                                                    <span style={{ position: 'absolute', right: '10px', top: '90px', transform: 'rotate(10deg)' }}>
-                                                        <FontAwesomeIcon icon={faCalculator} className="text-secondary fs-2" />
-                                                    </span>
-
-                                                    <img src={rankedUserValuationResults?.profileImageUrl}
-                                                        className="rounded-circle" alt="" height={125} />
-                                                </div>
-                                                <span className="small fw-bold text-secondary">
-                                                    {rankedUserValuationResults?.firstName} {rankedUserValuationResults?.lastName}
-                                                </span>
-                                            </div>
-
-                                            <div className="col-lg col-12">
-                                                <div className="row d-flex h-100">
-
-
-                                                    <div className="col-6 d-flex justify-content-center align-items-center my-2 text-center text-secondary">
-                                                        <div>
-
-                                                            <span className="fw-bold fs-3"><CountUp end={rankedUserValuationResults?.clientsValuations} separator="." duration={2} /></span><br />
-                                                            <span className="bold text-orange">{rankedUserValuationResults?.clientsValuations > 1 ? 'Avaliações' : 'Avaliação'}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="col-6 d-flex justify-content-center align-items-center my-2 text-center text-secondary">
-                                                        <div>
-
-                                                            <span className="fw-bold " style={{ fontSize: '1rem' }}>R$ <CountUp end={rankedUserValuationResults?.averageTicket} separator="." duration={2} />,00</span><br />
-                                                            <span className="bold text-orange">Ticket médio de avaliação</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div className={styles.statsRow}>
+                            <div className={styles.statBlock}>
+                                <div className={styles.statValue}>
+                                    <CountUp end={rankedUserValuationResults?.clientsValuations} separator="." duration={2} />
+                                </div>
+                                <div className={styles.statLabel}>
+                                    {rankedUserValuationResults?.clientsValuations > 1 ? 'Avaliações' : 'Avaliação'}
                                 </div>
                             </div>
-
-
-
-
-
-
-                        </div>
-                        :
-                        <div className="row my-3">
-                            <div className="col-12 d-flex justify-content-center text-center">
-                                <span className="text-secondary">Não há avaliações <FontAwesomeIcon icon={faFaceSadTear} className="text-secondary" /></span>
-                            </div>
-                        </div>
-                    }
-
-                    {companyData?.usersArray?.length > 1 ?
-                        <div className="col-12 mt-5 d-flex justify-content-center">
-                            <Link href='/usersManagement'>
-                                <button className="btn btn-outline-orange">Visualizar todos os usuários</button>
-                            </Link>
-                        </div>
-                        :
-
-                        <div className="col-12 mt-5 d-flex justify-content-center">
-                            <Link href='/userAdd'>
-                                <button className="btn btn-outline-orange">Adicionar usuários</button>
-                            </Link>
-                        </div>
-
-                    }
-
-
-                    {rankedUserResults.firstName && rankedUserValuationResults.firstName && false && !isMobile() && (
-
-                        <div className="col-12  my-5 ">
-
-
-                            <div className="row d-flex justify-content-center">
-                                <div className="col-12 col-lg-6 d-flex justify-content-center">
-                                    <img src={companyData?.logo} alt="" className="companyLogo" />
+                            <div className={styles.statBlock}>
+                                <div className={styles.statValueSm}>
+                                    <span className={styles.currencyPrefix}>R$</span>
+                                    <CountUp end={rankedUserValuationResults?.averageTicket} separator="." duration={2} />
+                                    <span className={styles.currencyPrefix}>,00</span>
                                 </div>
-                                {/* <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center my-2 text-center text-secondary">
-            <div className="row">
-
-                <div className="col-12 ">
-
-                    <span className="fw-bold fs-2"><CountUp end={companyData?.usersArray?.length} separator="." duration={2} /></span>
-                    {companyData?.usersArray?.length <= 1 && (<span className="fw-bold fs-2 ms-2"><FontAwesomeIcon icon={faFaceSadTear} className="text-secondary" /></span>)}<br />
-                    <span className="bold text-orange fs-3">Usuário{companyData?.usersArray?.length > 1 ? 's' : ''} </span>
-                </div>
-                 <div class="col-12 image-container">
-                    <div class="image-wrapper">
-                        <img src={rankedUserValuationResults?.profileImageUrl} class="akvo-sm-profile-img" alt="" />
-                    </div>
-                </div> 
-            </div>
-        </div> */}
+                                <div className={styles.statLabel}>Ticket médio</div>
                             </div>
-
                         </div>
+                    </div>
+                ) : (
+                    <p className={styles.emptyStateText}>
+                        Não há avaliações
+                    </p>
+                )}
 
+                {/* ── Footer action ── */}
+                <div className={styles.footerAction}>
+                    {companyData?.usersArray?.length > 1 ? (
+                        <Link href='/usersManagement'>
+                            <button className={styles.btnOutline}>Visualizar todos os usuários</button>
+                        </Link>
+                    ) : (
+                        <Link href='/userAdd'>
+                            <button className={styles.btnOutline}>Adicionar usuários</button>
+                        </Link>
                     )}
-
-
                 </div>
 
+                {rankedUserResults.firstName && rankedUserValuationResults.firstName && false && !isMobile() && (
+                    <div style={{ marginTop: '2rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <img src={companyData?.logo} alt="" className="companyLogo" />
+                        </div>
+                        {/* <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center my-2 text-center text-secondary">
+                            <div className="row">
+
+                                <div className="col-12 ">
+
+                                    <span className="fw-bold fs-2"><CountUp end={companyData?.usersArray?.length} separator="." duration={2} /></span>
+                                    {companyData?.usersArray?.length <= 1 && (<span className="fw-bold fs-2 ms-2"><FontAwesomeIcon icon={faFaceSadTear} className="text-secondary" /></span>)}<br />
+                                    <span className="bold text-orange fs-3">Usuário{companyData?.usersArray?.length > 1 ? 's' : ''} </span>
+                                </div>
+                                 <div class="col-12 image-container">
+                                    <div class="image-wrapper">
+                                        <img src={rankedUserValuationResults?.profileImageUrl} class="akvo-sm-profile-img" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div> */}
+                    </div>
+                )}
+
             </div>
-        </div >
-    )
+        </div>
+    );
 }

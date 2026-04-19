@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+/* ── Section wrapper ── */
+.section {
+  margin-top: 1rem;
+}
+
+.sectionHeading {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #f5874f;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.75rem 0;
+  display: block;
+}
+
+/* ── Swiper overrides ── */
+.swiperWrap {
+  width: 100%;
+
+  :global(.swiper-pagination-bullet) {
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 1;
+  }
+
+  :global(.swiper-pagination-bullet-active) {
+    background: #f5874f;
+  }
+}
+
+/* ── Slide inner wrapper ── */
+.slideInner {
+  padding: 0 8px 12px;
+}
+
+/* ── "Ver todos" final card ── */
+.finalCard {
+  background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
+  border: 1px solid rgba(245, 135, 79, 0.1);
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  // min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 2rem 1.5rem;
+  margin: 8px 0;
+  text-decoration: none;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease,
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+
+  /* animated top accent */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #f5874f 40%,
+      #ff9f6b 60%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: accentSlide 4s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  /* decorative grid pattern */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245, 135, 79, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245, 135, 79, 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  &:hover {
+    border-color: rgba(245, 135, 79, 0.28);
+    box-shadow:
+      0 8px 40px rgba(245, 135, 79, 0.1),
+      0 20px 60px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+
+    &::after {
+      opacity: 1;
+    }
+
+    .btnOutline {
+      background: rgba(245, 135, 79, 0.1);
+      border-color: rgba(245, 135, 79, 0.6);
+      color: #ff9f6b;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(245, 135, 79, 0.18);
+    }
+  }
+}
+
+@keyframes accentSlide {
+  0%, 100% { background-position: 0% 0%; opacity: 0.7; }
+  50%       { background-position: 100% 0%; opacity: 1; }
+}
+
+.finalCardContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.finalLabel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.63rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.2);
+  margin: 0;
+}
+
+.finalTitle {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.72);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.btnOutline {
+  background: transparent;
+  color: #f5874f;
+  border: 1px solid rgba(245, 135, 79, 0.35);
+  border-radius: 9px;
+  padding: 8px 22px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.8rem;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease,
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.22s ease;
+  margin-top: 4px;
+
+  &:active {
+    transform: translateY(0) !important;
+  }
+}
+
+/* ── Empty state ── */
+.emptyState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 0;
+}
+
+.emptyText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Loading ── */
+.loadingWrap {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}

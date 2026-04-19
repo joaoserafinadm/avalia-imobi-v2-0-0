@@ -12,3 +12,11 @@ export default function randomPassword(len) {
 
     return passwd
 }
+
+export  function randomNumberPassword(len) {
+    let passwd = ''
+    do {
+        passwd += Math.floor(Math.random() * 10) // gera dígito de 0 a 9
+    } while (passwd.length < len)
+    return passwd
+}

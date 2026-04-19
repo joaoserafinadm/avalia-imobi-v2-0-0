@@ -1,303 +1,156 @@
-import Head from "next/head";
 import styles from "./Login.module.scss";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import removeInputError from "../../../utils/removeInputError";
 import baseUrl from "../../../utils/baseUrl";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { SpinnerSM } from "../../components/loading/Spinners";
 import Cookies from "js-cookie";
-import { signIn, signOut, useSession } from 'next-auth/react'
-
+import { signIn, signOut, useSession } from "next-auth/react";
+import { AiOutlineLeft } from "@react-icons/all-files/ai/AiOutlineLeft";
 
 function isInWebView() {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    return /Instagram|FBAN|FBAV/.test(userAgent); // Detecta WebView do Instagram ou Facebook
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  return /Instagram|FBAN|FBAV/.test(ua);
 }
 
+export default function SignInPage(props) {
+  const router = useRouter();
+  const { data: session } = useSession();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-export default function signInPage(props) {
+  const [isWebView, setIsWebView] = useState(false);
+  const [signInLoading, setSignInLoading] = useState(false);
+  const [loadingGoogle, setLoadingGoogle] = useState(false);
 
-    const router = useRouter()
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [googleAuthError, setGoogleAuthError] = useState(false);
 
+  useEffect(() => {
+    setIsWebView(isInWebView());
+    if (session) handleGoogleLogin(session);
+  }, [session]);
 
-    const { data: session } = useSession()
+  const handleGoogleLogin = async (session) => {
+    setLoadingGoogle(true);
+    await axios
+      .post(`/api/login/google`, session)
+      .then(async () => { await signOut(); router.push("/"); })
+      .catch(() => { setGoogleAuthError(true); setLoadingGoogle(false); });
+  };
 
+  const validate = () => {
+    removeInputError();
+    const emailErr = !email || !email.includes("@") ? "Insira um e-mail válido" : "";
+    const passErr = !password ? "Insira sua senha" : "";
+    setEmailError(emailErr);
+    setPasswordError(passErr);
+    return !emailErr && !passErr;
+  };
 
-    
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    
-    //RENDER
-    const [isWebView, setIsWebView] = useState(false);
-    const [loadedImages, setLoadedImages] = useState(0);
-    const [singInLoading, setSignInLoading] = useState(false);
-    const [loadingGoogle, setLoadingGoogle] = useState(false);
-    
-    //ERROR
-    const [emailError, setEmailError] = useState("");
-    const [passwordError, setPasswordError] = useState("");
-    const [googleAuthError, setGoogleAuthError] = useState(false);
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    setSignInLoading(true);
+    if (!validate()) { setSignInLoading(false); return; }
 
-    
-    
-    useEffect(() => {
+    await axios
+      .post(`${baseUrl()}/api/login/signIn`, { email, password })
+      .then(() => { localStorage.setItem("auth", Cookies.get("auth")); router.reload(); })
+      .catch(() => { setPasswordError("E-mail ou senha incorretos"); setSignInLoading(false); });
+  };
 
-         setIsWebView(isInWebView());
+  return (
+    <div className={`${styles.formInner} fadeItem1s`}>
+      <div className="row mb-4">
+        <div className="col-12 d-flex justify-content-center">
+          <img src="/LOGO_01.png" alt="Avalia Imobi" style={{height: "75px"}} />
 
-        
-        if (session) {
-            // console.log("session", session)
-            handleGoogleLogin(session)
-        }
+        </div>
+      </div>
 
-    }, [session])
+      <h1 className={styles.formTitle}>Bem-vindo de volta</h1>
+      <p className={styles.formSubtitle}>
+        Não possui conta?{" "}
+        <button className={styles.linkOrange} onClick={() => props.setSection("signUp")}>
+          Cadastre-se grátis
+        </button>
+      </p>
 
-    const handleGoogleLogin = async (session) => {
-        setLoadingGoogle(true)
+      <form onSubmit={handleSignIn}>
 
+        <div className={styles.inputGroup}>
+          <label htmlFor="emailInput">E-mail</label>
+          <input
+            type="email"
+            id="emailInput"
+            className={`form-control ${emailError ? "is-invalid" : ""}`}
+            placeholder="seu@email.com"
+            value={email}
+            onChange={(e) => { setEmail(e.target.value); setEmailError(""); }}
+          />
+          {emailError && <small className="text-danger">{emailError}</small>}
+        </div>
 
-        await axios.post(`/api/login/google`, session)
-            .then(async res => {
-                await signOut()
-                router.push('/')
-                setLoadingGoogle(false)
-            }).catch(e => {
-                setGoogleAuthError(true)
-                setLoadingGoogle(false)
-            })
-        setLoadingGoogle(true)
+        <div className={styles.inputGroup}>
+          <label htmlFor="passwordInput">Senha</label>
+          <input
+            type="password"
+            id="passwordInput"
+            className={`form-control ${passwordError ? "is-invalid" : ""}`}
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => { setPassword(e.target.value); setPasswordError(""); }}
+          />
+          {passwordError && <small className="text-danger">{passwordError}</small>}
+        </div>
 
+        <div className="d-flex justify-content-end mb-3">
+          <button
+            type="button"
+            className={styles.linkOrange}
+            style={{ fontSize: "0.85rem" }}
+            onClick={() => props.setSection("rescuePassword")}
+          >
+            Esqueceu a senha?
+          </button>
+        </div>
 
-    }
+        <button type="submit" className={styles.btnPrimary} disabled={signInLoading || loadingGoogle}>
+          {signInLoading ? <SpinnerSM /> : "Entrar"}
+        </button>
+      </form>
 
-    const validate = () => {
-        removeInputError();
-        clearErrors();
+      <div className={styles.divider}>ou</div>
 
-        let emailError = "";
-        let passwordError = "";
+      <button
+        type="button"
+        className={styles.btnGoogle}
+        disabled={loadingGoogle || isWebView}
+        onClick={() => { setLoadingGoogle(true); signIn("google"); }}
+      >
+        <img src="/ICON_GOOGLE.png" alt="Google" />
+        Continuar com Google
+        {loadingGoogle && <SpinnerSM className="ms-1" />}
+      </button>
 
-        if (!email || !email.includes("@")) emailError = "Insira um e-mail válido";
-        if (!password) passwordError = "Insira sua senha";
+      {isWebView && (
+        <p className="small text-secondary mt-2 text-center mb-0">
+          Login com Google não suportado aqui. Abra no <strong>Chrome</strong> ou <strong>Safari</strong>.
+        </p>
+      )}
 
-        if (emailError || passwordError) {
-            if (emailError) {
-                document.getElementById("emailInput").classList.add("inputError");
-                setEmailError(emailError);
-            }
-            if (passwordError) {
-                document.getElementById("passwordInput").classList.add("inputError");
-                setPasswordError(passwordError);
-            }
-            return false;
-        } else {
-            setEmailError("");
-            setPasswordError("");
-            return true;
-        }
-    };
+      {googleAuthError && (
+        <p className="small text-danger mt-2 text-center mb-0">
+          Nenhuma conta com esse e-mail.{" "}
+          <button className={styles.linkOrange} onClick={() => { props.setSection("signUp"); setGoogleAuthError(false); }}>
+            Cadastre-se
+          </button>
+        </p>
+      )}
 
-    const clearErrors = () => {
-        setEmailError("");
-        setPasswordError("");
-    };
-
-    const handleEmailAuth = () => {
-        const isValid = validate();
-
-        if (isValid) {
-            const data = {};
-        }
-    };
-
-    const handleSignIn = async (e) => {
-
-        e.preventDefault()
-
-        setSignInLoading(true);
-
-        const isValid = validate();
-
-        if (isValid) {
-            const data = {
-                email,
-                password,
-            };
-
-            await axios
-                .post(`${baseUrl()}/api/login/signIn`, data)
-                .then((res) => {
-
-                    localStorage.setItem("auth", Cookies.get("auth"));
-                    const localToken = localStorage.getItem("auth");
-
-                    router.reload();
-
-                })
-                .catch((e) => {
-                    setPasswordError("E-mail ou senha incorretos");
-                    setSignInLoading(false);
-
-                });
-        } else {
-            setSignInLoading(false);
-        }
-    };
-
-    return (
-        <>
-            <div className="row fadeItem1s "
-                style={{ height: "100%" }}>
-                <div className="col-12 d-flex justify-content-evenly">
-
-
-
-                    {window.innerWidth > 990 && (
-                        <div className=" d-flex justify-content-center align-items-center">
-                            <img
-                                src="/LOGO_05.png"
-                                alt=""
-                                className={`${styles.logoImg}`}
-                                onLoad={() => setLoadedImages(loadedImages + 1)}
-                            />
-                        </div>
-                    )}
-
-                    <div className=" d-flex justify-content-center align-items-center">
-
-                        <div>
-
-                            <div className={`card `} style={{ maxWidth: "450px" }}>
-                                <div className={`card-body ${styles.cardSize} `}>
-                                    <div className="row mb-3">
-                                        <h1 className={`${styles.title} title-dark`}>Login</h1>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-12  d-flex justify-content-start">
-                                            <span>Não possui uma conta?</span>
-                                        </div>
-                                        <div className="col-12  d-flex justify-content-start">
-                                            <span
-                                                className="span"
-                                                type="button"
-                                                onClick={() => {
-                                                    props.setSection("signUp");
-                                                }}
-                                            >
-                                                Cadastre-se
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <form onSubmit={e => handleSignIn(e)}>
-
-                                        <div className="row mt-3 mb-3">
-                                            <input
-                                                type="email"
-                                                id="emailInput"
-                                                className="form-control"
-                                                placeholder="E-mail"
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                            />
-                                            <span className="small text-danger fadeItem">{emailError}</span>
-                                        </div>
-                                        <div className="row mb-3">
-                                            <input
-                                                type="password"
-                                                id="passwordInput"
-                                                className="form-control"
-                                                placeholder="Senha"
-                                                value={password}
-                                                onChange={(e) => setPassword(e.target.value)}
-                                            />
-                                            <span className="small text-danger fadeItem">
-                                                {passwordError}
-                                            </span>
-                                        </div>
-                                        <div className="row mb-3">
-                                            {singInLoading ? (
-                                                <button
-                                                    disabled
-                                                    className="btn btn-orange"
-                                                    onClick={() => handleSignIn()}
-                                                >
-                                                    <SpinnerSM />
-                                                </button>
-                                            ) : (
-                                                <button className="btn btn-outline-orange" disabled={loadingGoogle} type="submit">
-                                                    Entrar
-                                                </button>
-                                            )}
-                                        </div>
-                                    </form>
-                                    <div className="row mb-1">
-                                        <small>
-                                            <span
-                                                className="span"
-                                                type="button"
-                                                onClick={() => props.setSection("rescuePassword")}
-                                            >
-                                                Esqueceu a senha?
-                                            </span>
-                                        </small>
-                                    </div>
-                                    <div className="row d-flex">
-                                        <div className="col">
-                                            <hr />
-                                        </div>
-                                        <div className="col-1 d-flex justify-content-center align-items-center">
-                                            <span>
-                                                <small>Ou</small>
-                                            </span>
-                                        </div>
-                                        <div className="col">
-                                            <hr />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <button className="btn btn-outline-secondary" disabled={loadingGoogle} onClick={() => { setLoadingGoogle(true); signIn('google') }} disabled={isWebView}>
-                                            <div className="row ">
-                                                <div className="col-12 d-flex text-center justify-content-center align-items-center">
-                                                    {/* <div className="icon-start"> */}
-                                                    <img
-                                                        src="/ICON_GOOGLE.png"
-                                                        alt=""
-                                                        className="socialIcon me-2"
-                                                    />
-                                                    {/* </div> */}
-                                                    <div>
-                                                        <span className="text-center" >Continuar com o Google</span>
-                                                    </div>
-                                                    {loadingGoogle && (
-                                                        <SpinnerSM className="ms-1" />
-
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </button>
-                                        {isWebView && (
-                     <div className="col-12 fadeItem">
-                                                <p className="small ">O login com o Google não é suportado neste ambiente. Por favor, abra este link em um navegador externo como <strong>Chrome</strong> ou <strong>Safari</strong>.</p>
-                                            </div>
-                                        )}
-                                        {googleAuthError && (
-                                            <div className="col-12 fadeItem">
-                                                <p className="small text-danger">Não existe uma conta cadastrada com esse e-mail. Clique <span className="span" type="button" onClick={() => { props.setSection("signUp"); setGoogleAuthError(false) }}>aqui</span> para se cadastrar.</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </>
-    );
+    </div>
+  );
 }

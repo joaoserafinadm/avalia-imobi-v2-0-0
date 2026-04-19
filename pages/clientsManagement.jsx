@@ -16,6 +16,7 @@ import {
   faHouseMedicalCircleCheck,
   faSearch,
   faUserPlus,
+  faFilter,
 } from "@fortawesome/free-solid-svg-icons";
 import navbarHide from "../utils/navbarHide";
 import { useDispatch } from "react-redux";
@@ -29,11 +30,11 @@ import MenuBar from "../src/components/menuBar";
 import tippy from "tippy.js";
 import { useRouter } from "next/router";
 import ValuationPdf from "../src/pages/valuation/valuationPdf";
+import styles from "./clientsManagement.module.scss";
 
 export default function clientsManagement() {
   const token = jwt.decode(Cookies.get("auth"));
   const dispatch = useDispatch();
-
   const router = useRouter();
 
   const client_id = router.query.client_id;
@@ -48,15 +49,16 @@ export default function clientsManagement() {
   const [clientsOrder, setClientsOrder] = useState("newest");
   const [typeSearch, setTypeSearch] = useState("");
   const [statusSearch, setStatusSearch] = useState("");
-
   const [userData, setUserData] = useState(null);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const hasActiveFilters = searchValue || typeSearch || statusSearch;
 
   useEffect(() => {
     dataFunction(token.company_id);
     navbarHide(dispatch);
     const backdrop = document.querySelectorAll(".modal-backdrop.show");
     const body = document.querySelector(".modal-open");
-
     if (backdrop && body) {
       event.preventDefault();
       for (let i = 0; i < backdrop.length; i++) {
@@ -81,26 +83,14 @@ export default function clientsManagement() {
   const dataFunction = async (company_id) => {
     await axios
       .get(`${baseUrl()}/api/clientsManagement`, {
-        params: {
-          company_id: company_id,
-          user_id: token.sub,
-        },
+        params: { company_id, user_id: token.sub },
       })
       .then((res) => {
-        const newUnitsArray = handleClientsArray(
-          res.data.clients,
-          clientsOrder
-        );
-
+        const newUnitsArray = handleClientsArray(res.data.clients, clientsOrder);
         if (client_id)
-          setClientSelected(
-            newUnitsArray.find((elem) => elem._id === client_id)
-          );
-
+          setClientSelected(newUnitsArray.find((elem) => elem._id === client_id));
         if (clientSelected)
-          setClientSelected(
-            res.data.clients.find((elem) => elem._id === clientSelected._id)
-          );
+          setClientSelected(res.data.clients.find((elem) => elem._id === clientSelected._id));
         setAllClients(newUnitsArray);
         setClientsArray(newUnitsArray);
         dispatch(usersArray(res.data.users));
@@ -115,32 +105,30 @@ export default function clientsManagement() {
 
   const handleClientsArray = (clients, order) => {
     let newCLientsArray = clients;
-
     if (order === "newest")
-      newCLientsArray = clients
-        .slice()
-        .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+      newCLientsArray = clients.slice().sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
     if (order === "oldest")
-      newCLientsArray = clients
-        .slice()
-        .sort((a, b) => new Date(a.dateAdded) - new Date(b.dateAdded));
+      newCLientsArray = clients.slice().sort((a, b) => new Date(a.dateAdded) - new Date(b.dateAdded));
 
     if (searchValue === "" && typeSearch === "" && statusSearch === "") {
       return newCLientsArray;
     } else {
       return newCLientsArray
         .filter((elem) =>
-          (
-            elem.clientName.toLowerCase() +
-            " " +
-            elem.clientLastName.toLowerCase()
-          ).includes(searchValue.toLowerCase())
+          (elem.clientName.toLowerCase() + " " + elem.clientLastName.toLowerCase()).includes(
+            searchValue.toLowerCase()
+          )
         )
-        .filter((elem) =>
-          typeSearch ? elem.propertyType === typeSearch : elem
-        )
+        .filter((elem) => (typeSearch ? elem.propertyType === typeSearch : elem))
         .filter((elem) => (statusSearch ? elem.status === statusSearch : elem));
     }
+  };
+
+  const clearFilters = () => {
+    setSearchValue("");
+    setTypeSearch("");
+    setStatusSearch("");
+    setClientsOrder("newest");
   };
 
   return (
@@ -164,121 +152,127 @@ export default function clientsManagement() {
 
       <Title title={"Gestão de Imóveis"} backButton="/" />
 
-      <div className="pagesContent-lg shadow fadeItem" id="pageTop">
-        <div className="row">
-          <div className="col-12 d-flex justify-content-end ">
+      <div className={`${styles.pageWrapper} fadeItem`} id="pageTop">
+
+        {/* ── Top bar ── */}
+        <div className={styles.topBar}>
+          <div className={styles.topBarLeft}>
+            <span className={styles.resultCount}>
+              {clientsArray.length} imóve{clientsArray.length === 1 ? "l" : "is"} encontrado{clientsArray.length === 1 ? "" : "s"}
+            </span>
+          </div>
+          <div className={styles.topBarRight}>
+            <button
+              className={`${styles.filterBtn} ${(filtersOpen || hasActiveFilters) ? styles.filterBtnActive : ""}`}
+              onClick={() => setFiltersOpen((v) => !v)}
+            >
+              <FontAwesomeIcon icon={faFilter} />
+              Filtros
+              {hasActiveFilters && <span className={styles.filterActiveDot} />}
+            </button>
             <Link href="/clientAdd">
-              <button className="btn  btn-orange" id="teste">
-                <FontAwesomeIcon icon={faHouseMedical} /> Adicionar Imóvel
-              </button>
+              <span className={styles.addBtn}>
+                <FontAwesomeIcon icon={faHouseMedical} />
+                Adicionar Imóvel
+              </span>
             </Link>
           </div>
         </div>
-        <hr />
 
-        {loadingPage ? (
-          <SpinnerLG />
-        ) : (
-          <>
-            <div className="row mt-3 fadeItem">
-              <div className="col-12 col-md-6 col-xl-3 d-flex justify-content-start">
-                <div class="input-group mb-3">
+        {/* ── Collapsible filter panel ── */}
+        <div className={`${styles.filterPanel} ${filtersOpen ? styles.filterPanelOpen : ""}`}>
+          <div className={styles.filterPanelInner}>
+            <div className={styles.filterGrid}>
+
+              {/* Search */}
+              <div className={styles.filterGroup}>
+                <span className={styles.filterLabel}>Buscar</span>
+                <div className={styles.searchWrap}>
                   <input
                     type="text"
-                    class="form-control"
-                    placeholder="Pesquisar"
-                    aria-label="Username"
-                    aria-describedby="basic-addon1"
+                    className={styles.filterInput}
+                    placeholder="Pesquisar imóvel..."
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
                   />
-                  <span class="input-group-text" id="basic-addon1">
-                    <FontAwesomeIcon icon={faSearch} className="icon" />
-                  </span>
+                  <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
                 </div>
               </div>
-              <div className="col-12 col-md-6 col-xl-3">
-                <div class="input-group mb-3">
-                  <label class="input-group-text" for="clientsOrderSelect">
-                    Ordenar por:
-                  </label>
+
+              {/* Order */}
+              <div className={styles.filterGroup}>
+                <span className={styles.filterLabel}>Ordenar</span>
+                <div className={styles.filterSelectWrap}>
                   <select
-                    class="form-select"
-                    id="clientsOrderSelect"
+                    className={styles.filterSelect}
                     value={clientsOrder}
                     onChange={(e) => setClientsOrder(e.target.value)}
                   >
-                    <option value="newest" selected>
-                      Mais recentes
-                    </option>
+                    <option value="newest">Mais recentes</option>
                     <option value="oldest">Mais antigos</option>
                   </select>
                 </div>
               </div>
-              <div className="col-12 col-md-6 col-xl-3">
-                <div class="input-group mb-3">
-                  <label class="input-group-text" for="typeSearchSelect">
-                    Filtrar por:
-                  </label>
+
+              {/* Type */}
+              <div className={styles.filterGroup}>
+                <span className={styles.filterLabel}>Tipo</span>
+                <div className={styles.filterSelectWrap}>
                   <select
-                    class="form-select"
-                    id="typeSearchSelect"
+                    className={styles.filterSelect}
                     value={typeSearch}
                     onChange={(e) => setTypeSearch(e.target.value)}
                   >
-                    <option value="" selected>
-                      Todos
-                    </option>
-                    <option value="Apartamento" selected>
-                      Apartamento
-                    </option>
-                    <option value="Casa" selected>
-                      Casa
-                    </option>
-                    <option value="Comercial" selected>
-                      Comercial
-                    </option>
-                    <option value="Terreno" selected>
-                      Terreno
-                    </option>
+                    <option value="">Todos</option>
+                    <option value="Apartamento">Apartamento</option>
+                    <option value="Casa">Casa</option>
+                    <option value="Comercial">Comercial</option>
+                    <option value="Terreno">Terreno</option>
                   </select>
                 </div>
               </div>
-              <div className="col-12 col-md-6 col-xl-3">
-                <div class="input-group mb-3">
-                  <label class="input-group-text" for="statusSearchSelect">
-                    Status:
-                  </label>
+
+              {/* Status */}
+              <div className={styles.filterGroup}>
+                <span className={styles.filterLabel}>Status</span>
+                <div className={styles.filterSelectWrap}>
                   <select
-                    class="form-select"
-                    id="statusSearchSelect"
+                    className={styles.filterSelect}
                     value={statusSearch}
                     onChange={(e) => setStatusSearch(e.target.value)}
                   >
-                    <option value="" selected>
-                      Todos
-                    </option>
-                    <option value="outdated" selected>
-                      Aguardando cadastro do imóvel
-                    </option>
-                    <option value="active" selected>
-                      Aguardando avaliação
-                    </option>
-                    <option value="evaluated" selected>
-                      Avaliado
-                    </option>
-                    <option value="answered" selected>
-                      Respondido
-                    </option>
+                    <option value="">Todos</option>
+                    <option value="outdated">Aguardando cadastro</option>
+                    <option value="active">Aguardando avaliação</option>
+                    <option value="evaluated">Avaliado</option>
+                    <option value="answered">Respondido</option>
                   </select>
                 </div>
               </div>
+
             </div>
 
-            {/* <hr /> */}
+            {hasActiveFilters && (
+              <div className={styles.filterFooter}>
+                <button className={styles.clearFiltersBtn} onClick={clearFilters}>
+                  Limpar filtros
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
 
+        <hr className={styles.divider} />
+
+        {/* ── Main content ── */}
+        <div className={styles.contentArea}>
+          {loadingPage ? (
+            <div className={styles.loadingWrap}>
+              <SpinnerLG />
+            </div>
+          ) : (
             <div
-              className="container carousel  slide"
+              className="container carousel slide"
               data-bs-touch="false"
               data-bs-interval="false"
               id="clientsManagementSection"
@@ -289,8 +283,7 @@ export default function clientsManagement() {
                 setSection={(value) => setSection(value)}
                 sections={["Meus Clientes", "Todos Clientes"]}
               />
-
-              <div className="carousel-inner ">
+              <div className="carousel-inner">
                 <div className="carousel-item active">
                   <div className="row d-flex justify-content-center">
                     <div className="col-12">
@@ -317,13 +310,13 @@ export default function clientsManagement() {
                 </div>
               </div>
             </div>
+          )}
+        </div>
 
-            {clientSelected && (
-              <div style={{ position: "absolute", left: "-9999px", top: 0 }}>
-                <ValuationPdf userData={userData} clientData={clientSelected} />
-              </div>
-            )}
-          </>
+        {clientSelected && (
+          <div style={{ position: "absolute", left: "-9999px", top: 0 }}>
+            <ValuationPdf userData={userData} clientData={clientSelected} />
+          </div>
         )}
       </div>
     </div>

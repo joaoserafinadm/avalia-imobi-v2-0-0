@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import { connect } from '../../../utils/db'
 import { Code } from 'bson'
-import randomPassword from '../../../utils/randomPassword'
+import randomPassword, { randomNumberPassword } from '../../../utils/randomPassword'
 import { Resend } from 'resend';
 import { AuthEmail } from '../../../src/emails/AuthEmail';
 
@@ -31,7 +31,7 @@ export default async (req, res) => {
                 res.status(400).json({ error: "User already exists" })
             } else {
 
-                const code = randomPassword(5)
+                const code = randomNumberPassword(6)
 
                 const saltCode = await bcrypt.genSalt(10)
                 const secureCode = await bcrypt.hash(code, saltCode)

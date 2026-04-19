@@ -1,0 +1,98 @@
+.headerBox {
+    position: relative;
+    background-color: var(--ai-bg-primary);
+    border-bottom: 3px solid #f5874f;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+}
+
+.headerContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.25rem 2rem 1.1rem 2rem;
+    min-height: 100px;
+    gap: 0.2rem;
+}
+
+.topRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.titleGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.accentBar {
+    width: 4px;
+    height: 2rem;
+    border-radius: 4px;
+    background: #f5874f;
+    flex-shrink: 0;
+}
+
+.headerTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+.headerSubtitle {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.6);
+    padding-left: calc(4px + 0.75rem);
+    margin-top: 0.1rem;
+}
+
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 100px;
+    padding: 0.3rem 0.85rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    &:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.13);
+        border-color: rgba(255, 255, 255, 0.25);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .headerContent {
+        padding: 1rem 1.25rem 0.9rem;
+        min-height: 85px;
+    }
+
+    .headerTitle {
+        font-size: 1.1rem;
+    }
+
+    .headerSubtitle {
+        font-size: 0.78rem;
+    }
+
+    .backButton {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.65rem;
+    }
+
+    .accentBar {
+        height: 1.5rem;
+    }
+}

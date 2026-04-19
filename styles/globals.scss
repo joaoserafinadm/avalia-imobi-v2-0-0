@@ -58,7 +58,9 @@
   --ai-dark: #5a5a5a;
   --ai-light: #cacaca;
 
-  --ai-bg-primary: #5a5a5a;
+  // --ai-bg-primary: #5a5a5a;
+  --ai-bg-primary: #242424;
+
 
 
   --apartamento-color: #ff5154;
@@ -3107,7 +3109,7 @@ h1 {
 .span {
   // display: flex;
   // align-items: center;
-  color: #999999;
+  color: #dcdcdc;
   transition: .3s ease;
   border-bottom: 1px solid #fff9;
 }

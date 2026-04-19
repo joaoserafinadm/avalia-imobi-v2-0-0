@@ -22,10 +22,10 @@ export default function ClientFeatures(props) {
 
                         <div className="row">
                             <div className="col-12 mt-2">
-                                <div className="card">
+                                <div className="card bg-dark">
                                     <div className="card-body px-0 text-center py-2">
                                         <span className="text-orange me-1 fs-5 ">R$</span>
-                                        <span className="text-secondary fs-5 bold">{valueShow(client?.valuation?.valueSelected, client?.valuation?.valuationCalc)},00</span>
+                                        <span className="fs-5 bold">{valueShow(client?.valuation?.valueSelected, client?.valuation?.valuationCalc)},00</span>
                                     </div>
                                 </div>
 

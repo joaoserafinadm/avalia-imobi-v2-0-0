@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+/* ── Page wrapper ── */
+.pageWrapper {
+  background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
+  border: 1px solid rgba(245, 135, 79, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 1rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* ── Top bar ── */
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.topBarLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.resultCount {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.topBarRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Filter toggle button ── */
+.filterBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.55);
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.filterBtnActive {
+  border-color: rgba(245, 135, 79, 0.35) !important;
+  color: #f5874f !important;
+  background: rgba(245, 135, 79, 0.06) !important;
+}
+
+.filterActiveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f5874f;
+  flex-shrink: 0;
+}
+
+/* ── Add button ── */
+.addBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #f5874f;
+  color: #0d1420;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.22s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.22s ease;
+  text-decoration: none !important;
+
+  &:hover {
+    background: #ff9f6b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(245, 135, 79, 0.3);
+    color: #0d1420;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* ── Collapsible filter panel ── */
+.filterPanel {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.22s ease,
+    margin-top 0.22s ease;
+  margin-top: 0;
+}
+
+.filterPanelOpen {
+  max-height: 360px;
+  opacity: 1;
+  margin-top: 10px;
+  animation: filterSlideDown 0.22s ease;
+}
+
+@keyframes filterSlideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.filterPanelInner {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 1rem 1.25rem 0.9rem;
+}
+
+/* ── Filter grid ── */
+.filterGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filterLabel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+/* ── Search input wrapper ── */
+.searchWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filterInput {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 8px 36px 8px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  &:focus {
+    border-color: rgba(245, 135, 79, 0.4);
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  right: 11px;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.78rem;
+  pointer-events: none;
+}
+
+/* ── Select wrapper ── */
+.filterSelectWrap {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid rgba(245, 135, 79, 0.55);
+    pointer-events: none;
+  }
+}
+
+.filterSelect {
+  width: 100%;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 8px 32px 8px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  option {
+    background: #111827;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  &:focus {
+    border-color: rgba(245, 135, 79, 0.4);
+  }
+}
+
+/* ── Filter footer ── */
+.filterFooter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.clearFiltersBtn {
+  background: none;
+  border: none;
+  color: rgba(245, 135, 79, 0.65);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.18s ease;
+
+  &:hover {
+    color: #f5874f;
+  }
+}
+
+/* ── Divider ── */
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin: 1rem 0 0.5rem;
+}
+
+/* ── Content area ── */
+.contentArea {
+  padding-top: 0.5rem;
+}
+
+/* ── Loading ── */
+.loadingWrap {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 0;
+}

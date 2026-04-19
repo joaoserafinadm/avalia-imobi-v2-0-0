@@ -1,38 +1,50 @@
 import styles from "./Login.module.scss";
-
 import { useState } from "react";
-import Head from "next/head";
-
 import SignIn from "./SignIn";
 import RescuePassword from "./RescuePassword";
 import SignUp from "./SignUp";
 import AuthModal from "./AuthModal";
-import { useSession } from "next-auth/react";
-import { SpinnerLG } from "../../components/loading/Spinners";
 
 export default function Login() {
   const [section, setSection] = useState("signIn");
 
-  
   return (
-    <>
-      <div className={`${styles.container} container-fluid`}>
+    <div className={styles.page}>
 
+      {/* Painel de marca — oculto no mobile via CSS */}
+      {section === "signUp" ?
+
+        <div className={`fadeItem ${styles.brandPanel}`}>
+          <img src="/LOGO_05.png" alt="Avalia Imobi" className={styles.brandLogo} />
+          <p className={styles.brandTagline}>
+            Avalie imóveis com{" "}
+            <span className={styles.brandHighlight}>inteligência</span> e
+            gere laudos profissionais em minutos.
+          </p>
+          <span className={styles.trialBadge}>7 dias grátis</span>
+        </div>
+        :
+        <div className={`fadeItem ${styles.brandPanel}`}>
+
+          <img src="/LOGO_07.png" alt="Avalia Imobi" className={styles.brandLogo} />
+
+        </div>
+
+      }
+
+      {/* Painel de formulário */}
+      <div className={styles.formPanel}>
         {section === "signIn" && (
-          <SignIn section={section} setSection={(value) => setSection(value)} />
+          <SignIn setSection={setSection} />
         )}
-
         {section === "rescuePassword" && (
-          <RescuePassword
-            section={section}
-            setSection={(value) => setSection(value)}
-          />
+          <RescuePassword setSection={setSection} />
         )}
-
         {section === "signUp" && (
-          <SignUp section={section} setSection={(value) => setSection(value)} />
+          <SignUp setSection={setSection} />
         )}
       </div>
-    </>
+
+    </div>
   );
 }

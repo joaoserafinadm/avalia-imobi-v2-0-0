@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap');
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  padding: 0 0 2rem 0;
+}
+
+/* ── Nav card ── */
+.navCard {
+  background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
+  border: 1px solid rgba(245, 135, 79, 0.1);
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem 1rem;
+  gap: 12px;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  /* animated top accent */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #f5874f 40%,
+      #ff9f6b 60%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: accentSlide 4s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  /* radial glow at bottom — appears on hover */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 80px;
+    background: radial-gradient(
+      ellipse,
+      rgba(245, 135, 79, 0.12) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &:hover {
+    border-color: rgba(245, 135, 79, 0.28);
+    box-shadow:
+      0 8px 32px rgba(245, 135, 79, 0.1),
+      0 20px 48px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transform: translateY(-3px);
+
+    &::after {
+      opacity: 1;
+    }
+
+    .iconWrap {
+      background: rgba(245, 135, 79, 0.15);
+      box-shadow: 0 0 0 1px rgba(245, 135, 79, 0.2);
+    }
+  }
+}
+
+@keyframes accentSlide {
+  0%, 100% { background-position: 0% 0%; opacity: 0.7; }
+  50%       { background-position: 100% 0%; opacity: 1; }
+}
+
+/* ── Icon circle ── */
+.iconWrap {
+  position: relative;
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(245, 135, 79, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.28s ease, box-shadow 0.28s ease;
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: #f5874f;
+}
+
+/* ── Label ── */
+.label {
+  position: relative;
+  z-index: 1;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.82);
+  letter-spacing: 0.01em;
+  text-align: center;
+  line-height: 1.2;
+}

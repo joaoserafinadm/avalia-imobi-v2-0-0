@@ -1,5 +1,6 @@
 .headerPosition {
-    background-color: var(--ai-bg-primary);
+    background-color: #0d1420;
+    border-bottom: 1px solid rgba(245, 135, 79, 0.08);
     position: fixed !important;
     top: 0;
     left: 0;
@@ -26,7 +27,8 @@
 
 
 .header {
-    background-color: var(--ai-bg-primary);
+    background-color: #0d1420;
+    border-bottom: 1px solid rgba(245, 135, 79, 0.08);
     position: fixed !important;
     top: 0;
     right: 0;

@@ -1,55 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+/* ── Shared keyframes ── */
+@keyframes accentSlide {
+  0%, 100% { background-position: 0% 0%; opacity: 0.7; }
+  50%       { background-position: 100% 0%; opacity: 1; }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Shared panel base ── */
+%panelBase {
+  background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
+  border: 1px solid rgba(245, 135, 79, 0.12);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #f5874f 40%,
+      #ff9f6b 60%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: accentSlide 4s ease-in-out infinite;
+    z-index: 2;
+  }
+}
+
+/* ── Mobile dropdown panel ── */
 .cardSize {
-    width: 350px;
+  @extend %panelBase;
+  width: 340px;
 }
 
+/* ── Desktop fixed panel ── */
 .cardSizeSM {
-    position: fixed;
-    background-color: #fff;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    padding: 15px;
-    z-index: 3 !important;
+  @extend %panelBase;
+  position: fixed;
+  top: calc(var(--header-height) + 8px);
+  right: 12px;
+  width: 380px;
+  max-height: calc(100vh - var(--header-height) - 32px);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(245, 135, 79, 0.05);
+  z-index: 1050;
+  animation: fadeDown 0.18s ease;
 }
 
-.cardOuter { 
-    // background-color: red;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100VW;
-    height: 100vh;
-    z-index: 10000001;
+/* ── Panel header ── */
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
 }
 
+.panelTitle {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Unread badge ── */
+.unreadBadge {
+  background: #f5874f;
+  color: #fff;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  border-radius: 100px;
+  padding: 0.15rem 0.55rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+/* ── Close button ── */
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  padding: 0;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba(245, 135, 79, 0.1);
+    color: #f5874f;
+  }
+}
+
+/* ── Scrollable list ── */
 .cardInner {
-    overflow-y: scroll;
-    height: calc(100vh - var(--header-height) - 60px - 90px);
+  overflow-y: auto;
+  flex: 1;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(245, 135, 79, 0.2);
+    border-radius: 2px;
+  }
 }
 
-.notificationsFooter {
-    background-color: #fff;
-    align-items: center;
-    width: 100vw;
-    height: 60px;
-    position: fixed;
-    bottom: 0;
+/* ── Notification item ── */
+.notifItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  border-left: 3px solid transparent;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgba(245, 135, 79, 0.06);
+    text-decoration: none;
+    color: inherit;
+  }
 }
 
+.notifItemUnread {
+  border-left-color: #f5874f;
+  background: rgba(245, 135, 79, 0.04);
+}
+
+.notifAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.notifText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.855rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.45;
+  flex: 1;
+}
+
+.notifTextUnread {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.unreadDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f5874f;
+  flex-shrink: 0;
+}
+
+/* ── Empty state ── */
+.emptyState {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.15);
+
+  p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.2);
+    margin: 0.5rem 0 0;
+  }
+}
+
+/* ── Legacy / kept for compatibility ── */
 .p {
-    font-size: 14px !important;
-}
-
-.hover {
-    transition: .3s ease;
-}
-
-.hover:hover {
-    background-color: #dedede !important;
+  font-size: 14px !important;
 }
 
 .backButtom {
-    position: absolute;
-    right: 0;
+  position: absolute;
+  right: 0;
+}
+
+.notificationsFooter {
+  background-color: #0d1420;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  align-items: center;
+  width: 100vw;
+  height: 60px;
+  position: fixed;
+  bottom: 0;
+}
+
+.cardOuter {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000001;
 }
