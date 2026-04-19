@@ -55,7 +55,6 @@ export default function ValuationPropertyCalc(props) {
                 }
 
                 .calc-card {
-                    background: rgba(255, 255, 255, 0.9);
                     backdrop-filter: blur(10px);
                     border: 1px solid rgba(245, 135, 79, 0.1);
                     border-radius: 16px;
@@ -148,7 +147,6 @@ export default function ValuationPropertyCalc(props) {
                 }
 
                 .pricing-card {
-                    background: rgba(255, 255, 255, 0.9);
                     backdrop-filter: blur(10px);
                     border: 2px solid rgba(245, 135, 79, 0.1);
                     border-radius: 20px;

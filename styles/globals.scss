@@ -112,7 +112,7 @@
   list-style: none;
   text-decoration: none;
   // scroll-behavior: smooth;
-	scroll-behavior: auto !important;
+  scroll-behavior: auto !important;
 
 }
 
@@ -120,7 +120,7 @@
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(245,135,79,0.3) rgba(255,255,255,0.04);
+  scrollbar-color: rgba(245, 135, 79, 0.3) rgba(255, 255, 255, 0.04);
 }
 
 /* Chrome, Edge and Safari */
@@ -131,28 +131,28 @@
 
 *::-webkit-scrollbar-track {
   border-radius: 5px;
-  background-color: rgba(255,255,255,0.04);
+  background-color: rgba(255, 255, 255, 0.04);
 }
 
 *::-webkit-scrollbar-track:hover {
-  background-color: rgba(255,255,255,0.06);
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
 *::-webkit-scrollbar-track:active {
-  background-color: rgba(255,255,255,0.08);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 *::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  background-color: rgba(245,135,79,0.3);
+  background-color: rgba(245, 135, 79, 0.3);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(245,135,79,0.5);
+  background-color: rgba(245, 135, 79, 0.5);
 }
 
 *::-webkit-scrollbar-thumb:active {
-  background-color: rgba(245,135,79,0.7);
+  background-color: rgba(245, 135, 79, 0.7);
 }
 
 // -----------------------------------
@@ -282,7 +282,7 @@ a {
   margin-right: 75px;
   margin-left: 75px;
   margin-bottom: 60px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .pages .pagesContent-sm {
@@ -296,7 +296,7 @@ a {
   margin-right: 400px;
   margin-left: 50px;
   margin-bottom: 60px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .pages .pagesContent-lg {
@@ -310,7 +310,7 @@ a {
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 60px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 @media screen and (max-width: 991px) {
@@ -2222,7 +2222,7 @@ td {
   position: fixed;
   width: 60px;
   height: 60px;
-  bottom:80px;
+  bottom: 80px;
   right: 40px;
   background-color: #25d366;
   color: #fff;
@@ -3239,7 +3239,7 @@ h1 {
 .border-selected {
   border-width: 2px !important;
   border-color: var(--ai-primary) !important;
-  
+
 }
 
 
@@ -3372,6 +3372,7 @@ h1 {
 .zIndexMax {
   z-index: 1000000000001;
 }
+
 .zIndexMin {
   z-index: -1000001;
 }
@@ -3383,9 +3384,9 @@ h1 {
 
 
 .disabled {
-	opacity: 0.5;
-	pointer-events: none;
-	cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 
@@ -3452,7 +3453,7 @@ label {
   color: #cacaca !important;
   border-color: rgba(255, 255, 255, 0.07) !important;
 
-  > :not(caption) > * > * {
+  > :not(caption)>*>* {
     background-color: transparent !important;
     color: #cacaca !important;
     border-color: rgba(255, 255, 255, 0.07) !important;
@@ -3466,7 +3467,7 @@ label {
     }
   }
 
-  tbody tr:hover > * {
+  tbody tr:hover>* {
     background-color: rgba(245, 135, 79, 0.04) !important;
   }
 }
@@ -3655,4 +3656,50 @@ hr {
 
 .border {
   border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.action-button-modern {
+  border: 2px solid rgba(245, 135, 79, 0.2);
+  background: none;
+  color: #f5874f;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-button-modern:hover {
+  background: #f5874f;
+  color: white;
+  border-color: #f5874f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 135, 79, 0.3);
+}
+
+.action-button-modern-fill {
+  border: 2px solid rgba(242, 230, 224, 0.2);
+  background: #f5874f;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-button-modern-fill:hover {
+  background: #f5874f;
+  color: white;
+  border-color: #f5874f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 135, 79, 0.3);
 }

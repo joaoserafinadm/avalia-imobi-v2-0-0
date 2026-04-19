@@ -354,7 +354,7 @@ export default function ClientInfo(props) {
           href={`/clientEdit/${client?._id}`}
           className="edit-button-modern"
         >
-          <button className="btn btn-outline-orange">Editar informações</button>
+          <button className="action-button-modern">Editar informações</button>
         </Link>
       </div>
 

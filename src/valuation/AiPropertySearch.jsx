@@ -143,7 +143,7 @@ export default function AiPropertySearch(props) {
     <>
       <button
         type="button"
-        className="btn btn-sm btn-outline-secondary"
+        className="action-button-modern-fill"
         data-bs-toggle="modal"
         data-bs-target="#aiPropertySearchModal"
         onClick={handleOpenModal}

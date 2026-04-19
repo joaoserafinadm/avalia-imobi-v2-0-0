@@ -82,8 +82,7 @@ export default function PropertyCalc(props) {
           display: flex;
           align-items: center;
           padding: 16px 20px;
-          background: #f8f9fa;
-          border: 2px solid #e9ecef;
+          border: 2px solid rgba(245, 135, 79, 0.08);
           border-radius: 12px;
           transition: all 0.3s ease;
           position: relative;
@@ -172,7 +171,6 @@ export default function PropertyCalc(props) {
         }
 
         .value-card-enhanced {
-          background: rgba(255, 255, 255, 0.95);
           backdrop-filter: blur(10px);
           border-radius: 16px;
           border: 1px solid rgba(245, 135, 79, 0.1);
@@ -322,7 +320,7 @@ export default function PropertyCalc(props) {
         <label htmlFor="" className="fw-bold mb-2">
           Cálculo
         </label>
-        <div className="alert bg-orange">
+        <div className="alert bg-orange text-dark">
           <div className="col-12 my-1">
             <span>
               &#x25CF; A avaliação irá gerar três valores de referência para o
@@ -406,7 +404,7 @@ export default function PropertyCalc(props) {
             Ajustar valores
           </label>
           <div className="col-12 col-lg-4 px-1 my-1">
-            <div className="value-card-enhanced border shadow">
+            <div className="value-card-enhanced  shadow">
               <div className="card-body-enhanced text-center">
                 <div className="value-title">Venda curto prazo</div>
                 <div className="value-amount">
@@ -442,7 +440,7 @@ export default function PropertyCalc(props) {
           </div>
 
           <div className="col-12 col-lg-4 px-1 my-1">
-            <div className="value-card-enhanced border shadow">
+            <div className="value-card-enhanced  shadow">
               <div className="card-body-enhanced text-center">
                 <div className="value-title">Valor ideal</div>
                 <div className="value-amount">
@@ -477,7 +475,7 @@ export default function PropertyCalc(props) {
           </div>
 
           <div className="col-12 col-lg-4 px-1 my-1">
-            <div className="value-card-enhanced border shadow">
+            <div className="value-card-enhanced  shadow">
               <div className="card-body-enhanced text-center">
                 <div className="value-title">Venda longo prazo</div>
                 <div className="value-amount">

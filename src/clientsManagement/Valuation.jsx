@@ -25,8 +25,8 @@ export default function Valuation(props) {
     const [shareButton, setShareButton] = useState(false);
     const [copied, setCopied] = useState(false);
 
-     const shareUrl = `${client?.valuation?.urlToken}?userId=${token.sub}`;
-    
+    const shareUrl = `${client?.valuation?.urlToken}?userId=${token.sub}`;
+
     const handleCopyLink = async (url) => {
         try {
             await navigator.clipboard.writeText(url);
@@ -67,7 +67,6 @@ export default function Valuation(props) {
         <>
             <style jsx>{`
                 .valuation-container {
-                    background: rgba(255, 255, 255, 0.95);
                     backdrop-filter: blur(15px);
                     border-radius: 20px;
                     border: 1px solid rgba(245, 135, 79, 0.1);
@@ -143,7 +142,6 @@ export default function Valuation(props) {
                 }
 
                 .edit-link-modern {
-                    background: rgba(255, 255, 255, 0.9);
                     border: 1px solid rgba(245, 135, 79, 0.2);
                     color: #f5874f;
                     padding: 10px 20px;
@@ -167,8 +165,8 @@ export default function Valuation(props) {
                 }
 
                 .action-button-modern {
-                    background: rgba(255, 255, 255, 0.9);
                     border: 2px solid rgba(245, 135, 79, 0.2);
+                    background: none;
                     color: #f5874f;
                     padding: 10px 18px;
                     border-radius: 20px;
@@ -190,7 +188,6 @@ export default function Valuation(props) {
                 }
 
                 .status-section {
-                    background: rgba(248, 249, 250, 0.8);
                     border-radius: 16px;
                     padding: 20px;
                     margin-bottom: 25px;
@@ -216,7 +213,6 @@ export default function Valuation(props) {
                 }
 
                 .evaluator-card {
-                    background: rgba(255, 255, 255, 0.9);
                     backdrop-filter: blur(10px);
                     border: 1px solid rgba(245, 135, 79, 0.1);
                     border-radius: 20px;
@@ -272,7 +268,6 @@ export default function Valuation(props) {
                 }
 
                 .comparison-section {
-                    background: rgba(248, 249, 250, 0.8);
                     border-radius: 20px;
                     padding: 30px;
                     margin-top: 30px;
@@ -369,7 +364,7 @@ export default function Valuation(props) {
 
                         <div>
                             <Link href={"/valuationEdit/" + client?._id}>
-                                <button className="btn btn-outline-orange" data-bs-dismiss="modal">
+                                <button className="action-button-modern" data-bs-dismiss="modal">
                                     Editar Avaliação
                                 </button>
                             </Link>
@@ -379,7 +374,7 @@ export default function Valuation(props) {
                     {shareButton && (
                         <div className="row fadeItem mt-3">
                             <div className="col-12">
-                                <div className="alert alert-secondary">
+                                <div className="alert bg-orange text-dark">
                                     <div className="d-flex justify-content-between align-items-center mb-2">
                                         <h6 className="mb-0">Compartilhar Avaliação</h6>
                                         <button
@@ -394,7 +389,7 @@ export default function Valuation(props) {
                                     <div className="input-group mb-3">
                                         <input
                                             type="text"
-                                            className="form-control"
+                                            className="form-control "
                                             value={client?.valuation?.urlToken + '&userId=' + token.sub}
                                             readOnly
                                             placeholder="Link para compartilhamento"
@@ -402,7 +397,7 @@ export default function Valuation(props) {
                                         <button
                                             className="btn btn-outline-secondary"
                                             type="button"
-                                            onClick={() =>handleCopyLink(client?.valuation?.urlToken + '&userId=' + token.sub)}
+                                            onClick={() => handleCopyLink(client?.valuation?.urlToken + '&userId=' + token.sub)}
                                         >
                                             <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
                                             {copied ? 'Copiado!' : 'Copiar'}
@@ -412,16 +407,16 @@ export default function Valuation(props) {
                                     {/* Botões de ação */}
                                     <div className="d-flex gap-2">
                                         <button
-                                            className="action-button-modern flex-fill"
-                                            onClick={() =>handleCopyLink(client?.valuation?.urlToken + '&userId=' + token.sub)}
+                                            className="action-button-modern-fill flex-fill"
+                                            onClick={() => handleCopyLink(client?.valuation?.urlToken + '&userId=' + token.sub)}
                                         >
                                             <FontAwesomeIcon icon={faCopy} />
                                             Copiar Link
                                         </button>
 
                                         <button
-                                            className="action-button-modern flex-fill"
-                                            onClick={() =>handleShareNative(client?.valuation?.urlToken + '&userId=' + token.sub)}
+                                            className="action-button-modern-fill flex-fill"
+                                            onClick={() => handleShareNative(client?.valuation?.urlToken + '&userId=' + token.sub)}
                                         >
                                             <FontAwesomeIcon icon={faShare} />
                                             Compartilhar
