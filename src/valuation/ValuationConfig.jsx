@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faHouseMedical } from "@fortawesome/free-solid-svg-icons"
 import PropertyCollection from "./PropertyCollection"
 import PropertyAddModal from "./PropertyAdd"
+import AiPropertySearch from "./AiPropertySearch"
 import { useState } from "react"
 import { maskMoney } from "../../utils/mask"
 import PropertyCalc from "./PropertyCalc"
@@ -33,7 +34,14 @@ export default function ValuationConfig(props) {
                 setLoadingAdd={value => setLoadingAdd(value)} />
 
             <div className="col-12">
-                <label htmlFor="" className="fw-bold mb-2">Imóveis para comparação</label>
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                    <label htmlFor="" className="fw-bold">Imóveis para comparação</label>
+                    <AiPropertySearch
+                        client={client}
+                        propertyArray={props.propertyArray}
+                        setPropertyArray={value => props.setPropertyArray(value)}
+                        setForceUpdate={() => setForceUpdate(forceUpdate + 1)} />
+                </div>
                 <div className="alert bg-orange">
 
                     <div className="col-12 my-1">

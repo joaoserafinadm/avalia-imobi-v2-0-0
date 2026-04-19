@@ -1,9 +1,11 @@
+import { useState } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import isMobile from "../../utils/isMobile"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faHouseMedical } from "@fortawesome/free-solid-svg-icons"
 import ClientCard_02 from "../clientsManagement/ClientCard_02"
 import PropertyCard from "./PropertyCard"
+import PropertyEditModal from "./PropertyEditModal"
 import { SpinnerSM } from "../components/loading/Spinners"
 
 
@@ -12,13 +14,19 @@ export default function PropertyCollection(props) {
 
     const { loadingAdd } = props
 
-    console.log("loadingAdd", loadingAdd)
-
     const propertyArray = props.propertyArray
+
+    const [editingIndex, setEditingIndex] = useState(null)
+    const editingProperty = editingIndex !== null ? propertyArray[editingIndex] : null
 
 
     return (
         <div className="col-12">
+            <PropertyEditModal
+                property={editingProperty}
+                index={editingIndex}
+                propertyArray={propertyArray}
+                setPropertyArray={value => props.setPropertyArray(value)} />
             {isMobile() ?
 
                 <Swiper
@@ -43,7 +51,8 @@ export default function PropertyCollection(props) {
 
                                         <PropertyCard section={'Todos Clientes'}
                                             elem={elem} index={index} propertyArray={propertyArray}
-                                            setPropertyArray={value => props.setPropertyArray(value)} />
+                                            setPropertyArray={value => props.setPropertyArray(value)}
+                                            onEdit={i => setEditingIndex(i)} />
 
                                     </SwiperSlide>
                                 </div>
@@ -117,7 +126,8 @@ export default function PropertyCollection(props) {
 
                                 <PropertyCard section={'Todos Clientes'}
                                     elem={elem} index={index} propertyArray={propertyArray}
-                                    setPropertyArray={value => props.setPropertyArray(value)} />
+                                    setPropertyArray={value => props.setPropertyArray(value)}
+                                            onEdit={i => setEditingIndex(i)} />
                             </div>
 
                         )

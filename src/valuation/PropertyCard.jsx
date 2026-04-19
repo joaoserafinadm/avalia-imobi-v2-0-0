@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import isMobile from "../../utils/isMobile"
 import { handleIcon, handleIconColor } from "../components/icons/propertyTypeIcons"
 import styles from './ClientCard.module.scss'
-import { faEdit, faEye, faMoneyCheckDollar, faShare, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faEye, faMoneyCheckDollar, faPencil, faShare, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import { useEffect, useState } from "react"
 import tippy from "tippy.js";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -167,14 +167,24 @@ export default function PropertyCard(props) {
                                         <FontAwesomeIcon icon={faEye} className="icon text-secondary" />
                                     </a>
                                 {!props.valuationView && (
-                                    <button
-                                        type="button"
-                                        class="btn btn-light border"
-                                        id={"deleteClientButton" + props.elem._id + props.section}
-                                        onClick={() => handleDeleteProperty(props.index)}>
-                                        <FontAwesomeIcon icon={faTrashAlt} className="icon text-secondary" />
-                                    </button>
-
+                                    <>
+                                        <button
+                                            type="button"
+                                            class="btn btn-light border"
+                                            id={"editPropertyButton" + props.index + props.section}
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#propertyEditModal"
+                                            onClick={() => props.onEdit && props.onEdit(props.index)}>
+                                            <FontAwesomeIcon icon={faPencil} className="icon text-secondary" />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-light border"
+                                            id={"deleteClientButton" + props.elem._id + props.section}
+                                            onClick={() => handleDeleteProperty(props.index)}>
+                                            <FontAwesomeIcon icon={faTrashAlt} className="icon text-secondary" />
+                                        </button>
+                                    </>
                                 )}
 
 

@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
 import Title from "../components/title/Title2"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { FixedTopicsBottom } from "../components/fixedTopics"
 import Link from "next/link"
 import { SpinnerSM } from "../components/loading/Spinners"
-import { initialValues, setCelular, setClientLastName, setClientName, setEmail, setPropertyLink, setPropertyName, setPropertyPrice, setPropertyType } from "../../store/NewClientForm/NewClientForm.actions"
+import { initialValues, setCelular, setClientLastName, setClientName, setEmail, setPropertyLink, setPropertyName, setPropertyPrice, setPropertyType, setAreaTotal, setAreaTotalPrivativa, setQuartos, setSuites, setBanheiros, setSacadas, setAndar, setVagasGaragem, setPavimentos, setSalas, setBairro, setCidade, setUf, setLogradouro } from "../../store/NewClientForm/NewClientForm.actions"
 import TypeApartamento from "../pages/newClient/TypeApartamento"
 import GeralFeatures from "../pages/newClient/GeralFeatures"
 import UploadFiles from "../pages/newClient/UploadFiles"
@@ -33,6 +33,7 @@ import { faTrashAlt, faUpload } from "@fortawesome/free-solid-svg-icons"
 export default function PropertyAddModal(props) {
 
     const { loadingAdd, setLoadingAdd } = props
+    const closeRef = useRef(null)
 
 
     const newClientForm = useSelector(state => state.newClientForm)
@@ -45,6 +46,7 @@ export default function PropertyAddModal(props) {
     const [loadingImage, setLoadingImage] = useState(false)
     const [manualImageFile, setManualImageFile] = useState(null)
     const [previewUrl, setPreviewUrl] = useState('')
+    const [formErrors, setFormErrors] = useState({})
 
 
 
@@ -68,6 +70,7 @@ export default function PropertyAddModal(props) {
         setLoadingImage(false)
         setManualImageFile(null)
         setPreviewUrl('')
+        setFormErrors({})
     }
 
 
@@ -111,6 +114,12 @@ export default function PropertyAddModal(props) {
 
 
     const handlePropertyAdd = async (property) => {
+
+        const next = {}
+        if (!property.propertyPrice) next.propertyPrice = "O valor do imóvel é obrigatório."
+        if (!property.areaTotal) next.areaTotal = "A área total é obrigatória."
+        if (Object.keys(next).length > 0) { setFormErrors(next); return; }
+        setFormErrors({})
 
         setLoadingAdd(true)
         const newPropertyArray = props.propertyArray
@@ -171,6 +180,8 @@ export default function PropertyAddModal(props) {
 
         setLoadingAdd(false)
 
+        closeRef.current?.click()
+
     }
 
 
@@ -183,41 +194,38 @@ export default function PropertyAddModal(props) {
 
         e.preventDefault();
 
-        const res = await axios.get(`${baseUrl()}/api/valuation/htmlInfo`, {
-            params: {
-                url: newClientForm.propertyLink,
-            },
-        }).then(res => {
-            console.log('res', res)
-            if (!res?.data?.image && !res?.data?.title) {
-                setLinkError('Não foi possivel obter o nome e a imagem do imóvel. Por favor, adicione manualmente.');
-                setLoadingImage(false);
+        try {
+            const res = await axios.get(`${baseUrl()}/api/valuation/extractPropertyInfo`, {
+                params: { url: newClientForm.propertyLink },
+            });
+
+            const data = res.data;
+
+            if (data.propertyName) dispatch(setPropertyName(data.propertyName));
+            if (data.propertyPrice) dispatch(setPropertyPrice(maskMoney(data.propertyPrice)));
+            if (data.areaTotal) dispatch(setAreaTotal(data.areaTotal));
+            if (data.areaTotalPrivativa) dispatch(setAreaTotalPrivativa(data.areaTotalPrivativa));
+            if (data.quartos) dispatch(setQuartos(data.quartos));
+            if (data.suites) dispatch(setSuites(data.suites));
+            if (data.banheiros) dispatch(setBanheiros(data.banheiros));
+            if (data.sacadas) dispatch(setSacadas(data.sacadas));
+            if (data.andar) dispatch(setAndar(data.andar));
+            if (data.vagasGaragem) dispatch(setVagasGaragem(data.vagasGaragem));
+            if (data.pavimentos) dispatch(setPavimentos(data.pavimentos));
+            if (data.salas) dispatch(setSalas(data.salas));
+            if (data.bairro) dispatch(setBairro(data.bairro));
+            if (data.cidade) dispatch(setCidade(data.cidade));
+            if (data.uf) dispatch(setUf(data.uf));
+            if (data.logradouro) dispatch(setLogradouro(data.logradouro));
+
+            if (data.imageUrl) {
+                setImageUrl(data.imageUrl);
+            } else if (!data.propertyName) {
+                setLinkError('Não foi possível obter as informações do imóvel. Por favor, preencha manualmente.');
             }
-            dispatch(setPropertyName(res.data.title));
-
-            // Verificar se o URL da imagem termina com uma extensão válida
-            const validImageExtensions = ['.jpeg', '.jpg', '.png', '.gif', '.bmp', '.webp'];
-            const imageUrl = res.data.image.toLowerCase();
-            const isValidImage = validImageExtensions.some(extension => imageUrl.endsWith(extension));
-
-            if (!isValidImage) {
-                setImageUrl('');
-
-            } else {
-                setImageUrl(res.data.image);
-
-            }
-
-            dispatch(setPropertyName(res.data.title));
-
-            setLoadingImage(false)
-        }).catch(e => {
-            setLinkError('Não foi possivel obter o nome e a imagem do imóvel. Por favor, adicione manualmente.');
-            setLoadingImage(false)
-        });
-
-
-
+        } catch {
+            setLinkError('Não foi possível obter as informações do imóvel. Por favor, preencha manualmente.');
+        }
 
         setLoadingImage(false);
     };
@@ -232,6 +240,7 @@ export default function PropertyAddModal(props) {
                     <div class="modal-header">
                         <h5 class="modal-title title-dark bold">Adicionar imóvel</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button ref={closeRef} type="button" data-bs-dismiss="modal" style={{ display: 'none' }}></button>
                     </div>
                     <div className="modal-body">
                         <div className="row mt-3">
@@ -289,19 +298,18 @@ export default function PropertyAddModal(props) {
                                         <div className="col-12 my-2  pe-1">
 
                                             <label for="propertyPriceItem" className="form-label">Valor do Imóvel<b>*</b></label>
-                                            <div class="input-group mb-3">
+                                            <div class="input-group">
                                                 <span className="input-group-text">R$</span>
                                                 <input
                                                     type="text"
-                                                    className="form-control text-end"
+                                                    className={`form-control text-end ${formErrors.propertyPrice ? "border-danger" : ""}`}
                                                     name="propertyPriceItem"
                                                     id="propertyPriceItem" placeholder="0"
                                                     value={newClientForm.propertyPrice}
-                                                    onChange={e => dispatch(setPropertyPrice(maskMoney(e.target.value)))} />
+                                                    onChange={e => { dispatch(setPropertyPrice(maskMoney(e.target.value))); setFormErrors(p => ({ ...p, propertyPrice: undefined })) }} />
                                                 <span className="input-group-text">,00</span>
-
-
                                             </div>
+                                            {formErrors.propertyPrice && <small className="text-danger">{formErrors.propertyPrice}</small>}
                                         </div>
 
 
@@ -358,6 +366,9 @@ export default function PropertyAddModal(props) {
 
                             <div className="col-12 fadeItem mt-3 pb-5">
 
+                                {formErrors.areaTotal && (
+                                    <div className="alert alert-danger py-2 small">{formErrors.areaTotal}</div>
+                                )}
 
                                 {newClientForm.propertyType === "Apartamento" && (
                                     <>
@@ -401,7 +412,7 @@ export default function PropertyAddModal(props) {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn  btn-secondary" data-bs-dismiss="modal" onClick={() => clearValues()}>Cancelar</button>
-                        <button type="button" className="btn  btn-orange" data-bs-dismiss="modal" onClick={() => handlePropertyAdd(newClientForm)}>Salvar</button>
+                        <button type="button" className="btn  btn-orange" onClick={() => handlePropertyAdd(newClientForm)}>Salvar</button>
                     </div>
                 </div>
             </div>
