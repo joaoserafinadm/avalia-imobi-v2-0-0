@@ -33,10 +33,10 @@ export default function ViewValuationModal(props) {
     return (
         <div class="modal fade" id="viewValuationModal" tabindex="-1" aria-labelledby="Modal" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title title-dark bold">Avaliação - Apresentação</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-content" style={{ background: 'linear-gradient(145deg,#0d1420 0%,#111827 60%,#0f1b2d 100%)', border: '1px solid rgba(245,135,79,0.15)', color: '#cacaca' }}>
+                    <div class="modal-header" style={{ background: '#0d1420', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                        <h5 class="modal-title bold" style={{ color: 'rgba(255,255,255,0.9)' }}>Avaliação - Apresentação</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body-lg" style={{ height: "100vh" }}>
 
@@ -66,8 +66,8 @@ export default function ViewValuationModal(props) {
                             </div>
                         </div>
                     </div>
-                    <div className="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" onClick={() => props.setClientSelected('')}>Fechar</button>
+                    <div className="modal-footer" style={{ background: '#0d1420', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                        <button type="button" class="btn btn-sm" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#cacaca' }} data-bs-dismiss="modal" onClick={() => props.setClientSelected('')}>Fechar</button>
                         <button type="button" class="btn btn-orange btn-sm" onClick={() => generatePDF('valuationPdf', userData?.companyName)}>Baixar PDF</button>
                         <button type="button" class="btn btn-orange btn-sm" onClick={() => handleShare(valuationUrl + '&userId=' + token.sub)}>Compartilhar apresentação</button>
                     </div>

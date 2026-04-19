@@ -1,15 +1,14 @@
 .container {
-    // display: flex;
     flex-direction: column;
     min-height: 100vh;
-    /* Altura mínima de 100% da viewport */
     width: 100vw;
-    /* Largura total da viewport */
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+    background-color: #080e18;
+    background-image:
+    //imagem bgLogin como background
+      linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url(../../../public/bgLogin.png);
+      background-size: cover;
     background-attachment: fixed;
-    background-image: url('/bgLogin.png');
     overflow-y: auto;
     overflow-x: hidden;
     z-index: -1;

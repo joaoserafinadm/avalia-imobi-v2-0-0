@@ -173,7 +173,6 @@ export default function ClientInfo(props) {
           align-items: center;
           margin-bottom: 12px;
           padding: 12px;
-          background: rgba(248, 249, 250, 0.8);
           border-radius: 12px;
           transition: all 0.3s ease;
         }
@@ -212,7 +211,6 @@ export default function ClientInfo(props) {
         }
 
         .info-section {
-          background: rgba(255, 255, 255, 0.7);
           backdrop-filter: blur(10px);
           margin-bottom: 25px;
           transition: all 0.3s ease;
@@ -266,12 +264,11 @@ export default function ClientInfo(props) {
         }
 
         .comments-textarea {
-          background: rgba(248, 249, 250, 0.8);
           border: 2px solid rgba(233, 236, 239, 0.5);
           border-radius: 12px;
           padding: 15px;
           font-size: 1rem;
-          color: #5a5a5a;
+          color: #cacaca;
           resize: none;
           transition: all 0.3s ease;
         }
@@ -283,10 +280,9 @@ export default function ClientInfo(props) {
         }
 
         .location-text {
-          background: rgba(248, 249, 250, 0.8);
           padding: 15px;
           border-radius: 12px;
-          color: #5a5a5a;
+          color: #cacaca;
           font-size: 1rem;
           margin-bottom: 20px;
           border: 1px solid rgba(233, 236, 239, 0.5);
@@ -328,188 +324,190 @@ export default function ClientInfo(props) {
           }
         }
       `}</style>
+      
+      {/* Header com informações principais */}
+      <div className="profile-header">
 
-        {/* Header com informações principais */}
-        <div className="profile-header">
-          <div className="col-12 d-flex justify-content-end mb-3">
-            <Link
-              href={`/clientEdit/${client?._id}`}
-              className="edit-button-modern"
-            >
-              <button className="btn btn-outline-orange">Editar</button>
+
+        {!client?.valuation && props.valuationButton && (
+          <div className="valuation-alert">
+            <h5 style={{ color: "#5a5a5a", marginBottom: "15px" }}>
+              <FileSliders className="me-2" size={20} /> Nenhuma avaliação realizada
+            </h5>
+            <p style={{ color: "#6c757d", marginBottom: "20px" }}>
+              Realize uma avaliação completa para obter o valor de mercado do
+              imóvel
+            </p>
+            <Link href={"/valuation/" + client?._id}>
+              <button
+                className="valuation-button-modern"
+                data-bs-dismiss="modal"
+              >
+                <HouseIcon className="me-2" size={20} /> Avaliar Imóvel
+              </button>
             </Link>
           </div>
+        )}
 
-          {!client?.valuation && props.valuationButton && (
-            <div className="valuation-alert">
-              <h5 style={{ color: "#5a5a5a", marginBottom: "15px" }}>
-              <FileSliders className="me-2" size={20} /> Nenhuma avaliação realizada
-              </h5>
-              <p style={{ color: "#6c757d", marginBottom: "20px" }}>
-                Realize uma avaliação completa para obter o valor de mercado do
-                imóvel
-              </p>
-              <Link href={"/valuation/" + client?._id}>
-                <button
-                  className="valuation-button-modern"
-                  data-bs-dismiss="modal"
-                >
-                  <HouseIcon className="me-2" size={20}/> Avaliar Imóvel
-                </button>
-              </Link>
-            </div>
-          )}
+        <div className="col-12 d-flex justify-content-end mb-3">
+        <Link
+          href={`/clientEdit/${client?._id}`}
+          className="edit-button-modern"
+        >
+          <button className="btn btn-outline-orange">Editar informações</button>
+        </Link>
+      </div>
 
-          {/* Galeria de Imagens */}
-          {client?.files?.length === 0 ? (
-            <div className="no-images-state">
-              <div style={{ fontSize: "3rem", marginBottom: "15px" }}>📷</div>
-              <p style={{ margin: 0, fontSize: "1.1rem" }}>
-                Nenhuma imagem carregada
-              </p>
-            </div>
-          ) : (
-            <div className="image-gallery">
-              <Swiper
-                style={{
-                  "--swiper-navigation-color": "#f5874f",
-                  "--swiper-pagination-color": "#f5874f",
-                  "--swiper-navigation-size": "25px",
-                  zIndex: 0,
-                }}
-                slidesPerView={1}
-                pagination={{ clickable: false }}
-                navigation
-              >
-                {client?.files?.map((elem, index) => (
-                  <SwiperSlide key={index} className="text-center">
-                    <img
-                      src={elem.url}
-                      className="imovel-img"
-                      alt={`Slide ${index + 1}`}
-                      style={{
-                        width: "100%",
-                        height: "300px",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
-          )}
-
-          {/* Grid de Detalhes do Cliente */}
-          <div className="client-details-grid">
-            <div>
-              <PropertyTypeCard type={client?.propertyType} />
-            </div>
-
-            <div>
-              <h1 className="client-name">
-                {client?.clientName} {client?.clientLastName}
-              </h1>
-
-              {client?.email && (
-                <div className="contact-item">
-                  <button
-                    className="contact-button"
-                    id="emailButton"
-                    onClick={() => handleEmail(client?.email)}
-                  >
-                    <FontAwesomeIcon icon={faEnvelope} />
-                  </button>
-                  <span className="contact-text">{client?.email}</span>
-                </div>
-              )}
-
-              {client?.celular && (
-                <div className="contact-item">
-                  <button
-                    className="contact-button"
-                    id="whatsButton"
-                    onClick={() => handleWhatsapp(client?.celular)}
-                  >
-                    <FontAwesomeIcon icon={faWhatsapp} />
-                  </button>
-                  <span className="contact-text">{client?.celular}</span>
-                </div>
-              )}
-            </div>
+        {/* Galeria de Imagens */}
+        {client?.files?.length === 0 ? (
+          <div className="no-images-state">
+            <div style={{ fontSize: "3rem", marginBottom: "15px" }}>📷</div>
+            <p style={{ margin: 0, fontSize: "1.1rem" }}>
+              Nenhuma imagem carregada
+            </p>
           </div>
-        </div>
-
-        {/* Conteúdo Principal */}
-        <div >
-          {/* Informações Específicas do Tipo de Propriedade */}
-
-          <hr />
-          <div className="info-section">
-            {client?.propertyType === "Apartamento" && (
-              <ClientInfoApartamento client={client} />
-            )}
-            {client?.propertyType === "Casa" && (
-              <ClientInfoCasa client={client} />
-            )}
-            {client?.propertyType === "Comercial" && (
-              <ClientInfoComercial client={client} />
-            )}
-            {client?.propertyType === "Terreno" && (
-              <ClientInfoTerreno client={client} />
-            )}
-          </div>
-
-          <hr  />
-
-          {/* Características Gerais */}
-          <div className="info-section">
-            <h3 className="section-title"><List className="me-2" size={20}/> Características Gerais</h3>
-            <div className="features-grid">
-              {client?.features?.map((elem, index) => (
-                <span key={index} className="feature-tag">
-                  {elem}
-                </span>
+        ) : (
+          <div className="image-gallery">
+            <Swiper
+              style={{
+                "--swiper-navigation-color": "#f5874f",
+                "--swiper-pagination-color": "#f5874f",
+                "--swiper-navigation-size": "25px",
+                zIndex: 0,
+              }}
+              slidesPerView={1}
+              pagination={{ clickable: false }}
+              navigation
+            >
+              {client?.files?.map((elem, index) => (
+                <SwiperSlide key={index} className="text-center">
+                  <img
+                    src={elem.url}
+                    className="imovel-img"
+                    alt={`Slide ${index + 1}`}
+                    style={{
+                      width: "100%",
+                      height: "300px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </SwiperSlide>
               ))}
-            </div>
+            </Swiper>
+          </div>
+        )}
+
+        {/* Grid de Detalhes do Cliente */}
+        <div className="client-details-grid">
+          <div>
+            <PropertyTypeCard type={client?.propertyType} />
           </div>
 
-<hr />
-          {/* Observações */}
-          <div className="info-section">
-            <h3 className="section-title"><MessageSquare className="me-2" size={20}/> Observações</h3>
-            <textarea
-              className="comments-textarea"
-              disabled
-              rows={4}
-              value={client?.comments || "Nenhuma observação registrada"}
-              style={{ width: "100%" }}
-            />
-          </div>
+          <div>
+            <h1 className="client-name">
+              {client?.clientName} {client?.clientLastName}
+            </h1>
 
-          <hr  />
+            {client?.email && (
+              <div className="contact-item">
+                <button
+                  className="contact-button"
+                  id="emailButton"
+                  onClick={() => handleEmail(client?.email)}
+                >
+                  <FontAwesomeIcon icon={faEnvelope} />
+                </button>
+                <span className="contact-text">{client?.email}</span>
+              </div>
+            )}
 
-          {/* Localização */}
-          <div className="info-section">
-            <h3 className="section-title"><MapPin className="me-2" size={20}/> Localização</h3>
-
-            <div className="location-text">
-              {client?.logradouro ? client?.logradouro + ", " : ""}{" "}
-              {client?.numero ? client?.numero + ", " : ""}{" "}
-              {client?.cep ? client?.cep + ", " : ""} {client?.cidade} -{" "}
-              {client?.uf}
-            </div>
-
-            {client?.latitude && client?.longitude && (
-              <div className="map-container">
-                <Map
-                  location={{ lat: client?.latitude, lng: client?.longitude }}
-                  zoom={18}
-                  height="300px"
-                />
+            {client?.celular && (
+              <div className="contact-item">
+                <button
+                  className="contact-button"
+                  id="whatsButton"
+                  onClick={() => handleWhatsapp(client?.celular)}
+                >
+                  <FontAwesomeIcon icon={faWhatsapp} />
+                </button>
+                <span className="contact-text">{client?.celular}</span>
               </div>
             )}
           </div>
         </div>
+      </div>
+
+      {/* Conteúdo Principal */}
+      <div >
+        {/* Informações Específicas do Tipo de Propriedade */}
+
+        <hr />
+        <div className="info-section">
+          {client?.propertyType === "Apartamento" && (
+            <ClientInfoApartamento client={client} />
+          )}
+          {client?.propertyType === "Casa" && (
+            <ClientInfoCasa client={client} />
+          )}
+          {client?.propertyType === "Comercial" && (
+            <ClientInfoComercial client={client} />
+          )}
+          {client?.propertyType === "Terreno" && (
+            <ClientInfoTerreno client={client} />
+          )}
+        </div>
+
+        <hr />
+
+        {/* Características Gerais */}
+        <div className="info-section">
+          <h3 className="section-title"><List className="me-2" size={20} /> Características Gerais</h3>
+          <div className="features-grid">
+            {client?.features?.map((elem, index) => (
+              <span key={index} className="feature-tag">
+                {elem}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <hr />
+        {/* Observações */}
+        <div className="info-section">
+          <h3 className="section-title"><MessageSquare className="me-2" size={20} /> Observações</h3>
+          <textarea
+            className="comments-textarea"
+            disabled
+            rows={4}
+            value={client?.comments || "Nenhuma observação registrada"}
+            style={{ width: "100%" }}
+          />
+        </div>
+
+        <hr />
+
+        {/* Localização */}
+        <div className="info-section">
+          <h3 className="section-title"><MapPin className="me-2" size={20} /> Localização</h3>
+
+          <div className="location-text">
+            {client?.logradouro ? client?.logradouro + ", " : ""}{" "}
+            {client?.numero ? client?.numero + ", " : ""}{" "}
+            {client?.cep ? client?.cep + ", " : ""} {client?.cidade} -{" "}
+            {client?.uf}
+          </div>
+
+          {client?.latitude && client?.longitude && (
+            <div className="map-container">
+              <Map
+                location={{ lat: client?.latitude, lng: client?.longitude }}
+                zoom={18}
+                height="300px"
+              />
+            </div>
+          )}
+        </div>
+      </div>
     </>
   );
 }

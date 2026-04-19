@@ -5,12 +5,12 @@
     margin: 0 !important;
     width: 100%;
     top: calc(var(--header-height) + 0px);
-    padding: 20px 0;
-    background: #fff;
+    padding: 10px 10px 10px 10px;
+    background: #0d1420;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     z-index: 0;
     animation: slideDown 1s;
     transition: 0.5s ease;
-    padding: 10px 10px 10px 10px;
 }
 
 
@@ -29,16 +29,12 @@
 .fixedTopicsBottom {
     position: fixed;
     left: 0;
-    background-color: red;
     justify-content: center !important;
     margin: 0 !important;
     width: 100%;
     bottom: 0;
-    padding: 20px 0;
-    background: #fff;
-    z-index: 0;
-    // animation: slideDown 1s;
-    // transition: 0.5s ease;
     padding: 15px 10px 15px 10px;
-
+    background: #0d1420;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    z-index: 0;
 }

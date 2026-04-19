@@ -2,7 +2,7 @@ import Link from "next/link";
 import Title from "../src/components/title/Title2";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faUserPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { SpinnerLG } from "../src/components/loading/Spinners";
 import navbarHide from "../utils/navbarHide";
 import { useDispatch } from "react-redux";
@@ -13,6 +13,7 @@ import baseUrl from "../utils/baseUrl";
 import UsersCard from "../src/usersManagement/UserCard";
 import ViewUserModal from "../src/usersManagement/ViewUserModal";
 import MenuBar from "../src/components/menuBar";
+import styles from "./usersManagement.module.scss";
 
 
 
@@ -53,72 +54,89 @@ export default function UsersManagement() {
         })
     }
 
+    const filtered = usersArray.filter(elem => {
+        const name = (elem.firstName + ' ' + elem.lastName).toLowerCase()
+        return name.includes(searchValue.toLowerCase())
+    })
+
     return (
-        <div >
+        <div>
             <Title title={'Gestão de usuários'} backButton='/' />
 
+            <div className="pagesContent fadeItem" id="pageTop">
+                <div className={styles.page}>
 
-            <div className="pagesContent shadow fadeItem" id="pageTop">
-                <div className="row ">
-                    <div className="col-12 d-flex justify-content-end ">
-
-                        <Link href='/userAdd'>
-                            <button className="btn btn-sm btn-orange">
-                                Adicionar usuário
-                            </button>
+                    {/* ── Top bar ── */}
+                    <div className={styles.topBar}>
+                        <div className={styles.topBarLeft}>
+                            <div className={styles.statBadge}>
+                                <span className={styles.statNumber}>{usersCount}</span>
+                                <span className={styles.statLabel}>
+                                    usuário{usersCount !== 1 ? 's' : ''}
+                                </span>
+                            </div>
+                        </div>
+                        <Link href='/userAdd' className={styles.addBtn}>
+                            <FontAwesomeIcon icon={faUserPlus} />
+                            Adicionar usuário
                         </Link>
                     </div>
-                </div>
-                <hr />
-                {loadingPage ?
-                    <SpinnerLG />
-                    :
-                    <>
-                        <div className="row mt-3 fadeItem">
-                            <div className="col-12 col-md-3 d-flex justify-content-start">
 
-                                <div class="input-group mb-3">
-                                    <input type="text"
-                                        class="form-control"
-                                        placeholder="Pesquisar"
-                                        aria-label="Username"
-                                        aria-describedby="basic-addon1"
+                    <hr className={styles.divider} />
+
+                    {loadingPage ? <SpinnerLG /> : (
+                        <>
+                            {/* ── Search row ── */}
+                            <div className={styles.searchRow}>
+                                <div className={styles.searchWrap}>
+                                    <input
+                                        type="text"
+                                        className={styles.searchInput}
+                                        placeholder="Pesquisar por nome..."
                                         value={searchValue}
                                         onChange={e => setSearchValue(e.target.value)}
                                     />
-                                    <span class="input-group-text" id="basic-addon1"><FontAwesomeIcon icon={faSearch} className="icon" /></span>
+                                    <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
                                 </div>
+                                {searchValue && (
+                                    <span className={styles.resultsLabel}>
+                                        {filtered.length} resultado{filtered.length !== 1 ? 's' : ''}
+                                    </span>
+                                )}
                             </div>
-                        </div>
-                        <div className="row mt-3">
 
-                            {usersArray.filter(elem => {
+                            {/* ── Cards grid ── */}
+                            {filtered.length === 0 ? (
+                                <div className={styles.emptyState}>
+                                    <FontAwesomeIcon icon={faUsers} className={styles.emptyIcon} />
+                                    <p className={styles.emptyTitle}>Nenhum usuário encontrado</p>
+                                    <p className={styles.emptySubtitle}>
+                                        {searchValue ? `Sem resultados para "${searchValue}"` : 'Adicione o primeiro usuário da equipe'}
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className={styles.cardsGrid}>
+                                    {filtered.map(elem => (
+                                        <UsersCard
+                                            key={elem._id}
+                                            setUserSelected={value => setUserSelected(value)}
+                                            elem={elem}
+                                        />
+                                    ))}
+                                </div>
+                            )}
 
-                                const name = elem.firstName + ' ' + elem.lastName
+                            <ViewUserModal
+                                userSelected={userSelected}
+                                usersCount={usersCount}
+                                dataFunction={() => dataFunction(token.company_id)}
+                                setUserSelected={value => setUserSelected(value)}
+                            />
+                        </>
+                    )}
 
-                                return name.toLowerCase().includes(searchValue.toLowerCase())
-                            }).map(elem => {
-                                return (
-                                    <UsersCard setUserSelected={value => setUserSelected(value)} elem={elem} />
-                                )
-
-                            })}
-                        </div>
-
-
-                        <ViewUserModal userSelected={userSelected} usersCount={usersCount}
-                            dataFunction={() => dataFunction(token.company_id)}
-                            setUserSelected={value => setUserSelected(value)} />
-
-                    </>
-
-                }
-
-
-
+                </div>
             </div>
-
         </div>
-
     )
 }

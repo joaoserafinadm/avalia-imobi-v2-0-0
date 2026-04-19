@@ -1,7 +1,9 @@
-import { faEdit, faEye, faMoneyCheckDollar, faShare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEye, faMoneyCheckDollar, faShare, faTrashAlt, faGavel } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { showClientInfo } from "../../utils/showClientInfo";
 import { valueShow } from "../../utils/valueShow";
+import Link from "next/link";
+import styles from './ClientFeatures.module.scss';
 
 
 
@@ -18,8 +20,7 @@ export default function ClientFeatures(props) {
         <>
             {showClientInfo(client) ?
                 <>
-                    {valueShow(client?.valuation?.valueSelected, client?.valuation?.valuationCalc) && (
-
+                    {valueShow(client?.valuation?.valueSelected, client?.valuation?.valuationCalc) ? (
                         <div className="row">
                             <div className="col-12 mt-2">
                                 <div className="card bg-dark">
@@ -28,9 +29,13 @@ export default function ClientFeatures(props) {
                                         <span className="fs-5 bold">{valueShow(client?.valuation?.valueSelected, client?.valuation?.valuationCalc)},00</span>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
+                    ) : props.evaluateBtn && client?.status === 'active' && (
+                        <Link href={`/valuation/${client._id}`} className={`${styles.evaluateBtn} pulse`}>
+                            
+                            Avaliar imóvel
+                        </Link>
                     )}
                     <div className="row small">
 

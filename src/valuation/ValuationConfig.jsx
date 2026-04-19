@@ -42,7 +42,7 @@ export default function ValuationConfig(props) {
                         setPropertyArray={value => props.setPropertyArray(value)}
                         setForceUpdate={() => setForceUpdate(forceUpdate + 1)} />
                 </div>
-                <div className="alert bg-orange">
+                <div className="alert bg-orange text-dark">
 
                     <div className="col-12 my-1">
                         <span>

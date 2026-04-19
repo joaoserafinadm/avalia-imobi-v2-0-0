@@ -45,6 +45,7 @@
 
 .cardBody {
   padding: 1.5rem 1.6rem 1.6rem;
+  color: var(--ai-light) !important;
 }
 
 /* ── Header ── */
@@ -70,7 +71,6 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  color: rgba(255, 255, 255, 0.28);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.7rem;
   font-weight: 500;
@@ -97,7 +97,6 @@
   font-size: 0.78rem;
   font-weight: 300;
   font-style: italic;
-  color: rgba(255, 255, 255, 0.22);
   margin: 0 0 1.2rem 0;
   line-height: 1.5;
 }
@@ -114,7 +113,6 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 0.65rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.2);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   text-align: center;

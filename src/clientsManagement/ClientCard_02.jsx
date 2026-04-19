@@ -62,7 +62,7 @@ export default function ClientCard_02(props) {
     const assignedUser = users?.find(elem => elem._id === client?.user_id)
 
     return (
-        <div className={styles.card}>
+        <div className={`${styles.card} my-2`}>
 
             {/* ── Image / Swiper area ── */}
             <div className={styles.imageWrap}>
@@ -132,7 +132,7 @@ export default function ClientCard_02(props) {
                     <ClientStatus status={client?.status} id={client?._id} />
                 </div>
 
-                <ClientFeatures client={client} elem={props.elem} />
+                <ClientFeatures client={client} elem={props.elem} evaluateBtn />
 
                 <HandleButtons
                     client={client}

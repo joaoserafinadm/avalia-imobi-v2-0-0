@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Title from "../src/components/title/Title2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faUserGear, faUserTie } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faUserGear, faUserTie, faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FixedTopicsBottom } from "../src/components/fixedTopics";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
@@ -18,6 +18,7 @@ import { addAlert } from "../store/Alerts/Alerts.actions";
 import { useRouter } from "next/router";
 import NewUserAlertModal from "../src/userAdd/newUserAlertModal";
 import { maskEmail } from "../utils/mask";
+import styles from "./userAdd.module.scss";
 
 
 
@@ -192,14 +193,14 @@ export default function userAdd() {
 
 
     return (
-        <div >
-            <Title title={'Adicionar usuário'} backButton='/' />
-            {loadingPage ?
-                <SpinnerLG />
-                :
-                <div className="pagesContent shadow fadeItem" id="pageTop">
+        <div>
+            <Title title={'Adicionar usuário'} backButton='/usersManagement' />
 
-                    <NewUserAlertModal paymentData={paymentData}
+            {loadingPage ? <SpinnerLG /> : (
+                <div className={`pagesContent-sm`} id="pageTop">
+
+                    <NewUserAlertModal
+                        paymentData={paymentData}
                         handleSave={() => handleSave(token.company_id)}
                         firstName={firstName}
                         lastName={lastName}
@@ -207,144 +208,156 @@ export default function userAdd() {
                         userStatus={userStatus}
                     />
 
-
-                    <div className="row d-flex ">
-                        <label for="telefoneItem" className="form-label fw-bold">Informações do usuário</label>
-                        <div className="col-12 col-lg-5 my-2">
-                            <label for="firstName" className="form-label ">Nome*</label>
-                            <input type="text" className="form-control form-control-sm" id="firstName" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="" />
-                            <small className="text-danger">{firstNameError}</small>
-                        </div>
-                        <div className="col-12 col-lg-5 my-2 fadelItem">
-                            <label for="lastName" className="form-label ">Sobrenome (opcional)</label>
-                            <input type="text" className="form-control form-control-sm" id="lastName" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="" />
-                        </div>
-                        <div className="col-12 col-lg-10 my-2">
-                            <label for="email" className="form-label ">E-mail*</label>
-                            <input type="text" className="form-control form-control-sm" id="email" value={email} onChange={e => setEmail(maskEmail(e.target.value))} placeholder="" />
-                            <small className="text-danger">{emailError}</small>
+                    {/* ── Informações do usuário ── */}
+                    <div className={styles.sectionLabel}>Informações do usuário</div>
+                    <div className={styles.formSection}>
+                        <div className="row g-3">
+                            <div className="col-12 col-md-6">
+                                <div className={styles.fieldGroup}>
+                                    <label className={styles.fieldLabel} htmlFor="firstName">Nome *</label>
+                                    <input
+                                        type="text"
+                                        className={styles.fieldInput}
+                                        id="firstName"
+                                        value={firstName}
+                                        onChange={e => setFirstName(e.target.value)}
+                                        placeholder="Ex: João"
+                                    />
+                                    {firstNameError && <span className={styles.fieldError}>{firstNameError}</span>}
+                                </div>
+                            </div>
+                            <div className="col-12 col-md-6">
+                                <div className={styles.fieldGroup}>
+                                    <label className={styles.fieldLabel} htmlFor="lastName">Sobrenome <span style={{ opacity: 0.5 }}>(opcional)</span></label>
+                                    <input
+                                        type="text"
+                                        className={styles.fieldInput}
+                                        id="lastName"
+                                        value={lastName}
+                                        onChange={e => setLastName(e.target.value)}
+                                        placeholder="Ex: Silva"
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-12">
+                                <div className={styles.fieldGroup}>
+                                    <label className={styles.fieldLabel} htmlFor="email">E-mail *</label>
+                                    <input
+                                        type="text"
+                                        className={styles.fieldInput}
+                                        id="email"
+                                        value={email}
+                                        onChange={e => setEmail(maskEmail(e.target.value))}
+                                        placeholder="Ex: joao@empresa.com"
+                                    />
+                                    {emailError && <span className={styles.fieldError}>{emailError}</span>}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
+                    {/* ── Categoria ── */}
+                    <div className={styles.sectionLabel}>Nível de acesso *</div>
+                    <div className={styles.roleSection}>
+                        {userStatusError && <div className={styles.roleErrorMsg}>{userStatusError}</div>}
+                        <div className={styles.roleGrid}>
 
-                    <div className="row d-flex mt-4">
-                        <label for="telefoneItem" className="form-label fw-bold mb-3">Categoria*</label>
-                        <small className="text-danger mb-2">{userStatusError}</small>
-
-                        <div className="col-12 col-lg-5 my-2">
-                            <div className={`card cardAnimation h-100 ${userStatus === 'admGlobal' ? 'border-selected shadow-sm' : ''}`}
-                                type="button"
+                            {/* Administrador */}
+                            <div
+                                className={`${styles.roleCard} ${userStatus === 'admGlobal' ? styles.roleCardSelected : ''}`}
                                 onClick={() => setUserStatus('admGlobal')}
-                                style={{ transition: 'all 0.3s ease', cursor: 'pointer' }}>
-                                <div className="card-body p-4">
-                                    <div className="d-flex align-items-center mb-3">
-                                        <div className={`rounded-circle d-flex align-items-center justify-content-center me-3 ${userStatus === 'admGlobal' ? 'bg-orange' : 'bg-light'}`}
-                                            style={{ width: '50px', height: '50px', transition: 'all 0.3s ease' }}>
-                                            <FontAwesomeIcon
-                                                icon={faUserGear}
-                                                className={userStatus === 'admGlobal' ? 'text-white' : 'text-orange'}
-                                                style={{ fontSize: '1.5rem' }}
-                                            />
-                                        </div>
-                                        <div>
-                                            <h5 className="card-title mb-0 text-orange fw-bold">Administrador</h5>
-                                            <h6 className="card-subtitle text-muted small mb-0">Acesso total ao sistema</h6>
-                                        </div>
+                            >
+                                {userStatus === 'admGlobal' && (
+                                    <span className={styles.selectedChip}><FontAwesomeIcon icon={faCheck} /></span>
+                                )}
+                                <div className={`${styles.roleIconWrap} ${userStatus === 'admGlobal' ? styles.roleIconSelected : ''}`}>
+                                    <FontAwesomeIcon icon={faUserGear} />
+                                </div>
+                                <h5 className={`${styles.roleTitle} ${userStatus === 'admGlobal' ? styles.roleTitleSelected : ''}`}>
+                                    Administrador
+                                </h5>
+                                <p className={styles.roleSubtitle}>Acesso total ao sistema</p>
+                                <div className={styles.permList}>
+                                    <div className={styles.permItem}>
+                                        <FontAwesomeIcon icon={faCheck} className={styles.permCheck} />
+                                        Configuração da imobiliária
                                     </div>
-
-                                    <div className="mb-3">
-                                        <p className="small mb-2 text-secondary">Permissões completas para gerenciar toda a plataforma:</p>
+                                    <div className={styles.permItem}>
+                                        <FontAwesomeIcon icon={faCheck} className={styles.permCheck} />
+                                        Gerenciar usuários
                                     </div>
-
-                                    <ul className="small text-secondary mb-0 ps-3" style={{ listStyle: 'none' }}>
-                                        <li className="mb-2">
-                                            <span className="text-orange me-2">✓</span>
-                                            Configuração da imobiliária
-                                        </li>
-                                        <li className="mb-2">
-                                            <span className="text-orange me-2">✓</span>
-                                            Adicionar e gerenciar usuários
-                                        </li>
-                                        <li className="mb-2">
-                                            <span className="text-orange me-2">✓</span>
-                                            Cadastro e avaliação de imóveis
-                                        </li>
-                                        <li className="mb-0">
-                                            <span className="text-orange me-2">✓</span>
-                                            Ajustes de configurações da plataforma
-                                        </li>
-                                    </ul>
+                                    <div className={styles.permItem}>
+                                        <FontAwesomeIcon icon={faCheck} className={styles.permCheck} />
+                                        Cadastro e avaliação de imóveis
+                                    </div>
+                                    <div className={styles.permItem}>
+                                        <FontAwesomeIcon icon={faCheck} className={styles.permCheck} />
+                                        Configurações da plataforma
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="col-12 col-lg-5 my-2">
-                            <div className={`card cardAnimation h-100 ${userStatus === 'user' ? 'border-selected shadow-sm' : ''}`}
-                                type="button"
+                            {/* Corretor */}
+                            <div
+                                className={`${styles.roleCard} ${userStatus === 'user' ? styles.roleCardSelected : ''}`}
                                 onClick={() => setUserStatus('user')}
-                                style={{ transition: 'all 0.3s ease', cursor: 'pointer' }}>
-                                <div className="card-body p-4">
-                                    <div className="d-flex align-items-center mb-3">
-                                        <div className={`rounded-circle d-flex align-items-center justify-content-center me-3 ${userStatus === 'user' ? 'bg-orange' : 'bg-light'}`}
-                                            style={{ width: '50px', height: '50px', transition: 'all 0.3s ease' }}>
-                                            <FontAwesomeIcon
-                                                icon={faUserTie}
-                                                className={userStatus === 'user' ? 'text-white' : 'text-orange'}
-                                                style={{ fontSize: '1.5rem' }}
-                                            />
-                                        </div>
-                                        <div>
-                                            <h5 className="card-title mb-0 text-orange fw-bold">Corretor</h5>
-                                            <h6 className="card-subtitle text-muted small mb-0">Focado em imóveis</h6>
-                                        </div>
-                                    </div>
+                            >
+                                {userStatus === 'user' && (
+                                    <span className={styles.selectedChip}><FontAwesomeIcon icon={faCheck} /></span>
 
-                                    <div className="mb-3">
-                                        <p className="small mb-2 text-secondary">Acesso dedicado às operações essenciais:</p>
+                                )}
+                                <div className={`${styles.roleIconWrap} ${userStatus === 'user' ? styles.roleIconSelected : ''}`}>
+                                    <FontAwesomeIcon icon={faUserTie} />
+                                </div>
+                                <h5 className={`${styles.roleTitle} ${userStatus === 'user' ? styles.roleTitleSelected : ''}`}>
+                                    Corretor
+                                </h5>
+                                <p className={styles.roleSubtitle}>Focado em imóveis</p>
+                                <div className={styles.permList}>
+                                    <div className={styles.permItem}>
+                                        <FontAwesomeIcon icon={faCheck} className={styles.permCheck} />
+                                        Cadastro e avaliação de imóveis
                                     </div>
-
-                                    <ul className="small text-secondary mb-0 ps-3" style={{ listStyle: 'none' }}>
-                                        <li className="mb-2">
-                                            <span className="text-orange me-2">✓</span>
-                                            Cadastro e avaliação de imóveis
-                                        </li>
-                                        <li className="mb-2 text-muted">
-                                            <span className="me-2">✗</span>
-                                            Sem acesso a configurações
-                                        </li>
-                                        <li className="mb-0 text-muted">
-                                            <span className="me-2">✗</span>
-                                            Sem gerenciamento de usuários
-                                        </li>
-                                    </ul>
+                                    <div className={`${styles.permItem} ${styles.permItemDim}`}>
+                                        <FontAwesomeIcon icon={faXmark} className={styles.permCross} />
+                                        Sem acesso a configurações
+                                    </div>
+                                    <div className={`${styles.permItem} ${styles.permItemDim}`}>
+                                        <FontAwesomeIcon icon={faXmark} className={styles.permCross} />
+                                        Sem gerenciamento de usuários
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
 
-                    <hr />
-
-                    <FixedTopicsBottom >
-
-                        <div className="row">
-                            <div className="col-12 d-flex justify-content-end align-items-center">
-                                <Link href="/usersManagement">
-                                    <button className="btn btn-sm btn-secondary">Cancelar</button>
-                                </Link>
-
-                                {loadingSave ?
-                                    <button className="ms-2 btn btn-sm btn-orange px-5" disabled><SpinnerSM /></button>
-                                    :
-                                    <button className="ms-2 btn btn-sm btn-orange fadeItem" disabled={handleDisableSave()} data-bs-toggle={subscriptionOn ? "modal" : ""} data-bs-target={subscriptionOn ? "#newUserAlertModal" : ""} onClick={() => checkSubscription()}>Cadastrar</button>
-                                    // <button className="ms-2 btn btn-sm btn-orange fadeItem" disabled={handleDisableSave()} onClick={() => handleSave(token.company_id)}>Cadastrar</button>
-                                }
-                            </div>
+                    {/* ── Footer ── */}
+                    <FixedTopicsBottom>
+                        <div className={styles.footerBar}>
+                            <Link href="/usersManagement" className={styles.btnCancel}>
+                                Cancelar
+                            </Link>
+                            {loadingSave ? (
+                                <button className={styles.btnSave} disabled>
+                                    <SpinnerSM />
+                                </button>
+                            ) : (
+                                <button
+                                    className={styles.btnSave}
+                                    disabled={handleDisableSave()}
+                                    data-bs-toggle={subscriptionOn ? "modal" : ""}
+                                    data-bs-target={subscriptionOn ? "#newUserAlertModal" : ""}
+                                    onClick={() => checkSubscription()}
+                                >
+                                    Cadastrar usuário
+                                </button>
+                            )}
                         </div>
                     </FixedTopicsBottom>
-                </div>
-            }
 
+                </div>
+            )}
         </div>
     )
 }

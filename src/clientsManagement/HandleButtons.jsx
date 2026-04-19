@@ -4,6 +4,7 @@ import Link from "next/link"
 import handleShare from "../../utils/handleShare"
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
+import styles from './HandleButtons.module.scss'
 
 export default function HandleButtons(props) {
 
@@ -11,85 +12,67 @@ export default function HandleButtons(props) {
 
     const { client, setClientSelected, elem } = props
 
-
-
     return (
         <>
             {client?.status !== 'outdated' ?
-                <div className="row d-flex justify-content-center mt-2">
-                    <div className="col-12 d-flex justify-content-center">
-
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button
-                                type="button"
-                                class="btn btn-light border"
-                                id={"viewClientButton" + elem._id}
-                                data-bs-toggle="modal"
-                                data-bs-target="#viewClientModal"
-                                onClick={() => setClientSelected(elem)}>
-                                <FontAwesomeIcon icon={faEye} className="icon  text-secondary" />
-                            </button>
-                            {(client?.status === 'evaluated') && (
-                                <button className="btn btn-light border" id={"shareValuationButton" + elem._id}
-                                    onClick={() => props.setClientSelected(props.elem)}
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#viewValuationModal">
-                                    <FontAwesomeIcon icon={faShareAlt} className="icon text-secondary" />
-                                </button>
-                            )}
-                            {(client?.status === 'answered') && (
-                                <button className="btn btn-light border"
-                                    onClick={() => props.setClientSelected(props.elem)}
-                                    data-bs-toggle="modal" id={"downloadValuationButton" + elem._id}
-                                    data-bs-target="#viewValuationModal">
-                                    <FontAwesomeIcon icon={faFileDownload} className="icon text-secondary" />
-                                </button>
-                            )}
-
-                            <button
-                                type="button"
-                                class="btn btn-light border"
-                                id={"deleteClientButton" + elem._id}
-                                data-bs-toggle="modal"
-                                data-bs-target={"#deleteClientModal"}
-                                onClick={() => setClientSelected(elem)}>
-                                <FontAwesomeIcon icon={faTrashAlt} className="icon text-secondary" />
-                            </button>
-                        </div>
-                    </div>
+                <div className={styles.btnGroup}>
+                    <button
+                        type="button"
+                        className={styles.btn}
+                        id={"viewClientButton" + elem._id}
+                        data-bs-toggle="modal"
+                        data-bs-target="#viewClientModal"
+                        onClick={() => setClientSelected(elem)}>
+                        <FontAwesomeIcon icon={faEye} />
+                    </button>
+                    {(client?.status === 'evaluated') && (
+                        <button className={styles.btn} id={"shareValuationButton" + elem._id}
+                            onClick={() => props.setClientSelected(props.elem)}
+                            data-bs-toggle="modal"
+                            data-bs-target="#viewValuationModal">
+                            <FontAwesomeIcon icon={faShareAlt} />
+                        </button>
+                    )}
+                    {(client?.status === 'answered') && (
+                        <button className={styles.btn}
+                            onClick={() => props.setClientSelected(props.elem)}
+                            data-bs-toggle="modal" id={"downloadValuationButton" + elem._id}
+                            data-bs-target="#viewValuationModal">
+                            <FontAwesomeIcon icon={faFileDownload} />
+                        </button>
+                    )}
+                    <button
+                        type="button"
+                        className={styles.btn}
+                        id={"deleteClientButton" + elem._id}
+                        data-bs-toggle="modal"
+                        data-bs-target={"#deleteClientModal"}
+                        onClick={() => setClientSelected(elem)}>
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                    </button>
                 </div>
                 :
-                <div className="row">
-                    <div className="col-12 d-flex justify-content-center">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-
-                            <button onClick={() => handleShare(elem.urlToken + "&userId=" + token.sub)}
-                                type="button"
-                                class="btn btn-light border"
-                                id={"shareClientButton" + elem._id}>
-                                <FontAwesomeIcon icon={faShare} className="icon  text-secondary" />
-                            </button>
-                            <Link href={`/clientEdit/${elem._id}`} className="btn btn-light border" id={"editClientButton" + elem._id}>
-                                {/* <button type="button" class="btn btn-light border" id={"editClientButton" + elem._id}> */}
-                                <FontAwesomeIcon icon={faEdit} className="icon  text-secondary" />
-                                {/* </button> */}
-                            </Link>
-                            <button
-                                type="button"
-                                class="btn btn-light border"
-                                id={"deleteClientButton" + elem._id}
-                                data-bs-toggle="modal"
-                                data-bs-target={"#deleteClientModal"}
-                                onClick={() => setClientSelected(elem)}>
-                                <FontAwesomeIcon icon={faTrashAlt} className="icon text-secondary" />
-                            </button>
-                        </div>
-
-                    </div>
-
+                <div className={styles.btnGroup}>
+                    <button onClick={() => handleShare(elem.urlToken + "&userId=" + token.sub)}
+                        type="button"
+                        className={styles.btn}
+                        id={"shareClientButton" + elem._id}>
+                        <FontAwesomeIcon icon={faShare} />
+                    </button>
+                    <Link href={`/clientEdit/${elem._id}`} className={styles.btn} id={"editClientButton" + elem._id}>
+                        <FontAwesomeIcon icon={faEdit} />
+                    </Link>
+                    <button
+                        type="button"
+                        className={styles.btn}
+                        id={"deleteClientButton" + elem._id}
+                        data-bs-toggle="modal"
+                        data-bs-target={"#deleteClientModal"}
+                        onClick={() => setClientSelected(elem)}>
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                    </button>
                 </div>
             }
-
         </>
     )
 }

@@ -121,7 +121,7 @@ export default function StyledDropzone(props) {
         borderRadius: 5,
         borderColor: '#bdbdbd',
         borderStyle: 'dashed',
-        backgroundColor: '#eee',
+        backgroundColor: '#101930',
         color: '#696969',
         outline: 'none',
         transition: 'border .24s ease-in-out'

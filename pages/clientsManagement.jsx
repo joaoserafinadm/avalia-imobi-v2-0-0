@@ -152,7 +152,7 @@ export default function clientsManagement() {
 
       <Title title={"Gestão de Imóveis"} backButton="/" />
 
-      <div className={`${styles.pageWrapper} fadeItem`} id="pageTop">
+      <div className={`pagesContent-lg fadeItem`} id="pageTop">
 
         {/* ── Top bar ── */}
         <div className={styles.topBar}>

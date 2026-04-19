@@ -100,8 +100,7 @@ export default function PropertyTypeCard({ type, edit = false }) {
             <style jsx>{`
                 .property-card {
                     position: relative;
-                    background: white;
-                    border: 2px solid #e9ecef;
+                    border: 2px solid #9fa1a7;
                     border-radius: 16px;
                     cursor: pointer;
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

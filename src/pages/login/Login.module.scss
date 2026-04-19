@@ -10,7 +10,10 @@
 .brandPanel {
   width: 42%;
   min-width: 340px;
-  background: linear-gradient(160deg, #182538 0%, #253855 65%, #1e3d5c 100%);
+  background-image:
+    //imagem bgLogin como background
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(../../../public/bgLogin.png);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,6 +142,37 @@
   }
 }
 
+// ── Override global dark-theme form-control inside login panel ───
+.formPanel {
+  :global(label) {
+    color: #495057 !important;
+  }
+
+  :global(.form-control),
+  :global(.form-select) {
+    background-color: #ffffff !important;
+    border: 1.5px solid #dee2e6 !important;
+    color: #212529 !important;
+
+    &:focus {
+      background-color: #ffffff !important;
+      border-color: #f5874f !important;
+      color: #212529 !important;
+      box-shadow: 0 0 0 3px rgba(245, 135, 79, 0.12) !important;
+    }
+
+    &::placeholder {
+      color: #adb5bd !important;
+    }
+
+    &:disabled,
+    &[readonly] {
+      background-color: #f8f9fa !important;
+      color: #6c757d !important;
+    }
+  }
+}
+
 // ── Botões ───────────────────────────────────────────────────────
 .btnPrimary {
   width: 100%;
@@ -152,9 +186,18 @@
   cursor: pointer;
   transition: background 0.15s, transform 0.1s;
 
-  &:hover:not(:disabled) { background: #db7846; }
-  &:active:not(:disabled) { transform: scale(0.99); }
-  &:disabled { opacity: 0.7; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    background: #db7846;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.99);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 }
 
 .btnGoogle {
@@ -173,10 +216,20 @@
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 
-  &:hover:not(:disabled) { background: #f8f9fa; border-color: #adb5bd; }
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+  }
 
-  img { width: 20px; height: 20px; }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 // ── Divisor ──────────────────────────────────────────────────────
@@ -188,7 +241,8 @@
   font-size: 0.8rem;
   margin: 1.25rem 0;
 
-  &::before, &::after {
+  &::before,
+  &::after {
     content: '';
     flex: 1;
     height: 1px;
@@ -207,7 +261,10 @@
   font-size: inherit;
   transition: color 0.15s;
 
-  &:hover { color: #db7846; text-decoration: underline; }
+  &:hover {
+    color: #db7846;
+    text-decoration: underline;
+  }
 }
 
 .backLink {
@@ -223,7 +280,9 @@
   margin-bottom: 1.75rem;
   transition: color 0.15s;
 
-  &:hover { color: #495057; }
+  &:hover {
+    color: #495057;
+  }
 }
 
 // ── Mobile ───────────────────────────────────────────────────────
@@ -250,8 +309,24 @@
   background-repeat: no-repeat;
 }
 
-.textAlign > p { text-align: justify; }
-.cardSize { margin: 5vh 3vw 5vh 3vw; }
-.title { font-size: 50px; color: #f5874f; }
-.cardSignIn { height: 95vh !important; width: 98vw !important; }
-.logoImg { width: 30vw; }
+.textAlign>p {
+  text-align: justify;
+}
+
+.cardSize {
+  margin: 5vh 3vw 5vh 3vw;
+}
+
+.title {
+  font-size: 50px;
+  color: #f5874f;
+}
+
+.cardSignIn {
+  height: 95vh !important;
+  width: 98vw !important;
+}
+
+.logoImg {
+  width: 30vw;
+}

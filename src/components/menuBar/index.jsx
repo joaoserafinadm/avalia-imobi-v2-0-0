@@ -55,7 +55,7 @@ export default function MenuBar(props) {
     ]
 
     return (
-        <div className={`${permitedPages.includes(pathname) && isMobile() ? styles.container : styles.containerHide}`}>
+        <div className={`${permitedPages.includes(pathname) && isMobile() ? styles.container : styles.containerHide}`} style={{zIndex: 2  }}>
             <div className={styles.menuWrapper}>
                 {menuItems.map((item, index) => {
                     const isActive = pathname === item.path

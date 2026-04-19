@@ -22,10 +22,9 @@ $shadow-color: rgba(90, 90, 90, 0.15);
     bottom: 0;
     left: 0;
     right: 0;
-    // z-index:1;
-    background: var(--ai-bg-primary);
-    border-top: 3px solid $primary-orange;
-    box-shadow: 0 -8px 32px $shadow-color;
+    background: #0d1420;
+    border-top: 1px solid rgba(245, 135, 79, 0.2);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(10px);
     padding: 0px 0;
     
