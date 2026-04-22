@@ -1,0 +1,493 @@
+/* ─────────────────────────────────────────────
+   Input Component — Design System
+   Fonts: DM Sans · Syne · IBM Plex Mono
+   Brand: #f5874f / rgba(245,135,79,…)
+───────────────────────────────────────────── */
+
+/* ══════════════════════════════════════════
+   WRAPPER
+══════════════════════════════════════════ */
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+/* ══════════════════════════════════════════
+   LABEL
+══════════════════════════════════════════ */
+.label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease;
+
+  .required {
+    color: #f5874f;
+    margin-left: 2px;
+  }
+}
+
+.dark .label  { color: rgba(255, 255, 255, 0.89) !important; }
+.light .label { color: rgba(15,20,35,0.55) !important; }
+
+/* ══════════════════════════════════════════
+   BASE INPUT SHELL
+══════════════════════════════════════════ */
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+  .dark & {
+    background: rgba(255,255,255,0.04);
+    border:     1px solid rgba(255,255,255,0.09);
+    color:      rgba(255,255,255,0.85);
+
+    &::placeholder { color: rgba(255,255,255,0.18); }
+
+    &:focus {
+      border-color: rgba(245,135,79,0.45);
+      background:   rgba(255,255,255,0.06);
+      box-shadow:   0 0 0 3px rgba(245,135,79,0.08);
+    }
+
+    option {
+      background: #0d1420;
+      color: rgba(255,255,255,0.85);
+    }
+  }
+
+  .light & {
+    background: #ffffff;
+    border:     1px solid rgba(15,20,35,0.12);
+    color:      rgba(15,20,35,0.9);
+
+    &::placeholder { color: rgba(15,20,35,0.28); }
+
+    &:focus {
+      border-color: rgba(245,135,79,0.55);
+      background:   #fff;
+      box-shadow:   0 0 0 3px rgba(245,135,79,0.10);
+    }
+
+    option {
+      background: #ffffff;
+      color: rgba(15,20,35,0.9);
+    }
+  }
+
+  &.hasError {
+    border-color: #f87171 !important;
+    box-shadow:   0 0 0 3px rgba(248,113,113,0.10) !important;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+/* ── prefix icon ── */
+.hasIcon { padding-left: 38px !important; }
+
+.iconWrap {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  pointer-events: none;
+  transition: color 0.2s ease;
+
+  .dark  & { color: rgba(255,255,255,0.28); }
+  .light & { color: rgba(15,20,35,0.35); }
+}
+
+/* ── suffix (password eye / search clear) ── */
+.suffixBtn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  transition: color 0.2s ease, background 0.2s ease;
+
+  .dark & {
+    color: rgba(255,255,255,0.3);
+    &:hover { color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.06); }
+  }
+  .light & {
+    color: rgba(15,20,35,0.35);
+    &:hover { color: rgba(15,20,35,0.75); background: rgba(15,20,35,0.06); }
+  }
+}
+
+.hasSuffix { padding-right: 40px !important; }
+
+/* ── text suffix badge (m², m, etc.) ── */
+.suffixBadge {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  bottom: 1px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0 9px 9px 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  pointer-events: none;
+  z-index: 1;
+
+  .dark  & { background: rgba(255, 255, 255, 0.03); color: rgba(255, 255, 255, 0.3); }
+  .light & { background: rgba(15, 20, 35, 0.03);    color: rgba(15, 20, 35, 0.35); }
+}
+
+.hasSuffixBadge { padding-right: 52px !important; }
+
+/* ══════════════════════════════════════════
+   TEXTAREA
+══════════════════════════════════════════ */
+.textarea {
+  width: 100%;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.55;
+
+  .dark & {
+    background: rgba(255,255,255,0.04);
+    border:     1px solid rgba(255,255,255,0.09);
+    color:      rgba(255,255,255,0.85);
+    &::placeholder { color: rgba(255,255,255,0.18); }
+    &:focus {
+      border-color: rgba(245,135,79,0.45);
+      background:   rgba(255,255,255,0.06);
+      box-shadow:   0 0 0 3px rgba(245,135,79,0.08);
+    }
+  }
+  .light & {
+    background: #ffffff;
+    border:     1px solid rgba(15,20,35,0.12);
+    color:      rgba(15,20,35,0.9);
+    &::placeholder { color: rgba(15,20,35,0.28); }
+    &:focus {
+      border-color: rgba(245,135,79,0.55);
+      background:   #fff;
+      box-shadow:   0 0 0 3px rgba(245,135,79,0.10);
+    }
+  }
+  &.hasError {
+    border-color: #f87171 !important;
+    box-shadow:   0 0 0 3px rgba(248,113,113,0.10) !important;
+  }
+  &:disabled { opacity: 0.45; cursor: not-allowed; }
+}
+
+/* ══════════════════════════════════════════
+   SELECT
+══════════════════════════════════════════ */
+.selectWrap {
+  position: relative;
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    padding-right: 36px !important;
+  }
+
+  .selectArrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 0.72rem;
+    transition: color 0.2s ease;
+
+    .dark  & { color: rgba(255,255,255,0.35); }
+    .light & { color: rgba(15,20,35,0.4); }
+  }
+}
+
+/* ══════════════════════════════════════════
+   CHECKBOX
+══════════════════════════════════════════ */
+.checkboxLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+
+  .dark  & { color: rgba(255,255,255,0.75); }
+  .light & { color: rgba(15,20,35,0.8); }
+
+  &:has(input:disabled) { opacity: 0.45; cursor: not-allowed; }
+}
+
+.checkboxInput { display: none; }
+
+.checkboxBox {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+  .dark  & { background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.14); }
+  .light & { background: #fff;                   border: 1.5px solid rgba(15,20,35,0.18); }
+
+  .checkmark {
+    opacity: 0;
+    transform: scale(0.5) rotate(-10deg);
+    transition: opacity 0.15s ease, transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
+    color: #fff;
+    font-size: 0.6rem;
+  }
+}
+
+.checkboxInput:checked + .checkboxBox {
+  background:   #f5874f;
+  border-color: #f5874f;
+  box-shadow:   0 0 0 3px rgba(245,135,79,0.18);
+
+  .checkmark { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* ══════════════════════════════════════════
+   RADIO
+══════════════════════════════════════════ */
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radioLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+
+  .dark  & { color: rgba(255,255,255,0.75); }
+  .light & { color: rgba(15,20,35,0.8); }
+
+  &:has(input:disabled) { opacity: 0.45; cursor: not-allowed; }
+}
+
+.radioInput { display: none; }
+
+.radioDot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+
+  .dark  & { background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.14); }
+  .light & { background: #fff;                   border: 1.5px solid rgba(15,20,35,0.18); }
+
+  &::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.15s ease, transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
+  }
+}
+
+.radioInput:checked + .radioDot {
+  background:   #f5874f;
+  border-color: #f5874f;
+  box-shadow:   0 0 0 3px rgba(245,135,79,0.18);
+
+  &::after { opacity: 1; transform: scale(1); }
+}
+
+/* ══════════════════════════════════════════
+   TOGGLE / SWITCH
+══════════════════════════════════════════ */
+.toggleLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+
+  .dark  & { color: rgba(255,255,255,0.75); }
+  .light & { color: rgba(15,20,35,0.8); }
+
+  &:has(input:disabled) { opacity: 0.45; cursor: not-allowed; }
+}
+
+.toggleInput { display: none; }
+
+.toggleTrack {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  border-radius: 11px;
+  flex-shrink: 0;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+
+  .dark  & { background: rgba(255,255,255,0.1);  border: 1px solid rgba(255,255,255,0.12); }
+  .light & { background: rgba(15,20,35,0.12);    border: 1px solid rgba(15,20,35,0.14); }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+  }
+}
+
+.toggleInput:checked + .toggleTrack {
+  background:   #f5874f;
+  border-color: #f5874f;
+  box-shadow:   0 0 0 3px rgba(245,135,79,0.18);
+
+  &::after { transform: translateX(16px); }
+}
+
+/* ══════════════════════════════════════════
+   FILE UPLOAD
+══════════════════════════════════════════ */
+.fileZone {
+  position: relative;
+  border-radius: 10px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+  .dark & {
+    background: rgba(255,255,255,0.02);
+    border:     1.5px dashed rgba(255,255,255,0.1);
+    &:hover { border-color: rgba(245,135,79,0.4); background: rgba(245,135,79,0.03); }
+  }
+  .light & {
+    background: rgba(15,20,35,0.02);
+    border:     1.5px dashed rgba(15,20,35,0.14);
+    &:hover { border-color: rgba(245,135,79,0.5); background: rgba(245,135,79,0.04); }
+  }
+
+  &.fileDragOver {
+    border-color: #f5874f !important;
+    background:   rgba(245,135,79,0.06) !important;
+    box-shadow:   0 0 0 3px rgba(245,135,79,0.10);
+  }
+
+  input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.fileIcon {
+  font-size: 1.6rem;
+  line-height: 1;
+  .dark  & { color: rgba(255,255,255,0.2); }
+  .light & { color: rgba(15,20,35,0.25); }
+}
+
+.fileText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  text-align: center;
+  line-height: 1.4;
+
+  .dark  & { color: rgba(255,255,255,0.35); }
+  .light & { color: rgba(15,20,35,0.45); }
+
+  strong { font-weight: 600; color: #f5874f; }
+}
+
+.fileName {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-top: 2px;
+
+  .dark  & { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.65); }
+  .light & { background: rgba(15,20,35,0.06);    color: rgba(15,20,35,0.65); }
+}
+
+/* ══════════════════════════════════════════
+   HINT & ERROR
+══════════════════════════════════════════ */
+.hint {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  margin-top: 1px;
+
+  .dark  & { color: rgba(255,255,255,0.28); }
+  .light & { color: rgba(15,20,35,0.38); }
+}
+
+.error {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  color: #f87171;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

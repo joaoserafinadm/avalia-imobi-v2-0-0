@@ -4,8 +4,6 @@ import jwt from "jsonwebtoken";
 import { useEffect, useState } from "react"
 import baseUrl from '../utils/baseUrl'
 import Title from "../src/components/title/Title2";
-import window2Mobile from "../utils/window2Mobile";
-import VerticalLine from "../utils/VerticalLine";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import navbarHide from "../utils/navbarHide";
@@ -13,25 +11,30 @@ import { SpinnerLG, SpinnerSM } from "../src/components/loading/Spinners";
 import scrollTo from "../utils/scrollTo";
 import EstadosList from "../src/components/estadosList";
 import { useRouter } from "next/router";
-import StyledDropzone from "../src/components/styledDropzone/StyledDropzone";
 import { createImageUrl } from "../utils/createImageUrl";
 import ImageHeaderModal from "../src/companyEdit/ImageHeaderModal";
 import { FixedTopicsBottom } from "../src/components/fixedTopics";
 import removeInputError from "../utils/removeInputError";
 import CropperImageModal from "../src/companyEdit/CropperImageModal";
-import { closeModal, modalClose } from "../utils/modalControl";
+import { modalClose } from "../utils/modalControl";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faBuilding, faLocationDot, faPhone, faMobileScreen,
+    faEnvelope, faHashtag, faRoad, faCity,
+    faPen, faCloudArrowUp, faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
+import Input from "../src/components/Input";
+import TitleLabel from "../src/components/TitleLabel";
+import styles from "./companyEdit.module.scss";
 
 
 
 export default function companyEdit() {
 
     const token = jwt.decode(Cookies.get("auth"));
-
     const dispatch = useDispatch()
     const router = useRouter()
 
-
-    //States
     const [companyName, setCompanyName] = useState('')
     const [companyCreci, setCompanyCreci] = useState('')
     const [email, setEmail] = useState('')
@@ -45,31 +48,20 @@ export default function companyEdit() {
     const [backgroundImg_id, setBackgroundImg_id] = useState('')
     const [logo, setLogo] = useState('')
     const [logoPreview, setLogoPreview] = useState('')
-    const [headerImgPreview, setHeaderImgPreview] = useState('')
     const [backgroundImages, setBackgroundImages] = useState([])
-
-    //Image crop
     const [selectFile, setSelectFile] = useState(null)
-
-    //Loading
     const [loadingPage, setLoadingPage] = useState(true)
     const [loadingSave, setLoadingSave] = useState(false)
 
     useEffect(() => {
         modalClose()
-
-
         dataFunction(token.company_id)
         navbarHide(dispatch)
-
     }, [])
 
     const dataFunction = async (company_id) => {
-
         await axios.get(`${baseUrl()}/api/companyEdit`, {
-            params: {
-                company_id: company_id
-            }
+            params: { company_id }
         }).then(res => {
             const data = res.data.response
             setCompanyName(data.companyName)
@@ -85,78 +77,50 @@ export default function companyEdit() {
             setBackgroundImg_id(data.backgroundImg_id)
             setLogo(data.logo)
             backgroundImagesData(company_id)
-
-        }).catch(e => {
-            console.log(e)
-        })
+        }).catch(e => console.log(e))
     }
 
     const backgroundImagesData = async (company_id) => {
-
         await axios.get(`${baseUrl()}/api/companyEdit/headerImg`, {
-            params: {
-                company_id: company_id
-            }
+            params: { company_id }
         }).then(res => {
-
             setBackgroundImages(res.data.data)
             setLoadingPage(false)
-
-
         })
-
     }
 
-    const maskCep = (value) => {
-        return setCep(value
-            .replace(/\D/g, '')
-            .replace(/(\d{5})(\d)/, '$1-$2')
-            .replace(/(-\d{3})\d+?$/, '$1'))
-    }
+    const maskCep = (value) => setCep(value
+        .replace(/\D/g, '')
+        .replace(/(\d{5})(\d)/, '$1-$2')
+        .replace(/(-\d{3})\d+?$/, '$1'))
 
-    const maskTelefone = (value) => {
-        return setTelefone(value
-            .replace(/\D/g, '')
-            .replace(/(\d{2})(\d)/, '($1) $2')
-            .replace(/(\d{4})(\d)/, '$1-$2')
-            .replace(/(\d{4})-(\d)(\d{4})/, '$1$2-$3')
-            .replace(/(-\d{4})\d+?$/, '$1'))
-    }
+    const maskTelefone = (value) => setTelefone(value
+        .replace(/\D/g, '')
+        .replace(/(\d{2})(\d)/, '($1) $2')
+        .replace(/(\d{4})(\d)/, '$1-$2')
+        .replace(/(\d{4})-(\d)(\d{4})/, '$1$2-$3')
+        .replace(/(-\d{4})\d+?$/, '$1'))
 
-    const maskCelular = (value) => {
-        return setCelular(value
-            .replace(/\D/g, '')
-            .replace(/(\d{2})(\d)/, '($1) $2')
-            .replace(/(\d{4})(\d)/, '$1-$2')
-            .replace(/(\d{4})-(\d)(\d{4})/, '$1$2-$3')
-            .replace(/(-\d{4})\d+?$/, '$1'))
-    }
+    const maskCelular = (value) => setCelular(value
+        .replace(/\D/g, '')
+        .replace(/(\d{2})(\d)/, '($1) $2')
+        .replace(/(\d{4})(\d)/, '$1-$2')
+        .replace(/(\d{4})-(\d)(\d{4})/, '$1$2-$3')
+        .replace(/(-\d{4})\d+?$/, '$1'))
 
     const onBlurCep = (event) => {
-
         const { value } = event.target
-
-        const cep = value?.replace(/[^0-9]/g, '');
-
-        if (cep?.length !== 8) {
-            return;
-        }
-
-        axios.get(`https://viacep.com.br/ws/${value}/json/`)
-            .then(res => {
-
-                const data = res.data
-
-                setLogradouro(data.logradouro)
-                setCidade(data.localidade)
-                setEstado(data.uf)
-            })
+        const cepClean = value?.replace(/[^0-9]/g, '')
+        if (cepClean?.length !== 8) return
+        axios.get(`https://viacep.com.br/ws/${value}/json/`).then(res => {
+            setLogradouro(res.data.logradouro)
+            setCidade(res.data.localidade)
+            setEstado(res.data.uf)
+        })
     }
 
     const validate = () => {
-
         removeInputError()
-
         if (!companyName || !cidade || !celular || !email) {
             if (!companyName) document.getElementById("companyNameItem").classList.add('inputError')
             if (!celular) document.getElementById("celularItem").classList.add('inputError')
@@ -165,262 +129,302 @@ export default function companyEdit() {
             scrollTo('pageTop')
             return false
         }
-        else return true
-
+        return true
     }
 
     const handleSave = async (company_id) => {
-
         setLoadingSave(true)
-
-        const blobFile = await fetch(logoPreview).then(r => r.blob());
-
-
+        const blobFile = await fetch(logoPreview).then(r => r.blob())
         const newLogo = logoPreview ? await createImageUrl([blobFile], "AVALIAIMOBI_LOGO_IMG") : ''
-        // const newHeaderImg = headerImgPreview ? await createImageUrl([headerImgPreview], "AVALIAIMOBI_HEADER_IMG") : ''
-
         const isValid = validate()
-
         if (isValid) {
-
-            const data = {
-                token,
-                company_id,
-                user_id: token.sub,
-                companyName,
-                companyCreci,
-                telefone,
-                celular,
-                email,
-                cep,
-                logradouro,
-                numero,
-                cidade,
-                estado,
+            await axios.post(`${baseUrl()}/api/companyEdit`, {
+                token, company_id, user_id: token.sub,
+                companyName, companyCreci, telefone, celular, email,
+                cep, logradouro, numero, cidade, estado,
                 logo: newLogo ? newLogo[0].url : logo,
-                backgroundImg_id: backgroundImg_id
-            }
-
-            await axios.post(`${baseUrl()}/api/companyEdit`, data)
-                .then(res => {
-                    localStorage.setItem('auth', (Cookies.get('auth')))
-                    router.push('/')
-                    setLoadingSave(false)
-
-                }).catch(e => {
-                    setLoadingSave(false)
-
-                })
-
+                backgroundImg_id,
+            }).then(() => {
+                localStorage.setItem('auth', Cookies.get('auth'))
+                router.push('/')
+                setLoadingSave(false)
+            }).catch(() => setLoadingSave(false))
         } else {
             setLoadingSave(false)
-            return
         }
     }
 
     const handleHeaderIgmPreview = (_id) => {
-
-        const image_id = backgroundImages.find(elem => elem._id === _id)
-
-        return (image_id.imageUrl)
-
+        const found = backgroundImages.find(elem => elem._id === _id)
+        return found?.imageUrl
     }
 
     const handleFileChange = file => {
-
-
-        if (file) {
-            setSelectFile(URL.createObjectURL(file))
-            setTimeout(() => {
-                var modal = document.getElementById('cropperImageModal')
-                var cropperModal = new bootstrap.Modal(modal)
-                cropperModal.show()
-            }, 20)
-        } else {
-            return
-        }
+        if (!file) return
+        setSelectFile(URL.createObjectURL(file))
+        setTimeout(() => {
+            var modal = document.getElementById('cropperImageModal')
+            var cropperModal = new bootstrap.Modal(modal)
+            cropperModal.show()
+        }, 20)
     }
 
-
+    const currentHeaderSrc = backgroundImg_id ? handleHeaderIgmPreview(backgroundImg_id) : null;
 
     return (
-        <div >
+        <div id="pageTop">
             <Title title={'Editar Imobiliária'} backButton='/' />
-            {loadingPage ?
-                <SpinnerLG />
-                :
+
+            {loadingPage ? <SpinnerLG /> : (
                 <>
+                    <CropperImageModal
+                        selectFile={selectFile}
+                        setResult={value => setLogoPreview(value)}
+                    />
+                    <ImageHeaderModal
+                        backgroundImages={backgroundImages}
+                        backgroundImg_id={backgroundImg_id}
+                        setBackgroundImg_id={value => setBackgroundImg_id(value)}
+                        backgroundImagesData={() => backgroundImagesData(token.company_id)}
+                    />
 
-                    <CropperImageModal selectFile={selectFile} setResult={value => {setLogoPreview(value);console.log("value", value)}} />
+                    <div className={`pagesContent ${styles.page}`}>
 
+                        {/* ── Imagens (Logo + Capa) ── */}
+                        <div className={styles.imageRow}>
 
-                    <ImageHeaderModal backgroundImages={backgroundImages} backgroundImg_id={backgroundImg_id} setBackgroundImg_id={value => setBackgroundImg_id(value)} backgroundImagesData={() => backgroundImagesData(token.company_id)} />
-
-                    <div className="pagesContent shadow fadeItem" id="pageTop">
-                        <div className="row d-flex justify-content-center">
-                            <div className="col-12 col-sm-5 d-flex">
-                                <div className="col-12">
-                                    <div className="row">
-
-                                        <div className="d-flex justify-content-between">
-                                            <input type="file" name="image/*" id="logoItem" accept="image/*" onChange={e => setLogoPreview(e.target.files[0])}
-                                                className="form-input" hidden />
-                                            <label className=" fw-bold">Logo</label>
-                                            <label htmlFor="logoItem" className="span" type='button'>Editar</label>
-                                        </div>
-                                        <div>
-                                            <span className="small">Esta imagem será usada em seu cartão de visitas e nas suas apresentações.</span>
-
-                                        </div>
-                                        <StyledDropzone setFiles={array => { handleFileChange(array[0]) }} img baseStyle={(!logo && !logoPreview) ? true : false}>
-                                            <div className="row mt-3 d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
-
-                                                <div className="col-12 d-flex justify-content-center align-items-center" >
-                                                    {logoPreview ?
-                                                        <img src={logoPreview} alt="logo" id="logoItem" className="logoEdit fadeItem" />
-                                                        :
-                                                        <>
-                                                            {logo ?
-                                                                <img src={logo} alt="logo" id="logoItem" className="logoEdit fadeItem" />
-                                                                :
-                                                                
-                                                                            <small className="text-center small">
-                                                                                Clique aqui ou arraste a imagem
-                                                                            </small>
-                                                            }
-                                                        </>
-                                                    }
-
-                                                </div>
-                                            </div>
-                                        </StyledDropzone>
-                                    </div>
-                                    <hr />
-                                    <div className="row">
-
-
-                                        <div className="d-flex justify-content-between">
-                                            <span className=" fw-bold" data-bs-toggle="modal" data-bs-target="#ImageHeaderModal">Imagem de capa</span>
-                                            <span className="span" type='button' data-bs-toggle="modal" data-bs-target="#ImageHeaderModal">Editar</span>
-                                        </div>
-                                        <div>
-                                            <span className="small">Esta imagem será usada em seu cartão de visitas e nas suas apresentações.</span>
-
-                                        </div>
-
-                                        <div className="row mt-3 d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
-                                            <div className="col-12 d-flex justify-content-center" >
-                                                {backgroundImg_id ?
-                                                    <img className="headerImgEdit fadeItem" type="button"
-                                                        src={handleHeaderIgmPreview(backgroundImg_id)} alt="header image" id="headerImgItem"
-                                                        data-bs-toggle="modal" data-bs-target="#ImageHeaderModal" />
-                                                    :
-                                                    <button className="btn btn-orange" data-bs-toggle="modal" data-bs-target="#ImageHeaderModal" >
-                                                        Selecionar imagem
-                                                    </button>
-                                                }
-                                            </div>
-
-                                        </div>
-
-
-
-
-
-
-                                    </div>
+                            {/* Logo */}
+                            <div className={styles.imageCard}>
+                                <div className={styles.imageCardHeader}>
+                                    <p className={styles.imageCardTitle}>Logo</p>
+                                    <label htmlFor="logoFileInput" className={styles.imageCardEditBtn}>
+                                        <FontAwesomeIcon icon={faPen} />
+                                        Editar
+                                    </label>
                                 </div>
+                                <p className={styles.imageCardSubtitle}>
+                                    Usada no cartão de visitas e apresentações.
+                                </p>
+                                <label htmlFor="logoFileInput" className={styles.logoZone}>
+                                    <input
+                                        type="file"
+                                        id="logoFileInput"
+                                        accept="image/*"
+                                        onChange={e => handleFileChange(e.target.files[0])}
+                                    />
+                                    {(logoPreview || logo) ? (
+                                        <img src={logoPreview || logo} alt="Logo" className={styles.logoImg} />
+                                    ) : (
+                                        <div className={styles.logoPlaceholder}>
+                                            <span><FontAwesomeIcon icon={faCloudArrowUp} /></span>
+                                            Clique ou arraste a imagem
+                                        </div>
+                                    )}
+                                </label>
                             </div>
-                            {window2Mobile() && (
-                                <VerticalLine />
-                            )}
-                            <div className="col-12 col-sm-6 d-flex">
-                                <div className="col-12">
-                                    {!window2Mobile() && (<hr />)}
-                                    <div className="row">
-                                        <label for="companyNameItem" className="form-label fw-bold">Imobiliária</label>
-                                        <div className="col-12 col-lg-8 my-2">
-                                            <label htmlFor="companyNameItem">Nome da Imobiliária *</label>
-                                            <input type="text" className="form-control" id="companyNameItem" value={companyName} onChange={e => setCompanyName(e.target.value)} placeholder="Digite aqui..." />
-                                        </div>
-                                        <div className="col-12 col-lg-4 my-2">
-                                            <label htmlFor="companyCreciItem">Creci da Imobiliária</label>
-                                            <input type="text" className="form-control" id="companyCreciItem" value={companyCreci} onChange={e => setCompanyCreci(e.target.value)} placeholder="Creci" />
-                                        </div>
-                                    </div>
-                                    {!window2Mobile() && (<hr />)}
 
-                                    <div className="row mt-3">
-                                        <label for="cepItem" className="form-label fw-bold">Endereço</label>
-                                        <div className="col-12 col-lg-4 my-2">
-                                            <label htmlFor="cepItem">CEP</label>
-                                            <input type="text" className="form-control" id="cepItem" value={cep} onChange={e => maskCep(e.target.value)} onBlur={e => onBlurCep(e)} placeholder="CEP" />
+                            {/* Capa */}
+                            <div className={styles.imageCard}>
+                                <div className={styles.imageCardHeader}>
+                                    <p className={styles.imageCardTitle}>Imagem de capa</p>
+                                    <button
+                                        className={styles.imageCardEditBtn}
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#ImageHeaderModal"
+                                        type="button"
+                                    >
+                                        <FontAwesomeIcon icon={faPen} />
+                                        Editar
+                                    </button>
+                                </div>
+                                <p className={styles.imageCardSubtitle}>
+                                    Usada no cartão de visitas e apresentações.
+                                </p>
+                                <div
+                                    className={styles.headerZone}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#ImageHeaderModal"
+                                >
+                                    {currentHeaderSrc ? (
+                                        <img src={currentHeaderSrc} alt="Capa" className={styles.headerImg} />
+                                    ) : (
+                                        <div className={styles.headerPlaceholder}>
+                                            <span><FontAwesomeIcon icon={faCloudArrowUp} /></span>
+                                            Selecionar imagem
                                         </div>
-                                        <div className="col-12 col-lg-8 my-2">
-                                            <label htmlFor="logradouroItem">Logradouro</label>
-                                            <input type="text" className="form-control" id="logradouroItem" value={logradouro} onChange={e => setLogradouro(e.target.value)} placeholder="Logradouro" />
-                                        </div>
-                                        <div className="col-12 col-lg-4 my-2">
-                                            <label htmlFor="bairroItem">Número</label>
-                                            <input type="text" className="form-control" id="numeroItem" value={numero} onChange={e => setNumero(e.target.value)} placeholder="Número" />
-                                        </div>
-                                        <div className="col-12 col-lg-6 my-2">
-                                            <label htmlFor="cidadeItem">Cidade *</label>
-                                            <input type="text" className="form-control" id="cidadeItem" value={cidade} onChange={e => setCidade(e.target.value)} placeholder="Cidade *" />
-                                        </div>
-                                        <div className="col-12 col-lg-2 my-2">
-                                            <label htmlFor="estadoItem">Estado *</label>
-                                            <select className="form-select " placeholder="Estado" value={estado} onChange={(e) => setEstado(e.target.value)}>
-                                                <EstadosList />
-                                            </select>
-                                            {/* <input type="text" className="form-control" id="estadoItem" value={estado} onChange={e => setEstado(e.target.value)} placeholder="Estado *" /> */}
-                                        </div>
-                                    </div>
-                                    {!window2Mobile() && (<hr />)}
-
-                                    <div className="row mt-3">
-                                        <label for="telefoneItem" className="form-label fw-bold">Contatos</label>
-                                        <div className="col-12 col-lg-6 my-2">
-                                            <label htmlFor="telefoneItem">Telefone</label>
-                                            <input type="text" className="form-control" id="telefoneItem" value={telefone} onChange={e => maskTelefone(e.target.value)} placeholder="Telefone" />
-                                        </div>
-                                        <div className="col-12 col-lg-6 my-2">
-                                            <label htmlFor="celularItem">Celular *</label>
-                                            <input type="text" className="form-control" id="celularItem" value={celular} onChange={e => maskCelular(e.target.value)} placeholder="Celular *" />
-                                        </div>
-                                        <div className="col-12 col-lg-12 my-2">
-                                            <label htmlFor="emailItem">E-mail *</label>
-                                            <input type="text" className="form-control" id="emailItem" value={email} onChange={e => setEmail(e.target.value)} placeholder="E-mail *" />
-                                        </div>
-                                    </div>
-                                    <span className="small">
-                                        * Campos obrigatórios
-                                    </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
-                        <hr />
-                        <FixedTopicsBottom >
 
-                            <div className="row">
-                                <div className="col-12 d-flex justify-content-end">
-                                    <Link href="/">
-                                        <button className="btn btn-sm btn-secondary">Cancelar</button>
-                                    </Link>
-                                    {loadingSave ?
-                                        <button className="ms-2 btn btn-sm btn-orange px-4" disabled><SpinnerSM /></button>
-                                        :
-                                        <button className="ms-2 btn btn-sm btn-orange" onClick={() => handleSave(token.company_id)}>Salvar</button>
-                                    }
+                        {/* ── Imobiliária ── */}
+                        <TitleLabel>Imobiliária</TitleLabel>
+                        <div className={styles.section}>
+                            <div className="row g-3">
+                                <div className="col-12 col-md-8">
+                                    <Input
+                                        type="text"
+                                        label="Nome da Imobiliária"
+                                        required
+                                        id="companyNameItem"
+                                        icon={faBuilding}
+                                        value={companyName}
+                                        onChange={e => setCompanyName(e.target.value)}
+                                        placeholder="Ex: Imobiliária Horizonte"
+                                    />
                                 </div>
+                                <div className="col-12 col-md-4">
+                                    <Input
+                                        type="text"
+                                        label="CRECI"
+                                        id="companyCreciItem"
+                                        icon={faHashtag}
+                                        value={companyCreci}
+                                        onChange={e => setCompanyCreci(e.target.value)}
+                                        placeholder="Ex: 12345-J"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ── Endereço ── */}
+                        <TitleLabel>Endereço</TitleLabel>
+                        <div className={styles.section}>
+                            <div className="row g-3">
+                                <div className="col-12 col-md-4">
+                                    <Input
+                                        type="text"
+                                        label="CEP"
+                                        id="cepItem"
+                                        icon={faLocationDot}
+                                        value={cep}
+                                        onChange={e => maskCep(e.target.value)}
+                                        onBlur={e => onBlurCep(e)}
+                                        placeholder="00000-000"
+                                        hint="Preenchimento automático"
+                                    />
+                                </div>
+                                <div className="col-12 col-md-8">
+                                    <Input
+                                        type="text"
+                                        label="Logradouro"
+                                        id="logradouroItem"
+                                        icon={faRoad}
+                                        value={logradouro}
+                                        onChange={e => setLogradouro(e.target.value)}
+                                        placeholder="Ex: Rua das Flores"
+                                    />
+                                </div>
+                                <div className="col-12 col-md-3">
+                                    <Input
+                                        type="text"
+                                        label="Número"
+                                        id="numeroItem"
+                                        icon={faHashtag}
+                                        value={numero}
+                                        onChange={e => setNumero(e.target.value)}
+                                        placeholder="Ex: 123"
+                                    />
+                                </div>
+                                <div className="col-12 col-md-7">
+                                    <Input
+                                        type="text"
+                                        label="Cidade"
+                                        required
+                                        id="cidadeItem"
+                                        icon={faCity}
+                                        value={cidade}
+                                        onChange={e => setCidade(e.target.value)}
+                                        placeholder="Ex: São Paulo"
+                                    />
+                                </div>
+                                <div className="col-12 col-md-2">
+                                    <div className={styles.selectWrap}>
+                                        <label className={styles.selectLabel}>UF</label>
+                                        <select
+                                            className={styles.nativeSelect}
+                                            id="estadoItem"
+                                            value={estado}
+                                            onChange={e => setEstado(e.target.value)}
+                                        >
+                                            <EstadosList />
+                                        </select>
+                                        <span className={styles.selectArrow}>
+                                            <FontAwesomeIcon icon={faChevronDown} />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ── Contatos ── */}
+                        <TitleLabel>Contatos</TitleLabel>
+                        <div className={styles.section}>
+                            <div className="row g-3">
+                                <div className="col-12 col-md-6">
+                                    <Input
+                                        type="text"
+                                        label="Telefone"
+                                        id="telefoneItem"
+                                        icon={faPhone}
+                                        value={telefone}
+                                        onChange={e => maskTelefone(e.target.value)}
+                                        placeholder="(00) 0000-0000"
+                                    />
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <Input
+                                        type="text"
+                                        label="Celular"
+                                        required
+                                        id="celularItem"
+                                        icon={faMobileScreen}
+                                        value={celular}
+                                        onChange={e => maskCelular(e.target.value)}
+                                        placeholder="(00) 00000-0000"
+                                    />
+                                </div>
+                                <div className="col-12">
+                                    <Input
+                                        type="email"
+                                        label="E-mail"
+                                        required
+                                        id="emailItem"
+                                        icon={faEnvelope}
+                                        value={email}
+                                        onChange={e => setEmail(e.target.value)}
+                                        placeholder="Ex: contato@imobiliaria.com"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <p className={styles.required}>* Campos obrigatórios</p>
+
+                        {/* ── Footer ── */}
+                        <FixedTopicsBottom>
+                            <div className={styles.footerBar}>
+                                <Link href="/" className={styles.btnCancel}>
+                                    Cancelar
+                                </Link>
+                                {loadingSave ? (
+                                    <button className={styles.btnSave} disabled>
+                                        <SpinnerSM />
+                                    </button>
+                                ) : (
+                                    <button
+                                        className={styles.btnSave}
+                                        onClick={() => handleSave(token.company_id)}
+                                    >
+                                        Salvar alterações
+                                    </button>
+                                )}
                             </div>
                         </FixedTopicsBottom>
                     </div>
+
                 </>
-
-            }
-
+            )}
         </div>
-
     )
 }

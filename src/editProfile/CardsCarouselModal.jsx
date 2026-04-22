@@ -18,25 +18,28 @@ export default function CardsCarouselModal(props) {
                     </div>
                     <div class="modal-body">
                         <div className="row" >
-                            <CardsCarousel mobileView
-                            firstName={props.firstName}
-                                lastName={props.lastName}
-                                creci={props.creci}
-                                email={props.email}
-                                celular={props.celular}
-                                telefone={props.telefone}
-                                profileImageUrl={props.profileImageUrl}
-                                headerImg={props.headerImg}
-                                logo={props.logo}
-                                logradouro={props.logradouro}
-                                numero={props.numero}
-                                cidade={props.cidade}
-                                estado={props.estado} />
+                            <div className="col-12 d-flex justify-content-center">
+
+                                <CardsCarousel mobileView
+                                    firstName={props.firstName}
+                                    lastName={props.lastName}
+                                    creci={props.creci}
+                                    email={props.email}
+                                    celular={props.celular}
+                                    telefone={props.telefone}
+                                    profileImageUrl={props.profileImageUrl}
+                                    headerImg={props.headerImg}
+                                    logo={props.logo}
+                                    logradouro={props.logradouro}
+                                    numero={props.numero}
+                                    cidade={props.cidade}
+                                    estado={props.estado} />
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>
-                         </div>
+                    </div>
                 </div>
             </div>
         </div>

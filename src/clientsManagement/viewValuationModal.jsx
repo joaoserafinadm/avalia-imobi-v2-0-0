@@ -1,15 +1,13 @@
 import { useState } from "react";
 import Sections from "../components/Sections";
 import { generatePDF } from "../../utils/generatePdf";
-
-
-
+import Modal, { ModalBtnSecondary, ModalBtnPrimary } from "../components/Modal";
+import { faChartLine, faDownload, faShareNodes } from "@fortawesome/free-solid-svg-icons";
 
 export default function ViewValuationModal(props) {
 
     const valuationUrl = props?.clientSelected?.valuation?.urlToken
     const userData = props?.userData
-
     const token = props.token
 
     const [section, setSection] = useState('Apresentação')
@@ -27,52 +25,70 @@ export default function ViewValuationModal(props) {
         }
     }
 
-
-
-
     return (
-        <div class="modal fade" id="viewValuationModal" tabindex="-1" aria-labelledby="Modal" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content" style={{ background: 'linear-gradient(145deg,#0d1420 0%,#111827 60%,#0f1b2d 100%)', border: '1px solid rgba(245,135,79,0.15)', color: '#cacaca' }}>
-                    <div class="modal-header" style={{ background: '#0d1420', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-                        <h5 class="modal-title bold" style={{ color: 'rgba(255,255,255,0.9)' }}>Avaliação - Apresentação</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div className="modal-body-lg" style={{ height: "100vh" }}>
+        <Modal
+            id="viewValuationModal"
+            title="Avaliação"
+            subtitle="Visualização da apresentação"
+            icon={faChartLine}
+            size="xl"
+            footer={
+                <>
+                    <ModalBtnSecondary onClick={() => props.setClientSelected('')}>
+                        Fechar
+                    </ModalBtnSecondary>
+                    <ModalBtnPrimary
+                        dismiss={false}
+                        icon={faDownload}
+                        onClick={() => generatePDF('valuationPdf', userData?.companyName)}
+                    >
+                        Baixar PDF
+                    </ModalBtnPrimary>
+                    <ModalBtnPrimary
+                        dismiss={false}
+                        icon={faShareNodes}
+                        onClick={() => handleShare(valuationUrl + '&userId=' + token.sub)}
+                    >
+                        Compartilhar
+                    </ModalBtnPrimary>
+                </>
+            }
+        >
+            <div
+                className="container carousel"
+                data-bs-touch="false"
+                data-bs-interval="false"
+                id="showValuationSection"
+                style={{ height: '60vh' }}
+            >
+                <Sections
+                    section={section}
+                    idTarget="showValuationSection"
+                    setSection={value => setSection(value)}
+                    sections={["Apresentação"]}
+                />
 
-                        <div className="container carousel  " style={{ height: "80%" }} data-bs-touch="false" data-bs-interval='false' id="showValuationSection">
-
-                            <Sections section={section} idTarget="showValuationSection"
-                                setSection={value => setSection(value)}
-                                sections={["Apresentação"]} />
-                            {/* <Sections section={section} idTarget="showValuationSection"
-                                setSection={value => setSection(value)}
-                                sections={["Apresentação", "PDF"]} /> */}
-
-
-
-                            <div className="carousel-inner " style={{ height: "100%" }}>
-                                <div className="carousel-item active" style={{ height: "100%" }}>
-                                    {valuationUrl && (
-
-                                        <iframe src={valuationUrl + '&userId=' + token.sub + '&disabled=true'} width="100%" height="550px" style={{ height: "100%" }} frameborder="0" allowfullscreen></iframe>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="carousel-inner ">
-                                <div className="carousel-item ">
-                                    {valuationUrl}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="modal-footer" style={{ background: '#0d1420', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-                        <button type="button" class="btn btn-sm" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#cacaca' }} data-bs-dismiss="modal" onClick={() => props.setClientSelected('')}>Fechar</button>
-                        <button type="button" class="btn btn-orange btn-sm" onClick={() => generatePDF('valuationPdf', userData?.companyName)}>Baixar PDF</button>
-                        <button type="button" class="btn btn-orange btn-sm" onClick={() => handleShare(valuationUrl + '&userId=' + token.sub)}>Compartilhar apresentação</button>
+                <div className="carousel-inner" style={{ height: '100%' }}>
+                    <div className="carousel-item active" style={{ height: '100%' }}>
+                        {valuationUrl && (
+                            <iframe
+                                src={valuationUrl + '&userId=' + token.sub + '&disabled=true'}
+                                width="100%"
+                                height="100%"
+                                frameBorder="0"
+                                allowFullScreen
+                            />
+                        )}
                     </div>
                 </div>
+
+                <div className="carousel-inner">
+                    <div className="carousel-item">
+                        {valuationUrl}
+                    </div>
+                </div>
+
             </div>
-        </div>
+        </Modal>
     )
 }

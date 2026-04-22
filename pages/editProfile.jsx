@@ -2,29 +2,29 @@ import { useEffect } from "react";
 import Title from "../src/components/title/Title2";
 import navbarHide from "../utils/navbarHide.js";
 import { useDispatch } from "react-redux";
-import PortraitCard from "../src/components/userCard/PortraitCard";
 import Link from "next/link";
-import window2Mobile from "../utils/window2Mobile";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import { SpinnerLG, SpinnerSM } from "../src/components/loading/Spinners";
-import StyledDropzone from "../src/components/styledDropzone/StyledDropzone";
-import VerticalLine from "../utils/VerticalLine";
-import LandscapeCard from "../src/components/userCard/LandscapeCard";
-import CardsCarousel from "../src/editProfile/CardsCarousel";
 import CropperImageModal from "../src/companyEdit/CropperImageModal";
 import CardsCarouselModal from "../src/editProfile/CardsCarouselModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faIdCard } from "@fortawesome/free-solid-svg-icons";
+import {
+    faIdCard, faUser, faEnvelope, faPhone, faMobileScreen,
+    faAddressCard, faCameraRotate,
+} from "@fortawesome/free-solid-svg-icons";
 import { FixedTopicsBottom, FixedTopicsTop } from "../src/components/fixedTopics";
 import scrollTo from "../utils/scrollTo";
 import removeInputError from "../utils/removeInputError";
 import { createImageUrl } from "../utils/createImageUrl";
 import { useRouter } from "next/router";
 import { closeModal, modalClose } from "../utils/modalControl.js";
+import Input from "../src/components/Input";
+import TitleLabel from "../src/components/TitleLabel";
+import styles from "./editProfile.module.scss";
 
 
 
@@ -190,194 +190,196 @@ export default function EditProfile() {
     }
 
 
+    const avatarSrc = profileImageUrlReview || profileImageUrl
+        || 'https://res.cloudinary.com/dywdcjj76/image/upload/v1695257785/PUBLIC/companyLogoTemplate_xoeyar.png';
+
+    const cardProps = {
+        firstName, lastName, creci,
+        email: workEmail, celular, telefone,
+        profileImageUrl: avatarSrc,
+        headerImg, logo, logradouro, numero, cidade, estado,
+    };
+
     return (
         <div id="pageTop">
             <Title title={'Meu perfil'} backButton='/' subtitle="Mantenha sempre suas informações atualizadas" />
-            {loadingPage ?
-                <SpinnerLG />
-                :
-                <>
 
+            {loadingPage ? <SpinnerLG /> : (
+                <>
                     <CropperImageModal selectFile={selectFile} setResult={value => setProfileImageUrlReview(value)} aspect={1 / 1} />
 
+                    {/* Modal de cartão (mobile) */}
+                    <CardsCarouselModal {...cardProps} />
 
+                    <div className={`pagesContent ${styles.page}`}>
 
-                    <div className="pagesContent shadow fadeItem">
-                        <div className="row d-flex justify-content-center">
-                            {window2Mobile() && (
-                                <CardsCarousel firstName={firstName}
-                                    lastName={lastName}
-                                    creci={creci}
-                                    email={workEmail}
-                                    celular={celular}
-                                    telefone={telefone}
-                                    profileImageUrl={profileImageUrlReview ? profileImageUrlReview : profileImageUrl}
-                                    headerImg={headerImg}
-                                    logo={logo}
-                                    logradouro={logradouro}
-                                    numero={numero}
-                                    cidade={cidade}
-                                    estado={estado} />
-                            )}
+                        {/* ── Avatar ── */}
+                        <div className={styles.avatarSection}>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                id="logoItem"
+                                className={styles.fileHidden}
+                                onChange={e => handleFileChange(e.target.files[0])}
+                            />
+                            <label htmlFor="logoItem" className={styles.avatarWrap}>
+                                <img src={avatarSrc} alt="Foto de perfil" className={styles.avatarImg} />
+                                <span className={styles.avatarOverlay}>
+                                    <FontAwesomeIcon icon={faCameraRotate} />
+                                </span>
+                            </label>
 
-                            {window2Mobile() && (
-                                <VerticalLine />
-                            )}
-                            <div className="col-sm-5 col-12">
-                                {!window2Mobile() && (
-                                    <>
-                                        <div className="row" >
-                                            <CardsCarouselModal firstName={firstName}
-                                                lastName={lastName}
-                                                creci={creci}
-                                                email={workEmail}
-                                                celular={celular}
-                                                telefone={telefone}
-                                                profileImageUrl={profileImageUrlReview ? profileImageUrlReview : profileImageUrl}
-                                                headerImg={headerImg}
-                                                logo={logo}
-                                                logradouro={logradouro}
-                                                numero={numero}
-                                                cidade={cidade}
-                                                estado={estado} />
-
-                                            <FixedTopicsTop>
-
-                                                <div className="col-12 d-flex justify-content-end " >
-                                                    <button className="btn btn-sm btn-orange" data-bs-toggle="modal" data-bs-target="#CardsCarouselModal"  >
-                                                        <FontAwesomeIcon icon={faIdCard} className="icon me-2" /> Cartão
-                                                    </button>
-                                                </div>
-                                            </FixedTopicsTop>
-
-                                        </div>
-                                        <hr />
-                                    </>
-
-                                )}
-                                <div className="row">
-                                    <div className="col-12">
-
-
-                                        <div className="row">
-
-                                            <div className="d-flex justify-content-between">
-                                                <input type="file" name="image/*" id="logoItem" accept="image/*" onChange={e => handleFileChange(e.target.files[0])}
-                                                    className="form-input" hidden />
-                                                <label className=" fw-bold">Imagem de perfil</label>
-                                                <label htmlFor="logoItem" className="span" type='button'>Editar</label>
-                                            </div>
-                                            <StyledDropzone setFiles={array => { handleFileChange(array[0]) }} img>
-                                                <div className="row mt-3 d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
-
-                                                    <div className="col-12 d-flex justify-content-center align-items-center" >
-                                                        {profileImageUrlReview ?
-                                                            <img src={profileImageUrlReview} alt="logo" id="logoItem" className="editProfileImage fadeItem" />
-                                                            :
-                                                            <>
-                                                                {profileImageUrl ?
-                                                                    <img src={profileImageUrl} alt="logo" id="logoItem" className="editProfileImage fadeItem" />
-                                                                    :
-                                                                    <img src="https://res.cloudinary.com/dywdcjj76/image/upload/v1695257785/PUBLIC/companyLogoTemplate_xoeyar.png"
-                                                                        alt="" className="editProfileImage"
-                                                                        type="button" />
-                                                                }
-                                                            </>
-
-                                                        }
-
-
-                                                    </div>
-                                                </div>
-                                            </StyledDropzone>
-                                            {/* <StyledDropzone setFiles={array => { setProfileImageUrlReview(array[0]) }} img>
-                                            <div className="row mt-3 d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
-
-                                                <div className="col-12 d-flex justify-content-center align-items-center" >
-                                                    {profileImageUrlReview ?
-                                                        <img src={URL.createObjectURL(profileImageUrlReview)} alt="logo" id="logoItem" className="logoEdit fadeItem" />
-                                                        :
-                                                        <>
-                                                            {profileImageUrl ?
-                                                                <img src={profileImageUrl} alt="logo" id="logoItem" className="logoEdit fadeItem" />
-                                                                :
-                                                                <img src="https://res.cloudinary.com/dywdcjj76/image/upload/v1695257785/PUBLIC/companyLogoTemplate_xoeyar.png"
-                                                                    alt="" className="logoEdit"
-                                                                    type="button" />
-                                                            }
-                                                        </>
-
-                                                    }
-
-
-                                                </div>
-                                            </div>
-                                        </StyledDropzone> */}
-                                        </div>
-
-                                    </div>
-                                    <div className="row mt-3">
-                                        <label for="firstNameItem" className="form-label fw-bold">Identificação</label>
-                                        <div className="col-12 col-lg-4 my-2">
-                                            <label for="firstNameItem" className="form-label ">Nome *</label>
-                                            <input type="text" className="form-control " id="firstNameItem" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="" />
-                                        </div>
-                                        <div className="col-12 col-lg-4 my-2">
-                                            <label for="LastNameItem" className="form-label ">Sobrenome *</label>
-                                            <input type="text" className="form-control " id="lastNameItem" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="" />
-                                        </div>
-                                        <div className="col-12 col-lg-4 my-2">
-                                            <label for="creciItem" className="form-label ">Creci *</label>
-                                            <input type="text" className="form-control " id="creciItem" value={creci} onChange={e => setCreci(e.target.value)} placeholder="" />
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <label for="workEmailItem" className="form-label fw-bold">Contato</label>
-                                        <div className="col-12 col-lg-6 my-2">
-                                            <label for="workEmailItem" className="form-label ">E-mail de cadastro</label>
-                                            <input type="text" className="form-control " disabled id="workEmailItem" value={Email} onChange={e => setEmail(e.target.value)} placeholder="" />
-                                        </div>
-                                        <div className="col-12 col-lg-6 my-2">
-                                            <label for="secondaEmailItem" className="form-label ">E-mail de trabalho *</label>
-                                            <input type="text" className="form-control " id="secondaEmailItem" value={workEmail} onChange={e => setWorkEmail(e.target.value)} placeholder="" />
-                                        </div>
-                                        <div className="col-12 col-lg-6 my-2">
-                                            <label for="telefoneItem" className="form-label ">Telefone</label>
-                                            <input type="text" className="form-control " id="telefoneItem" value={telefone} onChange={e => maskTelefone(e.target.value)} placeholder="" />
-                                        </div>
-                                        <div className="col-12 col-lg-6 my-2">
-                                            <label for="telefoneItem" className="form-label ">Celular *</label>
-                                            <input type="text" className="form-control " id="celularItem" value={celular} onChange={e => maskCelular(e.target.value)} placeholder="" />
-                                        </div>
-                                    </div>
-                                </div>
-
+                            <div className={styles.avatarInfo}>
+                                <p className={styles.avatarName}>
+                                    {firstName} {lastName}
+                                </p>
+                                <p className={styles.avatarEmail}>{Email}</p>
+                                <label htmlFor="logoItem" className={styles.avatarEditBtn}>
+                                    <FontAwesomeIcon icon={faCameraRotate} />
+                                    Alterar foto
+                                </label>
                             </div>
-
-
 
                         </div>
-                        <hr />
-                        <FixedTopicsBottom >
-                            <div className="row">
-                                <div className="col-12 d-flex justify-content-end">
-                                    <Link href="/">
+                        
 
-                                        <button className="btn btn-sm btn-secondary">Cancelar</button>
-                                    </Link>
-                                    {loadingSave ?
-                                        <button className="ms-2 btn btn-sm btn-orange px-4" disabled><SpinnerSM /></button>
-                                        :
-                                        <button className="ms-2 btn btn-sm btn-orange" onClick={() => handleSave(token.company_id)}>Salvar</button>
-                                    }
+                        {/* ── Identificação ── */}
+                        <TitleLabel>Identificação</TitleLabel>
+                        <div className={styles.section}>
+                            <div className="row g-3">
+                                <div className="col-12 col-md-4">
+                                    <Input
+                                        type="text"
+                                        label="Nome"
+                                        required
+                                        id="firstNameItem"
+                                        icon={faUser}
+                                        value={firstName}
+                                        onChange={e => setFirstName(e.target.value)}
+                                        placeholder="Ex: João"
+                                    />
+                                </div>
+                                <div className="col-12 col-md-4">
+                                    <Input
+                                        type="text"
+                                        label="Sobrenome"
+                                        required
+                                        id="lastNameItem"
+                                        icon={faUser}
+                                        value={lastName}
+                                        onChange={e => setLastName(e.target.value)}
+                                        placeholder="Ex: Silva"
+                                    />
+                                </div>
+                                <div className="col-12 col-md-4">
+                                    <Input
+                                        type="text"
+                                        label="CRECI"
+                                        required
+                                        id="creciItem"
+                                        icon={faAddressCard}
+                                        value={creci}
+                                        onChange={e => setCreci(e.target.value)}
+                                        placeholder="Ex: 123456-F"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ── Contato ── */}
+                        <TitleLabel>Contato</TitleLabel>
+                        <div className={styles.section}>
+                            <div className="row g-3">
+                                <div className="col-12 col-md-6">
+                                    <Input
+                                        type="email"
+                                        label="E-mail de cadastro"
+                                        id="workEmailItem"
+                                        icon={faEnvelope}
+                                        value={Email}
+                                        disabled
+                                        hint="Este e-mail não pode ser alterado"
+                                    />
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <Input
+                                        type="email"
+                                        label="E-mail de trabalho"
+                                        required
+                                        id="secondaEmailItem"
+                                        icon={faEnvelope}
+                                        value={workEmail}
+                                        onChange={e => setWorkEmail(e.target.value)}
+                                        placeholder="Ex: joao@imobiliaria.com"
+                                    />
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <Input
+                                        type="text"
+                                        label="Telefone"
+                                        id="telefoneItem"
+                                        icon={faPhone}
+                                        value={telefone}
+                                        onChange={e => maskTelefone(e.target.value)}
+                                        placeholder="(00) 0000-0000"
+                                    />
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <Input
+                                        type="text"
+                                        label="Celular"
+                                        required
+                                        id="celularItem"
+                                        icon={faMobileScreen}
+                                        value={celular}
+                                        onChange={e => maskCelular(e.target.value)}
+                                        placeholder="(00) 00000-0000"
+                                    />
                                 </div>
                             </div>
 
+                        </div>
+                        <div className="col-12 d-flex justify-content-end">
+
+                            <button
+                                className={`${styles.btnCard} mb-3`}
+                                data-bs-toggle="modal"
+                                data-bs-target="#CardsCarouselModal"
+                                type="button"
+                            >
+                                <FontAwesomeIcon icon={faIdCard} />
+                                Ver cartão
+                            </button>
+                        </div>
+                        <FixedTopicsBottom>
+                            <div className={styles.footerBar}>
+
+
+                                <div className={styles.footerActions}>
+                                    <Link href="/" className={styles.btnCancel}>
+                                        Cancelar
+                                    </Link>
+                                    {loadingSave ? (
+                                        <button className={styles.btnSave} disabled>
+                                            <SpinnerSM />
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className={styles.btnSave}
+                                            onClick={() => handleSave(token.company_id)}
+                                        >
+                                            Salvar alterações
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
                         </FixedTopicsBottom>
                     </div>
-                </>
 
-            }
-        </div >
+                    {/* ── Footer ── */}
+
+                </>
+            )}
+        </div>
     )
 }

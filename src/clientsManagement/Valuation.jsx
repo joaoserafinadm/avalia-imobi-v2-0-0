@@ -4,7 +4,7 @@ import ValuationPropertyCalc from "./ValuationPropertyCalc";
 import ValuationStatus from "./ValuationStatus";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserGear, faUserTie, faShare, faDownload, faEdit, faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faUserGear, faUserTie, faShare, faDownload, faCheck, faCopy, faXmark, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { userStatusName } from "../../utils/permissions";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
@@ -13,6 +13,7 @@ import ServiceAvaliation from "./ServiceAvaliation";
 import handleShare from "../../utils/handleShare";
 import { generatePDF } from "../../utils/generatePdf";
 import { useState } from "react";
+import { HouseIcon } from "lucide-react";
 
 export default function Valuation(props) {
     const token = jwt.decode(Cookies.get("auth"));
@@ -31,10 +32,8 @@ export default function Valuation(props) {
         try {
             await navigator.clipboard.writeText(url);
             setCopied(true);
-            setTimeout(() => setCopied(false), 2000); // Reset após 2 segundos
+            setTimeout(() => setCopied(false), 2000);
         } catch (err) {
-            console.error('Erro ao copiar link:', err);
-            // Fallback para navegadores mais antigos
             const textArea = document.createElement('textarea');
             textArea.value = url;
             document.body.appendChild(textArea);
@@ -58,429 +57,220 @@ export default function Valuation(props) {
                 console.error('Erro ao compartilhar:', err);
             }
         } else {
-            // Fallback: abrir opções de compartilhamento manual
             handleCopyLink(client?.valuation?.urlToken + '&userId=' + token.sub);
         }
     };
 
+    if (!client?.valuation) {
+        return (
+            <div style={{
+                background: 'rgba(245,135,79,0.05)',
+                border: '1.5px dashed rgba(245,135,79,0.2)',
+                borderRadius: '14px', padding: '3rem 2rem',
+                textAlign: 'center', margin: '1rem 0',
+            }}>
+                <HouseIcon size={32} style={{ color: 'rgba(245,135,79,0.4)', marginBottom: '1rem' }} />
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.9rem', color: 'rgba(255,255,255,0.4)', marginBottom: '1.5rem' }}>
+                    Nenhuma avaliação foi realizada para este imóvel
+                </p>
+                <Link href={"/valuation/" + client?._id}>
+                    <button data-bs-dismiss="modal" style={{
+                        background: '#f5874f', border: 'none', borderRadius: '10px',
+                        color: '#0d1420', padding: '10px 26px',
+                        fontFamily: "'DM Sans', sans-serif", fontSize: '0.85rem', fontWeight: 700,
+                        cursor: 'pointer',
+                    }}>
+                        Avaliar imóvel
+                    </button>
+                </Link>
+            </div>
+        )
+    }
+
     return (
-        <>
-            <style jsx>{`
-                .valuation-container {
-                    backdrop-filter: blur(15px);
-                    border-radius: 20px;
-                    border: 1px solid rgba(245, 135, 79, 0.1);
-                    padding: 30px;
-                    margin: 20px 0;
-                    position: relative;
-                    overflow: hidden;
-                }
+        <div style={{ fontFamily: "'DM Sans', sans-serif" }}>
 
-                .valuation-container::before {
-                    content: "";
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    height: 4px;
-                    background: linear-gradient(90deg, #f5874f, #faa954);
-                }
-
-                .no-valuation-state {
-                    background: linear-gradient(
-                        135deg,
-                        rgba(245, 135, 79, 0.1),
-                        rgba(250, 169, 84, 0.1)
-                    );
-                    border-radius: 20px;
-                    padding: 60px 30px;
-                    text-align: center;
-                    margin: 40px 0;
-                }
-
-                .no-valuation-text {
-                    color: #5a5a5a;
-                    font-size: 1.2rem;
-                    font-weight: 500;
-                    margin-bottom: 25px;
-                }
-
-                .valuation-button-modern {
-                    background: linear-gradient(135deg, #f5874f, #faa954);
-                    border: none;
-                    color: white;
-                    padding: 15px 30px;
-                    border-radius: 25px;
-                    font-weight: 600;
-                    font-size: 1.1rem;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 4px 15px rgba(245, 135, 79, 0.3);
-                    text-decoration: none;
-                    display: inline-block;
-                    animation: pulse 2s infinite;
-                }
-
-                .valuation-button-modern:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 20px rgba(245, 135, 79, 0.4);
-                    color: white;
-                    text-decoration: none;
-                }
-
-                @keyframes pulse {
-                    0% { box-shadow: 0 4px 15px rgba(245, 135, 79, 0.3); }
-                    50% { box-shadow: 0 4px 25px rgba(245, 135, 79, 0.5); }
-                    100% { box-shadow: 0 4px 15px rgba(245, 135, 79, 0.3); }
-                }
-
-                .actions-header {
-                    display: flex;
-                    justify-content: flex-end;
-                    gap: 15px;
-                    margin-bottom: 30px;
-                    flex-wrap: wrap;
-                }
-
-                .edit-link-modern {
-                    border: 1px solid rgba(245, 135, 79, 0.2);
-                    color: #f5874f;
-                    padding: 10px 20px;
-                    border-radius: 20px;
-                    font-size: 0.9rem;
-                    font-weight: 500;
-                    text-decoration: none;
-                    transition: all 0.3s ease;
-                    backdrop-filter: blur(10px);
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                }
-
-                .edit-link-modern:hover {
-                    background: #f5874f;
-                    color: white;
-                    transform: translateY(-1px);
-                    box-shadow: 0 4px 12px rgba(245, 135, 79, 0.3);
-                    text-decoration: none;
-                }
-
-                .action-button-modern {
-                    border: 2px solid rgba(245, 135, 79, 0.2);
-                    background: none;
-                    color: #f5874f;
-                    padding: 10px 18px;
-                    border-radius: 20px;
-                    font-size: 0.9rem;
-                    font-weight: 500;
-                    transition: all 0.3s ease;
-                    backdrop-filter: blur(10px);
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                }
-
-                .action-button-modern:hover {
-                    background: #f5874f;
-                    color: white;
-                    border-color: #f5874f;
-                    transform: translateY(-1px);
-                    box-shadow: 0 4px 12px rgba(245, 135, 79, 0.3);
-                }
-
-                .status-section {
-                    border-radius: 16px;
-                    padding: 20px;
-                    margin-bottom: 25px;
-                    border: 1px solid rgba(233, 236, 239, 0.5);
-                }
-
-                .status-label {
-                    color: #5a5a5a;
-                    font-weight: 700;
-                    font-size: 1.1rem;
-                    margin-bottom: 10px;
-                    display: flex;
-                    align-items: center;
-                }
-
-                .status-label::before {
-                    content: "";
-                    width: 4px;
-                    height: 18px;
-                    background: linear-gradient(135deg, #f5874f, #faa954);
-                    border-radius: 2px;
-                    margin-right: 10px;
-                }
-
-                .evaluator-card {
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(245, 135, 79, 0.1);
-                    border-radius: 20px;
-                    padding: 25px;
-                    margin: 25px 0;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-                }
-
-                .evaluator-card:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-                }
-
-                .evaluator-header {
-                    display: flex;
-                    align-items: center;
-                    gap: 20px;
-                    border: 1px solid rgba(245, 135, 79, 0.1);
-                    border-radius: 20px;
-                    padding: 20px;
-                    margin-bottom: 20px;
-                }
-
-                .evaluator-avatar {
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 50%;
-                    border: 3px solid rgba(245, 135, 79, 0.2);
-                    object-fit: cover;
-                    transition: all 0.3s ease;
-                }
-
-                .evaluator-avatar:hover {
-                    border-color: #f5874f;
-                    transform: scale(1.05);
-                }
-
-                .evaluator-info h4 {
-                    color: #5a5a5a;
-                    font-weight: 700;
-                    margin-bottom: 5px;
-                    font-size: 1.2rem;
-                }
-
-                .evaluator-role {
-                    color: #f5874f;
-                    font-weight: 500;
-                    font-size: 0.95rem;
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                }
-
-                .comparison-section {
-                    border-radius: 20px;
-                    padding: 30px;
-                    margin-top: 30px;
-                    border: 1px solid rgba(233, 236, 239, 0.5);
-                    text-align: center;
-                }
-
-                .section-title-modern {
-                    color: #5a5a5a;
-                    font-weight: 700;
-                    font-size: 1.3rem;
-                    margin-bottom: 25px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-
-                .section-title-modern::before {
-                    content: "";
-                    width: 4px;
-                    height: 20px;
-                    background: linear-gradient(135deg, #f5874f, #faa954);
-                    border-radius: 2px;
-                    margin-right: 12px;
-                }
-
-                .divider-modern {
-                    height: 2px;
-                    background: linear-gradient(
-                        90deg,
-                        transparent,
-                        rgba(245, 135, 79, 0.3),
-                        transparent
-                    );
-                    margin: 30px 0;
-                    border: none;
-                }
-
-                @media (max-width: 768px) {
-                    .valuation-container {
-                        padding: 20px;
-                        margin: 10px 0;
-                    }
-
-                    .actions-header {
-                        justify-content: center;
-                        gap: 10px;
-                    }
-
-                    .evaluator-header {
-                        flex-direction: column;
-                        text-align: center;
-                        gap: 15px;
-                    }
-
-                    .no-valuation-state {
-                        padding: 40px 20px;
-                    }
-                }
-            `}</style>
-
-            {!client?.valuation ? (
-                <div className="no-valuation-state">
-                    <div className="no-valuation-text">
-                        Nenhuma avaliação foi realizada para este imóvel
-                    </div>
-                    <Link href={"/valuation/" + client?._id} className="valuation-button-modern" data-bs-dismiss="modal">
-                        <button className="valuation-button-modern" data-bs-dismiss="modal">
-
-                            Avaliar imóvel
-                        </button>
-                    </Link>
+            {/* ── Action bar ── */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '1.25rem' }}>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <ActionBtn icon={faShare} onClick={() => setShareButton(v => !v)}>
+                        Compartilhar
+                    </ActionBtn>
+                    <ActionBtn icon={faDownload} onClick={() => generatePDF('valuationPdf', userData.companyName)}>
+                        Baixar PDF
+                    </ActionBtn>
                 </div>
-            ) : (
-                <div className="">
-                    <div className="actions-header d-flex justify-content-between">
-                        <div className="d-flex">
-                            <button
-                                className="action-button-modern me-2"
-                                onClick={() => setShareButton(true)}
-                            >
-                                <FontAwesomeIcon icon={faShare} />
-                                Compartilhar
-                            </button>
+                <Link href={"/valuationEdit/" + client?._id} style={{ textDecoration: 'none' }}>
+                    <ActionBtn icon={faEdit} dismiss>
+                        Editar avaliação
+                    </ActionBtn>
+                </Link>
+            </div>
 
-                            <button
-                                className="action-button-modern"
-                                onClick={() => generatePDF('valuationPdf', userData.companyName)}
-                            >
-                                <FontAwesomeIcon icon={faDownload} />
-                                Baixar PDF
-                            </button>
-                        </div>
-
-                        <div>
-                            <Link href={"/valuationEdit/" + client?._id}>
-                                <button className="action-button-modern" data-bs-dismiss="modal">
-                                    Editar Avaliação
-                                </button>
-                            </Link>
-                        </div>
+            {/* ── Share panel ── */}
+            {shareButton && (
+                <div style={{
+                    background: 'rgba(245,135,79,0.05)',
+                    border: '1px solid rgba(245,135,79,0.2)',
+                    borderRadius: '12px', padding: '1rem 1.25rem',
+                    marginBottom: '1.25rem',
+                }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'rgba(255,255,255,0.65)' }}>
+                            Compartilhar avaliação
+                        </span>
+                        <button onClick={() => setShareButton(false)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer', padding: '4px' }}>
+                            <FontAwesomeIcon icon={faXmark} />
+                        </button>
                     </div>
 
-                    {shareButton && (
-                        <div className="row fadeItem mt-3">
-                            <div className="col-12">
-                                <div className="alert bg-orange text-dark">
-                                    <div className="d-flex justify-content-between align-items-center mb-2">
-                                        <h6 className="mb-0">Compartilhar Avaliação</h6>
-                                        <button
-                                            type="button"
-                                            className="btn-close"
-                                            onClick={() => setShareButton(false)}
-                                            aria-label="Fechar"
-                                        ></button>
-                                    </div>
-
-                                    {/* Campo do link */}
-                                    <div className="input-group mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control "
-                                            value={client?.valuation?.urlToken + '&userId=' + token.sub}
-                                            readOnly
-                                            placeholder="Link para compartilhamento"
-                                        />
-                                        <button
-                                            className="btn btn-outline-secondary"
-                                            type="button"
-                                            onClick={() => handleCopyLink(client?.valuation?.urlToken + '&userId=' + token.sub)}
-                                        >
-                                            <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
-                                            {copied ? 'Copiado!' : 'Copiar'}
-                                        </button>
-                                    </div>
-
-                                    {/* Botões de ação */}
-                                    <div className="d-flex gap-2">
-                                        <button
-                                            className="action-button-modern-fill flex-fill"
-                                            onClick={() => handleCopyLink(client?.valuation?.urlToken + '&userId=' + token.sub)}
-                                        >
-                                            <FontAwesomeIcon icon={faCopy} />
-                                            Copiar Link
-                                        </button>
-
-                                        <button
-                                            className="action-button-modern-fill flex-fill"
-                                            onClick={() => handleShareNative(client?.valuation?.urlToken + '&userId=' + token.sub)}
-                                        >
-                                            <FontAwesomeIcon icon={faShare} />
-                                            Compartilhar
-                                        </button>
-                                    </div>
-
-                                    {copied && (
-                                        <div className="alert alert-success mt-2 mb-0 py-2">
-                                            <small>✅ Link copiado para a área de transferência!</small>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="status-section">
-                        <div className="status-label">Status da Avaliação</div>
-                        <ValuationStatus status={client?.status} />
+                    {/* Link input + copy */}
+                    <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                        <input
+                            type="text"
+                            readOnly
+                            value={client?.valuation?.urlToken + '&userId=' + token.sub}
+                            style={{
+                                flex: 1, background: 'rgba(255,255,255,0.04)',
+                                border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px',
+                                padding: '8px 12px',
+                                fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.72rem',
+                                color: 'rgba(255,255,255,0.4)', outline: 'none',
+                                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                            }}
+                        />
+                        <button
+                            onClick={() => handleCopyLink(client?.valuation?.urlToken + '&userId=' + token.sub)}
+                            style={{
+                                background: copied ? 'rgba(52,211,153,0.15)' : 'rgba(255,255,255,0.07)',
+                                border: `1px solid ${copied ? 'rgba(52,211,153,0.3)' : 'rgba(255,255,255,0.12)'}`,
+                                borderRadius: '8px', padding: '8px 14px',
+                                fontFamily: "'DM Sans', sans-serif", fontSize: '0.78rem',
+                                color: copied ? '#34d399' : 'rgba(255,255,255,0.55)',
+                                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px',
+                                whiteSpace: 'nowrap', transition: 'all 0.2s ease',
+                            }}
+                        >
+                            <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
+                            {copied ? 'Copiado!' : 'Copiar'}
+                        </button>
                     </div>
 
-                    {client?.status === 'answered' && (
-                        <>
-                            <SelectedValue client={client} dataFunction={props.dataFunction} />
-                            <ServiceAvaliation client={client} />
-                        </>
-                    )}
-
-                    <hr />
-
-                    <div className="">
-                        <div className="status-label">Avaliação realizada por:</div>
-                        <div className="evaluator-header">
-                            <img
-                                src={valuationUser?.profileImageUrl}
-                                alt="Foto do avaliador"
-                                className="evaluator-avatar"
-                            />
-                            <div className="evaluator-info">
-                                <h4>{valuationUser?.firstName} {valuationUser?.lastName}</h4>
-                                <div className="evaluator-role">
-                                    <FontAwesomeIcon
-                                        icon={valuationUser?.userStatus === "admGlobal" ? faUserGear : faUserTie}
-                                    />
-                                    {valuationUser?.userStatus === 'admGlobal' ? 'Administrador' : 'Corretor'}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-
-
-                    <ValuationPropertyCalc client={client} />
-
-                    <hr />
-
-                    <div className=" mt-5">
-                        <h3 className="section-title-modern">
-                            Imóveis utilizados para comparação
-                        </h3>
-                        <ValuationPropertyCollection propertyArray={propertyArray} />
-                    </div>
+                    <button
+                        onClick={() => handleShareNative(client?.valuation?.urlToken + '&userId=' + token.sub)}
+                        style={{
+                            width: '100%', background: 'rgba(255,255,255,0.05)',
+                            border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px',
+                            padding: '9px', fontFamily: "'DM Sans', sans-serif", fontSize: '0.8rem',
+                            color: 'rgba(255,255,255,0.55)', cursor: 'pointer',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faShare} /> Compartilhar pelo sistema
+                    </button>
                 </div>
             )}
-        </>
+
+            {/* ── Status ── */}
+            <div style={{ marginBottom: '1.25rem' }}>
+                <SectionLabel>Status da avaliação</SectionLabel>
+                <ValuationStatus status={client?.status} />
+            </div>
+
+            {client?.status === 'answered' && (
+                <>
+                    <SelectedValue client={client} dataFunction={props.dataFunction} />
+                    <ServiceAvaliation client={client} />
+                </>
+            )}
+
+            <Divider />
+
+            {/* ── Evaluator ── */}
+            <SectionLabel>Avaliação realizada por</SectionLabel>
+            <div style={{
+                display: 'flex', alignItems: 'center', gap: '14px',
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: '12px', padding: '14px',
+                marginBottom: '1.25rem',
+            }}>
+                {valuationUser?.profileImageUrl && (
+                    <img
+                        src={valuationUser.profileImageUrl}
+                        alt="Avaliador"
+                        style={{
+                            width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover',
+                            border: '2px solid rgba(245,135,79,0.3)', flexShrink: 0,
+                        }}
+                    />
+                )}
+                <div>
+                    <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '0.95rem', color: 'rgba(255,255,255,0.85)', marginBottom: '3px' }}>
+                        {valuationUser?.firstName} {valuationUser?.lastName}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: '#f5874f' }}>
+                        <FontAwesomeIcon icon={valuationUser?.userStatus === "admGlobal" ? faUserGear : faUserTie} />
+                        {valuationUser?.userStatus === 'admGlobal' ? 'Administrador' : 'Corretor'}
+                    </div>
+                </div>
+            </div>
+
+            <Divider />
+
+            <ValuationPropertyCalc client={client} />
+
+            <Divider />
+
+            {/* ── Comparison properties ── */}
+            <SectionLabel>Imóveis utilizados para comparação</SectionLabel>
+            <ValuationPropertyCollection propertyArray={propertyArray} />
+        </div>
     );
+}
+
+function ActionBtn({ children, icon, onClick, dismiss }) {
+    return (
+        <button
+            onClick={onClick}
+            {...(dismiss ? { 'data-bs-dismiss': 'modal' } : {})}
+            style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '9px', padding: '8px 16px',
+                fontFamily: "'DM Sans', sans-serif", fontSize: '0.8rem',
+                color: 'rgba(255,255,255,0.6)', cursor: 'pointer',
+                display: 'inline-flex', alignItems: 'center', gap: '7px',
+                transition: 'background 0.18s ease, border-color 0.18s ease',
+            }}
+            onMouseEnter={e => {
+                e.currentTarget.style.background = 'rgba(245,135,79,0.1)'
+                e.currentTarget.style.borderColor = 'rgba(245,135,79,0.25)'
+                e.currentTarget.style.color = '#f5874f'
+            }}
+            onMouseLeave={e => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.05)'
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'
+                e.currentTarget.style.color = 'rgba(255,255,255,0.6)'
+            }}
+        >
+            {icon && <FontAwesomeIcon icon={icon} style={{ fontSize: '0.78rem' }} />}
+            {children}
+        </button>
+    )
+}
+
+function SectionLabel({ children }) {
+    return (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem' }}>
+            <div style={{ width: '3px', height: '13px', background: '#f5874f', borderRadius: '2px' }} />
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>
+                {children}
+            </span>
+        </div>
+    )
+}
+
+function Divider() {
+    return <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)', margin: '1.25rem 0' }} />
 }

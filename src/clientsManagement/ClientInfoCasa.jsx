@@ -1,100 +1,32 @@
-
-
-
-export default function ClientInfoCasa(props) {
-
-    const { client } = props
-
-
+export default function ClientInfoCasa({ client }) {
     return (
         <>
-            <div className="col-12 col-md-4 my-2 d-flex">
-                <div className="bold me-1">
-                    Área Total:
-                </div>
-                <div>
-                    {client?.areaTotal ? client?.areaTotal : 0} m²
-                </div>
-            </div>
-            <div className="col-12 col-md-6 my-2 d-flex">
-                <div className="bold me-1">
-                    Área Total Privativa:
-                </div>
-                <div>
-                    {client?.areaTotalPrivativa ? client?.areaTotalPrivativa : 0} m²
-                </div>
-
-            </div>
-            {client?.pavimentos >= 0 && (
-                <div className="col-12 col-md-4 my-2 d-flex">
-                    <div>
-                        {client?.pavimentos ? client?.pavimentos : 0}
-
-                    </div>
-                    <div className="ms-1 bold">
-
-                        pavimento{client?.pavimentos != 1 ? 's' : ''}
-                    </div>
-                </div>
-            )}
-            {client?.quartos >= 0 && (
-                <div className="col-12 col-md-4 my-2 d-flex">
-                    <div>
-                        {client?.quartos ? client?.quartos : 0}
-
-                    </div>
-                    <div className="ms-1 bold">
-
-                        quarto{client?.quartos != 1 ? 's' : ''}
-                    </div>
-                </div>
-            )}
-
-
-
-            <div className="col-12 col-md-4 my-2 d-flex">
-                <div>
-
-                    {client?.suites ? client?.suites : 0}
-                </div>
-                <div className="ms-1 bold">
-
-                    suíte{client?.suites != 1 ? 's' : ''}
-                </div>
-            </div>
-            <div className="col-12 col-md-4 my-2 d-flex">
-                <div>
-
-                    {client?.banheiros ? client?.banheiros : 0}
-                </div>
-                <div className="ms-1 bold">
-
-                    banheiro{client?.banheiros != 1 ? 's' : ''}
-                </div>
-            </div>
-            <div className="col-12 col-md-4 my-2 d-flex">
-                <div>
-
-                    {client?.vagasGaragem ? client?.vagasGaragem : 0}
-                </div>
-                <div className="ms-1 bold">
-
-                    vaga{client?.vagasGaragem != 1 ? 's' : ''} de garagem
-                </div>
-            </div>
-            <div className="col-12 col-md-4 my-2 d-flex">
-                <div>
-
-                    {client?.sacadas ? client?.sacadas : 0}
-                </div>
-                <div className="ms-1 bold">
-
-                    sacada{client?.sacadas != 1 ? 's' : ''}
-                </div>
-            </div>
-            
+            <Chip label="Área Total"     value={`${client?.areaTotal || 0} m²`} />
+            <Chip label="Área Privativa" value={`${client?.areaTotalPrivativa || 0} m²`} />
+            {client?.pavimentos >= 0 && <Chip label="Pavimentos" value={client?.pavimentos || 0} />}
+            {client?.quartos >= 0    && <Chip label="Quartos"    value={client?.quartos || 0} />}
+            <Chip label="Suítes"    value={client?.suites || 0} />
+            <Chip label="Banheiros" value={client?.banheiros || 0} />
+            <Chip label="Vagas"     value={client?.vagasGaragem || 0} />
+            <Chip label="Sacadas"   value={client?.sacadas || 0} />
         </>
-
     )
+}
 
+function Chip({ label, value }) {
+    return (
+        <div style={{
+            display: 'inline-flex', flexDirection: 'column', gap: '3px',
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: '10px', padding: '10px 16px',
+        }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.95rem', fontWeight: 500, color: 'rgba(255,255,255,0.85)', lineHeight: 1 }}>
+                {value}
+            </span>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.68rem', color: 'rgba(255,255,255,0.35)', lineHeight: 1 }}>
+                {label}
+            </span>
+        </div>
+    )
 }

@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react"
 import StyledDropzone from "../../components/styledDropzone/StyledDropzone"
-import { useDispatch, useSelector } from "react-redux"
-import { setFiles } from "../../../store/NewClientForm/NewClientForm.actions"
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
-import { ChevronLeft, ChevronRight, Star, Trash2Icon } from "lucide-react"
+import { ChevronLeft, ChevronRight, Trash2Icon, Star } from "lucide-react"
+import TitleLabel from "../../components/TitleLabel"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons"
+import s from "./formInputs.module.scss"
 
 export default function UploadFiles(props) {
-    const newClientForm = useSelector(state => state.newClientForm)
-    const dispatch = useDispatch()
     const scrollContainerRef = useRef(null)
     const [showLeftArrow, setShowLeftArrow] = useState(false)
     const [showRightArrow, setShowRightArrow] = useState(false)
@@ -16,7 +16,6 @@ export default function UploadFiles(props) {
         props.setFiles(props.files)
     }, [props.files?.length])
 
-    // Função para verificar se precisa mostrar as setas de scroll
     const checkScrollButtons = () => {
         const container = scrollContainerRef.current
         if (container) {
@@ -27,7 +26,6 @@ export default function UploadFiles(props) {
         }
     }
 
-    // Atualiza as setas quando as imagens mudam
     useEffect(() => {
         checkScrollButtons()
         const container = scrollContainerRef.current
@@ -39,13 +37,10 @@ export default function UploadFiles(props) {
 
     const handleOrderChange = (result) => {
         const { source, destination } = result
-
         if (!destination) return
-
         const reorderedFiles = Array.from(props.files)
         const [movedItem] = reorderedFiles.splice(source.index, 1)
         reorderedFiles.splice(destination.index, 0, movedItem)
-
         props.setFiles(reorderedFiles)
     }
 
@@ -67,324 +62,248 @@ export default function UploadFiles(props) {
     }
 
     return (
-        <div className="row fadeItem mt-3">
-            <label htmlFor="geralForm" className="form-label fw-bold">Fotos</label>
-            <div className="col-12">
-                <div className="row">
-                    <label htmlFor="" className="form-label">Importe as fotos do seu imóvel:</label>
-                    
-                    {/* Dropzone */}
-                    <StyledDropzone 
-                        setFiles={array => props.setFiles([...props.files, ...array])} 
-                        img 
-                        baseStyle 
-                        multiFiles 
-                        filesLength={props.files?.length}
-                    >
-                        <div className="row mt-3 d-flex justify-content-center align-items-center" style={{ height: '100px' }}>
-                            <div className="col-12 d-flex justify-content-center align-items-center">
-                                <span>
-                                    <small className="text-center small">
-                                        Clique aqui ou arraste as imagens
-                                    </small>
-                                </span>
-                            </div>
-                        </div>
-                    </StyledDropzone>
-                    <div className="col-12">
-                        <small>A primeira foto será a foto de capa do imóvel</small>
-                    </div>
+        <>
+            <TitleLabel>Fotos do imóvel</TitleLabel>
+            <div className={s.section}>
 
-                    {/* Container das imagens com scroll melhorado */}
-                    {props.files?.length > 0 && (
-                        <div className="col-12 my-3 position-relative">
-                            {/* Seta esquerda */}
-                            {showLeftArrow && (
-                                <button 
-                                    className="scroll-arrow scroll-arrow-left"
-                                    onClick={scrollLeft}
-                                    type="button"
-                                >
-                                    <ChevronLeft/>
-                                </button>
-                            )}
-                            
-                            {/* Seta direita */}
-                            {showRightArrow && (
-                                <button 
-                                    className="scroll-arrow scroll-arrow-right"
-                                    onClick={scrollRight}
-                                    type="button"
-                                >
-                                    <ChevronRight/>
-                                </button>
-                            )}
+                {/* Dropzone */}
+                <StyledDropzone
+                    setFiles={array => props.setFiles([...props.files, ...array])}
+                    img
+                    baseStyle
+                    multiFiles
+                    filesLength={props.files?.length}
+                >
+                    <FontAwesomeIcon
+                        icon={faCloudArrowUp}
+                        style={{ fontSize: '1.8rem', color: 'rgba(245,135,79,0.5)', marginBottom: '6px' }}
+                    />
+                    <p style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: '0.82rem',
+                        color: 'rgba(255,255,255,0.35)',
+                        margin: 0,
+                        textAlign: 'center',
+                        lineHeight: 1.5,
+                    }}>
+                        <strong style={{ color: '#f5874f', fontWeight: 600 }}>Clique para selecionar</strong>
+                        {' '}ou arraste as imagens aqui
+                    </p>
+                    <p style={{
+                        fontFamily: "'IBM Plex Mono', monospace",
+                        fontSize: '0.68rem',
+                        color: 'rgba(255,255,255,0.18)',
+                        margin: '4px 0 0',
+                    }}>
+                        JPG · PNG · WEBP
+                    </p>
+                </StyledDropzone>
 
-                            {/* Container de scroll */}
-                            <div 
-                                ref={scrollContainerRef}
-                                className="images-scroll-container"
-                                onScroll={checkScrollButtons}
-                            >
-                                <DragDropContext onDragEnd={handleOrderChange}>
-                                    <Droppable droppableId="droppable" direction="horizontal">
-                                        {(provided) => (
-                                            <div 
-                                                className="images-container"
-                                                {...provided.droppableProps} 
-                                                ref={provided.innerRef}
-                                            >
-                                                {props.files.map((file, index) => (
-                                                    <Draggable 
-                                                        key={`image-${index}`} 
-                                                        draggableId={`image-${index}`} 
-                                                        index={index}
-                                                    >
-                                                        {(provided, snapshot) => (
-                                                            <div
-                                                                ref={provided.innerRef}
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                                className={`image-item ${snapshot.isDragging ? 'dragging' : ''}`}
-                                                            >
-                                                                <div className="image-wrapper">
-                                                                    {/* Imagem de fundo desfocada */}
-                                                                    <div 
-                                                                        className="image-background"
-                                                                        style={{
-                                                                            backgroundImage: `url(${getImageUrl(file)})`
-                                                                        }}
-                                                                    />
-                                                                    
-                                                                    {/* Imagem principal */}
-                                                                    <img 
-                                                                        src={getImageUrl(file)} 
-                                                                        alt="Imagem do imóvel" 
-                                                                        className="main-image"
-                                                                    />
-                                                                    
-                                                                    {/* Botão de remover */}
-                                                                    <button 
-                                                                        type="button" 
-                                                                        className="remove-btn"
-                                                                        onClick={() => removeFile(index)}
-                                                                        aria-label="Remover imagem"
-                                                                    >
-                                                                        <Trash2Icon/>
-                                                                    </button>
-                                                                    
-                                                                    {/* Indicador de foto de capa */}
-                                                                    {index === 0 && (
-                                                                        <div className="cover-badge">
-                                                                            <Star size={14} className="me-2"/>
-                                                                            Capa
-                                                                        </div>
-                                                                    )}
-                                                                </div>
+                {/* Caption */}
+                <p style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '0.72rem',
+                    color: 'rgba(255,255,255,0.22)',
+                    margin: '10px 0 0',
+                }}>
+                    A primeira foto será a foto de capa do imóvel. Arraste para reordenar.
+                </p>
+
+                {/* Image strip */}
+                {props.files?.length > 0 && (
+                    <div style={{ position: 'relative', marginTop: '1.25rem' }}>
+
+                        {/* Left arrow */}
+                        {showLeftArrow && (
+                            <button type="button" onClick={scrollLeft} style={arrowStyle('left')}>
+                                <ChevronLeft size={16} />
+                            </button>
+                        )}
+
+                        {/* Right arrow */}
+                        {showRightArrow && (
+                            <button type="button" onClick={scrollRight} style={arrowStyle('right')}>
+                                <ChevronRight size={16} />
+                            </button>
+                        )}
+
+                        <div
+                            ref={scrollContainerRef}
+                            onScroll={checkScrollButtons}
+                            style={{
+                                overflowX: 'auto',
+                                overflowY: 'hidden',
+                                paddingBottom: '6px',
+                                scrollbarWidth: 'thin',
+                                scrollbarColor: 'rgba(255,255,255,0.1) transparent',
+                            }}
+                        >
+                            <DragDropContext onDragEnd={handleOrderChange}>
+                                <Droppable droppableId="droppable" direction="horizontal">
+                                    {(provided) => (
+                                        <div
+                                            {...provided.droppableProps}
+                                            ref={provided.innerRef}
+                                            style={{ display: 'flex', gap: '12px', padding: '4px 2px', minWidth: 'min-content' }}
+                                        >
+                                            {props.files.map((file, index) => (
+                                                <Draggable
+                                                    key={`image-${index}`}
+                                                    draggableId={`image-${index}`}
+                                                    index={index}
+                                                >
+                                                    {(provided, snapshot) => (
+                                                        <div
+                                                            ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                            style={{
+                                                                flexShrink: 0,
+                                                                transform: snapshot.isDragging ? 'rotate(2deg)' : 'none',
+                                                                ...provided.draggableProps.style,
+                                                            }}
+                                                        >
+                                                            {/* Card */}
+                                                            <div style={{
+                                                                position: 'relative',
+                                                                width: '140px',
+                                                                height: '140px',
+                                                                borderRadius: '10px',
+                                                                overflow: 'hidden',
+                                                                cursor: 'grab',
+                                                                border: snapshot.isDragging
+                                                                    ? '1.5px solid rgba(245,135,79,0.5)'
+                                                                    : index === 0
+                                                                        ? '1.5px solid rgba(245,135,79,0.35)'
+                                                                        : '1px solid rgba(255,255,255,0.08)',
+                                                                background: 'rgba(255,255,255,0.02)',
+                                                                boxShadow: snapshot.isDragging
+                                                                    ? '0 8px 28px rgba(245,135,79,0.18)'
+                                                                    : index === 0
+                                                                        ? '0 0 0 3px rgba(245,135,79,0.08)'
+                                                                        : 'none',
+                                                                transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+                                                            }}>
+                                                                {/* Blurred background */}
+                                                                <div style={{
+                                                                    position: 'absolute',
+                                                                    inset: 0,
+                                                                    backgroundImage: `url(${getImageUrl(file)})`,
+                                                                    backgroundSize: 'cover',
+                                                                    backgroundPosition: 'center',
+                                                                    filter: 'blur(8px)',
+                                                                    transform: 'scale(1.1)',
+                                                                    opacity: 0.25,
+                                                                }} />
+
+                                                                {/* Main image */}
+                                                                <img
+                                                                    src={getImageUrl(file)}
+                                                                    alt="Imagem do imóvel"
+                                                                    style={{
+                                                                        position: 'relative',
+                                                                        width: '100%',
+                                                                        height: '100%',
+                                                                        objectFit: 'contain',
+                                                                        zIndex: 1,
+                                                                    }}
+                                                                />
+
+                                                                {/* Remove button */}
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => removeFile(index)}
+                                                                    aria-label="Remover imagem"
+                                                                    style={{
+                                                                        position: 'absolute',
+                                                                        top: '7px',
+                                                                        right: '7px',
+                                                                        zIndex: 2,
+                                                                        background: 'rgba(13,20,32,0.75)',
+                                                                        border: '1px solid rgba(248,113,113,0.3)',
+                                                                        borderRadius: '7px',
+                                                                        color: '#f87171',
+                                                                        width: '26px',
+                                                                        height: '26px',
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'center',
+                                                                        cursor: 'pointer',
+                                                                        fontSize: '0.7rem',
+                                                                        backdropFilter: 'blur(4px)',
+                                                                        transition: 'background 0.18s ease, border-color 0.18s ease',
+                                                                    }}
+                                                                    onMouseEnter={e => {
+                                                                        e.currentTarget.style.background = 'rgba(248,113,113,0.2)'
+                                                                        e.currentTarget.style.borderColor = 'rgba(248,113,113,0.6)'
+                                                                    }}
+                                                                    onMouseLeave={e => {
+                                                                        e.currentTarget.style.background = 'rgba(13,20,32,0.75)'
+                                                                        e.currentTarget.style.borderColor = 'rgba(248,113,113,0.3)'
+                                                                    }}
+                                                                >
+                                                                    <Trash2Icon size={11} />
+                                                                </button>
+
+                                                                {/* Cover badge */}
+                                                                {index === 0 && (
+                                                                    <div style={{
+                                                                        position: 'absolute',
+                                                                        bottom: '7px',
+                                                                        left: '7px',
+                                                                        zIndex: 2,
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        gap: '4px',
+                                                                        background: 'rgba(245,135,79,0.9)',
+                                                                        color: '#0d1420',
+                                                                        padding: '3px 8px',
+                                                                        borderRadius: '6px',
+                                                                        fontFamily: "'DM Sans', sans-serif",
+                                                                        fontSize: '0.65rem',
+                                                                        fontWeight: 700,
+                                                                        letterSpacing: '0.03em',
+                                                                    }}>
+                                                                        <Star size={9} strokeWidth={2.5} />
+                                                                        Capa
+                                                                    </div>
+                                                                )}
                                                             </div>
-                                                        )}
-                                                    </Draggable>
-                                                ))}
-                                                {provided.placeholder}
-                                            </div>
-                                        )}
-                                    </Droppable>
-                                </DragDropContext>
-                            </div>
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            ))}
+                                            {provided.placeholder}
+                                        </div>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
-
-            {/* Estilos CSS */}
-            <style jsx>{`
-                .images-scroll-container {
-                    overflow-x: auto;
-                    overflow-y: hidden;
-                    padding: 10px 0;
-                    position: relative;
-                    scrollbar-width: thin;
-                    scrollbar-color: #ccc transparent;
-                }
-
-                .images-scroll-container::-webkit-scrollbar {
-                    height: 6px;
-                }
-
-                .images-scroll-container::-webkit-scrollbar-track {
-                    background: #f1f1f1;
-                    border-radius: 3px;
-                }
-
-                .images-scroll-container::-webkit-scrollbar-thumb {
-                    background: #ccc;
-                    border-radius: 3px;
-                }
-
-                .images-scroll-container::-webkit-scrollbar-thumb:hover {
-                    background: #999;
-                }
-
-                .images-container {
-                    display: flex;
-                    gap: 15px;
-                    padding: 0 5px;
-                    min-width: min-content;
-                }
-
-                .image-item {
-                    flex-shrink: 0;
-                    transition: transform 0.2s ease, box-shadow 0.2s ease;
-                }
-
-                .image-item.dragging {
-                    transform: rotate(3deg);
-                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-                }
-
-                .image-wrapper {
-                    position: relative;
-                    width: 150px;
-                    height: 150px;
-                    border-radius: 12px;
-                    overflow: hidden;
-                    cursor: grab;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                    transition: transform 0.2s ease, box-shadow 0.2s ease;
-                }
-
-                .image-wrapper:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-                }
-
-                .image-wrapper:active {
-                    cursor: grabbing;
-                }
-
-                .image-background {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background-size: cover;
-                    background-position: center;
-                    filter: blur(8px);
-                    transform: scale(1.1);
-                    opacity: 0.3;
-                }
-
-                .main-image {
-                    position: relative;
-                    width: 100%;
-                    height: 100%;
-                    object-fit: contain;
-                    z-index: 1;
-                }
-
-                .remove-btn {
-                    position: absolute;
-                    top: 8px;
-                    right: 8px;
-                    background: rgba(255, 255, 255, 0.9);
-                    border: none;
-                    border-radius: 50%;
-                    width: 24px;
-                    height: 24px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: pointer;
-                    z-index: 2;
-                    transition: all 0.2s ease;
-                    color: #666;
-                }
-
-                .remove-btn:hover {
-                    background: #ff4757;
-                    color: white;
-                    transform: scale(1.1);
-                }
-
-                .cover-badge {
-                    position: absolute;
-                    bottom: 8px;
-                    left: 8px;
-                    background: linear-gradient(45deg, #ffd700, #ffed4e);
-                    color: #333;
-                    padding: 4px 8px;
-                    border-radius: 12px;
-                    font-size: 11px;
-                    font-weight: bold;
-                    z-index: 2;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-                }
-
-                .scroll-arrow {
-                    position: absolute;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    background: rgba(255, 255, 255, 0.9);
-                    border: none;
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: pointer;
-                    z-index: 10;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                    transition: all 0.2s ease;
-                    color: #666;
-                }
-
-                .scroll-arrow:hover {
-                    background: white;
-                    transform: translateY(-50%) scale(1.1);
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                }
-
-                .scroll-arrow-left {
-                    left: 10px;
-                }
-
-                .scroll-arrow-right {
-                    right: 10px;
-                }
-
-                .fadeItem {
-                    animation: fadeIn 0.3s ease-in;
-                }
-
-                @keyframes fadeIn {
-                    from {
-                        opacity: 0;
-                        transform: translateY(10px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .image-wrapper {
-                        width: 120px;
-                        height: 120px;
-                    }
-                    
-                    .images-container {
-                        gap: 10px;
-                    }
-                    
-                    .scroll-arrow {
-                        width: 32px;
-                        height: 32px;
-                    }
-                }
-            `}</style>
-        </div>
+        </>
     )
+}
+
+function arrowStyle(side) {
+    return {
+        position: 'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        [side === 'left' ? 'left' : 'right']: '6px',
+        zIndex: 10,
+        background: 'rgba(13,20,32,0.8)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: '50%',
+        width: '32px',
+        height: '32px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        color: 'rgba(255,255,255,0.55)',
+        backdropFilter: 'blur(4px)',
+        transition: 'background 0.18s ease, color 0.18s ease, border-color 0.18s ease',
+    }
 }

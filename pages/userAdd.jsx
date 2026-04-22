@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import NewUserAlertModal from "../src/userAdd/newUserAlertModal";
 import { maskEmail } from "../utils/mask";
 import styles from "./userAdd.module.scss";
+import TitleLabel from "../src/components/TitleLabel";
 
 
 
@@ -209,7 +210,7 @@ export default function userAdd() {
                     />
 
                     {/* ── Informações do usuário ── */}
-                    <div className={styles.sectionLabel}>Informações do usuário</div>
+                    <TitleLabel>Informações do usuário</TitleLabel>
                     <div className={styles.formSection}>
                         <div className="row g-3">
                             <div className="col-12 col-md-6">
@@ -257,7 +258,7 @@ export default function userAdd() {
                     </div>
 
                     {/* ── Categoria ── */}
-                    <div className={styles.sectionLabel}>Nível de acesso *</div>
+                    <TitleLabel>Nível de acesso *</TitleLabel>
                     <div className={styles.roleSection}>
                         {userStatusError && <div className={styles.roleErrorMsg}>{userStatusError}</div>}
                         <div className={styles.roleGrid}>
