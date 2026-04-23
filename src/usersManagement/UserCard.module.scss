@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* ── Card wrapper ── */
+.card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 2px solid rgba(245, 135, 79, 0.35);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.22s ease,
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.22s ease;
+
+  &:hover {
+    border-color: rgba(245, 135, 79, 0.5);
+    border-top-color: #f5874f;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(245, 135, 79, 0.08);
+  }
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 1.1rem 1.25rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(245, 135, 79, 0.35);
+  box-shadow: 0 0 0 3px rgba(245, 135, 79, 0.07);
+  flex-shrink: 0;
+}
+
+.headerInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+}
+
+.roleBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+.roleBadgeBroker {
+  @extend .roleBadge;
+  color: rgba(245, 135, 79, 0.8);
+  background: rgba(245, 135, 79, 0.08);
+  border: 1px solid rgba(245, 135, 79, 0.16);
+}
+
+.roleBadgeAdmin {
+  @extend .roleBadge;
+  color: rgba(77, 136, 187, 0.9);
+  background: rgba(77, 136, 187, 0.08);
+  border: 1px solid rgba(77, 136, 187, 0.18);
+}
+
+/* ── Info rows ── */
+.body {
+  padding: 0.75rem 1.25rem;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+
+  &:last-child { border-bottom: none; }
+}
+
+.infoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: rgba(245, 135, 79, 0.07);
+  border: 1px solid rgba(245, 135, 79, 0.13);
+  color: rgba(245, 135, 79, 0.65);
+  font-size: 0.68rem;
+  flex-shrink: 0;
+}
+
+.infoText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.infoTextMuted {
+  @extend .infoText;
+  color: rgba(255, 255, 255, 0.22);
+}
+
+.infoSubRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.55rem 0;
+}
+
+/* ── Action footer ── */
+.footer {
+  display: flex;
+  gap: 0.625rem;
+  padding: 0.75rem 1.25rem 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.actionBtn {
+  flex: 1;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 9px;
+  border: 1px solid rgba(245, 135, 79, 0.22);
+  background: rgba(245, 135, 79, 0.06);
+  color: rgba(245, 135, 79, 0.75);
+  cursor: pointer;
+  transition: background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: #f5874f;
+    border-color: #f5874f;
+    color: #0d1420;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(245, 135, 79, 0.3);
+  }
+
+  &:disabled {
+    border-color: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.02);
+    color: rgba(255, 255, 255, 0.15);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.actionBtnGreen {
+  @extend .actionBtn;
+  border-color: rgba(37, 211, 102, 0.2);
+  background: rgba(37, 211, 102, 0.05);
+  color: rgba(37, 211, 102, 0.7);
+
+  &:hover:not(:disabled) {
+    background: #25d366;
+    border-color: #25d366;
+    color: #0d1420;
+    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);
+  }
+}

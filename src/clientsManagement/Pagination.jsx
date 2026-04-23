@@ -1,92 +1,79 @@
-import { useEffect, useState } from "react";
-import isMobile from "../../utils/isMobile";
-import Icons from "../components/icons";
-import scrollTo from '../../utils/scrollTo'
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import scrollTo from '../../utils/scrollTo';
+import styles from "./Pagination.module.scss";
 
+export default function Pagination({ array, elementosPorPagina, page, setPage }) {
 
-export default function Pagination(props) {
-
-    // const totalPages = Math.ceil(props.array.length / props.elementosPorPagina);
-
-    // // Cria um array de números de página
-    // const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
-
-    const totalPages = Math.ceil(props.array.length / props.elementosPorPagina);
-    const currentPage = props.page;
+    const totalPages = Math.ceil(array.length / elementosPorPagina);
 
     let pageNumbers = [];
-
     if (totalPages <= 3) {
-        pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
-    } else if (currentPage === 1) {
+        pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+    } else if (page === 1) {
         pageNumbers = [1, 2, 3];
-    } else if (currentPage === totalPages) {
+    } else if (page === totalPages) {
         pageNumbers = [totalPages - 2, totalPages - 1, totalPages];
     } else {
-        pageNumbers = [currentPage - 1, currentPage, currentPage + 1];
+        pageNumbers = [page - 1, page, page + 1];
     }
 
-
-
-
-
-
-
+    const goTo = (p) => {
+        setPage(p);
+        scrollTo('clientsManagementSection');
+    };
 
     return (
+        <div className={styles.wrap} role="navigation" aria-label="Paginação">
 
-        <div class="btn-group" role="group" aria-label="pagination">
             <button
                 type="button"
-                class="btn btn-outline-secondary"
-                disabled={props.page === 1}
-                onClick={() => { if (props.page !== 1) { scrollTo('clientsManagementSection'); props.setPage(props.page - 1) } }}>
-                {isMobile() ? <Icons icon="a-l" /> : 'Anterior'}
+                className={styles.btn}
+                disabled={page === 1}
+                onClick={() => goTo(page - 1)}
+                aria-label="Página anterior"
+            >
+                <FontAwesomeIcon icon={faChevronLeft} style={{ fontSize: '0.65rem' }} />
+                <span>Anterior</span>
             </button>
-            {pageNumbers.map(elem => {
-                return (
-                    <button
-                        type="button"
-                        class={`btn btn-outline-secondary ${props.page === elem ? 'text-orange' : ''}`}
-                        disabled={props.page === elem}
-                        onClick={() => { props.setPage(elem); scrollTo('clientsManagementSection') }}>
-                        {elem}
-                    </button>
-                )
-            })}
+
+            {pageNumbers[0] > 1 && (
+                <>
+                    <button type="button" className={styles.btnPage} onClick={() => goTo(1)}>1</button>
+                    {pageNumbers[0] > 2 && <span className={styles.sep}>···</span>}
+                </>
+            )}
+
+            {pageNumbers.map(n => (
+                <button
+                    key={n}
+                    type="button"
+                    className={page === n ? styles.btnActive : styles.btnPage}
+                    onClick={() => page !== n && goTo(n)}
+                    aria-current={page === n ? 'page' : undefined}
+                >
+                    {n}
+                </button>
+            ))}
+
+            {pageNumbers[pageNumbers.length - 1] < totalPages && (
+                <>
+                    {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && <span className={styles.sep}>···</span>}
+                    <button type="button" className={styles.btnPage} onClick={() => goTo(totalPages)}>{totalPages}</button>
+                </>
+            )}
+
             <button
                 type="button"
-                class="btn btn-outline-secondary"
-                disabled={props.page === totalPages}
-                onClick={() => { if (props.page !== totalPages) { scrollTo('clientsManagementSection'); props.setPage(props.page + 1) } }}>
-                {isMobile() ? <Icons icon="a-r" /> : 'Próximo'}
+                className={styles.btn}
+                disabled={page === totalPages}
+                onClick={() => goTo(page + 1)}
+                aria-label="Próxima página"
+            >
+                <span>Próximo</span>
+                <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: '0.65rem' }} />
             </button>
+
         </div>
-
-
-        // <nav aria-label="Page navigation example">
-        //     <ul class="pagination ">
-        //         <li class="page-item ">
-        //             <span class="page-link text-orange" disabled={props.page === 1}>
-        //                 {isMobile() ? <Icons icon="a-l" /> : 'Anterior'}
-        //             </span>
-        //         </li>
-        //         {pageNumbers.map(elem => {
-        //             return (
-        //                 <li class="page-item">
-        //                     <span class="page-link text-orange" onClick={() => props.setPage(elem)}>
-        //                         {elem}
-        //                     </span>
-        //                 </li>
-        //             )
-        //         })}
-
-        //         <li class="page-item">
-        //             <span class="page-link text-orange" selected>
-        //                 {isMobile() ? <Icons icon="a-r" /> : 'Proximo'}
-        //             </span>
-        //         </li>
-        //     </ul>
-        // </nav >
-    )
+    );
 }

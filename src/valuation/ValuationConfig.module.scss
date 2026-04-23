@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.infoBlock {
+  background: rgba(245, 135, 79, 0.04);
+  border: 1px solid rgba(245, 135, 79, 0.12);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+
+  strong {
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 600;
+  }
+}
+
+.infoDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(245, 135, 79, 0.6);
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+
+.errorText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  color: #f2545b;
+  margin-top: 6px;
+  display: block;
+}

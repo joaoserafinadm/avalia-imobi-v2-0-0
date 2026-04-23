@@ -12,13 +12,15 @@ import ClientInfoComercial from "./ClientInfoComercial";
 import ClientInfoTerreno from "./ClientInfoTerreno";
 import tippy from "tippy.js";
 import { FileSliders, HouseIcon, List, MapPin, MessageSquare } from "lucide-react";
+import ClientFeatures from "./ClientFeatures";
+import styles from "./ClientInfo.module.scss";
 
 export default function ClientInfo(props) {
     const client = props.client;
 
     useEffect(() => {
-        tippy("#emailButton",  { content: "Enviar e-mail",            placement: "bottom" });
-        tippy("#whatsButton",  { content: "Conversar pelo Whatsapp",  placement: "bottom" });
+        tippy("#emailButton", { content: "Enviar e-mail", placement: "bottom" });
+        tippy("#whatsButton", { content: "Conversar pelo Whatsapp", placement: "bottom" });
     }, [client]);
 
     const handleWhatsapp = (celular) => {
@@ -77,12 +79,12 @@ export default function ClientInfo(props) {
                     </p>
                 </div>
             ) : (
-                <div style={{ borderRadius: '12px', overflow: 'hidden', marginBottom: '1.25rem', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div className={styles.swiperWrap}>
                     <Swiper
                         style={{
-                            "--swiper-navigation-color": "#f5874f",
-                            "--swiper-pagination-color": "#f5874f",
-                            "--swiper-navigation-size": "22px",
+                            '--swiper-navigation-color': 'rgba(255,255,255,0.8)',
+                            '--swiper-pagination-color': '#f5874f',
+                            '--swiper-navigation-size': '14px',
                             zIndex: 0,
                         }}
                         slidesPerView={1}
@@ -94,7 +96,7 @@ export default function ClientInfo(props) {
                                 <img
                                     src={elem.url}
                                     alt={`Slide ${index + 1}`}
-                                    style={{ width: "100%", height: "260px", objectFit: "cover" }}
+                                    style={{ width: "100%", height: "600px", objectFit: "cover" }}
                                 />
                             </SwiperSlide>
                         ))}
@@ -132,12 +134,12 @@ export default function ClientInfo(props) {
 
                 <Link href={`/clientEdit/${client?._id}`} style={{ textDecoration: 'none', flexShrink: 0 }}>
                     <span style={{
-                        display: 'inline-flex', alignItems: 'center', gap: '6px',
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        borderRadius: '8px', padding: '7px 14px',
-                        fontFamily: "'DM Sans', sans-serif", fontSize: '0.78rem',
-                        color: 'rgba(255,255,255,0.55)', cursor: 'pointer',
+
+                        display: 'inline-flex', alignItems: 'center', gap: '7px',
+                        fontFamily: "'DM Sans', sans-serif", fontSize: '0.82rem', fontWeight: 500,
+                        color: 'rgba(245, 135, 79, 0.8)', background: 'rgba(245, 135, 79, 0.08)',
+                        border: '1px solid rgba(245, 135, 79, 0.2)', borderRadius: '10px',
+                        padding: '8px 16px', cursor: 'pointer', transition: 'background 0.2s ease, border-color 0.2s ease, color 0.2s ease',
                     }}>
                         <FontAwesomeIcon icon={faPen} style={{ fontSize: '0.7rem' }} />
                         Editar
@@ -151,12 +153,15 @@ export default function ClientInfo(props) {
             <SectionLabel icon={<HouseIcon size={13} />}>
                 {client?.propertyType}
             </SectionLabel>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '1.25rem' }}>
+            {/* <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '1.25rem' }}>
                 {client?.propertyType === "Apartamento" && <ClientInfoApartamento client={client} />}
                 {client?.propertyType === "Casa"        && <ClientInfoCasa        client={client} />}
                 {client?.propertyType === "Comercial"   && <ClientInfoComercial   client={client} />}
                 {client?.propertyType === "Terreno"     && <ClientInfoTerreno     client={client} />}
-            </div>
+            </div> */}
+
+            <ClientFeatures client={client} elem={client} />
+
 
             <Divider />
 
@@ -189,7 +194,7 @@ export default function ClientInfo(props) {
                     width: '100%', background: 'rgba(255,255,255,0.04)',
                     border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px',
                     padding: '10px 14px', fontFamily: "'DM Sans', sans-serif",
-                    fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)',
+                    fontSize: '0.85rem', color: 'rgba(255,255,255,0.85)',
                     resize: 'none', outline: 'none', opacity: 1, marginBottom: '1.25rem',
                 }}
             />
@@ -203,19 +208,21 @@ export default function ClientInfo(props) {
                 border: '1px solid rgba(255,255,255,0.06)',
                 borderRadius: '10px', padding: '10px 14px',
                 fontFamily: "'DM Sans', sans-serif", fontSize: '0.85rem',
-                color: 'rgba(255,255,255,0.5)', marginBottom: '1rem',
+                color: 'rgba(255,255,255,0.85)', marginBottom: '1rem',
                 lineHeight: 1.5,
             }}>
                 {[client?.logradouro, client?.numero, client?.bairro, client?.cep, `${client?.cidade} - ${client?.uf}`]
                     .filter(Boolean).join(', ')}
             </div>
 
-            {client?.latitude && client?.longitude && (
-                <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <Map location={{ lat: client.latitude, lng: client.longitude }} zoom={18} height="260px" />
-                </div>
-            )}
-        </div>
+            {
+                client?.latitude && client?.longitude && (
+                    <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.06)' }}>
+                        <Map location={{ lat: client.latitude, lng: client.longitude }} zoom={18} height="260px" />
+                    </div>
+                )
+            }
+        </div >
     );
 }
 
@@ -234,8 +241,8 @@ function SectionLabel({ children, icon }) {
     return (
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem' }}>
             <div style={{ width: '3px', height: '13px', background: '#f5874f', borderRadius: '2px', flexShrink: 0 }} />
-            {icon && <span style={{ color: 'rgba(255,255,255,0.3)' }}>{icon}</span>}
-            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>
+            {icon && <span style={{ color: 'rgba(255,255,255,0.85)' }}>{icon}</span>}
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)' }}>
                 {children}
             </span>
         </div>

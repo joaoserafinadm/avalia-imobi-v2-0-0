@@ -63,7 +63,7 @@ export default function ClientsPage(props) {
 
                     </div>
 
-                    <div className="row ">
+                    <div className="row mt-3">
                         <div className="col-12 d-flex justify-content-center">
                             <Pagination array={clients} setPage={value => setPage(value)} page={page} elementosPorPagina={elementosPorPagina} />
                         </div>

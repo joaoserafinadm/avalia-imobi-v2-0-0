@@ -1,20 +1,18 @@
 import Title from "../src/components/title/Title2";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInbox } from "@fortawesome/free-solid-svg-icons";
-import { faFacebook, faInstagram, faLinkedin, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faCircleExclamation, faEnvelope, faLocationDot, faPaperPlane, faPhone, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faFacebook, faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
-import { useState } from "react";
-import Cookie from 'js-cookie'
+import { useState, useEffect } from "react";
+import Cookie from 'js-cookie';
 import jwt from 'jsonwebtoken';
-import { FixedTopicsBottom } from "../src/components/fixedTopics";
-import isMobile from "../utils/isMobile";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import navbarHide from "../utils/navbarHide";
-
-
-
+import Input from "../src/components/Input";
+import TitleLabel from "../src/components/TitleLabel";
+import { SpinnerSM } from "../src/components/loading/Spinners";
+import styles from "./sac.module.scss";
 
 export default function Sac() {
 
@@ -26,199 +24,196 @@ export default function Sac() {
 
     const [loading, setLoading] = useState(false)
     const [errorLoading, setErrorLoading] = useState(false)
-    const [successAlert, setSuccessAlert] = useState(false)
-    const [errorAlert, setErrorAlert] = useState(false)
 
-    useEffect(() => {
-        navbarHide(dispatch)
-    }, [])
+    const [questionStatus, setQuestionStatus] = useState(null) // 'success' | 'error' | null
+    const [reportStatus, setReportStatus] = useState(null)
 
+    useEffect(() => { navbarHide(dispatch) }, [])
 
+    const handleSend = async (type) => {
+        const value = type === 'question' ? text : errorText
+        if (!value.trim()) return
 
-    const validate = (type) => {
+        if (type === 'question') setLoading(true)
+        else setErrorLoading(true)
 
-        if (type === "question" && text) {
-            return true
-        }
-        if (type === "error" && errorText) {
-            return true
-        } else {
-            return false
-        }
-    }
-
-
-    const handleSendEmail = async (type) => {
-
-        const isValid = validate(type)
-
-        if (isValid) {
-
-            if (type === "question") setLoading(true)
-            else setErrorLoading(true)
-
+        try {
             await axios.post(`/api/sac`, {
                 company_id: token.company_id,
                 user_id: token.sub,
-                type: type,
-                text: type === "question" ? text : errorText
-            }).then(res => {
-                setLoading(false)
-                setErrorLoading(false)
-                setSuccessAlert(true)
-            }).catch(e => {
-                setLoading(false)
-                setErrorLoading(false)
-                setErrorAlert(true)
+                type,
+                text: value
             })
-
+            if (type === 'question') { setQuestionStatus('success'); setText('') }
+            else { setReportStatus('success'); setErrorText('') }
+        } catch {
+            if (type === 'question') setQuestionStatus('error')
+            else setReportStatus('error')
+        } finally {
+            if (type === 'question') setLoading(false)
+            else setErrorLoading(false)
         }
-
-
     }
-
 
     return (
         <div>
-            <Title title={'Fale Conosco'} subtitle={'Seu suporte de comunicação direta com a nossa equipe'} backButton='/' />
-            {successAlert && (
-                <div className={`row d-flex justify-content-center  ${isMobile() ? "alertPositionMobile" : "alertPosition"} fadeItem`}>
-                    <div className="col-12 col-xl-10">
-                        <div className="alert alert-success alert-dismissible" role="alert">
-                            <h4 className="alert-heading mb-3">Solicitação enviada com sucesso!</h4>
-                            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => setSuccessAlert(false)}></button>
-                            <hr />
-                            <div className="row d-flex justify-content-center">
-                                <p className='mb-0'>Em breve retornaremos seu contato. Obrigado!</p>
+            <Title title="Fale Conosco" subtitle="Suporte direto com nossa equipe" backButton="/" />
+
+            <div className={`pagesContent ${styles.page}`}>
+                <div className={styles.grid}>
+
+                    {/* ── Forms ── */}
+                    <div>
+                        <TitleLabel>Enviar mensagem</TitleLabel>
+                        <div className={styles.section}>
+                            <p className={styles.sectionDesc}>
+                                Tem alguma dúvida, sugestão ou precisa de ajuda? Escreva abaixo e nossa equipe responderá em breve.
+                            </p>
+                            <Input
+                                type="textarea"
+                                label="Sua mensagem"
+                                placeholder="Digite sua dúvida ou comentário..."
+                                value={text}
+                                onChange={e => { setText(e.target.value); setQuestionStatus(null) }}
+                                rows={4}
+                            />
+                            {questionStatus === 'success' && (
+                                <div className={styles.feedbackSuccess}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                    Solicitação enviada! Em breve retornaremos seu contato.
+                                </div>
+                            )}
+                            {questionStatus === 'error' && (
+                                <div className={styles.feedbackError}>
+                                    <FontAwesomeIcon icon={faCircleExclamation} />
+                                    Erro ao enviar. Tente novamente mais tarde.
+                                </div>
+                            )}
+                            <div className={styles.sectionFooter}>
+                                <button
+                                    className={styles.btnPrimary}
+                                    onClick={() => handleSend('question')}
+                                    disabled={loading || !text.trim()}
+                                >
+                                    {loading ? <SpinnerSM /> : <FontAwesomeIcon icon={faPaperPlane} />}
+                                    {loading ? 'Enviando…' : 'Enviar mensagem'}
+                                </button>
                             </div>
                         </div>
 
-                    </div>
-                </div>
-            )}
-            {errorAlert && (
-                <div className={`row d-flex justify-content-center ${isMobile() ? "alertPositionMobile" : "alertPosition"} fadeItem`}>
-                    <div className="col-12 col-xl-10" >
-                        <div className="alert alert-danger alert-dismissible" role="alert">
-                            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => setErrorAlert(false)}></button>
-                            <div className="row d-flex justify-content-center">
-                                <p>Desculpe pelo transtorno, ocorreu um problema ao enviar a solicitação.</p>
-                                <p className='mb-0'>Por favor, tente novamente mais tarde!</p>
+                        <TitleLabel>Reportar erro</TitleLabel>
+                        <div className={styles.section}>
+                            <p className={styles.sectionDesc}>
+                                Encontrou algo que não está funcionando corretamente? Descreva o problema e iremos verificar.
+                            </p>
+                            <Input
+                                type="textarea"
+                                label="Descrição do erro"
+                                placeholder="Descreva o que aconteceu e em qual parte da plataforma..."
+                                value={errorText}
+                                onChange={e => { setErrorText(e.target.value); setReportStatus(null) }}
+                                rows={4}
+                            />
+                            {reportStatus === 'success' && (
+                                <div className={styles.feedbackSuccess}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                    Erro reportado com sucesso. Obrigado pelo feedback!
+                                </div>
+                            )}
+                            {reportStatus === 'error' && (
+                                <div className={styles.feedbackError}>
+                                    <FontAwesomeIcon icon={faCircleExclamation} />
+                                    Erro ao enviar. Tente novamente mais tarde.
+                                </div>
+                            )}
+                            <div className={styles.sectionFooter}>
+                                <button
+                                    className={styles.btnDanger}
+                                    onClick={() => handleSend('error')}
+                                    disabled={errorLoading || !errorText.trim()}
+                                >
+                                    {errorLoading ? <SpinnerSM /> : <FontAwesomeIcon icon={faTriangleExclamation} />}
+                                    {errorLoading ? 'Enviando…' : 'Reportar erro'}
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
 
-            <div className={`${isMobile() && "mb-0"} pagesContent shadow fadeItem`} id="pageTop">
-                <div className={`col-12 ${!isMobile() && "container py-5"} fadeItem d-flex justify-content-around flex-wrap`}>
-                    <div className="col-sm-12 col-xl-6 ">
-                        <div className="row d-flex justify-content-center">
-                            <div className="col-12 text-center">
-                                <h4>Digite sua pergunta ou comentário no campo abaixo</h4>
-                                <p>ou entre em contato direto pelo <b>whatsapp</b> clicando no ícone no canto inferior direito.</p>
-                            </div>
+                    {/* ── Contact card ── */}
+                    <div className={styles.contactCard}>
+                        <div className={styles.contactLogo}>
+                            <img src="/LOGO_01.png" alt="Avalia Imobi" />
                         </div>
-                        <div className="row d-flex justify-content-center">
-                            <div className="col-12 col-xl-10">
-                                <div className="input-group">
-                                    <textarea
-                                        className="form-control" value={text}
-                                        aria-label="With textarea" onChange={e => setText(e.target.value)}
-                                        style={{ "height": "75px" }}></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row mt-3">
-                            <div className="col-12 d-flex justify-content-center">
-                                {!loading ?
-                                    <button type="button" className="btn btn-orange btn-lg" onClick={() => handleSendEmail('question')}>Enviar</button>
-                                    :
-                                    <button type="button" className="btn btn-orange btn-lg d-flex align-items-center ms-2" disabled >
-                                        <div className="text-center me-2">
-                                            <div className="spinner-border spinner-border-sm" role="status">
-                                                <span className="visually-hidden">Enviando Solicitação</span>
-                                            </div>
-                                        </div>
-                                        Enviando
-                                    </button>
-                                }
-                            </div>
-                        </div>
-                        <div className="row mt-5">
-                            <div className="col-12 d-flex justify-content-center">
-                                <p className="p">Deseja reportar algum erro na plataforma?</p>
-                            </div>
-                        </div>
-                        <div className="row d-flex justify-content-center">
-                            <div className="col-12 col-xl-10">
-                                <div className="input-group">
-                                    <textarea
-                                        className="form-control" value={errorText}
-                                        aria-label="With textarea" onChange={e => setErrorText(e.target.value)}
-                                        style={{ "height": "75px" }}></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row mt-3 " >
-                            <div className="col-12 d-flex justify-content-center">
-                                {!errorLoading ?
-                                    <button type="button" className="btn btn-danger" onClick={() => handleSendEmail('error')}>Reportar erro</button>
-                                    :
-                                    <button type="button" className="btn btn-danger  d-flex align-items-center ms-2" disabled >
-                                        <div className="text-center me-2">
-                                            <div className="spinner-border spinner-border-sm" role="status">
-                                                <span className="visually-hidden">Enviando Solicitação</span>
-                                            </div>
-                                        </div>
-                                        Enviando
-                                    </button>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    <div className={`col-12 col-xl-5 mt-5 mt-xl-0 text-light py-3 text-center d-flex flex-column justify-content-center ${!isMobile() ? "gap-5 px-5" : "gap-3"}`} style={{ "backgroundColor": "#585757" }}>
-                        <div className="row my-2">
-                            <div className="col-12 d-flex justify-content-center">
-                                <img src="/LOGO_01.png" alt="" style={{ "width": "50%" }}/>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-12">
-                                <div className="row">
-                                    <div className="col-12 d-flex justify-content-center">
-                                        <p className="text-light my-0">Rua Pedro Alvares Cabral, 610, Apt 701<br /> Centro,<br /> Erechim, RS, 99700-252</p>
-                                    </div>
-                                </div>
-                                <div className="row mt-3">
-                                    <div className="col-12">
-                                        <p className="text-light my-0">Telefone: (54) 99906-7474</p>
-                                        <p className="text-light my-0">E-mail: contato@avaliaimobi.com.br</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row mt-2">
-                            <div className="col-12 d-flex justify-content-center">
-                                <a target="_blank" href="https://www.instagram.com/avaliaimobi/" className="text-light">
-                                    <FontAwesomeIcon icon={faInstagram} className="fs-2 mx-2 iconGrow" />
-                                </a>
-                                <a target="_blank" href="https://www.facebook.com/avalia.imobi/" className="text-light">
-                                    <FontAwesomeIcon icon={faFacebook} className="fs-2 mx-2 iconGrow" />
-                                </a>
-                                {/* <a target="_blank" href="https://www.linkedin.com/company/akvoesg/?originalSubdomain=br" className="text-light">
-                                    <FontAwesomeIcon icon={faLinkedin} className="fs-2 mx-2 iconGrow" />
-                                </a> */}
 
+                        <div className={styles.contactBody}>
+                            <div className={styles.contactItem}>
+                                <span className={styles.contactItemIcon}>
+                                    <FontAwesomeIcon icon={faLocationDot} />
+                                </span>
+                                <div className={styles.contactItemText}>
+                                    <p className={styles.contactItemLabel}>Endereço</p>
+                                    <p className={styles.contactItemValue}>
+                                        Rua Pedro Álvares Cabral, 610, Apt 701<br />
+                                        Centro, Erechim — RS<br />
+                                        CEP 99700-252
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className={styles.contactItem}>
+                                <span className={styles.contactItemIcon}>
+                                    <FontAwesomeIcon icon={faPhone} />
+                                </span>
+                                <div className={styles.contactItemText}>
+                                    <p className={styles.contactItemLabel}>Telefone</p>
+                                    <p className={styles.contactItemValue}>(54) 99906-7474</p>
+                                </div>
+                            </div>
+
+                            <div className={styles.contactItem}>
+                                <span className={styles.contactItemIcon}>
+                                    <FontAwesomeIcon icon={faEnvelope} />
+                                </span>
+                                <div className={styles.contactItemText}>
+                                    <p className={styles.contactItemLabel}>E-mail</p>
+                                    <p className={styles.contactItemValue}>contato@avaliaimobi.com.br</p>
+                                </div>
                             </div>
                         </div>
-                        <a className="whatsappLink pulse" type="button" href="https://api.whatsapp.com/send?phone=5554999067474" target="_blank">
-                            <FontAwesomeIcon icon={faWhatsapp} />
-                        </a>
+
+                        <div className={styles.socialRow}>
+                            <a
+                                href="https://api.whatsapp.com/send?phone=5554999067474"
+                                target="_blank"
+                                rel="noreferrer"
+                                className={styles.socialBtnWhatsapp}
+                                title="WhatsApp"
+                            >
+                                <FontAwesomeIcon icon={faWhatsapp} />
+                            </a>
+                            <a
+                                href="https://www.instagram.com/avaliaimobi/"
+                                target="_blank"
+                                rel="noreferrer"
+                                className={styles.socialBtnInstagram}
+                                title="Instagram"
+                            >
+                                <FontAwesomeIcon icon={faInstagram} />
+                            </a>
+                            <a
+                                href="https://www.facebook.com/avalia.imobi/"
+                                target="_blank"
+                                rel="noreferrer"
+                                className={styles.socialBtnFacebook}
+                                title="Facebook"
+                            >
+                                <FontAwesomeIcon icon={faFacebook} />
+                            </a>
+                        </div>
                     </div>
+
                 </div>
             </div>
-           
         </div>
     )
 }

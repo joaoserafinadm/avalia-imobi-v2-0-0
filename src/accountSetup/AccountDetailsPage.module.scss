@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+.page {
+  padding: 1.25rem 0.25rem 2rem;
+  animation: pageIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Section card (igual ao editProfile) ── */
+.section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 0;
+  margin-bottom: 1.75rem;
+  overflow: hidden;
+}
+
+/* ── Info row ── */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.15s ease;
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: rgba(255, 255, 255, 0.02); }
+}
+
+.rowContent {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.rowLabel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.832);
+  margin: 0;
+}
+
+.rowValue {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 0;
+  line-height: 1.55;
+}
+
+.rowValueMono {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.rowTag {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem;
+  color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 5px;
+  padding: 1px 7px;
+  margin-left: 7px;
+  vertical-align: middle;
+}
+
+/* ── Action area ── */
+.rowAction {
+  flex-shrink: 0;
+  padding-left: 1rem;
+}
+
+.editBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(245, 135, 79, 0.07);
+  border: 1px solid rgba(245, 135, 79, 0.18);
+  border-radius: 8px;
+  color: rgba(245, 135, 79, 0.65);
+  font-size: 0.7rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+
+  &:hover {
+    background: rgba(245, 135, 79, 0.14);
+    border-color: rgba(245, 135, 79, 0.38);
+    color: #f5874f;
+    transform: translateY(-1px);
+  }
+}
+
+.lockIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: rgba(255, 255, 255, 0.12);
+  font-size: 0.68rem;
+}
+
+/* ── Status badge ── */
+.badgeRole {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .9rem;
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+.badgeAdmin {
+  @extend .badgeRole;
+  color: rgba(77, 136, 187, 0.9);
+  background: rgba(77, 136, 187, 0.08);
+  border: 1px solid rgba(77, 136, 187, 0.18);
+}
+
+.badgeBroker {
+  @extend .badgeRole;
+  color: rgba(245, 135, 79, 0.85);
+  background: rgba(245, 135, 79, 0.07);
+  border: 1px solid rgba(245, 135, 79, 0.16);
+}
+
+/* ── Footer ── */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+}
+
+.logoutBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(242, 84, 91, 0.7);
+  background: rgba(242, 84, 91, 0.05);
+  border: 1px solid rgba(242, 84, 91, 0.16);
+  border-radius: 10px;
+  padding: 7px 18px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+
+  &:hover {
+    background: rgba(242, 84, 91, 0.1);
+    border-color: rgba(242, 84, 91, 0.3);
+    color: #f2545b;
+  }
+}

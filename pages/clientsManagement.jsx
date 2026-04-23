@@ -156,11 +156,11 @@ export default function clientsManagement() {
 
         {/* ── Top bar ── */}
         <div className={styles.topBar}>
-          <div className={styles.topBarLeft}>
+          {/* <div className={styles.topBarLeft}>
             <span className={styles.resultCount}>
               {clientsArray.length} imóve{clientsArray.length === 1 ? "l" : "is"} encontrado{clientsArray.length === 1 ? "" : "s"}
             </span>
-          </div>
+          </div> */}
           <div className={styles.topBarRight}>
             <button
               className={`${styles.filterBtn} ${(filtersOpen || hasActiveFilters) ? styles.filterBtnActive : ""}`}

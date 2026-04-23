@@ -130,12 +130,60 @@ async function searchGoogle(query) {
   return response.data.organic || [];
 }
 
+/* Returns true only for URLs that are individual property listing pages,
+   not search result pages or portal homepage/category pages. */
+function isIndividualPropertyUrl(url) {
+  if (!url) return false;
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+    const path = u.pathname.toLowerCase();
+
+    // ZAP Imóveis — individual listings live under /imovel/
+    if (host.includes("zapimoveis.com.br")) return path.includes("/imovel/");
+
+    // Viva Real — individual listings live under /imovel/
+    if (host.includes("vivareal.com.br")) return path.includes("/imovel/");
+
+    // ImovelWeb — individual listings live under /propriedades/
+    if (host.includes("imovelweb.com.br")) return path.includes("/propriedades/");
+
+    // Quinto Andar — individual listings live under /imovel/ or /p/
+    if (host.includes("quintoandar.com")) {
+      return path.includes("/imovel/") || path.includes("/p/");
+    }
+
+    // OLX — individual listings end with slug-DIGITS.html
+    if (host.includes("olx.com.br")) {
+      return /\/[^/]+-\d{6,}\.html$/.test(path);
+    }
+
+    // Generic portals: block obvious search/listing pages
+    const listingPatterns = [
+      "/busca/", "/resultado/", "/resultados/", "/pesquisa/",
+      "/search/", "/listings/", "/venda/", "/aluguel/", "/alugar/",
+      "/comprar/", "/imoveis/", "/properties/",
+    ];
+    if (listingPatterns.some((p) => path.includes(p))) {
+      // Allow only if URL contains a property-specific ID segment (4+ digits or UUID)
+      const hasId = /\/[a-z0-9-]+-\d{4,}(\/|$)/.test(path) ||
+        /\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}/.test(path);
+      return hasId;
+    }
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function buildSearchQueries(client) {
   const type = client.propertyType || "imóvel";
   const locationParts = [client.bairro, client.cidade, client.uf].filter(Boolean);
   const location = locationParts.join(" ");
+  // Target deep property pages on known portals using inurl: to bias toward individual listings
   const portals =
-    "site:zapimoveis.com.br OR site:vivareal.com.br OR site:olx.com.br OR site:imovelweb.com.br OR site:quintoandar.com.br";
+    "(site:zapimoveis.com.br/imovel OR site:vivareal.com.br/imovel OR site:olx.com.br OR site:imovelweb.com.br/propriedades OR site:quintoandar.com)";
 
   const queries = [];
 
@@ -144,8 +192,6 @@ function buildSearchQueries(client) {
 
   const areaStr = client.areaTotal ? `${client.areaTotal}m²` : "";
   queries.push(`${type} ${areaStr} venda ${location} imobiliária`.replace(/\s+/g, " ").trim());
-
-  queries.push(`${type} à venda ${location}`.trim());
 
   return queries.filter((q) => q.length > 5);
 }
@@ -207,7 +253,7 @@ export default async function handler(req, res) {
   const uniqueResults = allResults.filter((r) => {
     if (seen.has(r.link)) return false;
     seen.add(r.link);
-    return true;
+    return isIndividualPropertyUrl(r.link);
   });
 
   if (!uniqueResults.length) {
@@ -229,9 +275,14 @@ ${propertyDesc}
 Resultados do Google sobre imóveis semelhantes:
 ${resultsText}
 
-Analise os resultados acima e selecione os 6 melhores anúncios de imóveis para VENDA que sejam mais semelhantes ao imóvel avaliado. Extraia as informações disponíveis de cada anúncio.
+Analise os resultados acima e selecione os 10 melhores anúncios de imóveis para VENDA que sejam mais semelhantes ao imóvel avaliado. Extraia as informações disponíveis de cada anúncio.
 
-Inclua apenas anúncios de venda (não aluguel). Descarte resultados que não sejam anúncios de imóveis (artigos, blogs, notícias, etc).
+REGRAS OBRIGATÓRIAS:
+- Inclua SOMENTE páginas de anúncio individual de um único imóvel (ex: zapimoveis.com.br/imovel/..., vivareal.com.br/imovel/..., olx.com.br/.../titulo-12345.html).
+- EXCLUA páginas de listagem ou busca (ex: zapimoveis.com.br/venda/..., vivareal.com.br/venda/..., URLs com /busca/, /resultado/, /pesquisa/, /imoveis/, /venda/ sem ID específico).
+- EXCLUA páginas de imobiliárias, portais genéricos, artigos, blogs ou notícias.
+- EXCLUA anúncios de aluguel.
+- Se um link não for a página de um imóvel específico, descarte-o completamente.
 
 Retorne APENAS um JSON válido, sem texto antes ou depois:
 {
@@ -271,7 +322,7 @@ Retorne APENAS um JSON válido, sem texto antes ou depois:
     }
 
     const parsed = JSON.parse(jsonMatch[0]);
-    const properties = parsed.properties || [];
+    const properties = (parsed.properties || []).filter((p) => isIndividualPropertyUrl(p.propertyLink));
 
     const pageDataResults = await Promise.allSettled(
       properties.map((p) => (p.propertyLink ? fetchPropertyData(p.propertyLink) : { image: null, price: null }))

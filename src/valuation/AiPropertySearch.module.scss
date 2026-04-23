@@ -1,41 +1,289 @@
-.propertyCard {
-  border: 2px solid transparent;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  position: relative;
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* ── Trigger button ── */
+.aiBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: rgba(245, 135, 79, 0.07);
+  border: 1px solid rgba(245, 135, 79, 0.22);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(245, 135, 79, 0.85);
+  cursor: pointer;
+  transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease,
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  svg { font-size: 0.78rem; }
 
   &:hover {
-    border-color: #dee2e6;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+    background: rgba(245, 135, 79, 0.14);
+    border-color: rgba(245, 135, 79, 0.45);
+    color: #f5874f;
+    transform: translateY(-1px);
+  }
+}
+
+/* ── Loading state ── */
+.searching {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  gap: 12px;
+}
+
+.searchingText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-style: italic;
+}
+
+/* ── Instruction text ── */
+.instrText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 1.25rem;
+  line-height: 1.55;
+
+  strong { color: rgba(255, 255, 255, 0.7); font-weight: 600; }
+}
+
+/* ── Error alert ── */
+.errorAlert {
+  background: rgba(242, 84, 91, 0.07);
+  border: 1px solid rgba(242, 84, 91, 0.2);
+  border-radius: 10px;
+  padding: 0.875rem 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  color: #f2545b;
+  margin-bottom: 1rem;
+}
+
+/* ── Property cards grid ── */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.75rem;
+}
+
+.propertyCard {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.22s ease, background 0.22s ease,
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.14);
+    transform: translateY(-1px);
   }
 }
 
 .selected {
-  border-color: #f5874f !important;
-  box-shadow: 0 0 0 3px rgba(245, 135, 79, 0.18) !important;
+  border-color: rgba(245, 135, 79, 0.5) !important;
+  background: rgba(245, 135, 79, 0.06) !important;
+}
+
+.missingPrice {
+  border-color: rgba(242, 84, 91, 0.45) !important;
 }
 
 .checkBadge {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  background-color: #f5874f;
-  color: #fff;
+  top: 9px;
+  right: 9px;
+  width: 26px;
+  height: 26px;
+  background: #f5874f;
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
-  font-size: 13px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-size: 0.72rem;
+  color: #fff;
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(245, 135, 79, 0.5);
 }
 
-.missingPrice {
-  border-color: #dc3545 !important;
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
+.cardImage {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
 }
 
-.searchingText {
-  font-size: 0.9rem;
+.imageFallback {
+  width: 100%;
+  height: 160px;
+  background: linear-gradient(135deg, #0a0f1a, #141d2e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageFallbackText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.18);
+  font-style: italic;
+}
+
+.cardBody {
+  padding: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cardTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.cardPrice {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #f5874f;
+}
+
+.cardFeatures {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.cardLocation {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Manual input fields ── */
+.manualField {
+  margin-top: 4px;
+}
+
+.manualLabel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 5px;
+  display: block;
+
+  &.required { color: #f2545b; }
+}
+
+.inputGroup {
+  display: flex;
+  align-items: stretch;
+}
+
+.inputPrefix, .inputSuffix {
+  padding: 7px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.25);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.inputPrefix {
+  border-radius: 8px 0 0 8px;
+  border-right: none;
+}
+
+.inputSuffix {
+  border-radius: 0 8px 8px 0;
+  border-left: none;
+}
+
+.manualInput {
+  flex: 1;
+  padding: 7px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.82);
+  outline: none;
+  transition: border-color 0.2s ease;
+  text-align: right;
+
+  &::placeholder { color: rgba(255, 255, 255, 0.2); }
+  &:focus { border-color: rgba(245, 135, 79, 0.4); }
+
+  &.missingInput { border-color: rgba(242, 84, 91, 0.5); }
+}
+
+.viewLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+  align-self: flex-start;
+  margin-top: 4px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+/* ── Footer helpers ── */
+.missingError {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: #f2545b;
+  margin-bottom: 4px;
+}
+
+.retryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.7);
+  }
 }

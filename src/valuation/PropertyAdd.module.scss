@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* ── Form field wrappers ── */
+.fieldGroup {
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.85);
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &::placeholder { color: rgba(255, 255, 255, 0.2); }
+
+  &:focus {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(245, 135, 79, 0.4);
+  }
+
+  &.inputError { border-color: rgba(242, 84, 91, 0.5); }
+}
+
+/* ── Price input group ── */
+.priceGroup {
+  display: flex;
+  align-items: stretch;
+}
+
+.pricePrefix, .priceSuffix {
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.pricePrefix {
+  border-radius: 10px 0 0 10px;
+  border-right: none;
+}
+
+.priceSuffix {
+  border-radius: 0 10px 10px 0;
+  border-left: none;
+}
+
+.priceInput {
+  @extend .input;
+  border-radius: 0;
+  flex: 1;
+  text-align: right;
+}
+
+/* ── Error text ── */
+.errorText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: #f2545b;
+  margin-top: 5px;
+  display: block;
+}
+
+/* ── Image slot ── */
+.imagePlaceholder {
+  width: 100%;
+  min-height: 180px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 1.5rem;
+}
+
+.imagePlaceholderText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.25);
+  font-style: italic;
+  text-align: center;
+}
+
+.uploadBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.75);
+  }
+}
+
+.imagePreview {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.previewImg {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+
+.removeBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  background: rgba(242, 84, 91, 0.85);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  transition: background 0.2s ease;
+
+  &:hover { background: #f2545b; }
+}
+
+.previewName {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  margin-top: 6px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Loading inline indicator ── */
+.loadingInline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin-left: 8px;
+}
+
+/* ── Char note ── */
+.requiredNote {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  display: block;
+}

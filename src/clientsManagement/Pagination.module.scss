@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+.wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ── Base button ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 34px;
+  min-width: 34px;
+  padding: 0 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+/* ── Page number ── */
+.btnPage {
+  @extend .btn;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  padding: 0;
+  width: 34px;
+}
+
+/* ── Active page ── */
+.btnActive {
+  @extend .btnPage;
+  background: rgba(245, 135, 79, 0.12);
+  border-color: rgba(245, 135, 79, 0.4);
+  color: #f5874f;
+  cursor: default;
+  transform: none;
+
+  &:hover:not(:disabled) {
+    background: rgba(245, 135, 79, 0.12);
+    border-color: rgba(245, 135, 79, 0.4);
+    color: #f5874f;
+    transform: none;
+  }
+}
+
+/* ── Page info ── */
+.info {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.2);
+  padding: 0 4px;
+  user-select: none;
+}
+
+/* ── Separator dot ── */
+.sep {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.15);
+  user-select: none;
+}

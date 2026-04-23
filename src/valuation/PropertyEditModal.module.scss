@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* ── Label ── */
+.label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 7px;
+  display: block;
+}
+
+/* ── Input ── */
+.input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.85);
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &::placeholder { color: rgba(255, 255, 255, 0.2); }
+
+  &:focus {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(245, 135, 79, 0.4);
+  }
+
+  &.error { border-color: rgba(242, 84, 91, 0.5); }
+}
+
+/* ── Price group ── */
+.priceGroup {
+  display: flex;
+  align-items: stretch;
+}
+
+.pricePrefix, .priceSuffix {
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.pricePrefix {
+  border-radius: 10px 0 0 10px;
+  border-right: none;
+}
+
+.priceSuffix {
+  border-radius: 0 10px 10px 0;
+  border-left: none;
+}
+
+.priceInput {
+  @extend .input;
+  border-radius: 0;
+  flex: 1;
+  text-align: right;
+}
+
+/* ── Number input with suffix ── */
+.unitGroup {
+  display: flex;
+  align-items: stretch;
+}
+
+.unitInput {
+  @extend .input;
+  border-radius: 10px 0 0 10px;
+  flex: 1;
+}
+
+.unitSuffix {
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Field cell ── */
+.fieldGroup {
+  margin-bottom: 0.875rem;
+}
+
+/* ── Error text ── */
+.errorText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: #f2545b;
+  margin-top: 5px;
+  display: block;
+}
+
+/* ── Section heading ── */
+.sectionTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 0.25rem 0 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 1rem;
+  margin-top: 0.25rem;
+}
+
+/* ── Checkbox ── */
+.checkWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 0.875rem;
+}
+
+.checkInput {
+  width: 16px;
+  height: 16px;
+  accent-color: #f5874f;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkLabel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  user-select: none;
+}

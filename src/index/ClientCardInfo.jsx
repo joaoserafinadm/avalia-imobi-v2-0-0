@@ -104,7 +104,7 @@ export default function ClientCardInfo(props) {
                     <ClientStatus status={client?.status} id={client?._id} />
                 </div>
 
-                <ClientFeatures client={client} elem={props.elem} small />
+                <ClientFeatures evaluateBtn client={client} elem={props.elem} small />
 
                 {client?.status !== 'outdated' && (
                     <div className={styles.viewBtnWrap}>

@@ -1,0 +1,523 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+.page {
+  padding: 1.25rem 0.5rem 2rem;
+  animation: pageIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Status alerts ── */
+.alertSuccess {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 0.875rem 1.25rem;
+  background: rgba(12, 204, 153, 0.07);
+  border: 1px solid rgba(12, 204, 153, 0.22);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: #0cc;
+  font-weight: 500;
+}
+
+.alertDanger {
+  @extend .alertSuccess;
+  background: rgba(242, 84, 91, 0.07);
+  border-color: rgba(242, 84, 91, 0.22);
+  color: #f2545b;
+}
+
+.alertWarning {
+  @extend .alertSuccess;
+  background: rgba(247, 188, 6, 0.07);
+  border-color: rgba(247, 188, 6, 0.22);
+  color: #f7bc06;
+}
+
+/* ── Intro header ── */
+.introHeader {
+  margin-bottom: 1.75rem;
+}
+
+.introTitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
+}
+
+.introSub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0;
+}
+
+/* ── Plan grid ── */
+.planGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Plan card ── */
+.planCard {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 1.5rem 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.22s ease, background 0.22s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease;
+  user-select: none;
+
+  &:hover:not(.planDisabled) {
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateY(-3px);
+  }
+}
+
+.planCardGreen {
+  @extend .planCard;
+
+  &.planSelected {
+    border-color: rgba(12, 204, 153, 0.5);
+    background: rgba(12, 204, 153, 0.04);
+    box-shadow: 0 0 0 4px rgba(12, 204, 153, 0.06), 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.planCardOrange {
+  @extend .planCard;
+
+  &.planSelected {
+    border-color: rgba(245, 135, 79, 0.5);
+    background: rgba(245, 135, 79, 0.04);
+    box-shadow: 0 0 0 4px rgba(245, 135, 79, 0.06), 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.planDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Popular badge ── */
+.popularBadge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0d1420;
+  background: #f5874f;
+  border-radius: 20px;
+  padding: 4px 14px;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(245, 135, 79, 0.35);
+}
+
+/* ── Selected checkmark ── */
+.selectedCheck {
+  position: absolute;
+  top: 0.875rem;
+  right: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 0.6rem;
+}
+
+.selectedCheckGreen {
+  @extend .selectedCheck;
+  background: rgba(12, 204, 153, 0.15);
+  border: 1px solid rgba(12, 204, 153, 0.3);
+  color: #0cc;
+}
+
+.selectedCheckOrange {
+  @extend .selectedCheck;
+  background: rgba(245, 135, 79, 0.15);
+  border: 1px solid rgba(245, 135, 79, 0.3);
+  color: #f5874f;
+}
+
+/* ── Plan icon ── */
+.planIconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.planIconGreen {
+  @extend .planIconWrap;
+  background: rgba(12, 204, 153, 0.1);
+  border: 1px solid rgba(12, 204, 153, 0.2);
+  color: #0cc;
+}
+
+.planIconOrange {
+  @extend .planIconWrap;
+  background: rgba(245, 135, 79, 0.1);
+  border: 1px solid rgba(245, 135, 79, 0.2);
+  color: #f5874f;
+}
+
+/* ── Plan name ── */
+.planName {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.planNameGreen { @extend .planName; color: #0cc; }
+.planNameOrange { @extend .planName; color: #f5874f; }
+
+/* ── Price ── */
+.planPrice {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.75rem;
+  letter-spacing: -0.03em;
+  margin: 0 0 4px;
+  line-height: 1;
+}
+
+.planPriceGreen { @extend .planPrice; color: rgba(12, 204, 153, 0.9); }
+.planPriceOrange { @extend .planPrice; color: rgba(245, 135, 79, 0.9); }
+
+.planPricePeriod {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.3);
+  margin-left: 3px;
+}
+
+/* ── Plan badge ── */
+.planBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin: 8px 0 1.25rem;
+}
+
+.planBadgeGreen {
+  @extend .planBadge;
+  color: rgba(12, 204, 153, 0.7);
+  background: rgba(12, 204, 153, 0.08);
+  border: 1px solid rgba(12, 204, 153, 0.15);
+}
+
+.planBadgeOrange {
+  @extend .planBadge;
+  color: rgba(245, 135, 79, 0.7);
+  background: rgba(245, 135, 79, 0.08);
+  border: 1px solid rgba(245, 135, 79, 0.15);
+}
+
+/* ── Feature list ── */
+.featureList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+}
+
+.featureIconGreen {
+  color: #0cc;
+  font-size: 0.7rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.featureIconOrange {
+  color: #f5874f;
+  font-size: 0.7rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* ── CTA card ── */
+.ctaCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Action buttons ── */
+.btnGreen {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0d1420;
+  background: #0cc;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 32px;
+  cursor: pointer;
+  transition: background 0.22s ease,
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.22s ease;
+
+  &:hover:not(:disabled) {
+    background: #2dddc7;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(12, 204, 153, 0.3);
+  }
+
+  &:disabled {
+    background: rgba(12, 204, 153, 0.2);
+    color: rgba(255, 255, 255, 0.3);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.btnOrange {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0d1420;
+  background: #f5874f;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 32px;
+  cursor: pointer;
+  transition: background 0.22s ease,
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.22s ease;
+
+  &:hover:not(:disabled) {
+    background: #ff9f6b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 135, 79, 0.3);
+  }
+
+  &:disabled {
+    background: rgba(245, 135, 79, 0.2);
+    color: rgba(255, 255, 255, 0.3);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.ctaSafe {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: center;
+}
+
+/* ── Detail card ── */
+.detailCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 1.5rem 1.5rem 1.75rem;
+}
+
+.detailTitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 0 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.detailTitleGreen { @extend .detailTitle; color: #0cc; }
+.detailTitleOrange { @extend .detailTitle; color: #f5874f; }
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.875rem;
+  margin-bottom: 1.25rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detailItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.detailItemIcon {
+  margin-top: 2px;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+}
+
+.detailItemIconGreen { @extend .detailItemIcon; color: #0cc; }
+.detailItemIconOrange { @extend .detailItemIcon; color: #f5874f; }
+
+.detailItemText {
+  flex: 1;
+}
+
+.detailItemTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 2px;
+}
+
+.detailItemDesc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0;
+}
+
+/* ── Pricing examples ── */
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.pricingItem {
+  padding: 0.875rem 1rem;
+  border-radius: 10px;
+}
+
+.pricingItemOrange {
+  @extend .pricingItem;
+  background: rgba(245, 135, 79, 0.05);
+  border: 1px solid rgba(245, 135, 79, 0.1);
+}
+
+.pricingItemLabel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 4px;
+}
+
+.pricingItemValue {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(245, 135, 79, 0.85);
+}
+
+.pricingItemPeriod {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.25);
+  margin-left: 2px;
+}
+
+/* ── Tip note ── */
+.tipNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0.875rem 1.1rem;
+  background: rgba(77, 136, 187, 0.06);
+  border: 1px solid rgba(77, 136, 187, 0.15);
+  border-radius: 10px;
+  margin-top: 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.5;
+
+  strong {
+    color: rgba(77, 136, 187, 0.8);
+  }
+}
+
+.tipIcon {
+  color: rgba(77, 136, 187, 0.6);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Lead text ── */
+.leadText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.sectionSubtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+  margin: 1.25rem 0 0.75rem;
+}

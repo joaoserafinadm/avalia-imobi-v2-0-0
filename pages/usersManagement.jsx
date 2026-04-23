@@ -68,14 +68,14 @@ export default function UsersManagement() {
 
                     {/* ── Top bar ── */}
                     <div className={styles.topBar}>
-                        <div className={styles.topBarLeft}>
+                        {/* <div className={styles.topBarLeft}>
                             <div className={styles.statBadge}>
                                 <span className={styles.statNumber}>{usersCount}</span>
                                 <span className={styles.statLabel}>
                                     usuário{usersCount !== 1 ? 's' : ''}
                                 </span>
                             </div>
-                        </div>
+                        </div> */}
                         <Link href='/userAdd' className={styles.addBtn}>
                             <FontAwesomeIcon icon={faUserPlus} />
                             Adicionar usuário
