@@ -3540,6 +3540,13 @@ label {
   color: #cacaca !important;
 }
 
+// ── Google Places Autocomplete ────────────────────────────────────────
+// O dropdown (.pac-container) é adicionado ao body mas precisa ficar
+// acima do z-index do Bootstrap modal (1055)
+.pac-container {
+  z-index: 99999 !important;
+}
+
 // ── Dividers & misc ───────────────────────────────────────────────────
 hr {
   border-color: rgba(255, 255, 255, 0.08) !important;

@@ -3347,3 +3347,8 @@ h1 {
 .zIndexMin {
   z-index: -1000001;
 }
+
+// Google Places Autocomplete — acima do modal Bootstrap (1055)
+.pac-container {
+  z-index: 99999 !important;
+}
