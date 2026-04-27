@@ -85,3 +85,47 @@
   font-size: 0.72rem;
   color: rgba(255, 255, 255, 0.28);
 }
+
+/* ── Verify banner ── */
+.verifyBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 1.25rem;
+  padding: 12px 16px;
+  background: rgba(255, 185, 50, 0.05);
+  border: 1px solid rgba(255, 185, 50, 0.2);
+  border-radius: 12px;
+}
+
+.verifyBannerIcon {
+  color: rgba(255, 185, 50, 0.75);
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.verifyBannerBody {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.verifyBannerTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: rgba(255, 220, 100, 0.85);
+}
+
+.verifyBannerText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.55;
+
+  strong {
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: 600;
+  }
+}

@@ -97,6 +97,7 @@
   justify-content: center;
   gap: 10px;
   padding: 1.5rem;
+  overflow: visible;
 }
 
 .imagePlaceholderText {
@@ -173,6 +174,102 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* ── Image URL input ── */
+.urlDivider {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.2);
+  margin: 4px 0 2px;
+}
+
+.urlField {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.urlLabelRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.urlLabel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.tooltipWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover .tooltipBox {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.tooltipIcon {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.3);
+  cursor: help;
+  transition: color 0.15s ease;
+
+  &:hover { color: rgba(255, 255, 255, 0.6); }
+}
+
+.tooltipBox {
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: rgba(20, 20, 20, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 11px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.71rem;
+  color: rgba(255, 255, 255, 0.7);
+  width: 210px;
+  text-align: center;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 200;
+  white-space: normal;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(20, 20, 20, 0.97);
+  }
+}
+
+.urlInput {
+  @extend .input;
+  font-size: 0.78rem;
+  padding: 8px 11px;
+}
+
+.urlHint {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-style: italic;
 }
 
 /* ── Loading inline indicator ── */

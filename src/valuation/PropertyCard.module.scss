@@ -3,7 +3,7 @@
 /* ── Outer card ── */
 .card {
   background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
-  border: 1px solid rgba(245, 135, 79, 0.1);
+  border: 1px solid rgba(245, 134, 79, 0.362);
   border-radius: 18px;
   overflow: hidden;
   position: relative;
@@ -117,6 +117,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding-top: 1.4rem;
 }
 
 /* ── Property name ── */
@@ -127,11 +128,95 @@
   color: rgba(255, 255, 255, 0.9);
   letter-spacing: -0.01em;
   line-height: 1.2;
-  margin: 0 0 6px 0;
+  margin: 0 0 5px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: center;
+}
+
+/* ── Features section ── */
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  margin-bottom: 2px;
+}
+
+.priceCurrency {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #f5874f;
+}
+
+.priceValue {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: -0.5px;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.35);
+  line-height: 1.3;
+}
+
+.locationIcon {
+  color: rgba(245, 135, 79, 0.5);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.featureDivider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin: 2px 0;
+}
+
+.chipsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+}
+
+.chipLabel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.28);
+  white-space: nowrap;
+}
+
+.chipValue {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  white-space: nowrap;
 }
 
 /* ── Divider ── */
@@ -182,4 +267,107 @@
     border-color: rgba(242, 84, 91, 0.35);
     color: #f2545b;
   }
+}
+
+/* ── Delete confirmation ── */
+.confirmBox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0 2px;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.confirmMsg {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.confirmIcon {
+  color: #f2545b;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.confirmBtns {
+  display: flex;
+  gap: 6px;
+}
+
+.confirmCancel {
+  flex: 1;
+  padding: 7px 0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+.confirmDelete {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 0;
+  background: rgba(242, 84, 91, 0.1);
+  border: 1px solid rgba(242, 84, 91, 0.3);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #f2545b;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+
+  svg { font-size: 0.72rem; }
+
+  &:hover {
+    background: rgba(242, 84, 91, 0.18);
+    border-color: rgba(242, 84, 91, 0.5);
+  }
+}
+
+/* ── Date footer ── */
+.dateFooter {
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.dateText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.67rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.dateValue {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.28);
 }

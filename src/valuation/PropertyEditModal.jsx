@@ -1,95 +1,287 @@
-import { useState, useEffect, useRef } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useRef, useState } from "react"
+import { SpinnerSM } from "../components/loading/Spinners"
+import {
+    initialValues, setPropertyLink, setPropertyName, setPropertyPrice, setPropertyType,
+    setAreaTotal, setAreaTotalPrivativa, setQuartos, setSuites, setBanheiros, setSacadas,
+    setAndar, setVagasGaragem, setPavimentos, setSalas, setBairro, setCidade, setUf, setLogradouro,
+    setLatitude, setLongitude, setTerrenoIrregular, setLargura, setComprimento,
+    setFrente, setFundos, setLateralEsquerda, setLateralDireita,
+} from "../../store/NewClientForm/NewClientForm.actions"
+import TypeApartamento from "../pages/newClient/TypeApartamento"
+import TypeCasa from "../pages/newClient/TypeCasa"
+import TypeComercial from "../pages/newClient/TypeComercial"
+import TypeTerrenoValuation from "../pages/valuation/TypeTerrenoValuation"
+import LocationValuation from "./LocationValuation"
+import { createImageUrl } from "../../utils/createImageUrl"
+import baseUrl from "../../utils/baseUrl"
+import axios from "axios"
 import { maskMoney } from "../../utils/mask"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrashAlt, faUpload, faLink, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import Modal, { ModalBtnPrimary, ModalBtnSecondary } from "../components/Modal"
-import { faPencil } from "@fortawesome/free-solid-svg-icons"
-import styles from "./PropertyEditModal.module.scss"
-
-function Field({ label, id, value, onChange, required = false }) {
-    return (
-        <div className={`col-12 col-md-6 ${styles.fieldGroup}`}>
-            <label htmlFor={id} className={styles.label}>{label}{required && ' *'}</label>
-            <input
-                type="text"
-                className={styles.input}
-                id={id}
-                value={value || ""}
-                onChange={e => onChange(e.target.value)} />
-        </div>
-    )
-}
-
-function NumberField({ label, id, value, onChange, suffix = "" }) {
-    return (
-        <div className={`col-6 col-md-3 ${styles.fieldGroup}`}>
-            <label htmlFor={id} className={styles.label}>{label}</label>
-            {suffix ? (
-                <div className={styles.unitGroup}>
-                    <input
-                        type="number"
-                        min="0"
-                        className={styles.unitInput}
-                        id={id}
-                        value={value || ""}
-                        onChange={e => onChange(e.target.value)} />
-                    <span className={styles.unitSuffix}>{suffix}</span>
-                </div>
-            ) : (
-                <input
-                    type="number"
-                    min="0"
-                    className={styles.input}
-                    id={id}
-                    value={value || ""}
-                    onChange={e => onChange(e.target.value)} />
-            )}
-        </div>
-    )
-}
-
-const EMPTY = {
-    propertyName: "", propertyPrice: "", propertyLink: "", imageUrl: "", propertyType: "",
-    areaTotal: "", areaTotalPrivativa: "", quartos: "", suites: "", banheiros: "", sacadas: "",
-    andar: "", vagasGaragem: "", pavimentos: "", salas: "", largura: "", comprimento: "",
-    frente: "", fundos: "", lateralEsquerda: "", lateralDireita: "", terrenoIrregular: false,
-    logradouro: "", bairro: "", cidade: "", uf: "",
-}
+import styles from "./PropertyAdd.module.scss"
 
 export default function PropertyEditModal({ property, index, propertyArray, setPropertyArray }) {
-    const [form, setForm] = useState(EMPTY)
-    const [errors, setErrors] = useState({})
+    const dispatch = useDispatch()
+    const newClientForm = useSelector(state => state.newClientForm)
     const closeRef = useRef(null)
 
+    const [imageUrl, setImageUrl] = useState('')
+    const [linkError, setLinkError] = useState('')
+    const [loadingImage, setLoadingImage] = useState(false)
+    const [manualImageFile, setManualImageFile] = useState(null)
+    const [previewUrl, setPreviewUrl] = useState('')
+    const [loadingSave, setLoadingSave] = useState(false)
+    const [formErrors, setFormErrors] = useState({})
+    const [locationValid, setLocationValid] = useState(true)
+    const [showLocationError, setShowLocationError] = useState(false)
+    const [manualImageUrl, setManualImageUrl] = useState('')
+    const [imageUrlError, setImageUrlError] = useState('')
+    const [imageUrlValidating, setImageUrlValidating] = useState(false)
+
+    // Pré-popula Redux com os dados do imóvel selecionado para edição
     useEffect(() => {
-        if (property) {
-            setForm({ ...EMPTY, ...property })
-            setErrors({})
-        }
+        if (!property) return
+        dispatch(setPropertyType(property.propertyType || ''))
+        dispatch(setPropertyLink(property.propertyLink || ''))
+        dispatch(setPropertyName(property.propertyName || ''))
+        dispatch(setPropertyPrice(property.propertyPrice ? maskMoney(String(property.propertyPrice)) : ''))
+        dispatch(setAreaTotal(property.areaTotal || ''))
+        dispatch(setAreaTotalPrivativa(property.areaTotalPrivativa || ''))
+        dispatch(setQuartos(property.quartos || ''))
+        dispatch(setSuites(property.suites || ''))
+        dispatch(setBanheiros(property.banheiros || ''))
+        dispatch(setSacadas(property.sacadas || ''))
+        dispatch(setAndar(property.andar || ''))
+        dispatch(setVagasGaragem(property.vagasGaragem || ''))
+        dispatch(setPavimentos(property.pavimentos || ''))
+        dispatch(setSalas(property.salas || ''))
+        dispatch(setTerrenoIrregular(!!property.terrenoIrregular))
+        dispatch(setLargura(property.largura || ''))
+        dispatch(setComprimento(property.comprimento || ''))
+        dispatch(setFrente(property.frente || ''))
+        dispatch(setFundos(property.fundos || ''))
+        dispatch(setLateralEsquerda(property.lateralEsquerda || ''))
+        dispatch(setLateralDireita(property.lateralDireita || ''))
+        dispatch(setLogradouro(property.logradouro || ''))
+        dispatch(setBairro(property.bairro || ''))
+        dispatch(setCidade(property.cidade || ''))
+        dispatch(setUf(property.uf || ''))
+        dispatch(setLatitude(property.latitude || ''))
+        dispatch(setLongitude(property.longitude || ''))
+
+        setImageUrl(property.imageUrl || '')
+        setPreviewUrl('')
+        setManualImageFile(null)
+        setLinkError('')
+        setFormErrors({})
+        setLocationValid(true)
+        setShowLocationError(false)
+        setManualImageUrl('')
+        setImageUrlError('')
+        setImageUrlValidating(false)
     }, [property])
 
-    const set = (field) => (value) => setForm(prev => ({ ...prev, [field]: value }))
+    const clearValues = () => {
+        if (property) {
+            dispatch(setPropertyType(property.propertyType || ''))
+        } else {
+            dispatch(initialValues())
+        }
+        if (previewUrl) URL.revokeObjectURL(previewUrl)
+        setImageUrl('')
+        setLinkError('')
+        setLoadingImage(false)
+        setManualImageFile(null)
+        setPreviewUrl('')
+        setFormErrors({})
+        setLocationValid(true)
+        setShowLocationError(false)
+        setManualImageUrl('')
+        setImageUrlError('')
+        setImageUrlValidating(false)
+    }
 
-    const handleSave = () => {
+    const handleManualImageUpload = (e) => {
+        const file = e.target.files[0]
+        if (!file) return
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/webp']
+        if (!validTypes.includes(file.type)) return
+        if (file.size > 5 * 1024 * 1024) return
+        const localPreviewUrl = URL.createObjectURL(file)
+        setPreviewUrl(localPreviewUrl)
+        setManualImageFile(file)
+        setImageUrl('')
+        setLinkError('')
+    }
+
+    const handleRemoveManualImage = () => {
+        if (previewUrl) URL.revokeObjectURL(previewUrl)
+        setPreviewUrl('')
+        setManualImageFile(null)
+        setImageUrl('')
+        setManualImageUrl('')
+        setImageUrlError('')
+        const fileInput = document.getElementById('editManualImageUpload')
+        if (fileInput) fileInput.value = ''
+    }
+
+    const handleImageUrlBlur = async () => {
+        const url = manualImageUrl.trim()
+        if (!url) { setImageUrlError(''); return }
+        try { new URL(url) } catch {
+            setImageUrlError('URL inválida.')
+            return
+        }
+        setImageUrlValidating(true)
+        setImageUrlError('')
+        const valid = await new Promise(resolve => {
+            const img = new Image()
+            img.onload = () => resolve(true)
+            img.onerror = () => resolve(false)
+            img.src = url
+        })
+        setImageUrlValidating(false)
+        if (valid) {
+            setImageUrl(url)
+            setManualImageUrl('')
+            setImageUrlError('')
+        } else {
+            setImageUrlError('URL não encontrada ou não é uma imagem válida.')
+        }
+    }
+
+    const handleGetInfo = async (e) => {
+        if (!newClientForm.propertyLink) return
+        setLinkError('')
+        setLoadingImage(true)
+        setImageUrl('')
+        e.preventDefault()
+
+        try {
+            const res = await axios.get(`${baseUrl()}/api/valuation/extractPropertyInfo`, {
+                params: { url: newClientForm.propertyLink },
+            })
+            const data = res.data
+            if (data.propertyName) dispatch(setPropertyName(data.propertyName))
+            if (data.propertyPrice) dispatch(setPropertyPrice(maskMoney(data.propertyPrice)))
+            if (data.areaTotal) dispatch(setAreaTotal(data.areaTotal))
+            if (data.areaTotalPrivativa) dispatch(setAreaTotalPrivativa(data.areaTotalPrivativa))
+            if (data.quartos) dispatch(setQuartos(data.quartos))
+            if (data.suites) dispatch(setSuites(data.suites))
+            if (data.banheiros) dispatch(setBanheiros(data.banheiros))
+            if (data.sacadas) dispatch(setSacadas(data.sacadas))
+            if (data.andar) dispatch(setAndar(data.andar))
+            if (data.vagasGaragem) dispatch(setVagasGaragem(data.vagasGaragem))
+            if (data.pavimentos) dispatch(setPavimentos(data.pavimentos))
+            if (data.salas) dispatch(setSalas(data.salas))
+            if (data.bairro) dispatch(setBairro(data.bairro))
+            if (data.cidade) dispatch(setCidade(data.cidade))
+            if (data.uf) dispatch(setUf(data.uf))
+            if (data.logradouro) dispatch(setLogradouro(data.logradouro))
+            if (data.imageUrl) {
+                setImageUrl(data.imageUrl)
+            } else if (!data.propertyName) {
+                setLinkError('Não foi possível obter as informações. Preencha manualmente.')
+            }
+
+            if (data.cidade || data.bairro) {
+                const addressParts = [data.logradouro, data.bairro, data.cidade, data.uf].filter(Boolean)
+                const components = ["country:BR"]
+                if (data.uf) components.push(`administrative_area:${data.uf}`)
+                if (data.cidade) components.push(`locality:${data.cidade}`)
+                try {
+                    const geoRes = await fetch(
+                        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addressParts.join(", "))}&components=${encodeURIComponent(components.join("|"))}&key=AIzaSyAU54iwv20-0BDGcVzMcMrVZpmZRPJDDic`
+                    )
+                    if (geoRes.ok) {
+                        const geoData = await geoRes.json()
+                        const location = geoData.results[0]?.geometry?.location
+                        if (location) {
+                            dispatch(setLatitude(location.lat))
+                            dispatch(setLongitude(location.lng))
+                        }
+                    }
+                } catch { /* geocodificação não bloqueia */ }
+            }
+        } catch {
+            setLinkError('Não foi possível obter as informações. Preencha manualmente.')
+        }
+
+        setLoadingImage(false)
+    }
+
+    const handleSave = async (form) => {
         const next = {}
         if (!form.propertyPrice) next.propertyPrice = "O valor do imóvel é obrigatório."
         if (!form.areaTotal) next.areaTotal = "A área total é obrigatória."
-        if (Object.keys(next).length > 0) { setErrors(next); return; }
-        setErrors({})
+        if (!locationValid) { setShowLocationError(true); setFormErrors(next); return }
+        if (Object.keys(next).length > 0) { setFormErrors(next); return }
+        setFormErrors({})
+        setShowLocationError(false)
+
+        setLoadingSave(true)
+        let finalImageUrl = imageUrl
+
+        if (manualImageFile) {
+            try {
+                const fileUrl = await createImageUrl([manualImageFile], 'CLIENT_FILES')
+                finalImageUrl = fileUrl[0].url
+            } catch {
+                setLoadingSave(false)
+                return
+            }
+        }
 
         const updated = [...propertyArray]
-        updated[index] = { ...property, ...form }
+        updated[index] = {
+            ...property,
+            propertyName: form.propertyName,
+            propertyPrice: form.propertyPrice,
+            propertyType: form.propertyType,
+            propertyLink: form.propertyLink,
+            imageUrl: finalImageUrl,
+            areaTotal: form.areaTotal,
+            areaTotalPrivativa: form.areaTotalPrivativa,
+            quartos: form.quartos,
+            suites: form.suites,
+            banheiros: form.banheiros,
+            sacadas: form.sacadas,
+            andar: form.andar,
+            vagasGaragem: form.vagasGaragem,
+            terrenoIrregular: form.terrenoIrregular,
+            largura: form.largura,
+            comprimento: form.comprimento,
+            frente: form.frente,
+            fundos: form.fundos,
+            lateralEsquerda: form.lateralEsquerda,
+            lateralDireita: form.lateralDireita,
+            pavimentos: form.pavimentos,
+            salas: form.salas,
+            cidade: form.cidade,
+            uf: form.uf,
+            logradouro: form.logradouro,
+            bairro: form.bairro,
+            latitude: form.latitude,
+            longitude: form.longitude,
+        }
         setPropertyArray(updated)
+        setLoadingSave(false)
         closeRef.current?.click()
     }
-
-    const type = form.propertyType
 
     const footer = (
         <div style={{ display: 'flex', gap: '8px' }}>
             <button ref={closeRef} type="button" data-bs-dismiss="modal" style={{ display: 'none' }} />
-            <ModalBtnSecondary>Cancelar</ModalBtnSecondary>
-            <ModalBtnPrimary dismiss={false} onClick={handleSave}>Salvar</ModalBtnPrimary>
+            <ModalBtnSecondary dismiss onClick={clearValues}>Cancelar</ModalBtnSecondary>
+            <ModalBtnPrimary dismiss={false} onClick={() => handleSave(newClientForm)}>
+                {loadingSave ? <SpinnerSM /> : 'Salvar alterações'}
+            </ModalBtnPrimary>
         </div>
     )
+
+    if (!property) return null
 
     return (
         <Modal
@@ -98,172 +290,151 @@ export default function PropertyEditModal({ property, index, propertyArray, setP
             icon={faPencil}
             size="lg"
             footer={footer}
+            onClose={clearValues}
         >
+            <span className={styles.requiredNote}>* Campos obrigatórios</span>
+
             <div className="row">
+                {/* ── Basic info ── */}
+                <div className="col-12 col-lg-8">
 
-                {/* ── Informações gerais ── */}
-                <div className="col-12">
-                    <div className={styles.sectionTitle}>Informações gerais</div>
-                </div>
-
-                <div className={`col-12 ${styles.fieldGroup}`}>
-                    <label htmlFor="editPropertyLink" className={styles.label}>Link do imóvel</label>
-                    <input type="text" className={styles.input} id="editPropertyLink"
-                        value={form.propertyLink || ""} onChange={e => set("propertyLink")(e.target.value)} />
-                </div>
-
-                <div className={`col-12 col-md-8 ${styles.fieldGroup}`}>
-                    <label htmlFor="editPropertyName" className={styles.label}>Nome do imóvel *</label>
-                    <input type="text" className={styles.input} id="editPropertyName"
-                        value={form.propertyName || ""} onChange={e => set("propertyName")(e.target.value)} />
-                </div>
-
-                <div className={`col-12 col-md-4 ${styles.fieldGroup}`}>
-                    <label htmlFor="editPropertyPrice" className={styles.label}>Valor *</label>
-                    <div className={styles.priceGroup}>
-                        <span className={styles.pricePrefix}>R$</span>
+                    <div className={styles.fieldGroup}>
+                        <label className={styles.label}>
+                            <FontAwesomeIcon icon={faLink} style={{ fontSize: '0.65rem' }} />
+                            Link do imóvel
+                        </label>
                         <input
                             type="text"
-                            className={`${styles.priceInput}${errors.propertyPrice ? ' ' + styles.error : ''}`}
-                            id="editPropertyPrice"
-                            placeholder="0"
-                            value={form.propertyPrice || ""}
-                            onChange={e => {
-                                set("propertyPrice")(maskMoney(e.target.value))
-                                if (e.target.value) setErrors(p => ({ ...p, propertyPrice: undefined }))
-                            }} />
-                        <span className={styles.priceSuffix}>,00</span>
+                            className={styles.input}
+                            placeholder="https://..."
+                            onBlur={handleGetInfo}
+                            value={newClientForm.propertyLink || ''}
+                            onChange={e => dispatch(setPropertyLink(e.target.value))} />
+                        {linkError && <span className={styles.errorText}>{linkError}</span>}
                     </div>
-                    {errors.propertyPrice && <span className={styles.errorText}>{errors.propertyPrice}</span>}
-                </div>
 
-                <div className={`col-12 ${styles.fieldGroup}`}>
-                    <label htmlFor="editImageUrl" className={styles.label}>URL da imagem</label>
-                    <input type="text" className={styles.input} id="editImageUrl"
-                        value={form.imageUrl || ""} onChange={e => set("imageUrl")(e.target.value)} />
-                </div>
+                    <div className={styles.fieldGroup}>
+                        <label className={styles.label}>
+                            Nome do imóvel
+                            {loadingImage && <span className={styles.loadingInline}><SpinnerSM /></span>}
+                        </label>
+                        <input
+                            type="text"
+                            className={styles.input}
+                            placeholder="Ex.: Apartamento 3 quartos centro"
+                            value={newClientForm.propertyName || ''}
+                            onChange={e => dispatch(setPropertyName(e.target.value))} />
+                    </div>
 
-                {/* ── Localização ── */}
-                <div className="col-12">
-                    <div className={styles.sectionTitle}>Localização</div>
-                </div>
-
-                <div className={`col-12 col-md-6 ${styles.fieldGroup}`}>
-                    <label htmlFor="editBairro" className={styles.label}>Bairro</label>
-                    <input type="text" className={styles.input} id="editBairro"
-                        value={form.bairro || ""} onChange={e => set("bairro")(e.target.value)} />
-                </div>
-                <div className={`col-12 col-md-4 ${styles.fieldGroup}`}>
-                    <label htmlFor="editCidade" className={styles.label}>Cidade</label>
-                    <input type="text" className={styles.input} id="editCidade"
-                        value={form.cidade || ""} onChange={e => set("cidade")(e.target.value)} />
-                </div>
-                <div className={`col-12 col-md-2 ${styles.fieldGroup}`}>
-                    <label htmlFor="editUf" className={styles.label}>UF</label>
-                    <input type="text" className={styles.input} id="editUf" maxLength={2}
-                        value={form.uf || ""} onChange={e => set("uf")(e.target.value.toUpperCase())} />
-                </div>
-                <div className={`col-12 ${styles.fieldGroup}`}>
-                    <label htmlFor="editLogradouro" className={styles.label}>Logradouro</label>
-                    <input type="text" className={styles.input} id="editLogradouro"
-                        value={form.logradouro || ""} onChange={e => set("logradouro")(e.target.value)} />
-                </div>
-
-                {/* ── Características ── */}
-                {type && (
-                    <>
-                        <div className="col-12">
-                            <div className={styles.sectionTitle}>Características</div>
+                    <div className={styles.fieldGroup}>
+                        <label className={styles.label}>Valor do imóvel *</label>
+                        <div className={styles.priceGroup}>
+                            <span className={styles.pricePrefix}>R$</span>
+                            <input
+                                type="text"
+                                className={`${styles.priceInput}${formErrors.propertyPrice ? ' ' + styles.inputError : ''}`}
+                                placeholder="0"
+                                value={newClientForm.propertyPrice || ''}
+                                onChange={e => {
+                                    dispatch(setPropertyPrice(maskMoney(e.target.value)))
+                                    setFormErrors(p => ({ ...p, propertyPrice: undefined }))
+                                }} />
+                            <span className={styles.priceSuffix}>,00</span>
                         </div>
+                        {formErrors.propertyPrice && <span className={styles.errorText}>{formErrors.propertyPrice}</span>}
+                    </div>
+                </div>
 
-                        {/* Área total — todos */}
-                        <div className={`col-12 col-md-6 ${styles.fieldGroup}`}>
-                            <label htmlFor="editAreaTotal" className={styles.label}>
-                                {type === "Terreno" ? "Área total" : type === "Casa" ? "Área do terreno" : "Área total"} (m²) *
-                            </label>
-                            <div className={styles.unitGroup}>
-                                <input
-                                    type="number" min="0"
-                                    className={`${styles.unitInput}${errors.areaTotal ? ' ' + styles.error : ''}`}
-                                    id="editAreaTotal"
-                                    value={form.areaTotal || ""}
-                                    onChange={e => {
-                                        set("areaTotal")(e.target.value)
-                                        if (e.target.value) setErrors(p => ({ ...p, areaTotal: undefined }))
-                                    }} />
-                                <span className={styles.unitSuffix}>m²</span>
-                            </div>
-                            {errors.areaTotal && <span className={styles.errorText}>{errors.areaTotal}</span>}
-                        </div>
-
-                        {/* Área privativa */}
-                        {(type === "Apartamento" || type === "Casa" || type === "Comercial") && (
-                            <div className={`col-12 col-md-6 ${styles.fieldGroup}`}>
-                                <label htmlFor="editAreaPrivativa" className={styles.label}>
-                                    {type === "Casa" ? "Área privativa — Casa (m²)" : "Área privativa (m²)"}
-                                </label>
-                                <div className={styles.unitGroup}>
-                                    <input type="number" min="0" className={styles.unitInput} id="editAreaPrivativa"
-                                        value={form.areaTotalPrivativa || ""} onChange={e => set("areaTotalPrivativa")(e.target.value)} />
-                                    <span className={styles.unitSuffix}>m²</span>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Terreno — dimensões */}
-                        {type === "Terreno" && (
-                            <>
-                                <div className="col-12">
-                                    <label className={styles.checkWrap}>
+                {/* ── Image ── */}
+                <div className="col-12 col-lg-4">
+                    {!imageUrl && !previewUrl ? (
+                        <div className={styles.imagePlaceholder}>
+                            {loadingImage
+                                ? <SpinnerSM />
+                                : <span className={styles.imagePlaceholderText}>Imóvel sem imagem</span>
+                            }
+                            {!loadingImage && (
+                                <>
+                                    <label htmlFor="editManualImageUpload" className={styles.uploadBtn}>
+                                        <FontAwesomeIcon icon={faUpload} />
+                                        Enviar arquivo
                                         <input
-                                            type="checkbox"
-                                            className={styles.checkInput}
-                                            id="editTerrenoIrregular"
-                                            checked={!!form.terrenoIrregular}
-                                            onChange={e => set("terrenoIrregular")(e.target.checked)} />
-                                        <span className={styles.checkLabel}>Terreno irregular</span>
+                                            type="file"
+                                            id="editManualImageUpload"
+                                            accept="image/*"
+                                            onChange={handleManualImageUpload}
+                                            style={{ display: 'none' }} />
                                     </label>
-                                </div>
-                                {!form.terrenoIrregular ? (
-                                    <>
-                                        <NumberField label="Largura (m)" id="editLargura" value={form.largura} onChange={set("largura")} />
-                                        <NumberField label="Comprimento (m)" id="editComprimento" value={form.comprimento} onChange={set("comprimento")} />
-                                    </>
-                                ) : (
-                                    <>
-                                        <NumberField label="Frente (m)" id="editFrente" value={form.frente} onChange={set("frente")} />
-                                        <NumberField label="Fundos (m)" id="editFundos" value={form.fundos} onChange={set("fundos")} />
-                                        <NumberField label="Lateral esq. (m)" id="editLateralEsq" value={form.lateralEsquerda} onChange={set("lateralEsquerda")} />
-                                        <NumberField label="Lateral dir. (m)" id="editLateralDir" value={form.lateralDireita} onChange={set("lateralDireita")} />
-                                    </>
-                                )}
-                            </>
-                        )}
 
-                        {(type === "Casa" || type === "Comercial") && (
-                            <NumberField label="Pavimentos" id="editPavimentos" value={form.pavimentos} onChange={set("pavimentos")} />
-                        )}
-                        {type === "Comercial" && (
-                            <NumberField label="Salas" id="editSalas" value={form.salas} onChange={set("salas")} />
-                        )}
-                        {(type === "Apartamento" || type === "Casa") && (
-                            <NumberField label="Quartos" id="editQuartos" value={form.quartos} onChange={set("quartos")} />
-                        )}
-                        {(type === "Apartamento" || type === "Casa") && (
-                            <NumberField label="Suítes" id="editSuites" value={form.suites} onChange={set("suites")} />
-                        )}
-                        {type !== "Terreno" && (
-                            <NumberField label="Banheiros" id="editBanheiros" value={form.banheiros} onChange={set("banheiros")} />
-                        )}
-                        {type === "Apartamento" && (
-                            <NumberField label="Sacadas" id="editSacadas" value={form.sacadas} onChange={set("sacadas")} />
-                        )}
-                        {type === "Apartamento" && (
-                            <NumberField label="Andar" id="editAndar" value={form.andar} onChange={set("andar")} />
-                        )}
-                        {type !== "Terreno" && (
-                            <NumberField label="Vagas de garagem" id="editVagas" value={form.vagasGaragem} onChange={set("vagasGaragem")} />
-                        )}
+                                    <div className={styles.urlDivider}>— ou —</div>
+
+                                    <div className={styles.urlField}>
+                                        <div className={styles.urlLabelRow}>
+                                            <span className={styles.urlLabel}>URL da imagem</span>
+                                            <div className={styles.tooltipWrap}>
+                                                <FontAwesomeIcon icon={faCircleInfo} className={styles.tooltipIcon} />
+                                                <span className={styles.tooltipBox}>
+                                                    No anúncio, clique com o botão direito sobre a imagem e selecione "Copiar endereço da imagem".
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            className={`${styles.urlInput}${imageUrlError ? ' ' + styles.inputError : ''}`}
+                                            placeholder="https://..."
+                                            value={manualImageUrl}
+                                            onChange={e => { setManualImageUrl(e.target.value); setImageUrlError('') }}
+                                            onBlur={handleImageUrlBlur}
+                                        />
+                                        {imageUrlValidating && <span className={styles.urlHint}>Verificando imagem…</span>}
+                                        {imageUrlError && <span className={styles.errorText}>{imageUrlError}</span>}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    ) : (
+                        <div className={styles.imagePreview}>
+                            <img src={previewUrl || imageUrl} alt="" className={styles.previewImg} />
+                            <button type="button" className={styles.removeBtn} onClick={handleRemoveManualImage} title="Remover imagem">
+                                <FontAwesomeIcon icon={faTrashAlt} />
+                            </button>
+                            {manualImageFile && (
+                                <span className={styles.previewName}>{manualImageFile.name}</span>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* ── Area error ── */}
+            {formErrors.areaTotal && (
+                <div className={styles.errorText} style={{ marginBottom: '0.75rem' }}>{formErrors.areaTotal}</div>
+            )}
+
+            {/* ── Property type sub-form ── */}
+            <div data-bs-theme="dark">
+                {newClientForm.propertyType === "Apartamento" && (
+                    <>
+                        <TypeApartamento propertyAndar requiredPrivativa={false} />
+                        <LocationValuation onValidationChange={setLocationValid} showError={showLocationError} />
+                    </>
+                )}
+                {newClientForm.propertyType === "Casa" && (
+                    <>
+                        <TypeCasa />
+                        <LocationValuation onValidationChange={setLocationValid} showError={showLocationError} />
+                    </>
+                )}
+                {newClientForm.propertyType === "Comercial" && (
+                    <>
+                        <TypeComercial />
+                        <LocationValuation onValidationChange={setLocationValid} showError={showLocationError} />
+                    </>
+                )}
+                {newClientForm.propertyType === "Terreno" && (
+                    <>
+                        <TypeTerrenoValuation />
+                        <LocationValuation onValidationChange={setLocationValid} showError={showLocationError} />
                     </>
                 )}
             </div>

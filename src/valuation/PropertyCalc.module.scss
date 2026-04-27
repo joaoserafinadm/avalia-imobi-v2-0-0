@@ -20,6 +20,63 @@
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+
+  @media (max-width: 768px) {
+    padding: 0.7rem 1rem;
+    gap: 0;
+  }
+}
+
+.infoToggle {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    gap: 8px;
+  }
+}
+
+.infoToggleText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(245, 135, 79, 0.85);
+}
+
+.infoChevron {
+  font-size: 0.7rem;
+  color: rgba(245, 135, 79, 0.65);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.infoChevronOpen {
+  transform: rotate(180deg);
+}
+
+.infoItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  @media (max-width: 768px) {
+    display: none;
+    padding-top: 0.6rem;
+    gap: 0.5rem;
+  }
+}
+
+.infoItemsOpen {
+  @media (max-width: 768px) {
+    display: flex;
+  }
 }
 
 .infoItem {
@@ -30,10 +87,17 @@
   font-size: 0.82rem;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.5;
+  overflow-wrap: break-word;
+  word-break: break-word;
 
   b {
     color: rgba(255, 255, 255, 0.85);
     font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.78rem;
+    gap: 8px;
   }
 }
 

@@ -4,7 +4,8 @@ import { SpinnerSM } from "../components/loading/Spinners"
 import {
     initialValues, setPropertyLink, setPropertyName, setPropertyPrice, setPropertyType,
     setAreaTotal, setAreaTotalPrivativa, setQuartos, setSuites, setBanheiros, setSacadas,
-    setAndar, setVagasGaragem, setPavimentos, setSalas, setBairro, setCidade, setUf, setLogradouro
+    setAndar, setVagasGaragem, setPavimentos, setSalas, setBairro, setCidade, setUf, setLogradouro,
+    setLatitude, setLongitude
 } from "../../store/NewClientForm/NewClientForm.actions"
 import TypeApartamento from "../pages/newClient/TypeApartamento"
 import TypeCasa from "../pages/newClient/TypeCasa"
@@ -17,7 +18,7 @@ import baseUrl from "../../utils/baseUrl"
 import axios from "axios"
 import { maskMoney } from "../../utils/mask"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTrashAlt, faUpload, faLink, faTag } from "@fortawesome/free-solid-svg-icons"
+import { faTrashAlt, faUpload, faLink, faTag, faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import Modal, { ModalBtnPrimary, ModalBtnSecondary } from "../components/Modal"
 import { useRouter } from "next/router"
 import styles from "./PropertyAdd.module.scss"
@@ -37,6 +38,11 @@ export default function PropertyAddModal(props) {
     const [manualImageFile, setManualImageFile] = useState(null)
     const [previewUrl, setPreviewUrl] = useState('')
     const [formErrors, setFormErrors] = useState({})
+    const [locationValid, setLocationValid] = useState(true)
+    const [showLocationError, setShowLocationError] = useState(false)
+    const [manualImageUrl, setManualImageUrl] = useState('')
+    const [imageUrlError, setImageUrlError] = useState('')
+    const [imageUrlValidating, setImageUrlValidating] = useState(false)
 
     useEffect(() => {
         dispatch(initialValues())
@@ -53,6 +59,11 @@ export default function PropertyAddModal(props) {
         setManualImageFile(null)
         setPreviewUrl('')
         setFormErrors({})
+        setLocationValid(true)
+        setShowLocationError(false)
+        setManualImageUrl('')
+        setImageUrlError('')
+        setImageUrlValidating(false)
     }
 
     const handleManualImageUpload = (e) => {
@@ -73,16 +84,45 @@ export default function PropertyAddModal(props) {
         setPreviewUrl('')
         setManualImageFile(null)
         setImageUrl('')
+        setManualImageUrl('')
+        setImageUrlError('')
         const fileInput = document.getElementById('manualImageUpload')
         if (fileInput) fileInput.value = ''
+    }
+
+    const handleImageUrlBlur = async () => {
+        const url = manualImageUrl.trim()
+        if (!url) { setImageUrlError(''); return }
+        try { new URL(url) } catch {
+            setImageUrlError('URL inválida.')
+            return
+        }
+        setImageUrlValidating(true)
+        setImageUrlError('')
+        const valid = await new Promise(resolve => {
+            const img = new Image()
+            img.onload = () => resolve(true)
+            img.onerror = () => resolve(false)
+            img.src = url
+        })
+        setImageUrlValidating(false)
+        if (valid) {
+            setImageUrl(url)
+            setManualImageUrl('')
+            setImageUrlError('')
+        } else {
+            setImageUrlError('URL não encontrada ou não é uma imagem válida.')
+        }
     }
 
     const handlePropertyAdd = async (property) => {
         const next = {}
         if (!property.propertyPrice) next.propertyPrice = "O valor do imóvel é obrigatório."
         if (!property.areaTotal) next.areaTotal = "A área total é obrigatória."
+        if (!locationValid) { setShowLocationError(true); setFormErrors(next); return; }
         if (Object.keys(next).length > 0) { setFormErrors(next); return; }
         setFormErrors({})
+        setShowLocationError(false)
 
         setLoadingAdd(true)
         const newPropertyArray = props.propertyArray
@@ -172,6 +212,28 @@ export default function PropertyAddModal(props) {
             } else if (!data.propertyName) {
                 setLinkError('Não foi possível obter as informações. Preencha manualmente.')
             }
+
+            if (data.cidade || data.bairro) {
+                const addressParts = [data.logradouro, data.bairro, data.cidade, data.uf].filter(Boolean)
+                const components = ["country:BR"]
+                if (data.uf) components.push(`administrative_area:${data.uf}`)
+                if (data.cidade) components.push(`locality:${data.cidade}`)
+                try {
+                    const geoRes = await fetch(
+                        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addressParts.join(", "))}&components=${encodeURIComponent(components.join("|"))}&key=AIzaSyAU54iwv20-0BDGcVzMcMrVZpmZRPJDDic`
+                    )
+                    if (geoRes.ok) {
+                        const geoData = await geoRes.json()
+                        const location = geoData.results[0]?.geometry?.location
+                        if (location) {
+                            dispatch(setLatitude(location.lat))
+                            dispatch(setLongitude(location.lng))
+                        }
+                    }
+                } catch {
+                    // erro de geocodificação não bloqueia o formulário
+                }
+            }
         } catch {
             setLinkError('Não foi possível obter as informações. Preencha manualmente.')
         }
@@ -260,16 +322,46 @@ export default function PropertyAddModal(props) {
                                 : <span className={styles.imagePlaceholderText}>Imóvel sem imagem</span>
                             }
                             {!loadingImage && (
-                                <label htmlFor="manualImageUpload" className={styles.uploadBtn}>
-                                    <FontAwesomeIcon icon={faUpload} />
-                                    Adicionar imagem
-                                    <input
-                                        type="file"
-                                        id="manualImageUpload"
-                                        accept="image/*"
-                                        onChange={handleManualImageUpload}
-                                        style={{ display: 'none' }} />
-                                </label>
+                                <>
+                                    <label htmlFor="manualImageUpload" className={styles.uploadBtn}>
+                                        <FontAwesomeIcon icon={faUpload} />
+                                        Enviar arquivo
+                                        <input
+                                            type="file"
+                                            id="manualImageUpload"
+                                            accept="image/*"
+                                            onChange={handleManualImageUpload}
+                                            style={{ display: 'none' }} />
+                                    </label>
+
+                                    <div className={styles.urlDivider}>— ou —</div>
+
+                                    <div className={styles.urlField}>
+                                        <div className={styles.urlLabelRow}>
+                                            <span className={styles.urlLabel}>URL da imagem</span>
+                                            <div className={styles.tooltipWrap}>
+                                                <FontAwesomeIcon icon={faCircleInfo} className={styles.tooltipIcon} />
+                                                <span className={styles.tooltipBox}>
+                                                    No anúncio, clique com o botão direito sobre a imagem e selecione "Copiar endereço da imagem".
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            className={`${styles.urlInput}${imageUrlError ? ' ' + styles.inputError : ''}`}
+                                            placeholder="https://..."
+                                            value={manualImageUrl}
+                                            onChange={e => { setManualImageUrl(e.target.value); setImageUrlError('') }}
+                                            onBlur={handleImageUrlBlur}
+                                        />
+                                        {imageUrlValidating && (
+                                            <span className={styles.urlHint}>Verificando imagem…</span>
+                                        )}
+                                        {imageUrlError && (
+                                            <span className={styles.errorText}>{imageUrlError}</span>
+                                        )}
+                                    </div>
+                                </>
                             )}
                         </div>
                     ) : (
@@ -295,26 +387,26 @@ export default function PropertyAddModal(props) {
             <div data-bs-theme="dark">
                 {newClientForm.propertyType === "Apartamento" && (
                     <>
-                        <TypeApartamento propertyAndar />
-                        <LocationValuation />
+                        <TypeApartamento propertyAndar requiredPrivativa={false} />
+                        <LocationValuation onValidationChange={setLocationValid} showError={showLocationError} />
                     </>
                 )}
                 {newClientForm.propertyType === "Casa" && (
                     <>
                         <TypeCasa />
-                        <LocationValuation />
+                        <LocationValuation onValidationChange={setLocationValid} showError={showLocationError} />
                     </>
                 )}
                 {newClientForm.propertyType === "Comercial" && (
                     <>
                         <TypeComercial />
-                        <LocationValuation />
+                        <LocationValuation onValidationChange={setLocationValid} showError={showLocationError} />
                     </>
                 )}
                 {newClientForm.propertyType === "Terreno" && (
                     <>
                         <TypeTerrenoValuation />
-                        <LocationValuation />
+                        <LocationValuation onValidationChange={setLocationValid} showError={showLocationError} />
                     </>
                 )}
             </div>

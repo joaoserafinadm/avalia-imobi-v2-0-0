@@ -1,13 +1,14 @@
 import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faCircleCheck, faTriangleExclamation, faEdit, faPencil } from "@fortawesome/free-solid-svg-icons"
 import PropertyCard from "./PropertyCard"
 import PropertyEditModal from "./PropertyEditModal"
+import PropertiesMap from "./PropertiesMap"
 import { SpinnerSM } from "../components/loading/Spinners"
 import styles from "./PropertyCollection.module.scss"
 
 export default function PropertyCollection(props) {
-    const { loadingAdd } = props
+    const { loadingAdd, client } = props
     const propertyArray = props.propertyArray
 
     const [editingIndex, setEditingIndex] = useState(null)
@@ -54,6 +55,20 @@ export default function PropertyCollection(props) {
                     <span className={styles.addSub}>para comparação</span>
                 </button>
             </div>
+
+            {propertyArray.length > 0 && (
+                <div className={styles.verifyBanner}>
+                    <FontAwesomeIcon icon={faTriangleExclamation} className={styles.verifyBannerIcon} />
+                    <div className={styles.verifyBannerBody}>
+                        <span className={styles.verifyBannerTitle}>Verifique os imóveis de comparação</span>
+                        <span className={styles.verifyBannerText}>
+                            Antes de finalizar a avaliação, confirme se <strong>valor</strong>, <strong>área</strong>, <strong>caracteristicas</strong> e <strong>localização</strong> de cada imóvel estão corretos. Clique em <FontAwesomeIcon icon={faPencil} style={{ fontSize: '0.72rem', margin: '0 2px' }} /> editar para corrigir qualquer informação.
+                        </span>
+                    </div>
+                </div>
+            )}
+
+            <PropertiesMap propertyArray={propertyArray} client={client} />
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+﻿import { useRouter } from "next/router";
 import Title from "../../src/components/title/Title2";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -17,6 +17,7 @@ import { FixedTopicsBottom } from "../../src/components/fixedTopics";
 import Link from "next/link";
 import isMobile from "../../utils/isMobile";
 import scrollTo from "../../utils/scrollTo";
+import styles from "./[_id].module.scss";
 import ShowValuationModal from "../../src/valuationPage/ShowValuationModal";
 import { createImageUrlFromLink } from "../../utils/createImageUrlFromLink";
 
@@ -195,7 +196,7 @@ export default function ValuationPage(props) {
 
                         <Sections section={section} idTarget="clientManage"
                             setSection={value => setSection(value)}
-                            sections={["Configurar avaliação", "Informações do imóvel"]} />
+                            sections={["Configurar avaliação", "Imóvel avaliado"]} />
 
 
                         <div className="carousel-inner ">
@@ -226,27 +227,19 @@ export default function ValuationPage(props) {
 
 
 
-                    <FixedTopicsBottom >
-
-                        <div className="row">
-                            <div className="col-12 d-flex justify-content-end align-items-center">
-                                <Link href="/clientsManagement">
-                                    <button className="btn btn-sm btn-secondary">Cancelar</button>
+                    <FixedTopicsBottom>
+                        <div className={styles.footerBar}>
+                            <div className={styles.footerActions}>
+                                <Link href="/clientsManagement" className={styles.btnCancel}>
+                                    Cancelar
                                 </Link>
-
-                                <button className="btn btn-sm btn-orange ms-2"
-                                    onClick={() => handleSave(token.company_id)} disabled={propertyArray.length === 0 || loadingSave}>
-                                    {loadingSave ?
-                                        <SpinnerSM />
-                                        :
-                                        "Salvar"
-                                    }
+                                <button
+                                    className={styles.btnSave}
+                                    onClick={() => handleSave(token.company_id)}
+                                    disabled={propertyArray.length === 0 || loadingSave}
+                                >
+                                    {loadingSave ? <SpinnerSM /> : "Salvar"}
                                 </button>
-
-
-
-
-
                             </div>
                         </div>
                     </FixedTopicsBottom>

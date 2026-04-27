@@ -3,7 +3,7 @@ import axios from "axios"
 import baseUrl from "../../utils/baseUrl"
 import { SpinnerSM } from "../components/loading/Spinners"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faRobot, faExternalLinkAlt, faCheck, faSearch } from "@fortawesome/free-solid-svg-icons"
+import { faRobot, faExternalLinkAlt, faCheck, faSearch, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 import { maskMoney } from "../../utils/mask"
 import Modal, { ModalBtnPrimary, ModalBtnSecondary } from "../components/Modal"
 import styles from "./AiPropertySearch.module.scss"
@@ -16,8 +16,10 @@ export default function AiPropertySearch(props) {
     const [selected, setSelected] = useState([])
     const [manualPrices, setManualPrices] = useState({})
     const [manualAreas, setManualAreas] = useState({})
+    const [manualPrivativas, setManualPrivativas] = useState({})
     const [missingFields, setMissingFields] = useState(new Set())
     const [error, setError] = useState("")
+    const [loadingAdd, setLoadingAdd] = useState(false)
     const closeRef = useRef(null)
 
     const handleSearch = async () => {
@@ -27,6 +29,7 @@ export default function AiPropertySearch(props) {
         setSelected([])
         setManualPrices({})
         setManualAreas({})
+        setManualPrivativas({})
         setMissingFields(new Set())
 
         try {
@@ -63,6 +66,9 @@ export default function AiPropertySearch(props) {
     const getArea = (index) =>
         manualAreas[index] !== undefined ? manualAreas[index] : results[index]?.areaTotal || ""
 
+    const getPrivativa = (index) =>
+        manualPrivativas[index] !== undefined ? manualPrivativas[index] : results[index]?.areaTotalPrivativa || ""
+
     const handlePriceChange = (index, value) => {
         const masked = maskMoney(value)
         setManualPrices(prev => ({ ...prev, [index]: masked }))
@@ -75,6 +81,11 @@ export default function AiPropertySearch(props) {
         if (numeric) clearMissing(index)
     }
 
+    const handlePrivativaChange = (index, value) => {
+        const numeric = value.replace(/\D/g, "")
+        setManualPrivativas(prev => ({ ...prev, [index]: numeric }))
+    }
+
     const clearMissing = (index) => {
         setMissingFields(prev => {
             const next = new Set(prev)
@@ -83,15 +94,98 @@ export default function AiPropertySearch(props) {
         })
     }
 
-    const handleAddSelected = () => {
+    const geocode = async ({ logradouro, bairro, cidade, uf }) => {
+        const cidadeVal = cidade || client.cidade || ""
+        const ufVal = uf || client.uf || ""
+        if (!logradouro && !bairro && !cidadeVal) return { lat: "", lng: "" }
+
+        const components = ["country:BR"]
+        if (ufVal) components.push(`administrative_area:${ufVal}`)
+        if (cidadeVal) components.push(`locality:${cidadeVal}`)
+
+        const addressParts = [logradouro, bairro, cidadeVal, ufVal].filter(Boolean)
+
+        try {
+            let url = `https://maps.googleapis.com/maps/api/geocode/json`
+                + `?address=${encodeURIComponent(addressParts.join(", "))}`
+                + `&components=${encodeURIComponent(components.join("|"))}`
+                + `&key=AIzaSyAU54iwv20-0BDGcVzMcMrVZpmZRPJDDic`
+
+            if (client.latitude && client.longitude) {
+                const delta = 0.45
+                url += `&bounds=${+client.latitude - delta},${+client.longitude - delta}|${+client.latitude + delta},${+client.longitude + delta}`
+            }
+
+            const res = await fetch(url)
+            if (!res.ok) return { lat: "", lng: "" }
+            const data = await res.json()
+
+            if (!data.results?.length && cidadeVal) {
+                const fallbackComponents = ["country:BR"]
+                if (ufVal) fallbackComponents.push(`administrative_area:${ufVal}`)
+                const fallbackUrl = `https://maps.googleapis.com/maps/api/geocode/json`
+                    + `?address=${encodeURIComponent(addressParts.join(", "))}`
+                    + `&components=${encodeURIComponent(fallbackComponents.join("|"))}`
+                    + `&key=AIzaSyAU54iwv20-0BDGcVzMcMrVZpmZRPJDDic`
+                const fallbackRes = await fetch(fallbackUrl)
+                if (fallbackRes.ok) {
+                    const fallbackData = await fallbackRes.json()
+                    const loc = fallbackData.results[0]?.geometry?.location
+                    return loc ? { lat: loc.lat, lng: loc.lng } : { lat: "", lng: "" }
+                }
+            }
+
+            const loc = data.results[0]?.geometry?.location
+            return loc ? { lat: loc.lat, lng: loc.lng } : { lat: "", lng: "" }
+        } catch {
+            return { lat: "", lng: "" }
+        }
+    }
+
+    // Extrai endereço completo do link do anúncio (mesmo fluxo do PropertyAdd)
+    const extractAddress = async (propertyLink) => {
+        if (!propertyLink) return null
+        try {
+            const res = await axios.get(`${baseUrl()}/api/valuation/extractPropertyInfo`, {
+                params: { url: propertyLink },
+                timeout: 8000,
+            })
+            return res.data
+        } catch {
+            return null
+        }
+    }
+
+    const handleAddSelected = async () => {
         const missing = new Set(selected.filter(i => !getPrice(i) || !getArea(i)))
         if (missing.size > 0) { setMissingFields(missing); return; }
 
+        setLoadingAdd(true)
+
+        // Extrai endereço completo de cada anúncio em paralelo
+        const extracted = await Promise.all(
+            selected.map((index) => extractAddress(results[index].propertyLink))
+        )
+
+        const geoResults = await Promise.all(
+            selected.map((index, i) => {
+                const property = results[index]
+                const info = extracted[i]
+                return geocode({
+                    logradouro: info?.logradouro || "",
+                    bairro:     info?.bairro     || property.bairro || client.bairro || "",
+                    cidade:     info?.cidade     || property.cidade || client.cidade || "",
+                    uf:         info?.uf         || property.uf     || client.uf     || "",
+                })
+            })
+        )
+
         const newPropertyArray = [...propertyArray]
-        for (const index of selected) {
+        selected.forEach((index, i) => {
             const property = results[index]
             const price = getPrice(index)
             const area = getArea(index)
+            const { lat, lng } = geoResults[i]
             newPropertyArray.push({
                 propertyName: property.propertyName || "",
                 propertyPrice: price.replace(/[^\d]/g, ""),
@@ -99,7 +193,7 @@ export default function AiPropertySearch(props) {
                 propertyLink: property.propertyLink || "",
                 imageUrl: property.imageUrl || "",
                 areaTotal: area,
-                areaTotalPrivativa: property.areaTotalPrivativa || "",
+                areaTotalPrivativa: getPrivativa(index),
                 quartos: property.quartos || "",
                 suites: "",
                 banheiros: property.banheiros || "",
@@ -113,15 +207,17 @@ export default function AiPropertySearch(props) {
                 uf: property.uf || client.uf || "",
                 logradouro: "",
                 bairro: property.bairro || client.bairro || "",
-                latitude: "", longitude: "",
+                latitude: lat,
+                longitude: lng,
                 dateAdded: new Date(),
             })
-        }
+        })
 
         setPropertyArray(newPropertyArray)
         setForceUpdate()
         setSelected([])
         setMissingFields(new Set())
+        setLoadingAdd(false)
         closeRef.current?.click()
     }
 
@@ -135,7 +231,15 @@ export default function AiPropertySearch(props) {
                     </button>
                 )}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+                {/* {selected.length > 0 && !loadingAdd && (
+                    <div className={styles.verifyNotice}>
+                        <FontAwesomeIcon icon={faTriangleExclamation} className={styles.verifyIcon} />
+                        <span>
+                            Antes de adicionar, verifique se <strong>valor</strong>, <strong>área</strong> e <strong>localização</strong> de cada imóvel estão corretos. A IA pode cometer erros.
+                        </span>
+                    </div>
+                )} */}
                 {missingFields.size > 0 && (
                     <span className={styles.missingError}>
                         Preencha o valor e a área dos imóveis marcados em vermelho.
@@ -145,8 +249,8 @@ export default function AiPropertySearch(props) {
                     <button ref={closeRef} type="button" data-bs-dismiss="modal" style={{ display: 'none' }} />
                     <ModalBtnSecondary>Fechar</ModalBtnSecondary>
                     {!loading && results.length > 0 && (
-                        <ModalBtnPrimary dismiss={false} onClick={handleAddSelected} disabled={selected.length === 0}>
-                            Adicionar selecionados ({selected.length})
+                        <ModalBtnPrimary dismiss={false} onClick={handleAddSelected} disabled={selected.length === 0 || loadingAdd}>
+                            {loadingAdd ? <SpinnerSM /> : `Adicionar selecionados (${selected.length})`}
                         </ModalBtnPrimary>
                     )}
                 </div>
@@ -202,6 +306,7 @@ export default function AiPropertySearch(props) {
                                 const area = getArea(index)
                                 const hasAutoPrice = !!property.propertyPrice
                                 const hasAutoArea = !!property.areaTotal
+                                const hasAutoPrivativa = !!property.areaTotalPrivativa
 
                                 return (
                                     <div
@@ -282,6 +387,23 @@ export default function AiPropertySearch(props) {
                                                     {property.banheiros && `${property.banheiros} bnh `}
                                                     {property.vagasGaragem && `${property.vagasGaragem} vaga(s)`}
                                                 </span>
+                                            )}
+
+                                            {!hasAutoPrivativa && (
+                                                <div className={styles.manualField} onClick={e => e.stopPropagation()}>
+                                                    <span className={styles.manualLabel}>
+                                                        Área privativa
+                                                    </span>
+                                                    <div className={styles.inputGroup}>
+                                                        <input
+                                                            type="number" min="0"
+                                                            className={styles.manualInput}
+                                                            placeholder="0"
+                                                            value={manualPrivativas[index] || ""}
+                                                            onChange={e => handlePrivativaChange(index, e.target.value)} />
+                                                        <span className={styles.inputSuffix}>m²</span>
+                                                    </div>
+                                                </div>
                                             )}
 
                                             {(property.bairro || property.cidade) && (

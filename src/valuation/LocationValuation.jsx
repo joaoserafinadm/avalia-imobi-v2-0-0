@@ -18,7 +18,7 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 const LIBRARIES = ["places"];
 
-export default function LocationValuation(props) {
+export default function LocationValuation({ onValidationChange, showError }) {
   const newClientForm = useSelector((state) => state.newClientForm);
   const dispatch = useDispatch();
 
@@ -57,6 +57,12 @@ export default function LocationValuation(props) {
     newClientForm.uf,
     newClientForm.numero,
   ]);
+
+  // Notifica o pai sobre validade: inválido se há texto mas sem coordenadas
+  useEffect(() => {
+    const valid = !addressInput || !!(newClientForm.latitude && newClientForm.longitude);
+    onValidationChange?.(valid);
+  }, [addressInput, newClientForm.latitude, newClientForm.longitude]);
 
   // Inicializa o Google Autocomplete assim que a API estiver carregada
   useEffect(() => {
@@ -172,15 +178,27 @@ export default function LocationValuation(props) {
           <input
             ref={inputRef}
             type="text"
-            className="form-control"
+            className={`form-control${showError && addressInput && !newClientForm.latitude ? ' is-invalid' : ''}`}
             placeholder="Digite o endereço do imóvel..."
             value={addressInput}
-            onChange={(e) => setAddressInput(e.target.value)}
+            onChange={(e) => {
+              setAddressInput(e.target.value);
+              if (newClientForm.latitude || newClientForm.longitude) {
+                dispatch(setLatitude(""));
+                dispatch(setLongitude(""));
+              }
+            }}
             autoComplete="off"
           />
-          <small className="text-muted">
-            Digite e selecione uma sugestão para preencher automaticamente
-          </small>
+          {showError && addressInput && !newClientForm.latitude ? (
+            <small style={{ color: '#f2545b' }}>
+              Selecione uma opção da lista do Google para confirmar o endereço.
+            </small>
+          ) : (
+            <small className="text-muted">
+              Digite e selecione uma sugestão para preencher automaticamente
+            </small>
+          )}
         </div>
 
         {/* <div className="col-12 d-flex justify-content-end">

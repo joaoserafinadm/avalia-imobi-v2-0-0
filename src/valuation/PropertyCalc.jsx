@@ -1,12 +1,13 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import valuationCalcResult from "./valuationCalc"
 import TitleLabel from "../components/TitleLabel"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faRotateLeft } from "@fortawesome/free-solid-svg-icons"
+import { faRotateLeft, faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import styles from "./PropertyCalc.module.scss"
 
 export default function PropertyCalc(props) {
     const { propertyArray, client, calcVariables, valuationCalc } = props
+    const [infoExpanded, setInfoExpanded] = useState(false)
 
     useEffect(() => {
         const result = valuationCalcResult(
@@ -45,13 +46,26 @@ export default function PropertyCalc(props) {
             <TitleLabel>Cálculo</TitleLabel>
 
             <div className={styles.infoBlock}>
-                <div className={styles.infoItem}>
-                    <span className={styles.infoDot} />
-                    A avaliação irá gerar três valores de referência: <b>Valor Ideal</b>, <b>Venda Rápida</b> e <b>Venda a Longo Prazo</b>.
-                </div>
-                <div className={styles.infoItem}>
-                    <span className={styles.infoDot} />
-                    Você poderá ajustar esses valores conforme sua estratégia de venda ou conhecimento de mercado.
+                <button
+                    type="button"
+                    className={styles.infoToggle}
+                    onClick={() => setInfoExpanded(p => !p)}
+                >
+                    <span className={styles.infoToggleText}>Como funciona o cálculo?</span>
+                    <FontAwesomeIcon
+                        icon={faChevronDown}
+                        className={`${styles.infoChevron} ${infoExpanded ? styles.infoChevronOpen : ''}`}
+                    />
+                </button>
+                <div className={`${styles.infoItems} ${infoExpanded ? styles.infoItemsOpen : ''}`}>
+                    <div className={styles.infoItem}>
+                        <span className={styles.infoDot} />
+                        <span>A avaliação irá gerar três valores de referência: <b>Valor Ideal</b>, <b>Venda Rápida</b> e <b>Venda a Longo Prazo</b>.</span>
+                    </div>
+                    <div className={styles.infoItem}>
+                        <span className={styles.infoDot} />
+                        <span>Você poderá ajustar esses valores conforme sua estratégia de venda ou conhecimento de mercado.</span>
+                    </div>
                 </div>
             </div>
 

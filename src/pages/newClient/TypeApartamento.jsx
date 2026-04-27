@@ -10,6 +10,8 @@ export default function TypeApartamento(props) {
     const newClientForm = useSelector(state => state.newClientForm)
     const dispatch = useDispatch()
 
+    const requiredPrivativa = props.requiredPrivativa !== false
+
     const andarOptions = props.propertyAndar
         ? [{ value: 'Baixo', label: 'Baixo' }, { value: 'Médio', label: 'Médio' }, { value: 'Alto', label: 'Alto' }, { value: 'Não sei', label: 'Não sei' }]
         : num(0, 50)
@@ -27,7 +29,7 @@ export default function TypeApartamento(props) {
                     </div>
 
                     <div className="col-12 col-lg-6">
-                        <Input type="number" label="Área privativa" required suffix="m²"
+                        <Input type="number" label="Área privativa" required={requiredPrivativa} suffix="m²"
                             value={newClientForm.areaTotalPrivativa}
                             onChange={e => dispatch(setAreaTotalPrivativa(e.target.value))} />
                     </div>
