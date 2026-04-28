@@ -75,3 +75,26 @@
   &.subject { background: #f5874f; span { font-size: 10px; } }
   &.comparison { background: #1a73e8; }
 }
+
+/* ── Light theme ── */
+.light {
+  .headerTitle {
+    color: #1C1A18;
+  }
+
+  .headerCount {
+    color: #9A9088;
+  }
+
+  .mapWrap {
+    border-color: #E5DFD5;
+  }
+
+  .legendItem {
+    color: #5A5248;
+  }
+
+  .legendPin {
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+}

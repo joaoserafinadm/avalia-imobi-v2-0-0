@@ -50,7 +50,7 @@ export default function DownloadPage(props) {
         <div className="container-fluid p-0">
             <div className="row justify-content-center align-items-center min-vh-100 m-0">
                 <div className="col-12 col-xxl-10">
-                    <div className="card shadow-lg border-0" style={{ minHeight: '95vh', borderRadius: '20px' }}>
+                    <div className="card bg-light shadow-lg border-0" style={{ minHeight: '95vh', borderRadius: '20px' }}>
                         <div className="card-body p-0" style={{ overflowY: 'auto', maxHeight: '95vh' }}>
                             
                             {/* Header Section */}
@@ -68,7 +68,7 @@ export default function DownloadPage(props) {
                                 {/* Success Message Section */}
                                 <div className="row justify-content-center mb-5">
                                     <div className="col-lg-8">
-                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px' }}>
+                                        <div className="card bg-light border-0 shadow-sm" style={{ borderRadius: '15px' }}>
                                             <div className="card-body text-center">
                                                 {/* Company Logo */}
                                                 {props.userData?.logo && (
@@ -107,7 +107,7 @@ export default function DownloadPage(props) {
                                         <div className="row g-4">
                                             {/* View Again Card */}
                                             <div className="col-md-6">
-                                                <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
+                                                <div className="card bg-light border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
                                                     <div className="card-body p-4 text-center">
                                                         <div className="mb-3">
                                                             <div className="rounded-circle d-inline-flex align-items-center justify-content-center"
@@ -135,7 +135,7 @@ export default function DownloadPage(props) {
 
                                             {/* Download PDF Card */}
                                             <div className="col-md-6">
-                                                <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
+                                                <div className="card bg-light border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
                                                     <div className="card-body p-4 text-center">
                                                         <div className="mb-3">
                                                             <div className="rounded-circle d-inline-flex align-items-center justify-content-center"

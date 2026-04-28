@@ -13,7 +13,7 @@ export default function ContentPage(props) {
         <div className="container-fluid p-0">
             <div className="row justify-content-center align-items-center min-vh-100 m-0">
                 <div className="col-12 col-xxl-10">
-                    <div className="card shadow-lg border-0" style={{ minHeight: '95vh', borderRadius: '20px' }}>
+                    <div className="card bg-light shadow-lg border-0" style={{ minHeight: '95vh', borderRadius: '20px' }}>
                         <div className="card-body p-0" style={{ overflowY: 'auto', maxHeight: '95vh' }}>
 
                             {/* Header Section */}
@@ -31,7 +31,7 @@ export default function ContentPage(props) {
                                 {/* Introduction Section */}
                                 <div className="row justify-content-center mb-5">
                                     <div className="col-lg-6 mb-4 mb-lg-0">
-                                        <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
+                                        <div className="card bg-light border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
                                             <div className="card-body p-4 d-flex flex-column justify-content-center aling-items-start">
                                                 <div className="mb-4">
                                                     <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
@@ -54,7 +54,7 @@ export default function ContentPage(props) {
                                     </div>
 
                                     <div className="col-lg-6">
-                                        <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
+                                        <div className="card bg-light border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
                                             <div className="card-body p-4">
                                                 <div className="text-center mb-4">
                                                     <h4 className="fw-bold" style={{ color: '#5a5a5a' }}>Estudo feito por:</h4>
@@ -89,7 +89,7 @@ export default function ContentPage(props) {
 
                                 <div className="row align-items-center mb-5">
                                     <div className="col-lg-6 mb-4 mb-lg-0">
-                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px' }}>
+                                        <div className="card bg-light border-0 shadow-sm" style={{ borderRadius: '15px' }}>
                                             <div className="card-body p-4">
                                                 <h3 className="fw-bold mb-4" style={{ color: '#f5874f' }}>
                                                     <FontAwesomeIcon icon={faClock} className="me-2" />
@@ -99,8 +99,8 @@ export default function ContentPage(props) {
                                                     A velocidade de venda do seu imóvel está diretamente relacionada à precificação correta.
                                                     Nosso histórico mostra que imóveis com avaliações acima do preço de mercado resultam em processos mais lentos.
                                                 </p>
-                                                <div className="alert alert-warning border-0" style={{ backgroundColor: '#fff3cd', borderRadius: '10px' }}>
-                                                    <small className="text-warning-emphasis">
+                                                <div className="alert  border-0" style={{ backgroundColor: '#f5874f', borderRadius: '10px' }}>
+                                                    <small className="text-dark">
                                                         <FontAwesomeIcon icon={faHandshake} className="me-2" />
                                                         <strong>Dica:</strong> Além de demorar mais, o valor final pode ser inferior ao valor real de mercado.
                                                     </small>
@@ -109,7 +109,7 @@ export default function ContentPage(props) {
                                         </div>
                                     </div>
                                     <div className="col-lg-6">
-                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px', overflow: 'hidden' }}>
+                                        <div className="card bg-light border-0 shadow-sm" style={{ borderRadius: '15px', overflow: 'hidden' }}>
                                             <img src='/GIF_VALUATION_01.gif' alt="Gráfico de velocidade de venda" className="h-100 p-2" style={{ height: '300px', objectFit: 'cover' }} />
                                         </div>
                                     </div>
@@ -118,7 +118,7 @@ export default function ContentPage(props) {
                                 {/* Benefits Section */}
                                 <div className="row justify-content-center mb-5">
                                     <div className="col-lg-10">
-                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px', background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)' }}>
+                                        <div className="card bg-light border-0 shadow-sm" style={{ borderRadius: '15px', background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)' }}>
                                             <div className="card-body p-5">
                                                 <h3 className="fw-bold text-white text-center mb-4">
                                                     <FontAwesomeIcon icon={faTrophy} className="me-2" />
@@ -185,7 +185,7 @@ export default function ContentPage(props) {
 
                                 <div className="row align-items-center mb-5">
                                     <div className="col-lg-6 mb-4 mb-lg-0">
-                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px' }}>
+                                        <div className="card bg-light border-0 shadow-sm" style={{ borderRadius: '15px' }}>
                                             <div className="card-body p-4">
                                                 <div className="mb-4">
                                                     <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"

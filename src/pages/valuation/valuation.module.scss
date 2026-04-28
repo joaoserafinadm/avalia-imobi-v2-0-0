@@ -1,3 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+/* ── Pricing Options ── */
+.pricingSection {
+  max-width: 100%;
+  margin: 0 auto 2rem;
+}
+
+.pricingHeader {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.pricingTitle {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #1C1A18;
+  margin-bottom: 0.35rem;
+}
+
+.pricingSubtitle {
+  font-size: 0.875rem;
+  color: #7A7268;
+  margin: 0;
+}
+
+/* ── 3 main options: horizontal grid on lg+ ── */
+.optionsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Icon circle at top of each card */
+.optionCardIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  margin-bottom: 4px;
+}
+
+/* Vertical card for the 3 main options */
+.optionCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background: #fff;
+  border: 1.5px solid #E8E2D8;
+  border-radius: 14px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: rgba(245, 135, 79, 0.45);
+    background: rgba(245, 135, 79, 0.02);
+  }
+}
+
+.optionCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.optionCardPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid #EEE8DF;
+}
+
+.optionCardCurrency {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #f5874f;
+}
+
+.optionCardAmount {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1C1A18;
+}
+
+/* Horizontal row for custom value option */
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: #fff;
+  border: 1.5px solid #E8E2D8;
+  border-radius: 14px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: rgba(245, 135, 79, 0.45);
+    background: rgba(245, 135, 79, 0.02);
+  }
+}
+
+.optionSelected {
+  border-color: #f5874f !important;
+  background: rgba(245, 135, 79, 0.04) !important;
+  box-shadow: 0 0 0 3px rgba(245, 135, 79, 0.1);
+
+  .optionRadio { border-color: #f5874f; }
+}
+
+.optionRecommended {
+  border-color: rgba(245, 135, 79, 0.3);
+}
+
+.optionRadio {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #CCC7BF;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease;
+}
+
+.optionRadioDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f5874f;
+}
+
+.optionInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.optionLabel {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1C1A18;
+  margin-bottom: 2px;
+}
+
+.optionDesc {
+  font-size: 0.74rem;
+  color: #8A8278;
+  line-height: 1.4;
+}
+
+.recommendedBadge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(245, 135, 79, 0.1);
+  color: #f5874f;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-left: 2px;
+}
+
+/* Custom value input block (shown below the custom row) */
+.customValueBlock {
+  margin-top: 8px;
+  padding: 16px 20px;
+  background: rgba(245, 135, 79, 0.03);
+  border: 1.5px solid rgba(245, 135, 79, 0.2);
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.commentBox {
+  background: #fff;
+  border: 1.5px solid #E8E2D8;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 1.5rem;
+}
+
+.commentLabel {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #414141 !important;
+  display: block;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.commentTextarea {
+  width: 100%;
+  resize: none;
+  border: 1.5px solid #E8E2D8;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: #3A3430;
+  outline: none;
+  background: #FAFAF8;
+  transition: border-color 0.2s ease;
+
+  &:focus { border-color: rgba(245, 135, 79, 0.5); }
+  &::placeholder { color: #474747 !important; }
+}
+
+.continueBtn {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 14px 0;
+  background: #f5874f;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.01em;
+
+  &:hover:not(:disabled) {
+    background: #e87640;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(245, 135, 79, 0.3);
+  }
+
+  &:disabled {
+    background: #D8D0C8;
+    cursor: not-allowed;
+  }
+}
+
+.continueError {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: #D94F4F;
+}
+
+.swiperWrap {
+  border-radius: 15px 0 0 15px;
+  overflow: hidden;
+
+  :global(.swiper-pagination-bullet) {
+    background: rgba(255, 255, 255, 0.4);
+    opacity: 1;
+  }
+
+  :global(.swiper-pagination-bullet-active) {
+    background: #f5874f;
+  }
+
+  :global(.swiper-button-prev),
+  :global(.swiper-button-next) {
+    color: rgba(255, 255, 255, 0.85);
+    width: 28px;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 50%;
+    backdrop-filter: blur(4px);
+
+    &::after {
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    &:hover {
+      background: rgba(245, 135, 79, 0.55);
+    }
+  }
+}
+
 .background {
     height: 110vh;
     width: 100vw;

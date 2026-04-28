@@ -1,204 +1,289 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+// ─── Portrait Card ────────────────────────────────────────────────────────────
+
 .main {
-    height: 500px;
-    width: 350px;
-    border: 1px solid #fff;
-    border-radius: 5px;
+  width: 350px;
+  background: #FAFAF8;
+  border-radius: 14px;
+  border: 1px solid #E5DFD5;
+  overflow: hidden;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  box-shadow: 0 2px 12px rgba(28, 22, 14, 0.07), 0 1px 3px rgba(28, 22, 14, 0.05);
 }
 
 .valuationMain {
-    transform: scale(0.7);
-    /* Reduz o tamanho do elemento e de seu conteúdo para 60% */
-    border: 1px solid #979797;
-    transform-origin: top left;
-    /* Define a origem da transformação, ajustável conforme necessário */
+  transform: scale(0.7);
+  transform-origin: top left;
+  border: 1px solid #C8C3B8;
 }
 
 .header {
-    height: 200px;
-    border-radius: 4px 4px 0 0;
-    background-color: #f5874f;
-    border-bottom: 5px solid #fff;
-    // background-image: url(${props.headerImg}); /* Define a imagem como plano de fundo */
-    background-size: cover;
-    /* Ajusta a imagem para cobrir todo o espaço */
-    background-position: center;
-    /* Centraliza a imagem */
-}
+  height: 158px;
+  background-color: #f5874f;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 14px 14px 0 0;
 
-// .headerImg {
-//     min-height: 200px;
-//     max-width: 350px;
-//     height: auto;
-//     width: auto;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     border-radius: 4px 4px 0 0;
-//     overflow: hidden;
-//     // background-color: #f5874f;
-//     // border-bottom: 5px solid #fff;
-// }
-
-
-
-.profilePicture {
-
-    height: 176px;
-    width: 176px;
-    border-radius: 88px;
-    border: 5px solid #fff;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 35%, rgba(0, 0, 0, 0.28));
+    border-radius: 14px 14px 0 0;
+  }
 }
 
 .profilePicRow {
-    position: relative;
-    top: -110px;
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+  margin-top: -69px;
+  position: relative;
+  z-index: 1;
+}
+
+.profilePicWrapper {
+  padding: 4px;
+  background: #FAFAF8;
+  border-radius: 50%;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.14);
+}
+
+.profilePicture {
+  display: block;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .body {
-    position: relative;
-    top: -110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 28px 26px;
+  gap: 10px;
 }
 
+.name {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1C1A18;
+  text-align: center;
+  line-height: 1.35;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
 
+.divider {
+  display: block;
+  width: 36px;
+  height: 2px;
+  background: linear-gradient(90deg, #f5874f, #f9aa84);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
 
+.creciRow {
+  display: flex;
+  justify-content: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #4A4440;
+}
+
+.badgeLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #f5874f;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.badgeDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #CCC7C0;
+  flex-shrink: 0;
+}
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.contactRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.78rem;
+  color: #6B6157;
+  font-weight: 400;
+}
+
+.contactIcon {
+  display: flex;
+  align-items: center;
+  color: #f5874f;
+  flex-shrink: 0;
+}
+
+.logoContainer {
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid #EBE5DA;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  max-height: 60px;
+  max-width: 190px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+// ─── Responsive ───────────────────────────────────────────────────────────────
 
 @media (max-width: 991px) {
+  .main {
+    width: 260px;
+    border-radius: 10px;
+  }
 
-    .main {
-        height: 400px;
-        width: 250px;
-        border: 1px solid #fff;
-        border-radius: 5px;
+  .valuationMain {
+    border: 1px solid #C8C3B8;
+    transform-origin: top left;
+  }
+
+  .header {
+    height: 118px;
+    border-radius: 10px 10px 0 0;
+
+    &::after {
+      border-radius: 10px 10px 0 0;
     }
+  }
 
+  .profilePicRow {
+    margin-top: -54px;
+  }
 
-    .valuationMain {
-        // transform: scale(0.7);
-        /* Reduz o tamanho do elemento e de seu conteúdo para 60% */
-        border: 1px solid #979797;
-        transform-origin: top left;
-        /* Define a origem da transformação, ajustável conforme necessário */
-    }
+  .profilePicWrapper {
+    padding: 3px;
+  }
 
-    .header {
-        height: 125px;
-        border-radius: 5px 5px 0 0;
-        background-color: #f5874f;
-        border-bottom: 5px solid #fff;
-        // background-image: url(${props.headerImg}); /* Define a imagem como plano de fundo */
-        background-size: cover;
-        /* Ajusta a imagem para cobrir todo o espaço */
-        background-position: center;
-        /* Centraliza a imagem */
-    }
+  .profilePicture {
+    width: 104px;
+    height: 104px;
+  }
 
+  .body {
+    padding: 10px 20px 20px;
+    gap: 8px;
+  }
 
+  .name {
+    font-size: 1.1rem;
+  }
 
-    .profilePicture {
-        height: 125px;
-        width: 125px;
-        border-radius: 100px;
-        border: 3px solid #fff;
-    }
+  .contactRow {
+    font-size: 0.72rem;
+  }
 
-    .profilePicRow {
-        position: relative;
-        top: -85px;
-        display: flex;
-        justify-content: center;
-    }
-
-    .body {
-        position: relative;
-        top: -80px;
-    }
-
+  .logo {
+    max-height: 48px;
+    max-width: 150px;
+  }
 }
 
-
+// ─── Landscape Card (LandscapeCard.jsx) ──────────────────────────────────────
 
 .mainLS {
-    height: 192px;
-    width: 340px;
-    border: 1px solid #fff;
-    border-radius: 5px;
-    display: flex;
-    border-radius: 4px 0 0 4px;
-    // border-bottom: 5px solid #fff;
-    // background-image: url(${props.headerImg}); /* Define a imagem como plano de fundo */
-    background-size: cover;
-    /* Ajusta a imagem para cobrir todo o espaço */
-    background-position: center;
+  height: 192px;
+  width: 340px;
+  border: 1px solid #fff;
+  border-radius: 4px 0 0 4px;
+  display: flex;
+  background-size: cover;
+  background-position: center;
 }
 
 .mainBackLS {
-    height: 192px;
-    width: 340px;
-    border: 1px solid #fff;
-    border-radius: 5px;
-    display: flex;
-    background-size: cover;
-    /* Ajusta a imagem para cobrir todo o espaço */
-    background-position: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    // opacity: 0.2;
+  height: 192px;
+  width: 340px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .headerLS {
-    height: 191px;
-    width: 130px;
-
-    /* Centraliza a imagem */
+  height: 191px;
+  width: 130px;
 }
 
 .profilePicRowLS {
-    position: relative;
-    left: 10px;
-    top: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  left: 10px;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .profilePictureLS {
-    height: 125px;
-    width: 125px;
-    border-radius: 75px;
-    border: 3px solid #fff;
+  height: 125px;
+  width: 125px;
+  border-radius: 75px;
+  border: 3px solid #fff;
 }
 
-
-
 .bodyLS {
-    position: relative;
-    left: 15px !important;
-    width: calc(340px - 10px - 125px);
+  position: relative;
+  left: 15px !important;
+  width: calc(340px - 10px - 125px);
 }
 
 .logoLS {
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
-    height: 30px;
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  height: 30px;
 }
 
 .logoBackLS {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logoImgLS {
-    max-width: 230px;
-    max-height: 100px;
-    width: 100%;
-    height: auto;
+  max-width: 230px;
+  max-height: 100px;
+  width: 100%;
+  height: auto;
 }
 
 .fontSize {
-    font-size: 12px;
+  font-size: 12px;
 }

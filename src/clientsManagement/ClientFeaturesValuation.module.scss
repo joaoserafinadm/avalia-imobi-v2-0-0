@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+$orange: #f5874f;
+$orange-muted: rgba(245, 135, 79, 0.55);
+$orange-bg: rgba(245, 135, 79, 0.07);
+$orange-border: rgba(245, 135, 79, 0.2);
+$border: #E8E2D8;
+$bg-block: #F8F5F1;
+$text-dark: #1C1A18;
+$text-mid: #5A5248;
+$text-muted: #9A9088;
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+/* ── Address ── */
+.address {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: $bg-block;
+  border: 1px solid $border;
+  border-radius: 9px;
+  margin-bottom: 14px;
+}
+
+.addressIcon {
+  color: $orange-muted;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.addressText {
+  font-size: 0.78rem;
+  color: $text-mid;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.addressMissing {
+  @extend .addressText;
+  color: $text-muted;
+  font-style: italic;
+}
+
+/* ── Divider ── */
+.sep {
+  border: none;
+  border-top: 1px solid $border;
+  margin: 12px 0;
+}
+
+/* ── Section label ── */
+.sectionLabel {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: $text-muted;
+  margin-bottom: 8px;
+}
+
+/* ── Area blocks ── */
+.areaGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.areaGridSingle {
+  @extend .areaGrid;
+  grid-template-columns: 1fr;
+}
+
+.areaBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 8px;
+  background: $bg-block;
+  border: 1px solid $border;
+  border-radius: 10px;
+  gap: 3px;
+}
+
+.areaValue {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: $orange;
+  line-height: 1;
+
+  span {
+    font-size: 0.6rem;
+    margin-left: 2px;
+    color: rgba(245, 135, 79, 0.6);
+  }
+}
+
+.areaLabel {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $text-muted;
+  text-align: center;
+}
+
+/* ── Stats grid ── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  background: $bg-block;
+  border: 1px solid $border;
+  border-radius: 8px;
+}
+
+.statIcon {
+  color: $orange-muted;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  width: 13px;
+  text-align: center;
+}
+
+.statNum {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $text-dark;
+}
+
+.statLabel {
+  font-size: 0.7rem;
+  color: $text-mid;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Features (tags) ── */
+.featuresList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.featureTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 11px;
+  background: $orange-bg;
+  border: 1px solid $orange-border;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: $orange;
+}
+
+.featuresEmpty {
+  font-size: 0.75rem;
+  color: $text-muted;
+  font-style: italic;
+}
+
+/* ── Comments ── */
+.commentsText {
+  font-size: 0.78rem;
+  color: $text-mid;
+  line-height: 1.55;
+  margin: 0;
+  padding: 10px 12px;
+  background: $bg-block;
+  border: 1px solid $border;
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+/* ── Outdated empty state ── */
+.outdated {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 1.5rem 0;
+  font-size: 0.78rem;
+  color: $text-muted;
+}
+
+.outdatedDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #D8D0C8;
+  flex-shrink: 0;
+}

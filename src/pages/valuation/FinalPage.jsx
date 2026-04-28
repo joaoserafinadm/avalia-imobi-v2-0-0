@@ -6,6 +6,8 @@ import PdfConfigModal from "./PdfConfigModal"
 import axios from "axios"
 import baseUrl from "../../../utils/baseUrl"
 import { SpinnerSM } from "../../components/loading/Spinners"
+import styles from './valuation.module.scss'
+
 
 export default function FinalPage(props) {
     const { queryClientId, queryUserId, clientData } = props
@@ -36,7 +38,7 @@ export default function FinalPage(props) {
         <div className="container-fluid p-0">
             <div className="row justify-content-center align-items-center min-vh-100 m-0">
                 <div className="col-12 col-xxl-10">
-                    <div className="card shadow-lg border-0" style={{ minHeight: '95vh', borderRadius: '20px' }}>
+                    <div className="card bg-light shadow-lg border-0" style={{ minHeight: '95vh', borderRadius: '20px' }}>
                         <div className="card-body p-0" style={{ overflowY: 'auto', maxHeight: '95vh' }}>
 
                             {/* Header Section */}
@@ -54,7 +56,7 @@ export default function FinalPage(props) {
                                 {/* Comment Section */}
                                 <div className="row justify-content-center mb-5">
                                     <div className="col-lg-8">
-                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px' }}>
+                                        <div className="card bg-light border-0 shadow-sm" style={{ borderRadius: '15px' }}>
                                             <div className="card-body ">
                                                 <div className="text-center mb-4">
                                                     <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
@@ -71,7 +73,8 @@ export default function FinalPage(props) {
 
                                                 <div className="mb-4">
                                                     <textarea
-                                                        className="form-control border-0 shadow-sm"
+                                                                                                                className={styles.commentTextarea}
+
                                                         rows="4"
                                                         placeholder="Digite aqui seus comentários, sugestões ou observações..."
                                                         value={comment}
@@ -95,7 +98,7 @@ export default function FinalPage(props) {
                                 {/* Rating Section */}
                                 <div className="row justify-content-center mb-5">
                                     <div className="col-lg-8">
-                                        <div className="card border-0 shadow-sm" style={{ borderRadius: '15px' }}>
+                                        <div className="card bg-light border-0 shadow-sm" style={{ borderRadius: '15px' }}>
                                             <div className="card-body ">
                                                 <div className="text-center mb-4">
                                                     <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
@@ -142,7 +145,7 @@ export default function FinalPage(props) {
                                                 </div>
 
                                                 {!stars && (
-                                                    <div className="alert alert-warning border-0 text-center" style={{ backgroundColor: '#fff3cd', borderRadius: '10px' }}>
+                                                    <div className="alert text-dark border-0 text-center" style={{ backgroundColor: '#fff3cd', borderRadius: '10px' }}>
                                                         <small className="text-warning-emphasis">
                                                             <FontAwesomeIcon icon={faStar} className="me-2" />
                                                             Para continuar você deve dar uma nota para a avaliação

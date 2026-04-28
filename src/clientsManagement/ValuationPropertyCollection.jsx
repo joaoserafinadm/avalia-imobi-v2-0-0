@@ -35,7 +35,7 @@ export default function ValuationPropertyCollection(props) {
 
                                     <SwiperSlide key={index + 1}  >
 
-                                        <PropertyCard section={'Todos Clientes'} deleteHide
+                                        <PropertyCard anuncioView  section={'Todos Clientes'} deleteHide
                                             elem={elem} index={index} propertyArray={propertyArray}
                                             setPropertyArray={value => props.setPropertyArray(value)} />
 
@@ -58,7 +58,7 @@ export default function ValuationPropertyCollection(props) {
                         return (
                             <div className="col-12 col-sm-6 col-lg-4  d-flex justify-content-center px-1 py-2">
 
-                                <PropertyCard section={'Todos Clientes'} deleteHide
+                                <PropertyCard anuncioView section={'Todos Clientes'} deleteHide
                                     elem={elem} index={index} propertyArray={propertyArray}
                                     setPropertyArray={value => props.setPropertyArray(value)} />
                             </div>

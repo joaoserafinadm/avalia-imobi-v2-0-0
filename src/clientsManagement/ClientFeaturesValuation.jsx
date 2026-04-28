@@ -1,190 +1,151 @@
-import { faMapMarkerAlt, faRulerCombined, faBed, faBath, faHome, faCar, faBuilding, faWarehouse } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faShower, faStar, faCar, faLayerGroup, faCouch, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { showClientInfo } from "../../utils/showClientInfo";
-import { valueShow } from "../../utils/valueShow";
+import styles from './ClientFeaturesValuation.module.scss';
 
-export default function ClientFeaturesValuation(props) {
-    const client = props.client;
+const PROPERTY_CONFIG = {
+    'Apartamento': {
+        areas: [
+            { label: 'Área Total',     key: 'areaTotal' },
+            { label: 'Área Privativa', key: 'areaTotalPrivativa' },
+        ],
+        stats: [
+            { icon: faBed,    label: 'quarto',   key: 'quartos' },
+            { icon: faShower, label: 'banheiro',  key: 'banheiros' },
+            { icon: faStar,   label: 'suíte',     key: 'suites' },
+            { icon: faCar,    label: 'vaga',      key: 'vagasGaragem' },
+        ],
+    },
+    'Casa': {
+        areas: [
+            { label: 'Área Terreno', key: 'areaTotal' },
+            { label: 'Área Casa',    key: 'areaTotalPrivativa' },
+        ],
+        stats: [
+            { icon: faLayerGroup, label: 'pavimento', key: 'pavimentos' },
+            { icon: faBed,        label: 'quarto',    key: 'quartos' },
+            { icon: faShower,     label: 'banheiro',  key: 'banheiros' },
+            { icon: faStar,       label: 'suíte',     key: 'suites' },
+            { icon: faCar,        label: 'vaga',      key: 'vagasGaragem' },
+        ],
+    },
+    'Comercial': {
+        areas: [
+            { label: 'Área Total',     key: 'areaTotal' },
+            { label: 'Área Privativa', key: 'areaTotalPrivativa' },
+        ],
+        stats: [
+            { icon: faLayerGroup, label: 'pavimento', key: 'pavimentos' },
+            { icon: faCouch,      label: 'sala',      key: 'salas' },
+            { icon: faShower,     label: 'banheiro',  key: 'banheiros' },
+            { icon: faCar,        label: 'vaga',      key: 'vagasGaragem' },
+        ],
+    },
+    'Terreno': {
+        areas: [
+            { label: 'Área Total', key: 'areaTotal' },
+        ],
+        stats: [],
+    },
+};
 
-    // Função para formatar valor monetário
-    const formatCurrency = (value) => {
-        return new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-        }).format(value);
-    };
+export default function ClientFeaturesValuation({ client }) {
 
     if (!showClientInfo(client)) {
         return (
-            <div className="text-center py-3">
-                <span className="text-muted ">Informações Desatualizadas</span>
+            <div className={styles.outdated}>
+                <span className={styles.outdatedDot} />
+                Dados desatualizados
+                <span className={styles.outdatedDot} />
             </div>
         );
     }
 
-    return (
-        <div className="client-features">
-            {/* Valor */}
-            {/* {valueShow(client?.valuation?.valueSelected, client?.valuation?.valuationCalc) && (
-                <div className="row mb-3">
-                    <div className="col-12">
-                        <div className="text-center py-2 px-3 rounded" style={{
-                            backgroundColor: '#f5874f',
-                            color: 'white'
-                        }}>
-                            <span className="fw-bold fs-5">
-                                {formatCurrency(valueShow(client?.valuation?.valueSelected, client?.valuation?.valuationCalc))}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            )} */}
+    const config = PROPERTY_CONFIG[client?.propertyType];
+    const hasAddress = client?.bairro && client?.cidade && client?.uf;
+    const hasFeatures = client?.features?.length > 0;
+    const hasComments = !!client?.comments?.trim();
 
-            {/* Localização */}
-            <div className="row mb-3">
-                <div className="col-12">
-                    <div className="d-flex align-items-center justify-content-center text-center" style={{ color: '#5a5a5a' }}>
-                        <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" style={{ color: '#faa954' }} />
-                        <span>
-                            {client?.bairro && client?.cidade && client?.uf ? 
-                                `${client.bairro}, ${client.cidade} / ${client.uf}` : 
-                                'Endereço não informado'
-                            }
-                        </span>
-                    </div>
-                </div>
+    return (
+        <div className={styles.wrap}>
+
+            {/* ── Endereço ── */}
+            <div className={styles.address}>
+                <FontAwesomeIcon icon={faLocationDot} className={styles.addressIcon} />
+                {hasAddress ? (
+                    <p className={styles.addressText}>
+                        {client.bairro}, {client.cidade} / {client.uf}
+                    </p>
+                ) : (
+                    <p className={styles.addressMissing}>Endereço não informado</p>
+                )}
             </div>
 
-            <hr className="my-2" style={{ borderColor: '#faa954' }} />
+            {/* ── Características do imóvel (config-driven) ── */}
+            {config && (
+                <>
+                    {config.areas.length > 0 && (
+                        <>
+                            <p className={styles.sectionLabel}>Áreas</p>
+                            <div className={config.areas.length === 1 ? styles.areaGridSingle : styles.areaGrid}>
+                                {config.areas.map(area => (
+                                    <div key={area.key} className={styles.areaBlock}>
+                                        <div className={styles.areaValue}>
+                                            {client?.[area.key] || 0}
+                                            <span>m²</span>
+                                        </div>
+                                        <div className={styles.areaLabel}>{area.label}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </>
+                    )}
 
-            {/* Características por Tipo */}
-            {client.propertyType === "Apartamento" && (
-                <div className="row d-flex justify-content-center">
-                    <div className="col-6 my-5">
-                        <div className="text-center">
-                            <div className="fw-bold ">Área Total</div>
-                            <div style={{ color: '#f5874f' }}>{client?.areaTotal || 0} m²</div>
-                        </div>
-                    </div>
-                    <div className="col-6 my-5">
-                        <div className="text-center">
-                            <div className="fw-bold ">Área Privativa</div>
-                            <div style={{ color: '#f5874f' }}>{client?.areaTotalPrivativa || 0} m²</div>
-                        </div>
-                    </div>
-                    <div className="col-6 col-lg-4 my-2 text-center">
-                        
-                        <span className="fw-bold">{client.quartos || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>quarto{client.quartos != 1 ? 's' : ''}</div>
-                    </div>
-                    <div className="col-6 col-lg-4 my-2 text-center">
-                        
-                        <span className="fw-bold">{client.banheiros || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>banheiro{client.banheiros != 1 ? 's' : ''}</div>
-                    </div>
-                    <div className="col-6 col-lg-4 my-2 text-center">
-                        
-                        <span className="fw-bold">{client.suites || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>suíte{client.suites != 1 ? 's' : ''}</div>
-                    </div>
-                    <div className="col-6 col-lg-4 my-2 text-center">
-                        
-                        <span className="fw-bold">{client.vagasGaragem || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>vaga{client.vagasGaragem != 1 ? 's' : ''}</div>
-                    </div>
-                </div>
+                    {config.stats.length > 0 && (
+                        <>
+                            <div className={styles.sep} />
+                            <p className={styles.sectionLabel}>Composição</p>
+                            <div className={styles.statsGrid}>
+                                {config.stats.map(stat => {
+                                    const val = client?.[stat.key] || 0;
+                                    return (
+                                        <div key={stat.key} className={styles.statItem}>
+                                            <FontAwesomeIcon icon={stat.icon} className={styles.statIcon} />
+                                            <span className={styles.statNum}>{val}</span>
+                                            <span className={styles.statLabel}>
+                                                {stat.label}{val !== 1 ? 's' : ''}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </>
+                    )}
+                </>
             )}
 
-            {client.propertyType === "Casa" && (
-                <div className="row d-flex justify-content-center">
-                    <div className="col-6 my-5">
-                        <div className="text-center">
-                            <div className="fw-bold ">Área do Terreno</div>
-                            <div style={{ color: '#f5874f' }}>{client?.areaTotal || 0} m²</div>
-                        </div>
+            {/* ── Características gerais ── */}
+            {hasFeatures && (
+                <>
+                    <div className={styles.sep} />
+                    <p className={styles.sectionLabel}>Características gerais</p>
+                    <div className={styles.featuresList}>
+                        {client.features.map((f, i) => (
+                            <span key={i} className={styles.featureTag}>{f}</span>
+                        ))}
                     </div>
-                    <div className="col-6 my-5">
-                        <div className="text-center">
-                            <div className="fw-bold ">Área da Casa</div>
-                            <div style={{ color: '#f5874f' }}>{client?.areaTotalPrivativa || 0} m²</div>
-                        </div>
-                    </div>
-                    <div className="col-6 col-lg-4 my-2 text-center">
-                        
-                        <span className="fw-bold">{client.pavimentos || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>pavimento{client.pavimentos != 1 ? 's' : ''}</div>
-                    </div>
-                    <div className="col-6 col-lg-4 my-2 text-center">
-                        
-                        <span className="fw-bold">{client.quartos || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>quarto{client.quartos != 1 ? 's' : ''}</div>
-                    </div>
-                    <div className="col-6 col-lg-4 my-2 text-center">
-                        
-                        <span className="fw-bold">{client.banheiros || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>banheiro{client.banheiros != 1 ? 's' : ''}</div>
-                    </div>
-                    <div className="col-6 col-lg-4 my-2 text-center">
-                        
-                        <span className="fw-bold">{client.suites || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>suíte{client.suites != 1 ? 's' : ''}</div>
-                    </div>
-                    <div className="col-6 col-lg-4 my-2 text-center">
-                        
-                        <span className="fw-bold">{client.vagasGaragem || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>vaga{client.vagasGaragem != 1 ? 's' : ''}</div>
-                    </div>
-                </div>
+                </>
             )}
 
-            {client.propertyType === "Comercial" && (
-                <div className="row d-flex justify-content-center">
-                    <div className="col-6 my-5">
-                        <div className="text-center">
-                            <div className="fw-bold ">Área Total</div>
-                            <div style={{ color: '#f5874f' }}>{client?.areaTotal || 0} m²</div>
-                        </div>
-                    </div>
-                    <div className="col-6 my-5">
-                        <div className="text-center">
-                            <div className="fw-bold ">Área Privativa</div>
-                            <div style={{ color: '#f5874f' }}>{client?.areaTotalPrivativa || 0} m²</div>
-                        </div>
-                    </div>
-                    <div className="col-6 col-lg-4 text-center">
-                        
-                        <span className="fw-bold">{client.pavimentos || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>pavimento{client.pavimentos != 1 ? 's' : ''}</div>
-                    </div>
-                    <div className="col-6 col-lg-4 text-center">
-                        
-                        <span className="fw-bold">{client.salas || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>sala{client.salas != 1 ? 's' : ''}</div>
-                    </div>
-                    <div className="col-6 col-lg-4 text-center">
-                        
-                        <span className="fw-bold">{client.banheiros || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>banheiro{client.banheiros != 1 ? 's' : ''}</div>
-                    </div>
-                    <div className="col-6 col-lg-4 text-center">
-                        
-                        <span className="fw-bold">{client.vagasGaragem || 0}</span>
-                        <div className=" text-muted" style={{fontSize: '13px'}}>vaga{client.vagasGaragem != 1 ? 's' : ''}</div>
-                    </div>
-                </div>
+            {/* ── Observações ── */}
+            {hasComments && (
+                <>
+                    <div className={styles.sep} />
+                    <p className={styles.sectionLabel}>Observações</p>
+                    <p className={styles.commentsText}>{client.comments}</p>
+                </>
             )}
 
-            {client.propertyType === "Terreno" && (
-                <div className="row d-flex justify-content-center">
-                    <div className="col-12 text-center">
-                        <FontAwesomeIcon icon={faRulerCombined} className="me-2" style={{ color: '#faa954' }} />
-                        <span className="fw-bold">Área Total: </span>
-                        <span style={{ color: '#f5874f', fontSize: '1.1rem' }}>{client?.areaTotal || 0} m²</span>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

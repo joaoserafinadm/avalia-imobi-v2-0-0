@@ -113,7 +113,7 @@
   transition: color 0.2s ease;
 
   .dark  & { color: rgba(255,255,255,0.28); }
-  .light & { color: rgba(15,20,35,0.35); }
+  .light & { color: rgba(15,20,35,0.35) !important; }
 }
 
 /* ── suffix (password eye / search clear) ── */

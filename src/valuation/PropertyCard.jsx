@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import isMobile from "../../utils/isMobile"
 import { handleIcon, handleIconColor } from "../components/icons/propertyTypeIcons"
 import styles from './PropertyCard.module.scss'
-import { faEye, faPencil, faTrashAlt, faLocationDot, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+import { faEye, faPencil, faTrashAlt, faLocationDot, faTriangleExclamation, faEdit, faShare, faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons"
 import { useEffect, useState } from "react"
 import tippy from "tippy.js"
 import formatDate from "../../utils/formatDate"
@@ -90,10 +90,12 @@ function PropertyFeatures({ client }) {
 
 export default function PropertyCard(props) {
     const client = props.elem
+    const light = props.light
+    const anuncioView = props.anuncioView
     const [confirmDelete, setConfirmDelete] = useState(false)
 
     useEffect(() => {
-        tippy("#viewPropertyButton" + props.elem._id + props.section, { content: "Visualizar", placement: 'bottom' })
+        // tippy("#viewPropertyButton" + props.elem._id + props.section, { content: "Visualizar", placement: 'bottom' })
         tippy("#editPropertyButton" + props.index + props.section, { content: "Editar", placement: 'bottom' })
         tippy("#deletePropertyButton" + props.elem._id + props.section, { content: "Deletar", placement: 'bottom' })
     }, [])
@@ -104,7 +106,7 @@ export default function PropertyCard(props) {
     }
 
     return (
-        <div className={`${styles.card} my-2`}>
+        <div className={`${styles.card} ${light ? styles.light : ''} my-2`}>
 
             {/* ── Image area ── */}
             <div className={styles.imageWrap}>
@@ -168,54 +170,79 @@ export default function PropertyCard(props) {
                                 </div>
                             </div>
                         ) : (
-                            <div className={styles.btnGroup}>
-                                {props.elem.propertyLink && (
-                                    <a
-                                        href={props.elem.propertyLink}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className={styles.btn}
-                                        id={"viewPropertyButton" + props.elem._id + props.section}
-                                    >
-                                        <FontAwesomeIcon icon={faEye} />
-                                    </a>
-                                )}
+                            <>
+                                <div className={styles.btnGroup}>
 
-                                {!props.valuationView && (
-                                    <>
-                                        <button
-                                            type="button"
-                                            className={styles.btn}
-                                            id={"editPropertyButton" + props.index + props.section}
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#propertyEditModal"
-                                            onClick={() => props.onEdit && props.onEdit(props.index)}
-                                        >
-                                            <FontAwesomeIcon icon={faPencil} />
-                                        </button>
 
-                                        <button
-                                            type="button"
-                                            className={`${styles.btn} ${styles.btnDanger}`}
-                                            id={"deletePropertyButton" + props.elem._id + props.section}
-                                            onClick={() => setConfirmDelete(true)}
+                                    {!props.valuationView && (
+                                        <>
+                                            <button
+                                                type="button"
+                                                className={styles.btn}
+                                                id={"editPropertyButton" + props.index + props.section}
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#propertyEditModal"
+                                                onClick={() => props.onEdit && props.onEdit(props.index)}
+                                            >
+                                                <FontAwesomeIcon icon={faPencil} />
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                className={`${styles.btn} ${styles.btnDanger}`}
+                                                id={"deletePropertyButton" + props.elem._id + props.section}
+                                                onClick={() => setConfirmDelete(true)}
+                                            >
+                                                <FontAwesomeIcon icon={faTrashAlt} />
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                                <div className="col-12 d-flex mt-1 justify-content-center">
+                                    {props.elem.propertyLink && (
+                                        <a
+                                            href={props.elem.propertyLink}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className={`small ${styles.btnAnuncio}`}
+                                            id={"viewPropertyButton" + props.elem._id + props.section}
                                         >
-                                            <FontAwesomeIcon icon={faTrashAlt} />
-                                        </button>
-                                    </>
-                                )}
-                            </div>
+                                            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="me-2" /> Ver anúncio
+                                        </a>
+                                    )}
+                                </div>
+                            </>
+
                         )}
                     </>
                 )}
 
-                {client?.dateAdded && (
+
+
+                {/* {client?.dateAdded && (
                     <div className={styles.dateFooter}>
                         <hr className={styles.divider} />
                         <span className={styles.dateText}>
                             Adicionado em:
                             <span className={styles.dateValue}>{formatDate(client.dateAdded)}</span>
                         </span>
+                    </div>
+                )} */}
+
+                {anuncioView && (
+                      <div className={styles.dateFooter}>
+                        <hr className={styles.divider} />
+                        {client.propertyLink && (
+                            <a
+                                href={client.propertyLink}
+                                target="_blank"
+                                rel="noreferrer"
+                                className={`small ${styles.btnAnuncio}`}
+                                id={"viewPropertyButton" + client._id + props.section}
+                            >
+                                <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="me-2" /> Ver anúncio
+                            </a>
+                        )}
                     </div>
                 )}
 

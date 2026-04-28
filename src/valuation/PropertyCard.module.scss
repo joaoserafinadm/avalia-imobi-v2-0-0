@@ -24,13 +24,11 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      #f5874f 40%,
-      #ff9f6b 60%,
-      transparent 100%
-    );
+    background: linear-gradient(90deg,
+        transparent 0%,
+        #f5874f 40%,
+        #ff9f6b 60%,
+        transparent 100%);
     background-size: 200% 100%;
     animation: accentSlide 4s ease-in-out infinite;
     z-index: 10;
@@ -47,8 +45,17 @@
 }
 
 @keyframes accentSlide {
-  0%, 100% { background-position: 0% 0%; opacity: 0.7; }
-  50%       { background-position: 100% 0%; opacity: 1; }
+
+  0%,
+  100% {
+    background-position: 0% 0%;
+    opacity: 0.7;
+  }
+
+  50% {
+    background-position: 100% 0%;
+    opacity: 1;
+  }
 }
 
 /* ── Image area ── */
@@ -261,6 +268,34 @@
   }
 }
 
+.btnAnuncio {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  padding: 0 8px;
+  // width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.35);
+  transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease,
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-decoration: none;
+
+  svg {
+    font-size: 0.8rem;
+  }
+
+  &:hover {
+    background: rgba(245, 135, 79, 0.12);
+    border-color: rgba(245, 135, 79, 0.35);
+    color: #f5874f;
+    transform: scale(1.1);
+  }
+}
+
 .btnDanger {
   &:hover {
     background: rgba(242, 84, 91, 0.12);
@@ -279,8 +314,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .confirmMsg {
@@ -340,11 +382,108 @@
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease;
 
-  svg { font-size: 0.72rem; }
+  svg {
+    font-size: 0.72rem;
+  }
 
   &:hover {
     background: rgba(242, 84, 91, 0.18);
     border-color: rgba(242, 84, 91, 0.5);
+  }
+}
+
+/* ── Light theme ── */
+.light {
+  background: #FAFAF8;
+  border: 1px solid #E8E2D8;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  color: #4A4440;
+
+  &::before {
+    display: none;
+  }
+
+  &:hover {
+    border-color: rgba(245, 135, 79, 0.4);
+    box-shadow: 0 6px 24px rgba(245, 135, 79, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .imagePlaceholder {
+    background: #F2EDE6;
+    border-bottom-color: #E8E2D8;
+  }
+
+  .placeholderText {
+    color: #C4B9AF;
+  }
+
+  .propertyName {
+    color: #1C1A18;
+  }
+
+  .priceValue {
+    color: #2A2420;
+  }
+
+  .location {
+    color: #7A726A;
+  }
+
+  .featureDivider {
+    border-color: #EBE5DC;
+  }
+
+  .chip {
+    background: #F3EFE9;
+    border-color: #E2DCD4;
+  }
+
+  .chipLabel {
+    color: #A89E96;
+  }
+
+  .chipValue {
+    color: #4A4440;
+  }
+
+  .divider {
+    border-color: #EBE5DC;
+  }
+
+  .btn,
+  .btnAnuncio {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: #DDD7CF;
+    color: #3b3b3b !important;
+
+    &:hover {
+      background: rgba(245, 135, 79, 0.1);
+      border-color: rgba(245, 135, 79, 0.35);
+      color: #f5874f;
+    }
+  }
+
+  .confirmMsg {
+    color: #3A3430;
+  }
+
+  .confirmCancel {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: #DDD7CF;
+    color: #6B6560;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: #3A3430;
+    }
+  }
+
+  .dateText {
+    color: #A89E96;
+  }
+
+  .dateValue {
+    color: #7A726A;
   }
 }
 

@@ -86,6 +86,10 @@ const MAP_OPTIONS = {
     streetViewControl: false,
     mapTypeControl: false,
     fullscreenControl: false,
+    styles: [
+        { featureType: "poi",     stylers: [{ visibility: "off" }] },
+        { featureType: "transit", stylers: [{ visibility: "off" }] },
+    ],
 }
 
 const CONTAINER_STYLE = { width: "100%", height: "400px" }
@@ -207,7 +211,8 @@ function ComparisonInfoContent({ property }) {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function PropertiesMap({ propertyArray, client }) {
+export default function PropertiesMap({ light,propertyArray, client }) {
+
     const [activeIndex, setActiveIndex] = useState(null)
     const mapRef = useRef(null)
 
@@ -276,8 +281,8 @@ export default function PropertiesMap({ propertyArray, client }) {
     const activeComparison = typeof activeIndex === "number" ? valid[activeIndex] : null
 
     return (
-        <div className={styles.section}>
-            <div className={styles.header}>
+        <div className={`${styles.section} ${light ? styles.light : ''}`}>
+            <div className={` px-2 ${styles.header}`}>
                 <FontAwesomeIcon icon={faLocationDot} className={styles.headerIcon} />
                 <span className={styles.headerTitle}>Localização dos imóveis</span>
                 <span className={styles.headerCount}>
@@ -347,7 +352,7 @@ export default function PropertiesMap({ propertyArray, client }) {
                         </GoogleMap>
                     </div>
 
-                    <div className={styles.legend}>
+                    <div className={` p-2 ${styles.legend}`}>
                         {subjectPos && (
                             <div className={styles.legendItem}>
                                 <span className={`${styles.legendPin} ${styles.subject}`}>

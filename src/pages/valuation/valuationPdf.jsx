@@ -6,6 +6,8 @@ import ClientFeatures from '../../valuation/ClientFeatures'
 import PropertyCard from '../../valuation/PropertyCard'
 import Map from '../../valuation/Map'
 import { Home } from 'lucide-react'
+import ClientFeaturesValuation from '../../clientsManagement/ClientFeaturesValuation'
+import PropertiesMap from '../../valuation/PropertiesMap'
 
 export default function ValuationPdf(props) {
     const { userData, clientData } = props
@@ -229,9 +231,9 @@ export default function ValuationPdf(props) {
                         Características do Seu Imóvel
                     </h3>
 
-                    <div className="card border-0 shadow-sm" style={{ borderRadius: '12px' }}>
+                    <div className="card bg-light border-0 shadow-sm" style={{ borderRadius: '12px' }}>
                         <div className="card-body p-2">
-                            <ClientFeatures client={clientData} valuationPdf />
+                            <ClientFeaturesValuation client={clientData} valuationPdf />
                         </div>
                     </div>
                 </div>
@@ -358,7 +360,8 @@ export default function ValuationPdf(props) {
                                             <PropertyCard
                                                 section="Todos Clientes"
                                                 valuationView
-                                                valuationPdf
+                                                light
+
                                                 elem={elem}
                                                 index={index}
                                                 setPropertyUrl={(value) => props.setPropertyUrl(value)}
@@ -374,9 +377,9 @@ export default function ValuationPdf(props) {
 
 
                     {/* Mapa - altura dinâmica baseada no espaço restante */}
-                    <div className="card border-0 shadow-sm mt-4" style={{ borderRadius: '8px', overflow: 'hidden' }}>
+                    <div className="card bg-light border-0 shadow-sm mt-4" style={{ borderRadius: '8px', overflow: 'hidden' }}>
                         <div className="card-header bg-gradient text-center py-1" style={{ backgroundColor: '#f5874f' }}>
-                            <h5 className="text-white mb-0 fw-bold" style={{ fontSize: '14px' }}>
+                            <h5 className="text-dark mb-0 fw-bold" style={{ fontSize: '14px' }}>
                                 <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" />
                                 Localização dos Imóveis Comparados
                             </h5>
@@ -392,6 +395,8 @@ export default function ValuationPdf(props) {
                                 valuationPdf
                                 porpertyLocations={clientData?.valuation?.propertyArray}
                             />
+                            {/* <PropertiesMap valuationPdf light propertyArray={clientData?.valuation?.propertyArray} client={clientData} /> */}
+
                         </div>
                     </div>
                 </div>
@@ -418,11 +423,12 @@ export default function ValuationPdf(props) {
                             <div className="row g-2">
                                 {/* Venda Curto Prazo */}
                                 <div className="col-4">
-                                    <div className="card border-0 shadow-sm text-center" style={{ borderRadius: '15px', border: '2px solid #28a745' }}>
+                                    <div className="card bg-light border-0 shadow-sm text-center" style={{ borderRadius: '15px', border: '2px solid #28a745' }}>
                                         <div className="card-body p-2">
-                                            <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
-                                                style={{ width: '50px', height: '50px', backgroundColor: '#28a745' }}>
-                                                <FontAwesomeIcon icon={faStar} className="text-white" style={{ fontSize: '16px' }} />
+                                            <div className="mb-2">
+                                                <div className="d-inline-block p-2 rounded" style={{ backgroundColor: '#e8f5e8' }}>
+                                                    <FontAwesomeIcon icon={faStar} style={{ color: '#28a745', fontSize: '20px' }} />
+                                                </div>
                                             </div>
                                             <h6 className="fw-bold mb-1" style={{ color: '#28a745', fontSize: '12px' }}>
                                                 Venda Curto Prazo
@@ -440,11 +446,12 @@ export default function ValuationPdf(props) {
 
                                 {/* Venda Ideal */}
                                 <div className="col-4">
-                                    <div className="card border-0 shadow-sm text-center" style={{ borderRadius: '15px', border: '2px solid #faa954' }}>
+                                    <div className="card bg-light border-0 shadow-sm text-center" style={{ borderRadius: '15px', border: '2px solid #faa954' }}>
                                         <div className="card-body p-2">
-                                            <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
-                                                style={{ width: '50px', height: '50px', backgroundColor: '#faa954' }}>
-                                                <FontAwesomeIcon icon={faShoppingCart} className="text-white" style={{ fontSize: '16px' }} />
+                                            <div className="mb-2">
+                                                <div className="d-inline-block p-2 rounded" style={{ backgroundColor: '#fff3e0' }}>
+                                                    <FontAwesomeIcon icon={faShoppingCart} style={{ color: '#faa954', fontSize: '20px' }} />
+                                                </div>
                                             </div>
                                             <h6 className="fw-bold mb-1" style={{ color: '#faa954', fontSize: '12px' }}>
                                                 Venda Ideal
@@ -462,11 +469,12 @@ export default function ValuationPdf(props) {
 
                                 {/* Venda Longo Prazo */}
                                 <div className="col-4">
-                                    <div className="card border-0 shadow-sm text-center" style={{ borderRadius: '15px', border: '2px solid #dc3545' }}>
+                                    <div className="card bg-light border-0 shadow-sm text-center" style={{ borderRadius: '15px', border: '2px solid #dc3545' }}>
                                         <div className="card-body p-2">
-                                            <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
-                                                style={{ width: '50px', height: '50px', backgroundColor: '#dc3545' }}>
-                                                <FontAwesomeIcon icon={faWarning} className="text-white" style={{ fontSize: '16px' }} />
+                                            <div className="mb-2">
+                                                <div className="d-inline-block p-2 rounded" style={{ backgroundColor: '#ffeaea' }}>
+                                                    <FontAwesomeIcon icon={faWarning} style={{ color: '#dc3545', fontSize: '20px' }} />
+                                                </div>
                                             </div>
                                             <h6 className="fw-bold mb-1" style={{ color: '#dc3545', fontSize: '12px' }}>
                                                 Venda Longo Prazo
@@ -486,7 +494,7 @@ export default function ValuationPdf(props) {
                     </div>
 
                     {/* Explicação dos valores */}
-                    <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '12px' }}>
+                    <div className="card bg-light border-0 shadow-sm mb-4" style={{ borderRadius: '12px' }}>
                         <div className="card-body p-3">
                             <h5 className="fw-bold mb-2 text-center" style={{ color: '#2c3e50', fontSize: '16px' }}>
                                 Entenda os Valores Sugeridos
@@ -535,7 +543,7 @@ export default function ValuationPdf(props) {
 
 
                         {/* Informações de contato - compactas */}
-                        <div className="card border-0 mb-4 shadow-sm" style={{ borderRadius: '15px', backgroundColor: '#f8f9fa' }}>
+                        <div className="card bg-light border-0 mb-4 shadow-sm" style={{ borderRadius: '15px', backgroundColor: '#f8f9fa' }}>
                             <div className="card-body p-3">
                                 <div className="text-center mb-2">
                                     <h4 className="fw-bold" style={{ color: '#2c3e50', fontSize: '18px' }}>
@@ -569,9 +577,12 @@ export default function ValuationPdf(props) {
                                             <h6 className="fw-bold mb-1" style={{ color: '#5a5a5a', fontSize: '14px' }}>Contatos</h6>
                                             <div className="mb-1">
                                                 <FontAwesomeIcon icon={faPhone} className="me-2" style={{ color: '#f5874f' }} />
-                                                <span style={{ color: '#2c3e50', fontSize: '13px' }}>
-                                                    {userData?.telefone} / {userData?.celular}
-                                                </span>
+                                                <a href={"https://wa.me/55" + userData?.telefone}  target="_blank">
+
+                                                    <span style={{ color: '#2c3e50', fontSize: '13px' }}>
+                                                        {userData?.telefone} / {userData?.celular}
+                                                    </span>
+                                                </a>
                                             </div>
                                             <div className="mb-1">
                                                 <FontAwesomeIcon icon={faEnvelope} className="me-2" style={{ color: '#f5874f' }} />
