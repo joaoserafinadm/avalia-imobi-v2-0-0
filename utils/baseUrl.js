@@ -4,10 +4,10 @@ export default function baseUrl() {
     // const baseUrl = 'http://localhost:3000'
 
     // Teste
-    const baseUrl = 'https://avalia-imobi-v2-0-0.vercel.app'
+    // const baseUrl = 'https://avalia-imobi-v2-0-0.vercel.app'
 
     //Produção
-    // const baseUrl = 'https://app.avaliaimobi.com.br'
+    const baseUrl = 'https://app.avaliaimobi.com.br'
     
 
     return baseUrl
