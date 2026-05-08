@@ -6,6 +6,7 @@ import PropertyEditModal from "./PropertyEditModal"
 import PropertiesMap from "./PropertiesMap"
 import { SpinnerSM } from "../components/loading/Spinners"
 import styles from "./PropertyCollection.module.scss"
+import Button from "../components/Button"
 
 export default function PropertyCollection(props) {
     const { loadingAdd, client } = props
@@ -42,8 +43,8 @@ export default function PropertyCollection(props) {
                     </div>
                 )}
 
-                <button
-                    type="button"
+                <Button
+                    variant="ghost"
                     className={styles.addCard}
                     data-bs-toggle="modal"
                     data-bs-target="#propertyAddModal"
@@ -53,7 +54,7 @@ export default function PropertyCollection(props) {
                     </div>
                     <span className={styles.addText}>Adicionar imóvel</span>
                     <span className={styles.addSub}>para comparação</span>
-                </button>
+                </Button>
             </div>
 
             {propertyArray.length > 0 && (
@@ -62,7 +63,7 @@ export default function PropertyCollection(props) {
                     <div className={styles.verifyBannerBody}>
                         <span className={styles.verifyBannerTitle}>Verifique os imóveis de comparação</span>
                         <span className={styles.verifyBannerText}>
-                            Antes de finalizar a avaliação, confirme se <strong>valor</strong>, <strong>área</strong>, <strong>caracteristicas</strong> e <strong>localização</strong> de cada imóvel estão corretos. Clique em <FontAwesomeIcon icon={faPencil} style={{ fontSize: '0.72rem', margin: '0 2px' }} /> editar para corrigir qualquer informação.
+                            Antes de finalizar a avaliação, confirme se <strong>valor</strong>, <strong>área</strong>, <strong>características</strong> e <strong>localização</strong> de cada imóvel estão corretos. Clique em <strong><FontAwesomeIcon icon={faPencil} style={{ fontSize: '0.72rem', margin: '0 2px' }} /></strong> editar para corrigir qualquer informação.
                         </span>
                     </div>
                 </div>

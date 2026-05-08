@@ -1,6 +1,7 @@
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import PortraitCard from "../../components/userCard/PortraitCard"
+import Button from "../../components/Button"
 
 
 
@@ -59,11 +60,10 @@ export default function ActiveClientPage(props) {
                                 </div>
                                 <div className="col-12 d-flex justify-content-center">
 
-                                    <button className="bold btn btn-outline-secondary"
-                                        onClick={() => handleWhatsapp(errorData?.celular)}>
+                                    <Button variant="secondary" onClick={() => handleWhatsapp(errorData?.celular)}>
                                         <FontAwesomeIcon icon={faWhatsapp} className="me-2" />
                                         {errorData?.celular}
-                                    </button>
+                                    </Button>
                                 </div>
 
                             </div>

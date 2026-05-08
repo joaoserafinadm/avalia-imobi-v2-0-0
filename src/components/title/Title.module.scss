@@ -1,4 +1,4 @@
-.headerBox {
+﻿.headerBox {
     // font-family: "Open Sans", sans-serif !important;
     position: relative;
     height: 110px;
@@ -26,13 +26,13 @@ background-color:  var(--ai-bg-primary);
 .headerTitle {
     font-size: 1.64063rem;
     font-weight: 550;
-    color: #fff;
+    color: var(--theme-text-primary, #fff);
     margin-bottom: 5px;
 }
 .headerSubtitle {
     font-size: 0.9375rem;
     font-weight: 400;
-    color: #fff;
+    color: var(--theme-text-primary, #fff);
 }
 .backButton {
     position: absolute;
@@ -44,7 +44,7 @@ background-color:  var(--ai-bg-primary);
 }
 
 .backButton:hover {
-    color: #fff;
+    color: var(--theme-text-primary, #fff);
     font-weight: 400;
 }
 
@@ -72,7 +72,7 @@ background-color:  var(--ai-bg-primary);
     .headerSubtitle {
         font-size: 0.7rem;
         font-weight: 375;
-        color: #fff;
+        color: var(--theme-text-primary, #fff);
     }
     .backButton {
         margin-top: 2px;
@@ -85,7 +85,7 @@ background-color:  var(--ai-bg-primary);
     }
 
     .backButton:hover {
-        color: #fff;
+        color: var(--theme-text-primary, #fff);
         font-weight: 400;
     }
 

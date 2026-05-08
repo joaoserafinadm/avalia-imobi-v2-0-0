@@ -4,6 +4,7 @@ import LandscapeCardBack from "../components/userCard/LandscapeCardBack";
 import PortraitCard from "../components/userCard/PortraitCard";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import downloadContent from "../../utils/downloadContent";
+import Button from "../components/Button";
 
 
 
@@ -46,14 +47,14 @@ export default function CardsCarousel(props) {
                                         <div className="col-12 d-flex justify-content-center">
 
                                             <div className="dropdown">
-                                                <button
-                                                    className="btn btn-light btn-sm  mt-2"
-                                                    type="button"
+                                                <Button
+                                                    variant="ghost"
+                                                    className="btn btn-light btn-sm mt-2"
                                                     id="downloadDropdownButton"
                                                     data-bs-toggle="dropdown"
                                                     aria-expanded="false">
                                                     <FontAwesomeIcon icon={faBars} className="icon" />
-                                                </button>
+                                                </Button>
                                                 <ul
                                                     className="dropdown-menu"
                                                     aria-labelledby="downloadDropdownButton">

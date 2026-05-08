@@ -5,6 +5,7 @@ import ClientCardInfo from "./ClientCardInfo";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SpinnerLG } from "../components/loading/Spinners";
 import styles from "./LastClientsCard.module.scss";
+import Button from "../components/Button";
 
 
 export default function LastClientsCard(props) {
@@ -29,7 +30,7 @@ export default function LastClientsCard(props) {
                             className={`fadeItem ${styles.swiperWrap}`}
                             style={{
                                 '--swiper-pagination-color': '#f5874f',
-                                '--swiper-pagination-bullet-inactive-color': 'rgba(255,255,255,0.2)',
+                                '--swiper-pagination-bullet-inactive-color': 'var(--theme-border-visible)',
                                 '--swiper-pagination-bullet-inactive-opacity': '1',
                                 zIndex: 0,
                             }}
@@ -51,9 +52,9 @@ export default function LastClientsCard(props) {
                                             <p className={styles.finalLabel}>Gerenciar</p>
                                             <p className={styles.finalTitle}>Todos os imóveis</p>
                                             <Link href="/clientsManagement">
-                                                <button className={styles.btnOutline}>
+                                                <Button variant="ghost" className={styles.btnOutline}>
                                                     Visualizar todos
-                                                </button>
+                                                </Button>
                                             </Link>
                                         </div>
                                     </div>

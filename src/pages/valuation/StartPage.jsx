@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { TypeAnimation } from "react-type-animation"
 import Icons from "../../components/icons"
 import { CheckCircle, ChevronRight, ChevronRightCircle, Info } from "lucide-react"
+import Button from "../../components/Button"
 
 export default function StartPage(props) {
     const clientData = props.clientData
@@ -80,9 +81,10 @@ export default function StartPage(props) {
                                     {/* Action Button */}
                                     {showButton && (
                                         <div className="action-section animate-fade-in-up">
-                                            <button 
-                                                className="btn btn-cta btn-lg px-5 py-3 fw-semibold text-uppercase letter-spacing-1 position-relative overflow-hidden"
-                                                data-bs-target="#valuationCarousel" 
+                                            <Button
+                                                variant="primary"
+                                                className=" px-5 py-3 fw-semibold text-uppercase letter-spacing-1 position-relative overflow-hidden"
+                                                data-bs-target="#valuationCarousel"
                                                 data-bs-slide-to={1}
                                             >
                                                 <span className="btn-text position-relative z-index-1">
@@ -90,7 +92,7 @@ export default function StartPage(props) {
                                                     <ChevronRight size={20} className="ms-2" />
                                                 </span>
                                                 <div className="btn-shine position-absolute top-0 start-0 w-100 h-100"></div>
-                                            </button>
+                                            </Button>
                                             
                                             <div className="mt-3 text-white-50 small">
                                                 <Info size={16} className="me-2" />

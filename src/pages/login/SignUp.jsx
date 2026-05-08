@@ -1,4 +1,5 @@
 import styles from "./Login.module.scss";
+import Button from "../../components/Button";
 import { AiOutlineLeft } from "@react-icons/all-files/ai/AiOutlineLeft";
 import { useState } from "react";
 import removeInputError from "../../../utils/removeInputError";
@@ -89,9 +90,9 @@ export default function SignUp(props) {
   return (
     <div className={`${styles.formInner} fadeItem1s`}>
 
-      <button className={styles.backLink} onClick={() => props.setSection("signIn")}>
+      <Button variant="ghost" className={styles.backLink} onClick={() => props.setSection("signIn")}>
         <AiOutlineLeft /> Voltar para o login
-      </button>
+      </Button>
 
       <h1 className={styles.formTitle}>Crie sua conta</h1>
       <p className={styles.formSubtitle}>Rápido, fácil e 7 dias grátis para testar.</p>
@@ -153,22 +154,23 @@ export default function SignUp(props) {
 
         <p className="text-muted mb-3" style={{ fontSize: "0.78rem" }}>
           Ao clicar em Cadastrar, você concorda com nossos{" "}
-          <button
+          <Button
             type="button"
+            variant="ghost"
             className={styles.linkOrange}
             style={{ fontSize: "0.78rem" }}
             data-bs-toggle="modal"
             data-bs-target="#policyModal"
           >
             Termos e Política de Privacidade
-          </button>.
+          </Button>.
         </p>
 
         {signUpError && <p className="small text-danger mb-2">{signUpError}</p>}
 
-        <button type="submit" className={styles.btnPrimary} disabled={signUpLoading}>
-          {signUpLoading ? <SpinnerSM /> : "Cadastrar"}
-        </button>
+        <Button type="submit" variant="primary" className={styles.btnPrimary} loading={signUpLoading}>
+          Cadastrar
+        </Button>
       </form>
 
       <div className={styles.divider}>ou</div>

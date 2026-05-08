@@ -1,6 +1,7 @@
 import { faCheck, faTimes, faSearchPlus, faSearchMinus, faRotateRight, faRotateLeft, faUndo } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useRef, useEffect, useCallback } from "react"
+import Button from "../components/Button"
 
 export default function ImageCrop({
     imageSrc,
@@ -416,13 +417,14 @@ export default function ImageCrop({
                         <div className="col-12">
                             <label className="form-label small text-muted mb-1">Zoom</label>
                             <div className="d-flex align-items-center gap-2">
-                                <button
-                                    className="btn btn-outline-secondary btn-sm"
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
                                     onClick={() => handleZoom(-0.2)}
                                     disabled={imageData.scale <= 0.1}
                                 >
                                     <FontAwesomeIcon icon={faSearchMinus} />
-                                </button>
+                                </Button>
                                 <input
                                     type="range"
                                     className="form-range flex-grow-1"
@@ -432,13 +434,14 @@ export default function ImageCrop({
                                     value={imageData.scale}
                                     onChange={(e) => handleScaleChange(parseFloat(e.target.value))}
                                 />
-                                <button
-                                    className="btn btn-outline-secondary btn-sm"
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
                                     onClick={() => handleZoom(0.2)}
                                     disabled={imageData.scale >= 3}
                                 >
                                     <FontAwesomeIcon icon={faSearchPlus} />
-                                </button>
+                                </Button>
                                 <span className="small text-muted" style={{ minWidth: '45px' }}>
                                     {(imageData.scale * 100).toFixed(0)}%
                                 </span>
@@ -449,33 +452,37 @@ export default function ImageCrop({
                         <div className="col-12 col-md-8">
                             <label className="form-label small text-muted mb-1">Rotação</label>
                             <div className="d-flex justify-content-center justify-content-md-start gap-2">
-                                <button
-                                    className="btn btn-outline-secondary btn-sm"
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
                                     onClick={() => handleRotate(-90)}
                                 >
                                     <FontAwesomeIcon icon={faRotateLeft} />
-                                </button>
-                                <button
-                                    className="btn btn-outline-secondary btn-sm"
+                                </Button>
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
                                     onClick={() => handleRotate(-15)}
                                 >
                                     -15°
-                                </button>
+                                </Button>
                                 <span className="align-self-center small text-muted px-2" style={{ minWidth: '50px', textAlign: 'center' }}>
                                     {imageData.rotation}°
                                 </span>
-                                <button
-                                    className="btn btn-outline-secondary btn-sm"
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
                                     onClick={() => handleRotate(15)}
                                 >
                                     +15°
-                                </button>
-                                <button
-                                    className="btn btn-outline-secondary btn-sm"
+                                </Button>
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
                                     onClick={() => handleRotate(90)}
                                 >
                                     <FontAwesomeIcon icon={faRotateRight} />
-                                </button>
+                                </Button>
                             </div>
                         </div>
 
@@ -483,13 +490,14 @@ export default function ImageCrop({
                         <div className="col-12 col-md-4">
                             <label className="form-label small text-muted mb-1">Ações</label>
                             <div className="d-flex justify-content-center justify-content-md-start">
-                                <button
+                                <Button
+                                    variant="ghost"
                                     className="btn btn-outline-warning btn-sm"
                                     onClick={handleReset}
                                 >
                                     <FontAwesomeIcon icon={faUndo} className="me-1" />
                                     Resetar
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -498,32 +506,24 @@ export default function ImageCrop({
                 </div>
 
                 {/* Action Buttons */}
-                <div className="modal-footer  " >
-                    <button
-                        className="btn btn-outline-secondary"
+                <div className="modal-footer">
+                    <Button
+                        variant="secondary"
                         onClick={onCancel}
                         disabled={isLoading}
+                        icon={faTimes}
                     >
-                        <FontAwesomeIcon icon={faTimes} className="me-1" />
                         Cancelar
-                    </button>
-                    <button
-                        className="btn btn-orange px-4"
+                    </Button>
+                    <Button
+                        variant="primary"
+                        className="px-4"
+                        loading={isLoading}
+                        icon={faCheck}
                         onClick={handleConfirm}
-                        disabled={isLoading}
                     >
-                        {isLoading ? (
-                            <>
-                                <span className="spinner-border spinner-border-sm me-2" />
-                                Processando...
-                            </>
-                        ) : (
-                            <>
-                                <FontAwesomeIcon icon={faCheck} className="me-1" />
-                                Confirmar
-                            </>
-                        )}
-                    </button>
+                        Confirmar
+                    </Button>
                 </div>
 
                 {/* Canvas oculto */}

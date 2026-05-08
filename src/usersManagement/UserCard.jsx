@@ -3,6 +3,7 @@ import { faEnvelope, faEye, faPhone, faUserGear, faUserTie } from "@fortawesome/
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { userStatusName } from "../../utils/permissions";
 import styles from "./UserCard.module.scss";
+import Button from "../components/Button";
 
 export default function UserCard({ elem, setUserSelected }) {
 
@@ -69,8 +70,8 @@ export default function UserCard({ elem, setUserSelected }) {
 
                 {/* ── Actions ── */}
                 <div className={styles.footer}>
-                    <button
-                        type="button"
+                    <Button
+                        variant="ghost"
                         className={styles.actionBtn}
                         id={"viewUserBtn" + elem._id}
                         onClick={() => setUserSelected(elem)}
@@ -80,9 +81,9 @@ export default function UserCard({ elem, setUserSelected }) {
                     >
                         <FontAwesomeIcon icon={faEye} />
                         Visualizar
-                    </button>
-                    <button
-                        type="button"
+                    </Button>
+                    <Button
+                        variant="ghost"
                         className={styles.actionBtnGreen}
                         id={"whatsappUserBtn" + elem._id}
                         disabled={!elem.celular}
@@ -91,7 +92,7 @@ export default function UserCard({ elem, setUserSelected }) {
                     >
                         <FontAwesomeIcon icon={faWhatsapp} />
                         WhatsApp
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ import handleShare from "../../utils/handleShare"
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import styles from './HandleButtons.module.scss'
+import Button from "../components/Button"
 
 export default function HandleButtons(props) {
 
@@ -16,61 +17,60 @@ export default function HandleButtons(props) {
         <>
             {client?.status !== 'outdated' ?
                 <div className={styles.btnGroup}>
-                    <button
-                        type="button"
+                    <Button
+                        variant="ghost"
                         className={styles.btn}
                         id={"viewClientButton" + elem._id}
                         data-bs-toggle="modal"
                         data-bs-target="#viewClientModal"
                         onClick={() => setClientSelected(elem)}>
                         <FontAwesomeIcon icon={faEye} />
-                    </button>
+                    </Button>
                     {(client?.status === 'evaluated') && (
-                        <button className={styles.btn} id={"shareValuationButton" + elem._id}
+                        <Button variant="ghost" className={styles.btn} id={"shareValuationButton" + elem._id}
                             onClick={() => props.setClientSelected(props.elem)}
                             data-bs-toggle="modal"
                             data-bs-target="#viewValuationModal">
                             <FontAwesomeIcon icon={faShareAlt} />
-                        </button>
+                        </Button>
                     )}
                     {(client?.status === 'answered') && (
-                        <button className={styles.btn}
+                        <Button variant="ghost" className={styles.btn}
                             onClick={() => props.setClientSelected(props.elem)}
                             data-bs-toggle="modal" id={"downloadValuationButton" + elem._id}
                             data-bs-target="#viewValuationModal">
                             <FontAwesomeIcon icon={faFileDownload} />
-                        </button>
+                        </Button>
                     )}
-                    <button
-                        type="button"
+                    <Button
+                        variant="ghost"
                         className={styles.btn}
                         id={"deleteClientButton" + elem._id}
                         data-bs-toggle="modal"
                         data-bs-target={"#deleteClientModal"}
                         onClick={() => setClientSelected(elem)}>
                         <FontAwesomeIcon icon={faTrashAlt} />
-                    </button>
+                    </Button>
                 </div>
                 :
                 <div className={styles.btnGroup}>
-                    <button onClick={() => handleShare(elem.urlToken + "&userId=" + token.sub)}
-                        type="button"
-                        className={styles.btn}
-                        id={"shareClientButton" + elem._id}>
+                    <Button variant="ghost" className={styles.btn}
+                        id={"shareClientButton" + elem._id}
+                        onClick={() => handleShare(elem.urlToken + "&userId=" + token.sub)}>
                         <FontAwesomeIcon icon={faShare} />
-                    </button>
+                    </Button>
                     <Link href={`/clientEdit/${elem._id}`} className={styles.btn} id={"editClientButton" + elem._id}>
                         <FontAwesomeIcon icon={faEdit} />
                     </Link>
-                    <button
-                        type="button"
+                    <Button
+                        variant="ghost"
                         className={styles.btn}
                         id={"deleteClientButton" + elem._id}
                         data-bs-toggle="modal"
                         data-bs-target={"#deleteClientModal"}
                         onClick={() => setClientSelected(elem)}>
                         <FontAwesomeIcon icon={faTrashAlt} />
-                    </button>
+                    </Button>
                 </div>
             }
         </>

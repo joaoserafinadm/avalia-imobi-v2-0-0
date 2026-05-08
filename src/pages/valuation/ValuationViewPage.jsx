@@ -9,6 +9,7 @@ import Icons from "../../components/icons"
 import tippy from "tippy.js"
 import scrollTo from "../../../utils/scrollTo"
 import styles from './valuation.module.scss'
+import Button from "../../components/Button"
 import { Swiper, SwiperSlide } from "swiper/react"
 import ClientFeatures from "../../clientsManagement/ClientFeatures"
 import baseUrl from "../../../utils/baseUrl"
@@ -398,14 +399,15 @@ export default function ValuationViewPage(props) {
                                             )}
 
                                             <div id="continueButton" style={{ textAlign: 'center', paddingBottom: '2.5rem' }}>
-                                                <button
-                                                    type="button"
-                                                    className={styles.continueBtn}
+                                                <Button
+                                                    variant="primary"
+                                                    style={{ borderRadius: '25px', padding: '12px 40px' }}
+                                                    loading={loadingSave}
                                                     disabled={!valueSelected || disabled}
                                                     onClick={handleSave}
                                                 >
-                                                    {loadingSave ? <SpinnerSM /> : 'Continuar'}
-                                                </button>
+                                                    Continuar
+                                                </Button>
                                                 {!valueSelected && (
                                                     <p className={styles.continueError}>
                                                         Selecione um valor para continuar

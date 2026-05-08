@@ -7,6 +7,7 @@ import Loading from "./Loading";
 import CountUp from 'react-countup';
 import { SpinnerSM } from "../components/loading/Spinners";
 import styles from "./ClientsCard_02.module.scss";
+import Button from "../components/Button";
 
 
 export default function ClientsCard_02(props) {
@@ -25,7 +26,7 @@ export default function ClientsCard_02(props) {
 
             <div className={styles.cardBody}>
 
-                <Link href='/clientsManagement' style={{ textDecoration: 'none' }}>
+                <Link href='/clientsManagement' style={{ textDecoration: 'none !important' }}>
                     <div className={styles.header}>
                         <span className={styles.title}>Imóveis</span>
                         <span className={styles.accessLink}>
@@ -87,7 +88,7 @@ export default function ClientsCard_02(props) {
                             <div className={styles.emptyState}>
                                 <p className={styles.emptyText}>Nenhum imóvel cadastrado</p>
                                 <Link href='/clientAdd'>
-                                    <button className={styles.btnPrimary}>Cadastrar imóvel</button>
+                                    <Button variant="primary" className={styles.btnPrimary}>Cadastrar imóvel</Button>
                                 </Link>
                             </div>
                         ) : (

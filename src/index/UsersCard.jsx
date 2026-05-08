@@ -1,4 +1,5 @@
-import Link from "next/link";
+﻿import Link from "next/link";
+import Button from "../components/Button";
 import Icons from "../components/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -57,7 +58,7 @@ export default function UsersCard(props) {
                             </span>
                             <span
                                 className={styles.iconDecor}
-                                style={{ left: '-8px', top: '56px', transform: 'rotate(70deg)', color: 'rgba(255,255,255,0.3)' }}
+                                style={{ left: '-8px', top: '56px', transform: 'rotate(70deg)', color: 'var(--theme-text-faint)' }}
                             >
                                 <FontAwesomeIcon icon={faKey} />
                             </span>
@@ -109,7 +110,7 @@ export default function UsersCard(props) {
                             </span>
                             <span
                                 className={styles.iconDecor}
-                                style={{ right: '-6px', top: '58px', transform: 'rotate(10deg)', color: 'rgba(255,255,255,0.3)' }}
+                                style={{ right: '-6px', top: '58px', transform: 'rotate(10deg)', color: 'var(--theme-text-faint)' }}
                             >
                                 <FontAwesomeIcon icon={faCalculator} />
                             </span>
@@ -152,11 +153,11 @@ export default function UsersCard(props) {
                 <div className={styles.footerAction}>
                     {companyData?.usersArray?.length > 1 ? (
                         <Link href='/usersManagement'>
-                            <button className={styles.btnOutline}>Visualizar todos os usuários</button>
+                            <Button variant="ghost" className={styles.btnOutline}>Visualizar todos os usuários</Button>
                         </Link>
                     ) : (
                         <Link href='/userAdd'>
-                            <button className={styles.btnOutline}>Adicionar usuários</button>
+                            <Button variant="ghost" className={styles.btnOutline}>Adicionar usuários</Button>
                         </Link>
                     )}
                 </div>

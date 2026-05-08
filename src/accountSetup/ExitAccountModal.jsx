@@ -2,7 +2,7 @@
 import Cookies from "js-cookie"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { SpinnerSM } from "../components/loading/Spinners"
+import Button from "../components/Button"
 
 
 
@@ -37,13 +37,16 @@ export default function ExitAccountModal(props) {
                     </div>
 
                     <div className="modal-footer">
-                        <button className="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>
-                        {loadingExit ?
-                            <button className="btn btn-danger btn-sm" disabled><SpinnerSM /></button>
-                            :
-                            <button className="btn btn-danger btn-sm" data-bs-dismiss="modal" onClick={hendleSession}>Sair</button>
-
-                        }
+                        <Button variant="secondary" size="sm" data-bs-dismiss="modal">Fechar</Button>
+                        <Button
+                            variant="danger"
+                            size="sm"
+                            loading={loadingExit}
+                            data-bs-dismiss="modal"
+                            onClick={hendleSession}
+                        >
+                            Sair
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import baseUrl from "../../utils/baseUrl";
 import { SpinnerLG, SpinnerSM } from "../../src/components/loading/Spinners";
+import Button from "../../src/components/Button";
 import ClientInfo from "../../src/clientsManagement/ClientInfo";
 import Sections from "../../src/components/Sections";
 import ValuationConfig from "../../src/valuation/ValuationConfig";
@@ -230,16 +231,20 @@ export default function ValuationPage(props) {
                     <FixedTopicsBottom>
                         <div className={styles.footerBar}>
                             <div className={styles.footerActions}>
-                                <Link href="/clientsManagement" className={styles.btnCancel}>
-                                    Cancelar
+                                <Link href="/clientsManagement" >
+                                    <Button variant="secondary">
+
+                                        Cancelar
+                                    </Button>
                                 </Link>
-                                <button
-                                    className={styles.btnSave}
+                                <Button
+                                    variant="primary"
+                                    loading={loadingSave}
+                                    disabled={propertyArray.length === 0}
                                     onClick={() => handleSave(token.company_id)}
-                                    disabled={propertyArray.length === 0 || loadingSave}
                                 >
-                                    {loadingSave ? <SpinnerSM /> : "Salvar"}
-                                </button>
+                                    Salvar
+                                </Button>
                             </div>
                         </div>
                     </FixedTopicsBottom>

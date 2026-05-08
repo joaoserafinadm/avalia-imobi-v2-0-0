@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { closeModal } from "../../utils/modalControl";
+import Button from "../components/Button";
 
 
 
@@ -29,7 +30,7 @@ export default function PaymentModal(props) {
                         <div className="row mt-3">
                             <div className="col-12 d-flex justify-content-center">
                                 <Link href={'/accountSetup?section=Pagamentos'} onClick={() => closeModal()}>
-                                    <button className="btn btn-outline-orange pulse" data-bs-dismiss="modal">Assinar agora</button>
+                                    <Button variant="primary" className="pulse" data-bs-dismiss="modal">Assinar agora</Button>
                                 </Link>
                             </div>
                         </div>

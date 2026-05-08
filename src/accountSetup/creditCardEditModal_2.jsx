@@ -9,6 +9,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
+import Button from "../components/Button";
 // import { initMercadoPago } from '@mercadopago/sdk-react'
 // initMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY)
 
@@ -278,15 +279,15 @@ export default function CreditCardEditModal(props) {
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <button className="btn btn-secondary" data-bs-dismiss="modal">
+                            <Button variant="secondary" data-bs-dismiss="modal">
                                 Cancelar
-                            </button>
-                            <button
-                                className="btn btn-orange"
-                                onClick={createCardToken} // Gera o cardToken ao clicar em "Salvar"
+                            </Button>
+                            <Button
+                                variant="primary"
+                                onClick={createCardToken}
                             >
                                 Salvar
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-
+import Button from "../../components/Button";
 
 
 export default function PdfConfigModal(props) {
@@ -19,8 +19,8 @@ export default function PdfConfigModal(props) {
                         ...
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-success">Baixar PDF</button>
+                        <Button variant="secondary" data-bs-dismiss="modal">Fechar</Button>
+                        <Button variant="primary">Baixar PDF</Button>
                     </div>
                 </div>
             </div>

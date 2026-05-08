@@ -1,9 +1,10 @@
-import { useState } from "react"
+﻿import { useState } from "react"
 import { maskMoney } from "../../utils/mask"
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import baseUrl from "../../utils/baseUrl";
 import { SpinnerSM } from "../components/loading/Spinners";
+import Button from "../components/Button";
 import axios from "axios";
 
 const VALUE_LABELS = {
@@ -55,12 +56,12 @@ export default function SelectedValue({ client, dataFunction }) {
                 textAlign: 'center',
                 marginBottom: '0.75rem',
             }}>
-                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', marginBottom: '6px' }}>
+                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.75rem', color: 'var(--theme-text-tertiary)', marginBottom: '6px' }}>
                     {VALUE_LABELS[selectedKey] || 'Valor selecionado'}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '6px' }}>
                     <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '1rem', color: '#f5874f' }}>R$</span>
-                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '1.8rem', fontWeight: 500, color: 'rgba(255,255,255,0.9)' }}>
+                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '1.8rem', fontWeight: 500, color: 'var(--theme-text-primary)' }}>
                         {selectedVal !== 'NaN' ? `${selectedVal},00` : '0,00'}
                     </span>
                 </div>
@@ -69,21 +70,9 @@ export default function SelectedValue({ client, dataFunction }) {
             {/* Alterar valor */}
             {!imobCustomCheck && (
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.25rem' }}>
-                    <button
-                        onClick={() => setImobCustomCheck(true)}
-                        style={{
-                            background: 'rgba(255,255,255,0.05)',
-                            border: '1px solid rgba(255,255,255,0.1)',
-                            borderRadius: '8px',
-                            padding: '8px 20px',
-                            fontFamily: "'DM Sans', sans-serif",
-                            fontSize: '0.8rem',
-                            color: 'rgba(255,255,255,0.55)',
-                            cursor: 'pointer',
-                        }}
-                    >
+                    <Button variant="secondary" onClick={() => setImobCustomCheck(true)}>
                         Alterar valor
-                    </button>
+                    </Button>
                 </div>
             )}
 
@@ -93,11 +82,11 @@ export default function SelectedValue({ client, dataFunction }) {
                     <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
                         <div style={{
                             display: 'flex', alignItems: 'center',
-                            background: 'rgba(255,255,255,0.04)',
+                            background: 'var(--theme-input-bg)',
                             border: '1px solid rgba(255,255,255,0.09)',
                             borderRadius: '10px', overflow: 'hidden', flex: 1,
                         }}>
-                            <span style={{ padding: '0 12px', fontFamily: "'DM Sans', sans-serif", fontSize: '0.85rem', color: '#f5874f', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
+                            <span style={{ padding: '0 12px', fontFamily: "'DM Sans', sans-serif", fontSize: '0.85rem', color: '#f5874f', borderRight: '1px solid var(--theme-border-subtle)' }}>
                                 R$
                             </span>
                             <input
@@ -107,39 +96,26 @@ export default function SelectedValue({ client, dataFunction }) {
                                     flex: 1, background: 'transparent', border: 'none', outline: 'none',
                                     padding: '10px 12px', textAlign: 'right',
                                     fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.9rem',
-                                    color: 'rgba(255,255,255,0.85)',
+                                    color: 'var(--theme-text-primary)',
                                 }}
                             />
-                            <span style={{ padding: '0 12px', fontFamily: "'DM Sans', sans-serif", fontSize: '0.85rem', color: 'rgba(255,255,255,0.3)', borderLeft: '1px solid rgba(255,255,255,0.06)' }}>
+                            <span style={{ padding: '0 12px', fontFamily: "'DM Sans', sans-serif", fontSize: '0.85rem', color: 'var(--theme-text-faint)', borderLeft: '1px solid var(--theme-border-subtle)' }}>
                                 ,00
                             </span>
                         </div>
                     </div>
                     <div style={{ display: 'flex', gap: '8px' }}>
-                        <button
-                            onClick={() => setImobCustomCheck(false)}
-                            style={{
-                                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-                                borderRadius: '8px', padding: '8px 16px',
-                                fontFamily: "'DM Sans', sans-serif", fontSize: '0.8rem',
-                                color: 'rgba(255,255,255,0.45)', cursor: 'pointer',
-                            }}
-                        >
+                        <Button variant="secondary" onClick={() => setImobCustomCheck(false)}>
                             Cancelar
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                            variant="primary"
+                            loading={loadingSave}
                             disabled={imobCustomValue === ''}
                             onClick={handleSaveCustomValue}
-                            style={{
-                                background: imobCustomValue === '' ? 'rgba(245,135,79,0.2)' : '#f5874f',
-                                border: 'none', borderRadius: '8px', padding: '8px 20px',
-                                fontFamily: "'DM Sans', sans-serif", fontSize: '0.8rem', fontWeight: 600,
-                                color: imobCustomValue === '' ? 'rgba(255,255,255,0.25)' : '#0d1420',
-                                cursor: imobCustomValue === '' ? 'not-allowed' : 'pointer',
-                            }}
                         >
-                            {loadingSave ? <SpinnerSM /> : 'Salvar'}
-                        </button>
+                            Salvar
+                        </Button>
                     </div>
                 </div>
             )}
@@ -152,11 +128,11 @@ export default function SelectedValue({ client, dataFunction }) {
                 value={client?.valuation?.valueComment || ''}
                 style={{
                     width: '100%',
-                    background: 'rgba(255,255,255,0.04)',
+                    background: 'var(--theme-input-bg)',
                     border: '1px solid rgba(255,255,255,0.08)',
                     borderRadius: '10px', padding: '10px 14px',
                     fontFamily: "'DM Sans', sans-serif", fontSize: '0.85rem',
-                    color: 'rgba(255,255,255,0.65)',
+                    color: 'var(--theme-text-secondary)',
                     resize: 'none', outline: 'none', opacity: 1,
                 }}
             />
@@ -168,7 +144,7 @@ function SectionLabel({ children }) {
     return (
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.6rem' }}>
             <div style={{ width: '3px', height: '13px', background: '#f5874f', borderRadius: '2px' }} />
-            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--theme-text-faint)' }}>
                 {children}
             </span>
         </div>

@@ -1,4 +1,4 @@
-import { faBars, faDownload, faPlusCircle, faCrop, faCheck, faTimes, faArrowLeft, faTrashAlt, faImage } from '@fortawesome/free-solid-svg-icons'
+﻿import { faBars, faDownload, faPlusCircle, faCrop, faCheck, faTimes, faArrowLeft, faTrashAlt, faImage } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useRef, useEffect } from 'react'
 import { createImageUrl } from '../../utils/createImageUrl'
@@ -8,6 +8,7 @@ import Cookies from 'js-cookie'
 import jwt from 'jsonwebtoken'
 import tippy from 'tippy.js'
 import ImageCrop from './ImageCrop'
+import Button from '../components/Button'
 import Modal, { ModalBtnPrimary, ModalBtnSecondary } from '../components/Modal'
 
 export default function ImageHeaderModal(props) {
@@ -175,8 +176,8 @@ export default function ImageHeaderModal(props) {
                                 icon={faCrop}
                                 style={{ color: '#f5874f', fontSize: '0.8rem', marginTop: '3px', flexShrink: 0 }}
                             />
-                            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.78rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.55 }}>
-                                <strong style={{ color: 'rgba(255,255,255,0.65)', fontWeight: 600 }}>Como funciona:</strong>
+                            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.78rem', color: 'var(--theme-text-tertiary)', lineHeight: 1.55 }}>
+                                <strong style={{ color: 'var(--theme-text-secondary)', fontWeight: 600 }}>Como funciona:</strong>
                                 <ul style={{ margin: '6px 0 0', paddingLeft: '1rem' }}>
                                     <li>Selecione uma das imagens pré-definidas ou adicione uma personalizada</li>
                                     <li>Novas imagens serão ajustadas para formato 16:9</li>
@@ -195,7 +196,7 @@ export default function ImageHeaderModal(props) {
                                         key={elem._id}
                                         onClick={() => setHeaderImgPreview(elem._id)}
                                         style={{
-                                            background: 'rgba(255,255,255,0.02)',
+                                            background: 'var(--theme-section-bg)',
                                             border: isSelected
                                                 ? '1.5px solid rgba(245,135,79,0.55)'
                                                 : '1px solid rgba(255,255,255,0.06)',
@@ -210,7 +211,7 @@ export default function ImageHeaderModal(props) {
                                         }}
                                     >
                                         {/* Imagem 16:9 */}
-                                        <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: 'rgba(255,255,255,0.03)' }}>
+                                        <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: 'var(--theme-section-bg)' }}>
                                             <img
                                                 src={elem.imageUrl}
                                                 alt={`Modelo ${index + 1}`}
@@ -235,22 +236,14 @@ export default function ImageHeaderModal(props) {
                                             }}>
                                                 Modelo {index + 1}
                                             </span>
-                                            <button
+                                            <Button
+                                                variant="danger"
+                                                size="sm"
                                                 onClick={e => { e.stopPropagation(); handleDeleteImg(token.company_id, elem._id) }}
                                                 title="Deletar imagem"
-                                                style={{
-                                                    background: 'rgba(248,113,113,0.08)',
-                                                    border: '1px solid rgba(248,113,113,0.2)',
-                                                    borderRadius: '7px',
-                                                    color: '#f87171',
-                                                    fontSize: '0.72rem',
-                                                    cursor: 'pointer',
-                                                    padding: '4px 9px',
-                                                    transition: 'background 0.18s ease',
-                                                }}
                                             >
                                                 <FontAwesomeIcon icon={faTrashAlt} />
-                                            </button>
+                                            </Button>
                                         </div>
 
                                         {/* Checkmark selecionado */}
@@ -328,7 +321,7 @@ export default function ImageHeaderModal(props) {
                                     <p style={{
                                         fontFamily: "'DM Sans', sans-serif",
                                         fontSize: '0.7rem',
-                                        color: 'rgba(255,255,255,0.25)',
+                                        color: 'var(--theme-text-faint)',
                                         margin: 0,
                                     }}>
                                         JPG, PNG · Máx 10MB
@@ -357,7 +350,7 @@ export default function ImageHeaderModal(props) {
                                     <p style={{
                                         fontFamily: "'DM Sans', sans-serif",
                                         fontSize: '0.78rem',
-                                        color: 'rgba(255,255,255,0.45)',
+                                        color: 'var(--theme-text-tertiary)',
                                         marginTop: '10px',
                                         marginBottom: 0,
                                     }}>

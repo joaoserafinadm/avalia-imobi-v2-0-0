@@ -286,7 +286,7 @@ export default function PropertiesMap({ light,propertyArray, client }) {
                 <FontAwesomeIcon icon={faLocationDot} className={styles.headerIcon} />
                 <span className={styles.headerTitle}>Localização dos imóveis</span>
                 <span className={styles.headerCount}>
-                    {valid.length} comparação{valid.length !== 1 ? "ões" : ""} no mapa
+                    {valid.length} comparaç{valid.length !== 1 ? "ões" : "ão"} no mapa
                 </span>
             </div>
 

@@ -5,6 +5,7 @@ import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { modalClose } from "../../../../utils/modalControl";
+import Button from "../../components/Button";
 
 
 
@@ -34,9 +35,9 @@ export default function SubscriptionCanceledModal() {
 
                             <div className="col-12 mt-5 d-flex justify-content-center text-center">
                                 <Link href="/accountSetup?status=Assinatura" onClick={() => modalClose()}>
-                                    <button className="btn btn-orange" data-bs-dismiss="modal">
+                                    <Button variant="primary" data-bs-dismiss="modal">
                                         Planos
-                                    </button>
+                                    </Button>
                                 </Link>
                             </div>
 

@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+/* ─────────────────────────────────────────────
+   Button Component — Design System
+   Brand: #f5874f · Fontes: DM Sans
+───────────────────────────────────────────── */
+
+/* ══════════════════════════════════════════
+   BASE
+══════════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition:
+    background     0.22s ease,
+    border-color   0.22s ease,
+    color          0.22s ease,
+    box-shadow     0.22s ease,
+    transform      0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity        0.18s ease;
+
+  &:disabled,
+  &.isLoading {
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  &.full { width: 100%; }
+}
+
+/* ══════════════════════════════════════════
+   TAMANHOS
+══════════════════════════════════════════ */
+.sm {
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  gap: 5px;
+}
+
+.md {
+  padding: 9px 22px;
+  font-size: 0.82rem;
+}
+
+.lg {
+  padding: 12px 30px;
+  font-size: 0.92rem;
+  border-radius: 12px;
+  gap: 9px;
+}
+
+/* icon-only: quadrado */
+.iconOnly {
+  padding: 0 !important;
+
+  &.sm { width: 30px; height: 30px; }
+  &.md { width: 37px; height: 37px; }
+  &.lg { width: 46px; height: 46px; }
+}
+
+/* ══════════════════════════════════════════
+   VARIANTE — PRIMARY (laranja)
+══════════════════════════════════════════ */
+.primary {
+  background: #f5874f;
+  border-color: transparent;
+  color: #0d1420;
+
+  &:hover:not(:disabled):not(.isLoading) {
+    background: #ff9f6b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 135, 79, 0.38);
+  }
+
+  &:active:not(:disabled):not(.isLoading) {
+    transform: translateY(0);
+    box-shadow: none;
+    background: #e87a44;
+  }
+
+  &:disabled,
+  &.isLoading {
+    background: rgba(245, 135, 79, 0.28);
+    color: rgba(13, 20, 32, 0.45);
+  }
+}
+
+/* ══════════════════════════════════════════
+   VARIANTE — SECONDARY (neutro/ghost)
+══════════════════════════════════════════ */
+.secondary {
+  /* escuro (padrão) */
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+
+  &:hover:not(:disabled):not(.isLoading) {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  &:active:not(:disabled):not(.isLoading) {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  &:disabled,
+  &.isLoading {
+    opacity: 0.38;
+  }
+
+  /* claro */
+  &.light {
+    background: rgba(15, 20, 35, 0.05);
+    border-color: rgba(15, 20, 35, 0.14);
+    color: rgba(15, 20, 35, 0.6);
+
+    &:hover:not(:disabled):not(.isLoading) {
+      background: rgba(15, 20, 35, 0.09);
+      border-color: rgba(15, 20, 35, 0.22);
+      color: rgba(15, 20, 35, 0.85);
+    }
+
+    &:active:not(:disabled):not(.isLoading) {
+      background: rgba(15, 20, 35, 0.13);
+    }
+  }
+}
+
+/* ══════════════════════════════════════════
+   VARIANTE — DANGER (vermelho)
+══════════════════════════════════════════ */
+.danger {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.25);
+  color: #f87171;
+
+  &:hover:not(:disabled):not(.isLoading) {
+    background: rgba(248, 113, 113, 0.18);
+    border-color: rgba(248, 113, 113, 0.48);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(248, 113, 113, 0.22);
+  }
+
+  &:active:not(:disabled):not(.isLoading) {
+    transform: translateY(0);
+    box-shadow: none;
+    background: rgba(248, 113, 113, 0.24);
+  }
+
+  &:disabled,
+  &.isLoading {
+    opacity: 0.38;
+  }
+}
+
+/* ══════════════════════════════════════════
+   VARIANTE — SUCCESS (verde)
+══════════════════════════════════════════ */
+.success {
+  background: rgba(0, 204, 153, 0.1);
+  border-color: rgba(0, 204, 153, 0.28);
+  color: #00cc99;
+
+  &:hover:not(:disabled):not(.isLoading) {
+    background: rgba(0, 204, 153, 0.18);
+    border-color: rgba(0, 204, 153, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 204, 153, 0.22);
+  }
+
+  &:active:not(:disabled):not(.isLoading) {
+    transform: translateY(0);
+    box-shadow: none;
+    background: rgba(0, 204, 153, 0.24);
+  }
+
+  &:disabled,
+  &.isLoading {
+    opacity: 0.38;
+  }
+}
+
+/* ══════════════════════════════════════════
+   VARIANTE — WARNING (amarelo)
+══════════════════════════════════════════ */
+.warning {
+  background: rgba(247, 188, 6, 0.1);
+  border-color: rgba(247, 188, 6, 0.28);
+  color: #f7bc06;
+
+  &:hover:not(:disabled):not(.isLoading) {
+    background: rgba(247, 188, 6, 0.18);
+    border-color: rgba(247, 188, 6, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(247, 188, 6, 0.2);
+  }
+
+  &:active:not(:disabled):not(.isLoading) {
+    transform: translateY(0);
+    box-shadow: none;
+    background: rgba(247, 188, 6, 0.24);
+  }
+
+  &:disabled,
+  &.isLoading {
+    opacity: 0.38;
+  }
+}
+
+/* ══════════════════════════════════════════
+   VARIANTE — GHOST (só texto)
+══════════════════════════════════════════ */
+.ghost {
+  background: transparent;
+  border-color: transparent;
+
+  /* escuro (padrão) */
+  color: rgba(255, 255, 255, 0.5);
+
+  &:hover:not(:disabled):not(.isLoading) {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  &:active:not(:disabled):not(.isLoading) {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &:disabled,
+  &.isLoading {
+    opacity: 0.32;
+  }
+
+  /* claro */
+  &.light {
+    color: rgba(15, 20, 35, 0.5);
+
+    &:hover:not(:disabled):not(.isLoading) {
+      background: rgba(15, 20, 35, 0.06);
+      color: rgba(15, 20, 35, 0.85);
+    }
+
+    &:active:not(:disabled):not(.isLoading) {
+      background: rgba(15, 20, 35, 0.09);
+    }
+  }
+}
+
+/* ══════════════════════════════════════════
+   SPINNER DE CARREGAMENTO
+══════════════════════════════════════════ */
+.spinner {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+.lg .spinner {
+  width: 15px;
+  height: 15px;
+}
+
+.sm .spinner {
+  width: 11px;
+  height: 11px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ══════════════════════════════════════════
+   TEMA CLARO GLOBAL — [data-theme="light"]
+   aplicado automaticamente sem precisar do
+   prop theme="light"
+══════════════════════════════════════════ */
+:global([data-theme="light"]) .secondary:not(.light) {
+  background: rgba(15, 20, 35, 0.05) !important;
+  border-color: rgba(15, 20, 35, 0.14) !important;
+  color: rgba(15, 20, 35, 0.6) !important;
+
+  &:hover:not(:disabled):not(.isLoading) {
+    background: rgba(15, 20, 35, 0.09) !important;
+    border-color: rgba(15, 20, 35, 0.22) !important;
+    color: rgba(15, 20, 35, 0.85) !important;
+  }
+}
+
+:global([data-theme="light"]) .ghost:not(.light) {
+  color: rgba(15, 20, 35, 0.5) !important;
+
+  &:hover:not(:disabled):not(.isLoading) {
+    background: rgba(15, 20, 35, 0.06) !important;
+    color: rgba(15, 20, 35, 0.85) !important;
+  }
+}

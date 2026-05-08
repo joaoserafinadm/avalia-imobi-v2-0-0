@@ -1,8 +1,9 @@
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SpinnerLG, SpinnerSM } from "../../components/loading/Spinners";
+import { SpinnerSM } from "../../components/loading/Spinners";
 import validationNewClient from "../../../utils/validationNewClient";
 import { useSelector } from "react-redux";
+import Button from "../../components/Button";
 
 
 
@@ -30,11 +31,14 @@ export default function FinalizarButton(props) {
                     </span>
                     :
                     <>
-                        <button onClick={() => props.handleSave()}
-                            type='button' disabled={!validationNewClient(newClientForm)}
-                            className="btn btn-light btn-lg fs-4 text-secondary">
+                        <Button
+                            variant="ghost"
+                            className="btn btn-light btn-lg fs-4 text-secondary"
+                            disabled={!validationNewClient(newClientForm)}
+                            onClick={() => props.handleSave()}
+                        >
                             Finalizar <FontAwesomeIcon icon={faArrowRight} className="ms-1" />
-                        </button>
+                        </Button>
                     </>
                 }
 

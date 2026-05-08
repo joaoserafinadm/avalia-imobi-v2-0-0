@@ -6,6 +6,7 @@ import isMobile from "../../utils/isMobile"
 import axios from "axios"
 import Cookie from "js-cookie"
 import jwt from "jsonwebtoken"
+import Button from "../components/Button"
 
 
 
@@ -81,7 +82,7 @@ export default function FirstNotifications(props) {
                         </span>
                         <div className=" mt-2">
                             <Link href="/companyEdit">
-                                <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faStore} className="me-2" />Imobiliária</button>
+                                <Button variant="primary" size="sm" icon={faStore}>Imobiliária</Button>
                             </Link>
                         </div>
                         <span className="mt-2">
@@ -89,7 +90,7 @@ export default function FirstNotifications(props) {
                         </span>
                         <div className=" mt-2">
                             <Link href="/tutorials">
-                                <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faBook} className="me-2" />Tutoriais</button>
+                                <Button variant="primary" size="sm" icon={faBook}>Tutoriais</Button>
                             </Link>
                         </div>
                     </div>
@@ -110,7 +111,7 @@ export default function FirstNotifications(props) {
                         </span>
                         <div className=" mt-2">
                             <Link href="/editProfile">
-                                <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faUser} className="me-2" />Meu Perfil</button>
+                                <Button variant="primary" size="sm" icon={faUser}>Meu Perfil</Button>
                             </Link>
                         </div>
                     </div>
@@ -132,9 +133,9 @@ export default function FirstNotifications(props) {
                         </span >
                         <div className=" mt-2">
                             <Link href="/tutorials">
-                                <button className="btn btn-outline-orange btn-sm" onClick={() => handleDisableTutorial()}>
-                                    <FontAwesomeIcon icon={faBook} className="me-2" />Tutoriais
-                                </button>
+                                <Button variant="primary" size="sm" icon={faBook} onClick={() => handleDisableTutorial()}>
+                                    Tutoriais
+                                </Button>
                             </Link>
 
                         </div>
@@ -157,8 +158,7 @@ export default function FirstNotifications(props) {
                         </span >
                         <div className=" mt-2">
                             <Link href="/accountSetup?status=Assinatura">
-
-                                <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faGear} className="me-2" />Configurações</button>
+                                <Button variant="primary" size="sm" icon={faGear}>Configurações</Button>
                             </Link>
 
                         </div>

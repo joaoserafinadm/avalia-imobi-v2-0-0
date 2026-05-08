@@ -4,6 +4,7 @@ import Title from "../src/components/title/Title2"
 import { FixedTopicsBottom } from "../src/components/fixedTopics"
 import Link from "next/link"
 import { SpinnerSM } from "../src/components/loading/Spinners"
+import Button from "../src/components/Button"
 import { initialValues, setCelular, setClientLastName, setClientName, setEmail } from "../store/NewClientForm/NewClientForm.actions"
 import TypeApartamento from "../src/pages/newClient/TypeApartamento"
 import GeralFeatures from "../src/pages/newClient/GeralFeatures"
@@ -151,7 +152,7 @@ export default function clientAdd() {
                             </>
                         )}
                     </div>
-                    <p className={styles.required}>* Campos obrigatórios</p>
+                    <p className="text-muted small">* Campos obrigatórios</p>
                 </div>
 
                 {/* ── Tipo de imóvel ── */}
@@ -206,32 +207,26 @@ export default function clientAdd() {
                     <div className={styles.footerBar}>
                         <div className={styles.footerActions}>
                             {!manualRegister && (
-                                <button className={styles.btnCancel} onClick={() => setManualRegister(true)}>
+                                <Button variant="secondary" onClick={() => setManualRegister(true)}>
                                     Cadastro manual
-                                </button>
+                                </Button>
                             )}
-                            <Link href="/clientsManagement" className={styles.btnCancel}>
-                                Cancelar
+                            <Link href="/clientsManagement" >
+                                <Button variant="secondary">
+
+                                    Cancelar
+                                </Button>
                             </Link>
-                            {loadingSave ? (
-                                <button className={styles.btnSave} disabled><SpinnerSM /></button>
-                            ) : manualRegister ? (
-                                <button
-                                    className={styles.btnSave}
-                                    disabled={!newClientForm.clientName || !newClientForm.propertyType}
-                                    onClick={() => handleSave(newClientForm)}
-                                >
-                                    Salvar
-                                </button>
-                            ) : (
-                                <button
-                                    className={styles.btnSave}
-                                    disabled={!newClientForm.clientName}
-                                    onClick={() => handleSaveLink()}
-                                >
-                                    Salvar
-                                </button>
-                            )}
+                            <Button
+                                variant="primary"
+                                loading={loadingSave}
+                                disabled={manualRegister
+                                    ? !newClientForm.clientName || !newClientForm.propertyType
+                                    : !newClientForm.clientName}
+                                onClick={() => manualRegister ? handleSave(newClientForm) : handleSaveLink()}
+                            >
+                                Salvar
+                            </Button>
                         </div>
                     </div>
                 </FixedTopicsBottom>

@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import Script from 'next/script';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Button from "../components/Button";
 
 export default function CreditCardEditModal(props) {
     const token = jwt.decode(Cookie.get('auth'));
@@ -206,7 +207,7 @@ export default function CreditCardEditModal(props) {
                             <div className="row">
                                 <div className="col-12 d-flex justify-content-end">
 
-                                    <button type="submit" id="form-checkout__submit" className="btn btn-orange text-end">Salvar</button>
+                                    <Button variant="primary" type="submit" id="form-checkout__submit">Salvar</Button>
                                 </div>
                             </div>
                             <progress value="0" className="progress-bar">Carregando...</progress>
@@ -214,7 +215,7 @@ export default function CreditCardEditModal(props) {
                     </div>
                     <div className="row">
                         <div className="col-12">
-                            <button className="btn btn-orange " onClick={() => handleCheckout()}>TESTE</button>
+                            <Button variant="primary" onClick={() => handleCheckout()}>TESTE</Button>
                         </div>
                     </div>
                 </div>

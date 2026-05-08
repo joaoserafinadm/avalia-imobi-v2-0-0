@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import isMobile from "../../utils/isMobile"
 import { handleIcon, handleIconColor } from "../components/icons/propertyTypeIcons"
 import styles from './PropertyCard.module.scss'
+import Button from "../components/Button"
 import { faEye, faPencil, faTrashAlt, faLocationDot, faTriangleExclamation, faEdit, faShare, faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons"
 import { useEffect, useState } from "react"
 import tippy from "tippy.js"
@@ -152,21 +153,21 @@ export default function PropertyCard(props) {
                                     Excluir este imóvel?
                                 </div>
                                 <div className={styles.confirmBtns}>
-                                    <button
-                                        type="button"
+                                    <Button
+                                        variant="secondary"
                                         className={styles.confirmCancel}
                                         onClick={() => setConfirmDelete(false)}
                                     >
                                         Cancelar
-                                    </button>
-                                    <button
-                                        type="button"
+                                    </Button>
+                                    <Button
+                                        variant="danger"
                                         className={styles.confirmDelete}
                                         onClick={() => handleDeleteProperty(props.index)}
                                     >
                                         <FontAwesomeIcon icon={faTrashAlt} />
                                         Excluir
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         ) : (
@@ -176,8 +177,8 @@ export default function PropertyCard(props) {
 
                                     {!props.valuationView && (
                                         <>
-                                            <button
-                                                type="button"
+                                            <Button
+                                                variant="ghost"
                                                 className={styles.btn}
                                                 id={"editPropertyButton" + props.index + props.section}
                                                 data-bs-toggle="modal"
@@ -185,16 +186,16 @@ export default function PropertyCard(props) {
                                                 onClick={() => props.onEdit && props.onEdit(props.index)}
                                             >
                                                 <FontAwesomeIcon icon={faPencil} />
-                                            </button>
+                                            </Button>
 
-                                            <button
-                                                type="button"
+                                            <Button
+                                                variant="ghost"
                                                 className={`${styles.btn} ${styles.btnDanger}`}
                                                 id={"deletePropertyButton" + props.elem._id + props.section}
                                                 onClick={() => setConfirmDelete(true)}
                                             >
                                                 <FontAwesomeIcon icon={faTrashAlt} />
-                                            </button>
+                                            </Button>
                                         </>
                                     )}
                                 </div>

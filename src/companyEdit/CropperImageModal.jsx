@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { faCropSimple, faLightbulb } from '@fortawesome/free-solid-svg-icons'
@@ -55,7 +55,7 @@ export default function CropperImageModal(props) {
             >
                 {/* Crop area */}
                 <div style={{
-                    background: 'rgba(255,255,255,0.02)',
+                    background: 'var(--theme-section-bg)',
                     border: '1px solid rgba(255,255,255,0.06)',
                     borderRadius: '12px',
                     padding: '1.25rem',
@@ -102,7 +102,7 @@ export default function CropperImageModal(props) {
                         margin: 0,
                         fontFamily: "'DM Sans', sans-serif",
                         fontSize: '0.78rem',
-                        color: 'rgba(255,255,255,0.45)',
+                        color: 'var(--theme-text-tertiary)',
                         lineHeight: 1.5,
                     }}>
                         Arraste as bordas da seleção para ajustar a área de recorte.

@@ -1,4 +1,4 @@
-// import React, { useMemo } from 'react';
+﻿// import React, { useMemo } from 'react';
 // import { useEffect } from 'react';
 // import { useDropzone } from 'react-dropzone';
 // import { filesize } from 'filesize'
@@ -118,10 +118,10 @@ export default function StyledDropzone(props) {
         padding: '24px 20px',
         borderWidth: 1.5,
         borderRadius: 12,
-        borderColor: 'rgba(255,255,255,0.1)',
+        borderColor: 'var(--theme-border-visible)',
         borderStyle: 'dashed',
-        backgroundColor: 'rgba(255,255,255,0.02)',
-        color: 'rgba(255,255,255,0.35)',
+        backgroundColor: 'var(--theme-section-bg)',
+        color: 'var(--theme-text-faint)',
         outline: 'none',
         transition: 'border .24s ease-in-out, background .24s ease-in-out',
         cursor: 'pointer',

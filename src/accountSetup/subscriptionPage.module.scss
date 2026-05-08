@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 .page {
   padding: 1.25rem 0.5rem 2rem;
@@ -28,8 +28,8 @@
 
 /* ── Portal card ── */
 .portalCard {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--theme-section-bg, rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.06));
   border-radius: 14px;
   padding: 1.75rem 1.5rem;
 }
@@ -49,7 +49,7 @@
 .portalSubtitle {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.35));
   margin: 0;
 }
 
@@ -78,7 +78,7 @@
 
   &:disabled {
     background: rgba(245, 135, 79, 0.25);
-    color: rgba(255, 255, 255, 0.35);
+    color: var(--theme-text-faint, rgba(255, 255, 255, 0.35));
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
@@ -88,7 +88,7 @@
 /* ── Divider ── */
 .divider {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.05));
   margin: 1.5rem 0;
 }
 
@@ -99,9 +99,9 @@
   gap: 10px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.3));
   padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--theme-section-bg, rgba(255, 255, 255, 0.02));
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 10px;
   margin-top: 1rem;

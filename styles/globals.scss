@@ -105,6 +105,124 @@
   transition: all 1s !important;
 }
 
+/* ── Tema escuro ── */
+[data-theme="dark"] {
+  --theme-body-bg: #080e18;
+  --theme-body-color: #cacaca;
+  --theme-header-bg: #0d1420;
+  --theme-header-border: rgba(245, 135, 79, 0.08);
+  --theme-content-bg: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
+  --theme-content-border: rgba(245, 135, 79, 0.1);
+  --theme-content-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --theme-link-color: rgba(255, 255, 255, 0.7);
+  --theme-sidebar-bg: linear-gradient(145deg, #0d1420 0%, #111827 100%);
+  --theme-sidebar-nav-bg: #111827;
+  --theme-sidebar-footer-bg: #0d1420;
+  --theme-sidebar-footer-border: rgba(255, 255, 255, 0.05);
+  --theme-nav-link-color: #ffffff;
+  --theme-expand-icon-color: #ffffff;
+  --theme-bg-overlay-rgba: rgba(0, 0, 0, 0.5);
+  --theme-card-bg: rgba(255, 255, 255, 0.02);
+  --theme-card-border: rgba(255, 255, 255, 0.06);
+  --theme-row-border: rgba(255, 255, 255, 0.04);
+  --theme-row-hover: rgba(255, 255, 255, 0.02);
+  --theme-label-color: rgba(255, 255, 255, 0.832);
+  --theme-value-color: rgba(255, 255, 255, 0.82);
+  --theme-mono-color: rgba(255, 255, 255, 0.5);
+  --theme-tag-color: rgba(255, 255, 255, 0.22);
+  --theme-tag-bg: rgba(255, 255, 255, 0.04);
+  --theme-tag-border: rgba(255, 255, 255, 0.07);
+  --theme-lock-icon-color: rgba(255, 255, 255, 0.12);
+  --theme-placeholder-color: rgba(255, 255, 255, 0.25);
+  --theme-scrollbar-track: rgba(255, 255, 255, 0.04);
+  /* Novos — cobertura ampla */
+  --theme-bg-elevated: #111827;
+  --theme-bg-subtle: rgba(255, 255, 255, 0.03);
+  --theme-text-primary: rgba(255, 255, 255, 0.88);
+  --theme-text-secondary: rgba(255, 255, 255, 0.7);
+  --theme-text-tertiary: rgba(255, 255, 255, 0.5);
+  --theme-text-faint: rgba(255, 255, 255, 0.5);
+  --theme-border-subtle: rgba(255, 255, 255, 0.06);
+  --theme-border-visible: rgba(255, 255, 255, 0.12);
+  --theme-input-bg: rgba(255, 255, 255, 0.05);
+  --theme-input-color: rgba(255, 255, 255, 0.88);
+  --theme-modal-bg: #0d1420;
+  --theme-modal-border: rgba(255, 255, 255, 0.08);
+  --theme-section-bg: rgba(255, 255, 255, 0.02);
+  --theme-section-border: rgba(255, 255, 255, 0.06);
+  --theme-hover-bg: rgba(255, 255, 255, 0.03);
+  --theme-active-bg: rgba(255, 255, 255, 0.05);
+  --theme-divider: rgba(255, 255, 255, 0.05);
+  --theme-badge-bg: rgba(255, 255, 255, 0.06);
+  --theme-badge-border: rgba(255, 255, 255, 0.1);
+  --theme-badge-color: rgba(255, 255, 255, 0.6);
+  --theme-empty-color: rgba(255, 255, 255, 0.18);
+  --theme-footer-color: rgba(255, 255, 255, 0.2);
+  --theme-icon-color: rgba(255, 255, 255, 0.5);
+  --theme-scroll-thumb: rgba(245, 135, 79, 0.3);
+}
+
+/* ── Tema claro ── */
+[data-theme="light"] {
+  --theme-body-bg: #f0f2f5;
+  --theme-body-color: #333333;
+  --theme-header-bg: #ffffff;
+  --theme-header-border: rgba(0, 0, 0, 0.08);
+  --theme-content-bg: linear-gradient(145deg, #ffffff 0%, #f8fafc 60%, #f1f5f9 100%);
+  --theme-content-border: rgba(0, 0, 0, 0.08);
+  --theme-content-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --theme-link-color: #4D88BB;
+  --theme-sidebar-bg: #ffffff;
+  --theme-sidebar-nav-bg: #ffffff;
+  --theme-sidebar-footer-bg: #f5f7fa;
+  --theme-sidebar-footer-border: rgba(0, 0, 0, 0.08);
+  --theme-nav-link-color: rgba(0, 0, 0, 0.72);
+  --theme-expand-icon-color: rgba(0, 0, 0, 0.4);
+  --theme-bg-overlay-rgba: rgba(240, 242, 245, 1);
+  --theme-card-bg: rgba(0, 0, 0, 0.02);
+  --theme-card-border: rgba(0, 0, 0, 0.08);
+  --theme-row-border: rgba(0, 0, 0, 0.06);
+  --theme-row-hover: rgba(0, 0, 0, 0.02);
+  --theme-label-color: rgba(0, 0, 0, 0.55);
+  --theme-value-color: rgba(0, 0, 0, 0.8);
+  --theme-mono-color: rgba(0, 0, 0, 0.45);
+  --theme-tag-color: rgba(0, 0, 0, 0.4);
+  --theme-tag-bg: rgba(0, 0, 0, 0.04);
+  --theme-tag-border: rgba(0, 0, 0, 0.1);
+  --theme-lock-icon-color: rgba(0, 0, 0, 0.15);
+  --theme-placeholder-color: rgba(0, 0, 0, 0.35);
+  --theme-scrollbar-track: rgba(0, 0, 0, 0.04);
+  /* Novos — cobertura ampla */
+  --theme-bg-elevated: #ffffff;
+  --theme-bg-subtle: rgba(0, 0, 0, 0.02);
+  --theme-text-primary: rgba(0, 0, 0, 0.82);
+  --theme-text-secondary: rgba(0, 0, 0, 0.65);
+  --theme-text-tertiary: rgba(0, 0, 0, 0.45);
+  --theme-text-faint: rgba(0, 0, 0, 0.6);
+  --theme-border-subtle: rgba(0, 0, 0, 0.06);
+  --theme-border-visible: rgba(0, 0, 0, 0.12);
+  --theme-input-bg: rgba(0, 0, 0, 0.03);
+  --theme-input-color: rgba(0, 0, 0, 0.82);
+  --theme-modal-bg: #ffffff;
+  --theme-modal-border: rgba(0, 0, 0, 0.08);
+  --theme-section-bg: rgba(0, 0, 0, 0.02);
+  --theme-section-border: rgba(0, 0, 0, 0.07);
+  --theme-hover-bg: rgba(0, 0, 0, 0.02);
+  --theme-active-bg: rgba(0, 0, 0, 0.04);
+  --theme-divider: rgba(0, 0, 0, 0.06);
+  --theme-badge-bg: rgba(0, 0, 0, 0.04);
+  --theme-badge-border: rgba(0, 0, 0, 0.08);
+  --theme-badge-color: rgba(0, 0, 0, 0.55);
+  --theme-empty-color: rgba(0, 0, 0, 0.2);
+  --theme-footer-color: rgba(0, 0, 0, 0.35);
+  --theme-icon-color: rgba(0, 0, 0, 0.45);
+  --theme-scroll-thumb: rgba(245, 135, 79, 0.4);
+  /* Override de variáveis do :root para modo claro */
+  --ai-bg-primary: #f8f9fb;
+  --ai-light: #444444;
+  --cv-light: #444444;
+}
+
 * {
   font-family: "Montserrat", sans-serif !important;
   margin: 0px;
@@ -131,15 +249,15 @@
 
 *::-webkit-scrollbar-track {
   border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: var(--theme-scrollbar-track, rgba(255, 255, 255, 0.04));
 }
 
 *::-webkit-scrollbar-track:hover {
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: var(--theme-scrollbar-track, rgba(255, 255, 255, 0.06));
 }
 
 *::-webkit-scrollbar-track:active {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: var(--theme-scrollbar-track, rgba(255, 255, 255, 0.08));
 }
 
 *::-webkit-scrollbar-thumb {
@@ -179,12 +297,12 @@
 body {
   margin: 0;
   overflow-x: hidden;
-  background-color: #080e18;
-  color: #cacaca;
+  background-color: var(--theme-body-bg, #080e18);
+  color: var(--theme-body-color, #cacaca);
 }
 
 a {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: var(--theme-link-color, rgba(255, 255, 255, 0.7)) !important;
 }
 
 
@@ -194,7 +312,7 @@ a {
 }
 
 .header {
-  background-color: #0d1420;
+  background-color: var(--theme-header-bg, #0d1420);
   position: fixed;
   top: 0;
   left: var(--aside-width);
@@ -208,11 +326,11 @@ a {
 }
 
 .header div {
-  background-color: #0d1420;
+  background-color: var(--theme-header-bg, #0d1420);
 }
 
 .menu-nav {
-  background-color: #0d1420;
+  background-color: var(--theme-header-bg, #0d1420);
 }
 
 .akvo-bg-primary {
@@ -235,6 +353,7 @@ a {
   // position: absolute;
   margin-top: var(--header-height);
   margin-left: var(--aside-width);
+  margin-bottom: 30px;
   width: calc(100vw - var(--aside-width));
   overflow: hidden;
   transition: ease-in-out .3s;
@@ -273,51 +392,51 @@ a {
 
 .pages .pagesContent {
   position: relative;
-  background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
-  border: 1px solid rgba(245, 135, 79, 0.1);
-  color: #cacaca;
+  background: var(--theme-content-bg, linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%));
+  border: 1px solid var(--theme-content-border, rgba(245, 135, 79, 0.1));
+  color: var(--theme-body-color, #cacaca);
   top: -15px;
   border-radius: 14px;
   padding: 20px;
   margin-right: 75px;
   margin-left: 75px;
   margin-bottom: 60px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  box-shadow: var(--theme-content-shadow, 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04));
 }
 
 .pages .pagesContent-sm {
   position: relative;
-  background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
-  border: 1px solid rgba(245, 135, 79, 0.1);
-  color: #cacaca;
+  background: var(--theme-content-bg, linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%));
+  border: 1px solid var(--theme-content-border, rgba(245, 135, 79, 0.1));
+  color: var(--theme-body-color, #cacaca);
   top: -15px;
   border-radius: 14px;
   padding: 20px;
   margin-right: 400px;
   margin-left: 50px;
   margin-bottom: 60px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  box-shadow: var(--theme-content-shadow, 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04));
 }
 
 .pages .pagesContent-lg {
   position: relative;
-  background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
-  border: 1px solid rgba(245, 135, 79, 0.1);
-  color: #cacaca;
+  background: var(--theme-content-bg, linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%));
+  border: 1px solid var(--theme-content-border, rgba(245, 135, 79, 0.1));
+  color: var(--theme-body-color, #cacaca);
   top: -15px;
   border-radius: 14px;
   padding: 20px 40px;
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 60px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  box-shadow: var(--theme-content-shadow, 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04));
 }
 
 @media screen and (max-width: 991px) {
   .pages .pagesContent {
     position: relative;
-    background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
-    border: 1px solid rgba(245, 135, 79, 0.1);
+    background: var(--theme-content-bg, linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%));
+    border: 1px solid var(--theme-content-border, rgba(245, 135, 79, 0.1));
     top: -10px;
     border-radius: 14px;
     padding: 20px 7px;
@@ -328,8 +447,8 @@ a {
 
   .pages .pagesContent-sm {
     position: relative;
-    background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
-    border: 1px solid rgba(245, 135, 79, 0.1);
+    background: var(--theme-content-bg, linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%));
+    border: 1px solid var(--theme-content-border, rgba(245, 135, 79, 0.1));
     top: -10px;
     border-radius: 14px;
     padding: 20px 7px;
@@ -340,8 +459,8 @@ a {
 
   .pages .pagesContent-lg {
     position: relative;
-    background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
-    border: 1px solid rgba(245, 135, 79, 0.1);
+    background: var(--theme-content-bg, linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%));
+    border: 1px solid var(--theme-content-border, rgba(245, 135, 79, 0.1));
     top: -10px;
     border-radius: 14px;
     padding: 20px 7px;
@@ -494,16 +613,16 @@ textarea:focus {
 }
 
 ::placeholder {
-  color: rgba(255, 255, 255, 0.25) !important;
+  color: var(--theme-placeholder-color, rgba(255, 255, 255, 0.25)) !important;
   opacity: 1;
 }
 
 :-ms-input-placeholder {
-  color: rgba(255, 255, 255, 0.25) !important;
+  color: var(--theme-placeholder-color, rgba(255, 255, 255, 0.25)) !important;
 }
 
 ::-ms-input-placeholder {
-  color: rgba(255, 255, 255, 0.25) !important;
+  color: var(--theme-placeholder-color, rgba(255, 255, 255, 0.25)) !important;
 }
 
 
@@ -2049,7 +2168,9 @@ td {
   user-select: none !important;
 }
 
-.infoIcon:hover {}
+.infoIcon:hover {
+  cursor: pointer;
+}
 
 .alertStartIcon {
   display: flex;
@@ -3228,8 +3349,8 @@ h1 {
   width: 100%;
   top: calc(var(--header-height) + 0px);
   padding: 20px 0;
-  background: #0d1420;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--theme-header-bg, #0d1420);
+  border-bottom: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.06));
   z-index: 0;
   animation: slideDown 1s;
   transition: 0.5s ease;
@@ -3321,8 +3442,8 @@ h1 {
   padding: 0;
   overflow-y: scroll;
   max-height: calc(100vh - 3.5rem);
-  background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
-  color: #cacaca;
+  background: var(--theme-content-bg, linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%));
+  color: var(--theme-body-color, #cacaca);
 }
 
 .imovel-img {
@@ -3393,6 +3514,7 @@ h1 {
 // ══════════════════════════════════════════════════════════════════════
 // DARK THEME — Bootstrap global overrides
 // ══════════════════════════════════════════════════════════════════════
+[data-theme="dark"] {
 
 // ── Forms ─────────────────────────────────────────────────────────────
 .form-control,
@@ -3432,8 +3554,8 @@ label {
 
 // ── Cards ─────────────────────────────────────────────────────────────
 .card {
-  background-color: #111827 !important;
-  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  background-color: var(--theme-bg-elevated, #111827) !important;
+  border: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.07)) !important;
   color: #cacaca !important;
 }
 
@@ -3448,7 +3570,12 @@ label {
   border-top: 1px solid rgba(255, 255, 255, 0.07) !important;
 }
 
-// ── Tables ────────────────────────────────────────────────────────────
+} // fim [data-theme="dark"] Bootstrap overrides
+
+// ── Tables / Buttons / Modals / Bootstrap overrides (dark mode only) ──
+[data-theme="dark"] {
+
+// ── Tables ─────────────────────────────────────────────────────────
 .table {
   color: #cacaca !important;
   border-color: rgba(255, 255, 255, 0.07) !important;
@@ -3472,7 +3599,7 @@ label {
   }
 }
 
-// ── Buttons ──────────────────────────────────────────────────────────
+// ── Buttons ─────────────────────────────────────────────────────────
 .btn-light {
   background: rgba(255, 255, 255, 0.06) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
@@ -3496,6 +3623,8 @@ label {
     color: #fff !important;
   }
 }
+// ── fim de [data-theme="dark"] para tabelas e botões ───────────────
+}
 
 .btn-outline-orange {
   color: #f5874f !important;
@@ -3511,7 +3640,17 @@ label {
   }
 }
 
-// ── Modals ────────────────────────────────────────────────────────────
+// ── Google Places Autocomplete ────────────────────────────────────────
+// O dropdown (.pac-container) é adicionado ao body mas precisa ficar
+// acima do z-index do Bootstrap modal (1055)
+.pac-container {
+  z-index: 99999 !important;
+}
+
+// ── Bootstrap overrides — apenas modo escuro ─────────────────────────
+[data-theme="dark"] {
+
+// ── Modals ─────────────────────────────────────────────────────────
 .modal-content {
   background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%) !important;
   border: 1px solid rgba(245, 135, 79, 0.15) !important;
@@ -3540,14 +3679,7 @@ label {
   color: #cacaca !important;
 }
 
-// ── Google Places Autocomplete ────────────────────────────────────────
-// O dropdown (.pac-container) é adicionado ao body mas precisa ficar
-// acima do z-index do Bootstrap modal (1055)
-.pac-container {
-  z-index: 99999 !important;
-}
-
-// ── Dividers & misc ───────────────────────────────────────────────────
+// ── Dividers & misc ─────────────────────────────────────────────────
 hr {
   border-color: rgba(255, 255, 255, 0.08) !important;
   opacity: 1 !important;
@@ -3617,6 +3749,9 @@ hr {
   }
 }
 
+// ── fim de [data-theme="dark"] para Bootstrap ───────────────────────
+}
+
 .alert-success {
   background-color: rgba(16, 185, 129, 0.12) !important;
   border-color: rgba(16, 185, 129, 0.3) !important;
@@ -3641,7 +3776,7 @@ hr {
   color: rgba(147, 197, 253, 0.95) !important;
 }
 
-.bg-white {
+[data-theme="dark"] .bg-white {
   background-color: #111827 !important;
 }
 
@@ -3660,15 +3795,21 @@ hr {
 //   color: rgba(255, 255, 255, 0.85) !important;
 // }
 
-// .text-muted {
-//   color: rgba(255, 255, 255, 0.4) !important;
-// }
-
-.title-dark {
-  color: rgba(255, 255, 255, 0.9) !important;
+.text-muted {
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 
-.border {
+[data-theme="dark"] {
+  .text-muted {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+}
+
+.title-dark {
+  color: var(--theme-text-primary, rgba(255, 255, 255, 0.9)) !important;
+}
+
+[data-theme="dark"] .border {
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
@@ -3716,4 +3857,9 @@ hr {
   border-color: #f5874f;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(245, 135, 79, 0.3);
+}
+
+
+a {
+  text-decoration: none !important;
 }

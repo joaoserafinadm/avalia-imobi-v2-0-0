@@ -7,7 +7,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import baseUrl from "../../utils/baseUrl";
-import { SpinnerLG, SpinnerSM } from "../../src/components/loading/Spinners";
+import { SpinnerLG } from "../../src/components/loading/Spinners";
 import ClientInfo from "../../src/clientsManagement/ClientInfo";
 import Sections from "../../src/components/Sections";
 import ValuationConfig from "../../src/valuation/ValuationConfig";
@@ -19,6 +19,7 @@ import isMobile from "../../utils/isMobile";
 import scrollTo from "../../utils/scrollTo";
 import ShowValuationModal from "../../src/valuationPage/ShowValuationModal";
 import { createImageUrlFromLink } from "../../utils/createImageUrlFromLink";
+import Button from "../../src/components/Button";
 
 
 
@@ -224,17 +225,19 @@ export default function ValuationPage(props) {
                         <div className="row">
                             <div className="col-12 d-flex justify-content-end align-items-center">
                                 <Link href="/clientsManagement">
-                                    <button className="btn btn-sm btn-secondary">Cancelar</button>
+                                    <Button variant="secondary" >
+                                        Cancelar
+                                    </Button>
                                 </Link>
-
-                                <button className="btn btn-sm btn-orange ms-2"
-                                    onClick={() => handleSave(token.company_id)} disabled={propertyArray.length === 0 || loadingSave}>
-                                    {loadingSave ?
-                                        <SpinnerSM />
-                                        :
-                                        "Salvar"
-                                    }
-                                </button>
+                                <Button
+                                    variant="primary"
+                                    className="ms-2"
+                                    loading={loadingSave}
+                                    disabled={propertyArray.length === 0 || loadingSave}
+                                    onClick={() => handleSave(token.company_id)}
+                                >
+                                    Salvar
+                                </Button>
 
 
 

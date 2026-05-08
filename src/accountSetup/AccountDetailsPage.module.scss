@@ -12,8 +12,8 @@
 
 /* ── Section card (igual ao editProfile) ── */
 .section {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--theme-card-bg, rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--theme-card-border, rgba(255, 255, 255, 0.06));
   border-radius: 14px;
   padding: 0;
   margin-bottom: 1.75rem;
@@ -26,11 +26,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--theme-row-border, rgba(255, 255, 255, 0.04));
   transition: background 0.15s ease;
 
   &:last-child { border-bottom: none; }
-  &:hover { background: rgba(255, 255, 255, 0.02); }
+  &:hover { background: var(--theme-row-hover, rgba(255, 255, 255, 0.02)); }
 }
 
 .rowContent {
@@ -47,7 +47,7 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.832);
+  color: var(--theme-label-color, rgba(255, 255, 255, 0.832));
   margin: 0;
 }
 
@@ -55,7 +55,7 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 0.88rem;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--theme-value-color, rgba(255, 255, 255, 0.82));
   margin: 0;
   line-height: 1.55;
 }
@@ -63,7 +63,7 @@
 .rowValueMono {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--theme-mono-color, rgba(255, 255, 255, 0.5));
   margin: 0;
 }
 
@@ -71,9 +71,9 @@
   display: inline-block;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.58rem;
-  color: rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: var(--theme-tag-color, rgba(255, 255, 255, 0.22));
+  background: var(--theme-tag-bg, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--theme-tag-border, rgba(255, 255, 255, 0.07));
   border-radius: 5px;
   padding: 1px 7px;
   margin-left: 7px;
@@ -115,7 +115,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  color: rgba(255, 255, 255, 0.12);
+  color: var(--theme-lock-icon-color, rgba(255, 255, 255, 0.12));
   font-size: 0.68rem;
 }
 
@@ -142,6 +142,84 @@
   color: rgba(245, 135, 79, 0.85);
   background: rgba(245, 135, 79, 0.07);
   border: 1px solid rgba(245, 135, 79, 0.16);
+}
+
+/* ── Theme toggle ── */
+.themeToggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+}
+
+.themeToggleLabel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: var(--theme-value-color, rgba(255, 255, 255, 0.82));
+  margin: 0;
+}
+
+.themeToggleSubLabel {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--theme-mono-color, rgba(255, 255, 255, 0.5));
+  margin: 2px 0 0;
+}
+
+.switchWrapper {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.switchInput {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.switchTrack {
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  background: #f5874f;
+  cursor: pointer;
+  transition: background 0.25s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    top: 4px;
+    left: 4px;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.switchInput:checked + .switchTrack {
+  background: #4D88BB;
+
+  &::before {
+    transform: translateX(24px);
+  }
+}
+
+.switchIcons {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  pointer-events: none;
+  font-size: 0.65rem;
 }
 
 /* ── Footer ── */

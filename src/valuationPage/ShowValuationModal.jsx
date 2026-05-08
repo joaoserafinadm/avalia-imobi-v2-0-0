@@ -3,6 +3,7 @@ import Sections from "../components/Sections";
 import { useRouter } from "next/router";
 import handleShare from "../../utils/handleShare";
 import ValuationPdf from "../pages/valuation/valuationPdf";
+import Button from "../components/Button";
 
 
 
@@ -98,9 +99,9 @@ export default function ShowValuationModal(props) {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" >Fechar</button>
-                        <button type="button" class="btn btn-orange btn-sm">Baixar PDF</button>
-                        <button type="button" class="btn btn-orange btn-sm" onClick={() => handleShare(valuationUrl + '&userId=' + token.sub)}>Compartilhar apresentação</button>
+                        <Button variant="secondary" size="sm" data-bs-dismiss="modal">Fechar</Button>
+                        <Button variant="primary" size="sm">Baixar PDF</Button>
+                        <Button variant="primary" size="sm" onClick={() => handleShare(valuationUrl + '&userId=' + token.sub)}>Compartilhar apresentação</Button>
                     </div>
                 </div>
             </div>

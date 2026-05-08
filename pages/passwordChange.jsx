@@ -9,13 +9,13 @@ import navbarHide from "../utils/navbarHide"
 import { useDispatch, useSelector } from "react-redux"
 import removeInputError from "../utils/removeInputError"
 import baseUrl from "../utils/baseUrl"
-import { SpinnerSM } from "../src/components/loading/Spinners"
 import { useRouter } from "next/router"
 import { addAlert } from "../store/Alerts/Alerts.actions"
 import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons"
 import Input from "../src/components/Input"
 import TitleLabel from "../src/components/TitleLabel"
 import styles from "./passwordChange.module.scss"
+import Button from "../src/components/Button"
 
 export default function PasswordChange() {
 
@@ -131,15 +131,14 @@ export default function PasswordChange() {
                         <Link href="/" className={styles.btnCancel}>
                             Cancelar
                         </Link>
-                        {loadingSave ? (
-                            <button className={styles.btnSave} disabled>
-                                <SpinnerSM />
-                            </button>
-                        ) : (
-                            <button className={styles.btnSave} onClick={handleSave}>
-                                Salvar alterações
-                            </button>
-                        )}
+                        <Button
+                            variant="primary"
+                            className={styles.btnSave}
+                            loading={loadingSave}
+                            onClick={handleSave}
+                        >
+                            Salvar alterações
+                        </Button>
                     </div>
                 </FixedTopicsBottom>
             </div>

@@ -1,4 +1,5 @@
 import PolicyText from "./PolicyText";
+import Button from "../../components/Button";
 
 export default function PolicyModal() {
   return (
@@ -29,14 +30,14 @@ export default function PolicyModal() {
           </div>
 
           <div className="modal-footer border-0 px-4 pb-4 pt-0">
-            <button
-              type="button"
-              className="btn btn-secondary px-4"
+            <Button
+              variant="secondary"
+              className="px-4"
               style={{ borderRadius: 8 }}
               data-bs-dismiss="modal"
             >
               Fechar
-            </button>
+            </Button>
           </div>
 
         </div>

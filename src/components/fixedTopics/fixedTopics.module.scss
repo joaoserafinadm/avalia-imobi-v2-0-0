@@ -1,4 +1,4 @@
-.fixedTopicsTop {
+﻿.fixedTopicsTop {
     position: fixed;
     left: 0;
     justify-content: center !important;
@@ -6,8 +6,8 @@
     width: 100%;
     top: calc(var(--header-height) + 0px);
     padding: 10px 10px 10px 10px;
-    background: #0d1420;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--theme-header-bg, #0d1420);
+    border-bottom: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.06));
     z-index: 0;
     animation: slideDown 1s;
     transition: 0.5s ease;
@@ -34,7 +34,7 @@
     width: 100%;
     bottom: 0;
     padding: 15px 10px 15px 10px;
-    background: #0d1420;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--theme-header-bg, #0d1420);
+    border-top: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.06));
     z-index: 0;
 }

@@ -1,4 +1,4 @@
-
+import Button from "../../components/Button";
 
 
 
@@ -16,7 +16,7 @@ export default function PropertyUrlModal(props) {
                         <iframe src={props.propertyUrl} style={{ width: '100%', height: '100%' }}></iframe>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick={() => props.setPropertyUrl('')}>Fechar</button>
+                        <Button variant="secondary" data-bs-dismiss="modal" onClick={() => props.setPropertyUrl('')}>Fechar</Button>
                     </div>
                 </div>
             </div>

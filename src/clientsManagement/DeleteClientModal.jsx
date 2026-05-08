@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+﻿import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import baseUrl from "../../utils/baseUrl";
 import axios from "axios";
@@ -54,12 +54,12 @@ export default function DeleteClientModal(props) {
             <p style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: '0.9rem',
-                color: 'rgba(255,255,255,0.6)',
+                color: 'var(--theme-text-tertiary)',
                 margin: 0,
                 lineHeight: 1.6,
             }}>
                 Tem certeza que deseja deletar{' '}
-                <strong style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>
+                <strong style={{ color: 'var(--theme-text-primary)', fontWeight: 600 }}>
                     {client?.clientName} {client?.clientLastName}
                 </strong>
                 ? Esta ação não pode ser desfeita.

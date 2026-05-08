@@ -13,8 +13,8 @@
 
 .loadingCard {
   min-height: 280px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 255, 255, 0.08);
+  background: var(--theme-section-bg);
+  border: 1px dashed var(--theme-badge-border);
   border-radius: 18px;
   display: flex;
   flex-direction: column;
@@ -26,15 +26,15 @@
 .loadingText {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--theme-mono-color);
   font-style: italic;
 }
 
 .addCard {
   width: 100%;
   min-height: 280px;
-  background: rgba(245, 135, 79, 0.02);
-  border: 1px dashed rgba(245, 135, 79, 0.18);
+  background: rgba(245, 135, 79, 0.10);
+  border: 1px dashed rgba(245, 135, 79, 0.8);
   border-radius: 18px;
   display: flex;
   flex-direction: column;
@@ -67,7 +67,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(245, 135, 79, 0.5);
+  color: rgba(245, 135, 79, 0.8);
   font-size: 1.05rem;
   transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
   margin-bottom: 6px;
@@ -77,13 +77,13 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 0.82rem;
   font-weight: 600;
-  color: rgba(245, 135, 79, 0.65);
+  color: rgba(245, 135, 79, 0.8);
 }
 
 .addSub {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.28);
+  color: var(--theme-tag-color);
 }
 
 /* ── Verify banner ── */
@@ -115,17 +115,17 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
-  color: rgba(255, 220, 100, 0.85);
+  color: rgba(235, 189, 37, 0.85);
 }
 
 .verifyBannerText {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--theme-text-tertiary);
   line-height: 1.55;
 
   strong {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--theme-text-secondary);
     font-weight: 600;
   }
 }

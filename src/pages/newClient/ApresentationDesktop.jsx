@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
 import scrollTo from "../../../utils/scrollTo"
+import Button from "../../components/Button"
 
 
 
@@ -86,13 +87,15 @@ export default function ApresentationDesktop(props) {
 
                     {showStartButton && (
 
-                        <button
-                            type='button' id="startButton"
+                        <Button
+                            variant="ghost"
+                            id="startButton"
                             className="btn btn-light btn-lg fs-4 text-secondary fadeItem"
                             data-bs-target="#clientFormCarouselDesktop"
-                            data-bs-slide="next">
+                            data-bs-slide="next"
+                        >
                             Começar <FontAwesomeIcon icon={faArrowRight} className="ms-1" />
-                        </button>
+                        </Button>
                     )}
 
 

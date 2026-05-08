@@ -1,4 +1,5 @@
 import CardsCarousel from "./CardsCarousel";
+import Button from "../components/Button";
 
 
 
@@ -38,7 +39,7 @@ export default function CardsCarouselModal(props) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>
+                        <Button variant="secondary" size="sm" data-bs-dismiss="modal">Fechar</Button>
                     </div>
                 </div>
             </div>

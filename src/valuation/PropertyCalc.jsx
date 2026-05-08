@@ -4,6 +4,7 @@ import TitleLabel from "../components/TitleLabel"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRotateLeft, faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import styles from "./PropertyCalc.module.scss"
+import Button from "../components/Button"
 
 export default function PropertyCalc(props) {
     const { propertyArray, client, calcVariables, valuationCalc } = props
@@ -46,8 +47,8 @@ export default function PropertyCalc(props) {
             <TitleLabel>Cálculo</TitleLabel>
 
             <div className={styles.infoBlock}>
-                <button
-                    type="button"
+                <Button
+                    variant="ghost"
                     className={styles.infoToggle}
                     onClick={() => setInfoExpanded(p => !p)}
                 >
@@ -56,11 +57,11 @@ export default function PropertyCalc(props) {
                         icon={faChevronDown}
                         className={`${styles.infoChevron} ${infoExpanded ? styles.infoChevronOpen : ''}`}
                     />
-                </button>
+                </Button>
                 <div className={`${styles.infoItems} ${infoExpanded ? styles.infoItemsOpen : ''}`}>
                     <div className={styles.infoItem}>
                         <span className={styles.infoDot} />
-                        <span>A avaliação irá gerar três valores de referência: <b>Valor Ideal</b>, <b>Venda Rápida</b> e <b>Venda a Longo Prazo</b>.</span>
+                        <span>A avaliação irá gerar três valores de referência: <b>Valor Ideal</b>, <b>Venda Curto Prazo</b> e <b>Venda a Longo Prazo</b>.</span>
                     </div>
                     <div className={styles.infoItem}>
                         <span className={styles.infoDot} />
@@ -172,10 +173,10 @@ export default function PropertyCalc(props) {
             </div>
 
             <div className={styles.resetRow}>
-                <button className={styles.resetBtn} onClick={resetCalc}>
+                <Button variant="ghost" className={styles.resetBtn} onClick={resetCalc}>
                     <FontAwesomeIcon icon={faRotateLeft} />
                     Redefinir cálculo
-                </button>
+                </Button>
             </div>
         </div>
     )

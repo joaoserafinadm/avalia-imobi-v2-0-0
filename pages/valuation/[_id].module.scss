@@ -15,10 +15,10 @@
 }
 
 .btnCancel {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--theme-badge-bg);
+  border: 1px solid var(--theme-badge-border);
   border-radius: 10px;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--theme-text-secondary);
   padding: 8px 20px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.82rem;
@@ -30,9 +30,9 @@
   align-items: center;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.09);
-    border-color: rgba(255, 255, 255, 0.18);
-    color: rgba(255, 255, 255, 0.8);
+    background: var(--theme-active-bg);
+    border-color: var(--theme-border-visible);
+    color: var(--theme-text-primary);
   }
 }
 
@@ -61,7 +61,7 @@
 
   &:disabled {
     background: rgba(245, 135, 79, 0.25);
-    color: rgba(255, 255, 255, 0.35);
+    color: var(--theme-text-tertiary);
     cursor: not-allowed;
     transform: none;
     box-shadow: none;

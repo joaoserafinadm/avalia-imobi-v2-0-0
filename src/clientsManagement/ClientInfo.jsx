@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+﻿import { useEffect } from "react";
 import PropertyTypeCard from "../addClient/PropertyTypeCard";
 import Map from "../pages/newClient/Map";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faImage, faPen } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
+import Button from "../components/Button";
 import ClientInfoApartamento from "./ClientInfoApartamento";
 import ClientInfoCasa from "./ClientInfoCasa";
 import ClientInfoComercial from "./ClientInfoComercial";
@@ -46,21 +47,16 @@ export default function ClientInfo(props) {
                     marginBottom: '1.25rem',
                 }}>
                     <FileSliders size={28} style={{ color: 'rgba(245,135,79,0.6)', marginBottom: '0.75rem' }} />
-                    <h5 style={{ fontFamily: "'Syne', sans-serif", color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.35rem' }}>
+                    <h5 style={{ fontFamily: "'Syne', sans-serif", color: 'var(--theme-text-secondary)', fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.35rem' }}>
                         Nenhuma avaliação realizada
                     </h5>
-                    <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', marginBottom: '1rem' }}>
+                    <p style={{ color: 'var(--theme-text-faint)', fontSize: '0.8rem', marginBottom: '1rem' }}>
                         Realize uma avaliação para obter o valor de mercado do imóvel
                     </p>
                     <Link href={"/valuation/" + client?._id}>
-                        <button data-bs-dismiss="modal" style={{
-                            background: '#f5874f', border: 'none', borderRadius: '10px',
-                            color: '#0d1420', padding: '9px 22px',
-                            fontFamily: "'DM Sans', sans-serif", fontSize: '0.82rem', fontWeight: 700,
-                            cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px',
-                        }}>
+                        <Button variant="primary" data-bs-dismiss="modal">
                             <HouseIcon size={15} /> Avaliar imóvel
-                        </button>
+                        </Button>
                     </Link>
                 </div>
             )}
@@ -68,13 +64,13 @@ export default function ClientInfo(props) {
             {/* ── Image gallery ── */}
             {client?.files?.length === 0 ? (
                 <div style={{
-                    background: 'rgba(255,255,255,0.02)',
+                    background: 'var(--theme-section-bg)',
                     border: '1.5px dashed rgba(255,255,255,0.08)',
                     borderRadius: '12px', padding: '2.5rem',
                     textAlign: 'center', marginBottom: '1.25rem',
                 }}>
-                    <FontAwesomeIcon icon={faImage} style={{ fontSize: '2rem', color: 'rgba(255,255,255,0.1)', marginBottom: '0.75rem' }} />
-                    <p style={{ margin: 0, fontSize: '0.82rem', color: 'rgba(255,255,255,0.25)' }}>
+                    <FontAwesomeIcon icon={faImage} style={{ fontSize: '2rem', color: 'var(--theme-empty-color)', marginBottom: '0.75rem' }} />
+                    <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--theme-text-faint)' }}>
                         Nenhuma imagem carregada
                     </p>
                 </div>
@@ -111,23 +107,23 @@ export default function ClientInfo(props) {
                 <div style={{ flex: 1, minWidth: 0 }}>
                     <h2 style={{
                         fontFamily: "'Syne', sans-serif", fontSize: '1.35rem', fontWeight: 700,
-                        color: 'rgba(255,255,255,0.9)', margin: '0 0 10px',
+                        color: 'var(--theme-text-primary)', margin: '0 0 10px',
                         whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                     }}>
                         {client?.clientName} {client?.clientLastName}
                     </h2>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                         {client?.celular && (
-                            <button id="whatsButton" onClick={() => handleWhatsapp(client.celular)} style={contactBtnStyle}>
+                            <Button id="whatsButton" variant="ghost" onClick={() => handleWhatsapp(client.celular)} style={contactBtnStyle}>
                                 <FontAwesomeIcon icon={faWhatsapp} style={{ color: '#25D366', fontSize: '0.9rem' }} />
                                 {client.celular}
-                            </button>
+                            </Button>
                         )}
                         {client?.email && (
-                            <button id="emailButton" onClick={() => handleEmail(client.email)} style={contactBtnStyle}>
+                            <Button id="emailButton" variant="ghost" onClick={() => handleEmail(client.email)} style={contactBtnStyle}>
                                 <FontAwesomeIcon icon={faEnvelope} style={{ color: '#f5874f', fontSize: '0.82rem' }} />
                                 {client.email}
-                            </button>
+                            </Button>
                         )}
                     </div>
                 </div>
@@ -179,7 +175,7 @@ export default function ClientInfo(props) {
                         {f}
                     </span>
                 )) : (
-                    <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.25)' }}>Nenhuma característica registrada</span>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--theme-text-faint)' }}>Nenhuma característica registrada</span>
                 )}
             </div>
 
@@ -191,10 +187,10 @@ export default function ClientInfo(props) {
                 disabled rows={3}
                 value={client?.comments || "Nenhuma observação registrada"}
                 style={{
-                    width: '100%', background: 'rgba(255,255,255,0.04)',
+                    width: '100%', background: 'var(--theme-input-bg)',
                     border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px',
                     padding: '10px 14px', fontFamily: "'DM Sans', sans-serif",
-                    fontSize: '0.85rem', color: 'rgba(255,255,255,0.85)',
+                    fontSize: '0.85rem', color: 'var(--theme-text-primary)',
                     resize: 'none', outline: 'none', opacity: 1, marginBottom: '1.25rem',
                 }}
             />
@@ -204,11 +200,11 @@ export default function ClientInfo(props) {
             {/* ── Location ── */}
             <SectionLabel icon={<MapPin size={13} />}>Localização</SectionLabel>
             <div style={{
-                background: 'rgba(255,255,255,0.03)',
+                background: 'var(--theme-section-bg)',
                 border: '1px solid rgba(255,255,255,0.06)',
                 borderRadius: '10px', padding: '10px 14px',
                 fontFamily: "'DM Sans', sans-serif", fontSize: '0.85rem',
-                color: 'rgba(255,255,255,0.85)', marginBottom: '1rem',
+                color: 'var(--theme-text-primary)', marginBottom: '1rem',
                 lineHeight: 1.5,
             }}>
                 {[client?.logradouro, client?.numero, client?.bairro, client?.cep, `${client?.cidade} - ${client?.uf}`]
@@ -227,13 +223,13 @@ export default function ClientInfo(props) {
 }
 
 const contactBtnStyle = {
-    background: 'rgba(255,255,255,0.05)',
+    background: 'var(--theme-input-bg)',
     border: '1px solid rgba(255,255,255,0.09)',
     borderRadius: '8px', padding: '7px 12px',
     display: 'inline-flex', alignItems: 'center', gap: '7px',
     cursor: 'pointer',
     fontFamily: "'DM Sans', sans-serif", fontSize: '0.8rem',
-    color: 'rgba(255,255,255,0.6)',
+    color: 'var(--theme-text-tertiary)',
     transition: 'background 0.18s ease',
 }
 
@@ -241,8 +237,8 @@ function SectionLabel({ children, icon }) {
     return (
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem' }}>
             <div style={{ width: '3px', height: '13px', background: '#f5874f', borderRadius: '2px', flexShrink: 0 }} />
-            {icon && <span style={{ color: 'rgba(255,255,255,0.85)' }}>{icon}</span>}
-            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)' }}>
+            {icon && <span style={{ color: 'var(--theme-text-primary)' }}>{icon}</span>}
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--theme-text-primary)' }}>
                 {children}
             </span>
         </div>
@@ -250,5 +246,5 @@ function SectionLabel({ children, icon }) {
 }
 
 function Divider() {
-    return <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)', margin: '1.25rem 0' }} />
+    return <div style={{ height: '1px', background: 'var(--theme-border-subtle)', margin: '1.25rem 0' }} />
 }

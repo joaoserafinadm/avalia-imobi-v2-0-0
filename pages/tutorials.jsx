@@ -7,6 +7,7 @@ import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
 import { modalClose } from "../utils/modalControl";
 import TitleLabel from "../src/components/TitleLabel";
 import styles from "./tutorials.module.scss";
+import Button from "../src/components/Button";
 
 const videosList = [
     {
@@ -66,8 +67,9 @@ export default function Tutorials() {
                             <TitleLabel>Playlist</TitleLabel>
                         </div>
                         {videosList.map((video, index) => (
-                            <button
+                            <Button
                                 key={index}
+                                variant="ghost"
                                 className={activeIndex === index ? styles.playlistItemActive : styles.playlistItem}
                                 onClick={() => setActiveIndex(index)}
                             >
@@ -76,7 +78,7 @@ export default function Tutorials() {
                                     : <span className={styles.itemNum}>{index + 1}</span>
                                 }
                                 <span className={styles.itemTitle}>{video.title}</span>
-                            </button>
+                            </Button>
                         ))}
                     </div>
 

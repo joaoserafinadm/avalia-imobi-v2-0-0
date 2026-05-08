@@ -4,6 +4,7 @@ import { faWhatsapp } from "@fortawesome/free-brands-svg-icons"
 import { permissionShow, userStatusName } from "../../utils/permissions"
 import { ModalBtnSecondary } from "../components/Modal"
 import styles from "./viewUserModal.module.scss"
+import Button from "../components/Button"
 
 export default function UserInfo(props) {
 
@@ -52,14 +53,14 @@ export default function UserInfo(props) {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, paddingTop: '0.5rem' }}>
                 {permissionShow(token?.userStatus, user?._id, token?.sub, true) ? (
                     <div className="dropdown">
-                        <button
+                        <Button
+                            variant="ghost"
                             className={styles.actionMenuBtn}
                             data-bs-toggle="dropdown"
-                            type="button"
                             aria-label="Opções"
                         >
                             <FontAwesomeIcon icon={faEllipsisVertical} />
-                        </button>
+                        </Button>
                         <ul className="dropdown-menu dropdown-menu-dark" data-bs-theme="dark">
                             <li>
                                 <button

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
 
 /* ══════════════════════════════════════════
    Bootstrap overrides — escopo do modal
@@ -12,7 +12,7 @@
 /* dialog */
 .modalDialog {
   --bs-modal-border-radius: 16px;
-  --bs-modal-border-color: rgba(255, 255, 255, 0.08);
+  --bs-modal-border-color: var(--theme-modal-border, rgba(255, 255, 255, 0.08));
   --bs-modal-border-width: 1px;
 }
 
@@ -20,8 +20,8 @@
    CONTEÚDO
 ══════════════════════════════════════════ */
 .modalContent {
-  background: #0d1420;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--theme-header-bg, #0d1420);
+  border: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.08));
   border-radius: 16px;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55),
               0 0 0 1px rgba(255, 255, 255, 0.04);
@@ -43,8 +43,8 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1.25rem 1.5rem 1.1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.015);
+  border-bottom: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.06));
+  background: var(--theme-section-bg, rgba(255, 255, 255, 0.015));
 }
 
 .headerText { flex: 1; }
@@ -53,7 +53,7 @@
   font-family: 'Syne', sans-serif;
   font-size: 1rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--theme-text-primary, rgba(255, 255, 255, 0.9));
   margin: 0 0 2px;
   display: flex;
   align-items: center;
@@ -68,7 +68,7 @@
 .modalSubtitle {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.35));
   margin: 0;
 }
 
@@ -80,18 +80,18 @@
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.4);
+  background: var(--theme-input-bg, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.08));
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.4));
   font-size: 0.75rem;
   cursor: pointer;
   flex-shrink: 0;
   transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.18);
-    color: rgba(255, 255, 255, 0.85);
+    background: var(--theme-hover-bg, rgba(255, 255, 255, 0.1));
+    border-color: var(--theme-text-faint, rgba(255, 255, 255, 0.18));
+    color: var(--theme-text-primary, rgba(255, 255, 255, 0.85));
   }
 }
 
@@ -102,7 +102,7 @@
   padding: 1.5rem;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--theme-text-secondary, rgba(255, 255, 255, 0.7));
   line-height: 1.6;
 }
 
@@ -115,8 +115,8 @@
   justify-content: flex-end;
   gap: 10px;
   padding: 1rem 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.015);
+  border-top: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.06));
+  background: var(--theme-section-bg, rgba(255, 255, 255, 0.015));
 }
 
 /* ══════════════════════════════════════════
@@ -147,7 +147,7 @@
 
   &:disabled {
     background: rgba(245, 135, 79, 0.25);
-    color: rgba(255, 255, 255, 0.35);
+    color: var(--theme-text-faint, rgba(255, 255, 255, 0.35));
     cursor: not-allowed;
     transform: none;
   }
@@ -157,10 +157,10 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--theme-input-bg, rgba(255, 255, 255, 0.05));
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--theme-text-tertiary, rgba(255, 255, 255, 0.55));
   padding: 8px 20px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.82rem;
@@ -170,9 +170,9 @@
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 
   &:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.09);
-    border-color: rgba(255, 255, 255, 0.18);
-    color: rgba(255, 255, 255, 0.8);
+    background: var(--theme-hover-bg, rgba(255, 255, 255, 0.09));
+    border-color: var(--theme-text-faint, rgba(255, 255, 255, 0.18));
+    color: var(--theme-text-secondary, rgba(255, 255, 255, 0.8));
   }
 
   &:disabled {
@@ -216,7 +216,7 @@
 ══════════════════════════════════════════ */
 .divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--theme-border-subtle, rgba(255, 255, 255, 0.06));
   margin: 0 1.5rem;
 }
 
@@ -224,8 +224,8 @@
    SEÇÃO  (bloco destacado dentro do body)
 ══════════════════════════════════════════ */
 .section {
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--theme-section-bg, rgba(255, 255, 255, 0.025));
+  border: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.06));
   border-radius: 12px;
   padding: 1.1rem 1.25rem;
 }
@@ -241,21 +241,21 @@
   padding: 6px 0;
 
   &:not(:last-child) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.04));
   }
 }
 
 .infoLabel {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.35));
   white-space: nowrap;
 }
 
 .infoValue {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--theme-text-secondary, rgba(255, 255, 255, 0.8));
   text-align: right;
   word-break: break-all;
 }

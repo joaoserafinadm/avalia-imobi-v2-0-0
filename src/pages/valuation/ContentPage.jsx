@@ -4,6 +4,7 @@ import PortraitCard from "../../components/userCard/PortraitCard";
 import { faCheck, faChartLine, faBullhorn, faHandshake, faClock, faUsers, faTrophy } from "@fortawesome/free-solid-svg-icons";
 import Icons from "../../components/icons";
 import { ChevronRight } from "lucide-react";
+import Button from "../../components/Button";
 
 export default function ContentPage(props) {
     const userData = props.userData
@@ -210,30 +211,15 @@ export default function ContentPage(props) {
 
                                 {/* Continue Button */}
                                 <div className="text-center py-5">
-                                    <button
-                                        className="btn btn-lg px-5 py-3 fw-bold fs-5"
+                                    <Button
+                                        variant="primary"
+                                        size="lg"
                                         data-bs-target="#valuationCarousel"
                                         data-bs-slide-to={2}
-                                        style={{
-                                            backgroundColor: '#f5874f',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '25px',
-                                            transition: 'all 0.3s ease',
-                                            boxShadow: '0 4px 15px rgba(245, 135, 79, 0.3)'
-                                        }}
-                                        onMouseOver={e => {
-                                            e.target.style.backgroundColor = '#faa954';
-                                            e.target.style.transform = 'translateY(-2px)';
-                                            e.target.style.boxShadow = '0 6px 20px rgba(245, 135, 79, 0.4)';
-                                        }}
-                                        onMouseOut={e => {
-                                            e.target.style.backgroundColor = '#f5874f';
-                                            e.target.style.transform = 'translateY(0)';
-                                            e.target.style.boxShadow = '0 4px 15px rgba(245, 135, 79, 0.3)';
-                                        }}>
+                                        style={{ borderRadius: '25px', padding: '12px 40px' }}
+                                    >
                                         Continuar
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </div>

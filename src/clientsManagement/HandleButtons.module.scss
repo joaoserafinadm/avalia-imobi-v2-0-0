@@ -1,4 +1,4 @@
-.btnGroup {
+﻿.btnGroup {
   display: flex;
   justify-content: center;
   gap: 6px;
@@ -6,8 +6,8 @@
 }
 
 .btn {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--theme-input-bg, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.08));
   border-radius: 9px;
   width: 36px;
   height: 36px;
@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.35));
   transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease,
     transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
   text-decoration: none;

@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
 
 .card {
-  background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
+  background: var(--theme-content-bg, linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%));
   border: 1px solid rgba(245, 135, 79, 0.1);
   border-radius: 18px;
   overflow: hidden;
@@ -78,6 +78,7 @@
   text-transform: uppercase;
   transition: color 0.22s ease;
   text-decoration: none !important;
+  color: var(--theme-text-primary, rgba(255, 255, 255, 0.88));
 
   :global(svg), :global(i) {
     transition: transform 0.22s ease;
@@ -99,12 +100,14 @@
   font-style: italic;
   margin: 0 0 1.2rem 0;
   line-height: 1.5;
+  color: var(--theme-text-primary, rgba(255, 255, 255, 0.88));
+
 }
 
 /* ── Divider ── */
 .divider {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.05));
   margin: 0 0 1.15rem 0;
 }
 
@@ -127,7 +130,7 @@
 }
 
 .statBlock {
-  background: rgba(255, 255, 255, 0.025);
+  background: var(--theme-section-bg, rgba(255, 255, 255, 0.025));
   border: 1px solid rgba(255, 255, 255, 0.065);
   border-radius: 12px;
   padding: 14px 10px 12px;
@@ -162,7 +165,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-weight: 600;
   font-size: 1.55rem;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--theme-text-primary, rgba(255, 255, 255, 0.88));
   line-height: 1;
   display: flex;
   align-items: center;
@@ -176,7 +179,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-weight: 500;
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--theme-text-primary, rgba(255, 255, 255, 0.88));
   line-height: 1;
   display: flex;
   align-items: center;
@@ -229,7 +232,7 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 0.82rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.22);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.22));
   text-align: center;
   margin: 0;
 }

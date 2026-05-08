@@ -7,6 +7,7 @@ import { faRobot, faExternalLinkAlt, faCheck, faSearch, faTriangleExclamation } 
 import { maskMoney } from "../../utils/mask"
 import Modal, { ModalBtnPrimary, ModalBtnSecondary } from "../components/Modal"
 import styles from "./AiPropertySearch.module.scss"
+import Button from "../components/Button"
 
 export default function AiPropertySearch(props) {
     const { client, propertyArray, setPropertyArray, setForceUpdate } = props
@@ -225,10 +226,10 @@ export default function AiPropertySearch(props) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', gap: '12px', flexWrap: 'wrap' }}>
             <div>
                 {!loading && results.length > 0 && (
-                    <button type="button" className={styles.retryBtn} onClick={handleSearch}>
+                    <Button variant="ghost" className={styles.retryBtn} onClick={handleSearch}>
                         <FontAwesomeIcon icon={faSearch} />
                         Buscar novamente
-                    </button>
+                    </Button>
                 )}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
@@ -260,16 +261,16 @@ export default function AiPropertySearch(props) {
 
     return (
         <>
-            <button
-                type="button"
-                className={styles.aiBtn}
+            <Button
+                variant="primary"
+                outline
                 data-bs-toggle="modal"
                 data-bs-target="#aiPropertySearchModal"
                 onClick={handleOpenModal}
             >
                 <FontAwesomeIcon icon={faRobot} />
                 Buscar com IA
-            </button>
+            </Button>
 
             <Modal
                 id="aiPropertySearchModal"

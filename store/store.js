@@ -15,6 +15,7 @@ import toggleBarStatus from './ToggleBarStatus/ToggleBarStatus.reducer'
 import alerts from './Alerts/Alerts.reducer'
 import newClientForm from './NewClientForm/NewClientForm.reducer'
 import usersArray from './Users/Users.reducer'
+import theme from './Theme/Theme.reducer'
 
 const rootReducer = combineReducers({
     // inventoryList: inventoryList,
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
     toggleStatus: toggleBarStatus,
     alerts: alerts,
     newClientForm: newClientForm,
-    users:usersArray
+    users: usersArray,
+    theme: theme,
 })
 
 const persistedReducer = persistReducer({

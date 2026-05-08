@@ -3,6 +3,7 @@ import StyledDropzone from "../components/styledDropzone/StyledDropzone"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Info from "../components/info"
+import Button from "../components/Button"
 // import { setFiles } from "../../../store/NewClientForm/NewClientForm.actions"
 
 
@@ -54,7 +55,7 @@ export default function UploadFilesValuation(props) {
 
                             <input type="text" className="form-control" id="clientNameItem"
                                 value={imgLink} onChange={e => setImgLink(e.target.value)} />
-                            <button className="input-group-text bg-orange text-white" onClick={() => handleImportImgsLink(imgLink)} >Adicionar</button>
+                            <Button variant="primary" onClick={() => handleImportImgsLink(imgLink)}>Adicionar</Button>
                         </div>
                         <small className="text-danger">{imgLinkError}</small>
                     </div>

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import slideNumber from "../../../utils/slideNumber";
 import { setSlide } from "../../../store/NewClientForm/NewClientForm.actions";
-import { SpinnerSM } from "../../components/loading/Spinners";
+import Button from "../../components/Button";
 
 
 
@@ -94,9 +94,9 @@ export default function FixedButtons(props) {
         <div className="row ps-2 pe-3 fadeItem1s">
             {newClientForm.slide === 0 && (
 
-                <button className="ms-2 btn btn-sm btn-orange fadeItem" data-bs-target="#clientFormCarousel" data-bs-slide="next" onClick={() => handleSlide('clientFormCarousel')}>
+                <Button variant="primary" size="sm" className="ms-2 fadeItem" data-bs-target="#clientFormCarousel" data-bs-slide="next" onClick={() => handleSlide('clientFormCarousel')}>
                     Começar <FontAwesomeIcon icon={faArrowRight} className="icon ms-1" />
-                </button>
+                </Button>
             )}
             {(newClientForm.slide === 1 ||
                 newClientForm.slide === 2 ||
@@ -117,13 +117,13 @@ export default function FixedButtons(props) {
                         <div className="col-6">
                             <div className="row">
 
-                                <button className="ms-2 btn btn-sm btn-orange"
+                                <Button variant="primary" size="sm" className="ms-2"
                                     data-bs-target="#clientFormCarousel"
                                     disabled={handleDisabled(newClientForm)}
                                     data-bs-slide="next"
                                     onClick={() => handleSlide('clientFormCarousel')}>
                                     Continuar <FontAwesomeIcon icon={faArrowRight} className="icon ms-1" />
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -143,27 +143,16 @@ export default function FixedButtons(props) {
                             </span>
                         </div>
                     </div>
-                    {!props.loadingSave ?
-
-                        <div className="col-6">
-                            <div className="row">
-
-                                <button className="ms-2 btn btn-sm btn-orange"
-                                    data-bs-target="#clientFormCarousel"
-                                    disabled={handleDisabled(newClientForm)}
-                                    onClick={() => props.handleSave()}>
-                                    Finalizar <FontAwesomeIcon icon={faArrowRight} className="icon ms-1" />
-                                </button>
-                            </div>
+                    <div className="col-6">
+                        <div className="row">
+                            <Button variant="primary" size="sm" className="ms-2"
+                                loading={props.loadingSave}
+                                disabled={handleDisabled(newClientForm)}
+                                onClick={() => props.handleSave()}>
+                                Finalizar <FontAwesomeIcon icon={faArrowRight} className="icon ms-1" />
+                            </Button>
                         </div>
-                        :
-                        <div className="col-6">
-                            <div className="row">
-
-                                <button className="ms-2 btn btn-sm btn-orange px-4" disabled><SpinnerSM /></button>
-                            </div>
-                        </div>
-                    }
+                    </div>
                 </div>
             )}
 

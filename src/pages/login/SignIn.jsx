@@ -1,4 +1,5 @@
 import styles from "./Login.module.scss";
+import Button from "../../components/Button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import removeInputError from "../../../utils/removeInputError";
@@ -74,9 +75,9 @@ export default function SignInPage(props) {
       <h1 className={styles.formTitle}>Bem-vindo de volta</h1>
       <p className={styles.formSubtitle}>
         Não possui conta?{" "}
-        <button className={styles.linkOrange} onClick={() => props.setSection("signUp")}>
+        <Button variant="ghost" className={styles.linkOrange} onClick={() => props.setSection("signUp")}>
           Cadastre-se grátis
-        </button>
+        </Button>
       </p>
 
       <form onSubmit={handleSignIn}>
@@ -108,19 +109,20 @@ export default function SignInPage(props) {
         </div>
 
         <div className="d-flex justify-content-end mb-3">
-          <button
+          <Button
             type="button"
+            variant="ghost"
             className={styles.linkOrange}
             style={{ fontSize: "0.85rem" }}
             onClick={() => props.setSection("rescuePassword")}
           >
             Esqueceu a senha?
-          </button>
+          </Button>
         </div>
 
-        <button type="submit" className={styles.btnPrimary} disabled={signInLoading || loadingGoogle}>
-          {signInLoading ? <SpinnerSM /> : "Entrar"}
-        </button>
+        <Button type="submit" variant="primary" className={styles.btnPrimary} loading={signInLoading} disabled={loadingGoogle}>
+          Entrar
+        </Button>
       </form>
 
       <div className={styles.divider}>ou</div>
@@ -145,9 +147,9 @@ export default function SignInPage(props) {
       {googleAuthError && (
         <p className="small text-danger mt-2 text-center mb-0">
           Nenhuma conta com esse e-mail.{" "}
-          <button className={styles.linkOrange} onClick={() => { props.setSection("signUp"); setGoogleAuthError(false); }}>
+          <Button variant="ghost" className={styles.linkOrange} onClick={() => { props.setSection("signUp"); setGoogleAuthError(false); }}>
             Cadastre-se
-          </button>
+          </Button>
         </p>
       )}
 

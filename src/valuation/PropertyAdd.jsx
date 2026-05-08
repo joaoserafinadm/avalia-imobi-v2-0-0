@@ -22,6 +22,7 @@ import { faTrashAlt, faUpload, faLink, faTag, faCircleInfo } from "@fortawesome/
 import Modal, { ModalBtnPrimary, ModalBtnSecondary } from "../components/Modal"
 import { useRouter } from "next/router"
 import styles from "./PropertyAdd.module.scss"
+import Button from "../components/Button"
 
 export default function PropertyAddModal(props) {
 
@@ -367,9 +368,9 @@ export default function PropertyAddModal(props) {
                     ) : (
                         <div className={styles.imagePreview}>
                             <img src={previewUrl || imageUrl} alt="" className={styles.previewImg} />
-                            <button type="button" className={styles.removeBtn} onClick={handleRemoveManualImage} title="Remover imagem">
+                            <Button variant="danger" className={styles.removeBtn} onClick={handleRemoveManualImage} title="Remover imagem">
                                 <FontAwesomeIcon icon={faTrashAlt} />
-                            </button>
+                            </Button>
                             {manualImageFile && (
                                 <span className={styles.previewName}>{manualImageFile.name}</span>
                             )}

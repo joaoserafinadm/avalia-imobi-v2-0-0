@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Router, { useRouter } from "next/router";
-import { Provider, useDispatch } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import Cookie from "js-cookie";
 import { PersistGate } from "redux-persist/integration/react";
 import { createGlobalStyle } from "styled-components";
@@ -35,6 +35,17 @@ config.autoAddCss = false;
 
 import baseUrl from "../utils/baseUrl";
 import { store, persistedStore } from "../store/store";
+
+function ThemeApplier({ forceLight = false }) {
+    const theme = useSelector(state => state.theme)
+
+    useEffect(() => {
+        const effectiveTheme = forceLight ? 'light' : (theme || 'light')
+        document.documentElement.setAttribute('data-theme', effectiveTheme)
+    }, [theme, forceLight])
+
+    return null
+}
 
 import "../styles/globals.scss";
 import "../styles/bgColors.scss";
@@ -138,7 +149,7 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps} }
             return (
                 <Provider store={store}>
                     <PersistGate persistor={persistedStore}>
-
+                        <ThemeApplier />
                         <Head >
                             <title>Cadastro do imóvel</title>
                             <meta property="og:title" content="Formulário de cadastro do imóvel" />
@@ -157,7 +168,7 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps} }
             return (
                 <Provider store={store}>
                     <PersistGate persistor={persistedStore}>
-
+                        <ThemeApplier forceLight />
                         <Head >
                             <title>Avaliação do imóvel</title>
                             <meta property="og:title" content="Avaliação do imóvel" />
@@ -177,6 +188,7 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps} }
             return (
                 <Provider store={store}>
                     <PersistGate persistor={persistedStore}>
+                        <ThemeApplier />
                         <SessionProvider>
 
                             <Head >
@@ -206,6 +218,7 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps} }
             return (
                 <Provider store={store}>
                     <PersistGate persistor={persistedStore}>
+                        <ThemeApplier />
                         <SWRConfig
                             value={{
                                 refreshInterval: 15000,

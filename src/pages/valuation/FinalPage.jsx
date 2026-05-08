@@ -7,6 +7,7 @@ import axios from "axios"
 import baseUrl from "../../../utils/baseUrl"
 import { SpinnerSM } from "../../components/loading/Spinners"
 import styles from './valuation.module.scss'
+import Button from "../../components/Button"
 
 
 export default function FinalPage(props) {
@@ -159,45 +160,15 @@ export default function FinalPage(props) {
 
                                 {/* Continue Button */}
                                 <div className="text-center py-4">
-                                    <button
-                                        type="button"
-                                        className="btn btn-lg px-5 py-3 fw-bold fs-5"
+                                    <Button
+                                        variant={stars ? 'primary' : 'secondary'}
+                                        size="lg"
                                         disabled={!stars}
                                         onClick={() => handleSave()}
-                                        style={{
-                                            backgroundColor: stars ? '#f5874f' : '#6c757d',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '25px',
-                                            transition: 'all 0.3s ease',
-                                            boxShadow: stars ? '0 4px 15px rgba(245, 135, 79, 0.3)' : '0 4px 15px rgba(108, 117, 125, 0.3)',
-                                            cursor: stars ? 'pointer' : 'not-allowed'
-                                        }}
-                                        onMouseOver={e => {
-                                            if (stars) {
-                                                e.target.style.backgroundColor = '#faa954';
-                                                e.target.style.transform = 'translateY(-2px)';
-                                                e.target.style.boxShadow = '0 6px 20px rgba(245, 135, 79, 0.4)';
-                                            }
-                                        }}
-                                        onMouseOut={e => {
-                                            if (stars) {
-                                                e.target.style.backgroundColor = '#f5874f';
-                                                e.target.style.transform = 'translateY(0)';
-                                                e.target.style.boxShadow = '0 4px 15px rgba(245, 135, 79, 0.3)';
-                                            }
-                                        }}>
-                                        {loadingSave ? (
-                                            <>
-                                                <SpinnerSM className="me-2" />
-                                                Enviando...
-                                            </>
-                                        ) : (
-                                            <>
-                                                Continuar 
-                                            </>
-                                        )}
-                                    </button>
+                                        style={{ borderRadius: '25px', padding: '12px 40px' }}
+                                        loading={loadingSave}>
+                                        Continuar
+                                    </Button>
                                 </div>
                             </div>
                         </div>

@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from "react"
+﻿import { useState, useEffect, useRef } from "react"
 import StyledDropzone from "../../components/styledDropzone/StyledDropzone"
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
 import { ChevronLeft, ChevronRight, Trash2Icon, Star } from "lucide-react"
 import TitleLabel from "../../components/TitleLabel"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons"
+import { faArrowLeft, faChevronLeft, faChevronRight, faCloudArrowUp } from "@fortawesome/free-solid-svg-icons"
 import s from "./formInputs.module.scss"
+import Button from "../../components/Button"
 
 export default function UploadFiles(props) {
     const scrollContainerRef = useRef(null)
@@ -78,34 +79,18 @@ export default function UploadFiles(props) {
                         icon={faCloudArrowUp}
                         style={{ fontSize: '1.8rem', color: 'rgba(245,135,79,0.5)', marginBottom: '6px' }}
                     />
-                    <p style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: '0.82rem',
-                        color: 'rgba(255,255,255,0.35)',
-                        margin: 0,
-                        textAlign: 'center',
-                        lineHeight: 1.5,
-                    }}>
+                    <p className="text-muted small">
                         <strong style={{ color: '#f5874f', fontWeight: 600 }}>Clique para selecionar</strong>
                         {' '}ou arraste as imagens aqui
                     </p>
-                    <p style={{
-                        fontFamily: "'IBM Plex Mono', monospace",
-                        fontSize: '0.68rem',
-                        color: 'rgba(255,255,255,0.18)',
-                        margin: '4px 0 0',
-                    }}>
+                    <p className="text-muted small">
                         JPG · PNG · WEBP
                     </p>
                 </StyledDropzone>
 
                 {/* Caption */}
-                <p style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: '0.72rem',
-                    color: 'rgba(255,255,255,0.22)',
-                    margin: '10px 0 0',
-                }}>
+                <p className="text-muted small"
+                >
                     A primeira foto será a foto de capa do imóvel. Arraste para reordenar.
                 </p>
 
@@ -115,16 +100,17 @@ export default function UploadFiles(props) {
 
                         {/* Left arrow */}
                         {showLeftArrow && (
-                            <button type="button" onClick={scrollLeft} style={arrowStyle('left')}>
-                                <ChevronLeft size={16} />
-                            </button>
+                            <span variant="ghost" onClick={scrollLeft} style={arrowStyle('left')}>
+                                <FontAwesomeIcon icon={faChevronLeft} style={{fontSize: "13"}}/>
+                            </span>
                         )}
 
                         {/* Right arrow */}
                         {showRightArrow && (
-                            <button type="button" onClick={scrollRight} style={arrowStyle('right')}>
-                                <ChevronRight size={16} />
-                            </button>
+                            <span variant="ghost" onClick={scrollRight} style={arrowStyle('right')}>
+                                <FontAwesomeIcon icon={faChevronRight} style={{fontSize: "13"}}/>
+
+                            </span>
                         )}
 
                         <div
@@ -176,7 +162,7 @@ export default function UploadFiles(props) {
                                                                     : index === 0
                                                                         ? '1.5px solid rgba(245,135,79,0.35)'
                                                                         : '1px solid rgba(255,255,255,0.08)',
-                                                                background: 'rgba(255,255,255,0.02)',
+                                                                background: 'var(--theme-section-bg)',
                                                                 boxShadow: snapshot.isDragging
                                                                     ? '0 8px 28px rgba(245,135,79,0.18)'
                                                                     : index === 0
@@ -210,8 +196,8 @@ export default function UploadFiles(props) {
                                                                 />
 
                                                                 {/* Remove button */}
-                                                                <button
-                                                                    type="button"
+                                                                <Button
+                                                                    variant="danger"
                                                                     onClick={() => removeFile(index)}
                                                                     aria-label="Remover imagem"
                                                                     style={{
@@ -219,31 +205,15 @@ export default function UploadFiles(props) {
                                                                         top: '7px',
                                                                         right: '7px',
                                                                         zIndex: 2,
-                                                                        background: 'rgba(13,20,32,0.75)',
-                                                                        border: '1px solid rgba(248,113,113,0.3)',
-                                                                        borderRadius: '7px',
-                                                                        color: '#f87171',
                                                                         width: '26px',
                                                                         height: '26px',
-                                                                        display: 'flex',
-                                                                        alignItems: 'center',
-                                                                        justifyContent: 'center',
-                                                                        cursor: 'pointer',
+                                                                        padding: 0,
                                                                         fontSize: '0.7rem',
                                                                         backdropFilter: 'blur(4px)',
-                                                                        transition: 'background 0.18s ease, border-color 0.18s ease',
-                                                                    }}
-                                                                    onMouseEnter={e => {
-                                                                        e.currentTarget.style.background = 'rgba(248,113,113,0.2)'
-                                                                        e.currentTarget.style.borderColor = 'rgba(248,113,113,0.6)'
-                                                                    }}
-                                                                    onMouseLeave={e => {
-                                                                        e.currentTarget.style.background = 'rgba(13,20,32,0.75)'
-                                                                        e.currentTarget.style.borderColor = 'rgba(248,113,113,0.3)'
                                                                     }}
                                                                 >
                                                                     <Trash2Icon size={11} />
-                                                                </button>
+                                                                </Button>
 
                                                                 {/* Cover badge */}
                                                                 {index === 0 && (
@@ -291,18 +261,18 @@ function arrowStyle(side) {
         position: 'absolute',
         top: '50%',
         transform: 'translateY(-50%)',
-        [side === 'left' ? 'left' : 'right']: '6px',
+        [side === 'left' ? 'left' : 'right']: '1px',
         zIndex: 10,
         background: 'rgba(13,20,32,0.8)',
-        border: '1px solid rgba(255,255,255,0.1)',
+        border: '1px solid var(--theme-border-visible)',
         borderRadius: '50%',
-        width: '32px',
-        height: '32px',
+        width: '45px',
+        height: '45px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
-        color: 'rgba(255,255,255,0.55)',
+        color: '#fff5',
         backdropFilter: 'blur(4px)',
         transition: 'background 0.18s ease, color 0.18s ease, border-color 0.18s ease',
     }

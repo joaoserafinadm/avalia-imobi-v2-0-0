@@ -6,10 +6,9 @@ import { FixedTopicsBottom } from "../src/components/fixedTopics";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import Link from "next/link";
-import { SpinnerLG, SpinnerSM } from "../src/components/loading/Spinners"
+import { SpinnerLG } from "../src/components/loading/Spinners"
 import { useDispatch, useSelector } from "react-redux";
 import navbarHide from "../utils/navbarHide";
-import removeInputError from "../utils/removeInputError";
 import scrollTo from "../utils/scrollTo";
 import randomPassword from "../utils/randomPassword";
 import axios from "axios";
@@ -20,6 +19,8 @@ import NewUserAlertModal from "../src/userAdd/newUserAlertModal";
 import { maskEmail } from "../utils/mask";
 import styles from "./userAdd.module.scss";
 import TitleLabel from "../src/components/TitleLabel";
+import Button from "../src/components/Button";
+import Input from "../src/components/Input";
 
 
 
@@ -90,37 +91,24 @@ export default function userAdd() {
 
     const validate = () => {
 
-        setFirstNameError('')
-        setEmailError('')
-        setUserStatusError('')
-
         let firstNameError = ''
         let emailError = ''
         let userStatusError = ''
-
-        removeInputError()
 
         if (!firstName) firstNameError = 'Escreva o nome do usuário'
         if (!email || !email.includes('@')) emailError = "E-mail inválido"
         if (!userStatus) userStatusError = "Escolha uma das opções"
 
+        setFirstNameError(firstNameError)
+        setEmailError(emailError)
+        setUserStatusError(userStatusError)
 
         if (firstNameError || emailError || userStatusError) {
-            if (firstNameError) { setFirstNameError(firstNameError); document.getElementById("firstName").classList.add('inputError') }
-            if (emailError) { setEmailError(emailError); document.getElementById("email").classList.add('inputError') }
-            if (userStatusError) { setUserStatusError(userStatusError) }
-
             scrollTo('pageTop')
             return false
-        } else {
-            setFirstNameError('')
-            setEmailError('')
-            setUserStatusError('')
-
-            removeInputError()
-
-            return true
         }
+
+        return true
     }
 
     const handleSave = async (company_id) => {
@@ -214,45 +202,39 @@ export default function userAdd() {
                     <div className={styles.formSection}>
                         <div className="row g-3">
                             <div className="col-12 col-md-6">
-                                <div className={styles.fieldGroup}>
-                                    <label className={styles.fieldLabel} htmlFor="firstName">Nome *</label>
-                                    <input
-                                        type="text"
-                                        className={styles.fieldInput}
-                                        id="firstName"
-                                        value={firstName}
-                                        onChange={e => setFirstName(e.target.value)}
-                                        placeholder="Ex: João"
-                                    />
-                                    {firstNameError && <span className={styles.fieldError}>{firstNameError}</span>}
-                                </div>
+                                <Input
+                                    type="text"
+                                    label="Nome"
+                                    required
+                                    id="firstName"
+                                    value={firstName}
+                                    onChange={e => setFirstName(e.target.value)}
+                                    placeholder="Ex: João"
+                                    error={firstNameError}
+                                />
                             </div>
                             <div className="col-12 col-md-6">
-                                <div className={styles.fieldGroup}>
-                                    <label className={styles.fieldLabel} htmlFor="lastName">Sobrenome <span style={{ opacity: 0.5 }}>(opcional)</span></label>
-                                    <input
-                                        type="text"
-                                        className={styles.fieldInput}
-                                        id="lastName"
-                                        value={lastName}
-                                        onChange={e => setLastName(e.target.value)}
-                                        placeholder="Ex: Silva"
-                                    />
-                                </div>
+                                <Input
+                                    type="text"
+                                    label="Sobrenome"
+                                    hint="opcional"
+                                    id="lastName"
+                                    value={lastName}
+                                    onChange={e => setLastName(e.target.value)}
+                                    placeholder="Ex: Silva"
+                                />
                             </div>
                             <div className="col-12">
-                                <div className={styles.fieldGroup}>
-                                    <label className={styles.fieldLabel} htmlFor="email">E-mail *</label>
-                                    <input
-                                        type="text"
-                                        className={styles.fieldInput}
-                                        id="email"
-                                        value={email}
-                                        onChange={e => setEmail(maskEmail(e.target.value))}
-                                        placeholder="Ex: joao@empresa.com"
-                                    />
-                                    {emailError && <span className={styles.fieldError}>{emailError}</span>}
-                                </div>
+                                <Input
+                                    type="email"
+                                    label="E-mail"
+                                    required
+                                    id="email"
+                                    value={email}
+                                    onChange={e => setEmail(maskEmail(e.target.value))}
+                                    placeholder="Ex: joao@empresa.com"
+                                    error={emailError}
+                                />
                             </div>
                         </div>
                     </div>
@@ -336,24 +318,22 @@ export default function userAdd() {
                     {/* ── Footer ── */}
                     <FixedTopicsBottom>
                         <div className={styles.footerBar}>
-                            <Link href="/usersManagement" className={styles.btnCancel}>
-                                Cancelar
+                            <Link href="/usersManagement" >
+                                <Button variant="secondary">
+
+                                    Cancelar
+                                </Button>
                             </Link>
-                            {loadingSave ? (
-                                <button className={styles.btnSave} disabled>
-                                    <SpinnerSM />
-                                </button>
-                            ) : (
-                                <button
-                                    className={styles.btnSave}
-                                    disabled={handleDisableSave()}
-                                    data-bs-toggle={subscriptionOn ? "modal" : ""}
-                                    data-bs-target={subscriptionOn ? "#newUserAlertModal" : ""}
-                                    onClick={() => checkSubscription()}
-                                >
-                                    Cadastrar usuário
-                                </button>
-                            )}
+                            <Button
+                                variant="primary"
+                                loading={loadingSave}
+                                disabled={handleDisableSave()}
+                                data-bs-toggle={subscriptionOn ? "modal" : ""}
+                                data-bs-target={subscriptionOn ? "#newUserAlertModal" : ""}
+                                onClick={() => checkSubscription()}
+                            >
+                                Cadastrar usuário
+                            </Button>
                         </div>
                     </FixedTopicsBottom>
 

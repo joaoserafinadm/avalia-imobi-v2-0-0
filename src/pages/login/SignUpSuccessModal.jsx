@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import Button from "../../components/Button";
 
 export default function SignUpSuccessModal(props) {
   const router = useRouter();
@@ -41,15 +42,16 @@ export default function SignUpSuccessModal(props) {
           </div>
 
           <div className="modal-footer border-0 px-4 pb-4 pt-0">
-            <button
-              type="button"
-              className="btn w-100 fw-semibold text-white"
-              style={{ borderRadius: 8, background: "#f5874f", border: "none", padding: "0.72rem" }}
+            <Button
+              variant="primary"
+              full
+              className="fw-semibold"
+              style={{ borderRadius: 8, padding: "0.72rem" }}
               data-bs-dismiss="modal"
               onClick={() => router.reload()}
             >
               Entrar
-            </button>
+            </Button>
           </div>
 
         </div>

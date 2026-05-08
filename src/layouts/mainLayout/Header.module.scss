@@ -1,6 +1,6 @@
 .headerPosition {
-    background-color: #0d1420;
-    border-bottom: 1px solid rgba(245, 135, 79, 0.08);
+    background-color: var(--theme-header-bg, #0d1420);
+    border-bottom: 1px solid var(--theme-header-border, rgba(245, 135, 79, 0.08));
     position: fixed !important;
     top: 0;
     left: 0;
@@ -27,8 +27,8 @@
 
 
 .header {
-    background-color: #0d1420;
-    border-bottom: 1px solid rgba(245, 135, 79, 0.08);
+    background-color: var(--theme-header-bg, #0d1420);
+    border-bottom: 1px solid var(--theme-header-border, rgba(245, 135, 79, 0.08));
     position: fixed !important;
     top: 0;
     right: 0;
@@ -44,6 +44,15 @@
     position: fixed;
     right: 0;
 
+}
+
+.bellIcon {
+    color: var(--theme-text-primary, #ffffff);
+    transition: color 0.2s ease;
+}
+
+.bellIconActive {
+    color: #f5874f;
 }
 
 

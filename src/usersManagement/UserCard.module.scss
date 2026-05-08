@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 /* ── Card wrapper ── */
 .card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--theme-section-bg, rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.07));
   border-top: 2px solid rgba(245, 135, 79, 0.35);
   border-radius: 14px;
   overflow: hidden;
@@ -25,7 +25,7 @@
   align-items: center;
   gap: 14px;
   padding: 1.1rem 1.25rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.05));
 }
 
 .avatar {
@@ -47,7 +47,7 @@
   font-family: 'Syne', sans-serif;
   font-size: 0.97rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--theme-text-primary, rgba(255, 255, 255, 0.88));
   margin: 0 0 5px;
   white-space: nowrap;
   overflow: hidden;
@@ -89,7 +89,7 @@
   align-items: center;
   gap: 10px;
   padding: 0.55rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.04));
 
   &:last-child { border-bottom: none; }
 }
@@ -111,7 +111,7 @@
 .infoText {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--theme-text-tertiary, rgba(255, 255, 255, 0.55));
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -120,7 +120,7 @@
 
 .infoTextMuted {
   @extend .infoText;
-  color: rgba(255, 255, 255, 0.22);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.22));
 }
 
 .infoSubRow {
@@ -135,7 +135,7 @@
   display: flex;
   gap: 0.625rem;
   padding: 0.75rem 1.25rem 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.05));
 }
 
 .actionBtn {
@@ -168,9 +168,9 @@
   }
 
   &:disabled {
-    border-color: rgba(255, 255, 255, 0.07);
-    background: rgba(255, 255, 255, 0.02);
-    color: rgba(255, 255, 255, 0.15);
+    border-color: var(--theme-border-subtle, rgba(255, 255, 255, 0.07));
+    background: var(--theme-section-bg, rgba(255, 255, 255, 0.02));
+    color: var(--theme-text-faint, rgba(255, 255, 255, 0.15));
     cursor: not-allowed;
     transform: none;
     box-shadow: none;

@@ -3,6 +3,7 @@ import { showModal } from "../../utils/modalControl"
 import Link from "next/link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBook, faStore, faUser } from "@fortawesome/free-solid-svg-icons"
+import Button from "../components/Button"
 
 
 
@@ -49,7 +50,7 @@ export default function FirstNotificationsModal(props) {
                                 </span>
                                 <div className=" mb-2 mt-4 text-center">
                                     <Link href="/companyEdit">
-                                        <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faStore} className="me-2" />Imobiliária</button>
+                                        <Button variant="primary" size="sm" icon={faStore}>Imobiliária</Button>
                                     </Link>
                                 </div>
                                 <span className="mt-2">
@@ -57,7 +58,7 @@ export default function FirstNotificationsModal(props) {
                                 </span>
                                 <div className=" mt-2 mb-4 text-center">
                                     <Link href="/tutorials">
-                                        <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faBook} className="me-2" />Tutoriais</button>
+                                        <Button variant="primary" size="sm" icon={faBook}>Tutoriais</Button>
                                     </Link>
                                 </div>
                             </div>
@@ -71,7 +72,7 @@ export default function FirstNotificationsModal(props) {
                                 </span>
                                 <div className=" my-4 text-center">
                                     <Link href="/editProfile">
-                                        <button className="btn btn-outline-orange btn-sm"><FontAwesomeIcon icon={faUser} className="me-2" />Meu Perfil</button>
+                                        <Button variant="primary" size="sm" icon={faUser}>Meu Perfil</Button>
                                     </Link>
                                 </div>
                             </div>

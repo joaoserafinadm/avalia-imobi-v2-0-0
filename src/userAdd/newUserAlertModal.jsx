@@ -2,6 +2,7 @@ import { faUserGear, faUserTie, faInfoCircle, faCheckCircle } from "@fortawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import { maskNumberMoney } from "../../utils/mask"
+import Button from "../components/Button"
 
 
 
@@ -151,13 +152,12 @@ export default function NewUserAlertModal(props) {
                     </div>
                     
                     <div className="modal-footer border-0 bg-light px-4 py-3">
-                        <button type="button" className="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <Button variant="secondary" data-bs-dismiss="modal">
                             Cancelar
-                        </button>
-                        <button className="btn btn-orange px-4 shadow-sm" onClick={() => handleSave()} data-bs-dismiss="modal">
-                            <FontAwesomeIcon icon={faCheckCircle} className="me-2" />
+                        </Button>
+                        <Button variant="primary" icon={faCheckCircle} onClick={() => handleSave()} data-bs-dismiss="modal">
                             Confirmar e cadastrar
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

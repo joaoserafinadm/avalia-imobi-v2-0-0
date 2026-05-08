@@ -19,7 +19,7 @@ export default function Toggle(props) {
 
     return (
         <div className={`${styles.toggle} ${toggleStatus === true ? '': styles.toggleOn} `}>
-            <span className={` text-white`} type="button" onClick={() =>dispatch(toggleBarChange(toggleStatus))}>
+            <span type="button" onClick={() =>dispatch(toggleBarChange(toggleStatus))}>
                 {/* <AiOutlineLeft className="" />  */}
 
                 <FontAwesomeIcon icon={faBars} className="fs-5 icon" />

@@ -14,7 +14,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouseMedical,
   faHouseMedicalCircleCheck,
-  faSearch,
   faUserPlus,
   faFilter,
 } from "@fortawesome/free-solid-svg-icons";
@@ -31,6 +30,8 @@ import tippy from "tippy.js";
 import { useRouter } from "next/router";
 import ValuationPdf from "../src/pages/valuation/valuationPdf";
 import styles from "./clientsManagement.module.scss";
+import Button from "../src/components/Button";
+import Input from "../src/components/Input";
 
 export default function clientsManagement() {
   const token = jwt.decode(Cookies.get("auth"));
@@ -162,19 +163,20 @@ export default function clientsManagement() {
             </span>
           </div> */}
           <div className={styles.topBarRight}>
-            <button
-              className={`${styles.filterBtn} ${(filtersOpen || hasActiveFilters) ? styles.filterBtnActive : ""}`}
+            <Button
+              variant="secondary"
+              className={`${(filtersOpen || hasActiveFilters) ? styles.filterBtnActive : ""}`}
               onClick={() => setFiltersOpen((v) => !v)}
             >
               <FontAwesomeIcon icon={faFilter} />
               Filtros
               {hasActiveFilters && <span className={styles.filterActiveDot} />}
-            </button>
+            </Button>
             <Link href="/clientAdd">
-              <span className={styles.addBtn}>
+              <Button variant="primary">
                 <FontAwesomeIcon icon={faHouseMedical} />
                 Adicionar Imóvel
-              </span>
+              </Button>
             </Link>
           </div>
         </div>
@@ -185,78 +187,63 @@ export default function clientsManagement() {
             <div className={styles.filterGrid}>
 
               {/* Search */}
-              <div className={styles.filterGroup}>
-                <span className={styles.filterLabel}>Buscar</span>
-                <div className={styles.searchWrap}>
-                  <input
-                    type="text"
-                    className={styles.filterInput}
-                    placeholder="Pesquisar imóvel..."
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                  />
-                  <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
-                </div>
-              </div>
+              <Input
+                type="search"
+                label="Buscar"
+                placeholder="Pesquisar imóvel..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
 
               {/* Order */}
-              <div className={styles.filterGroup}>
-                <span className={styles.filterLabel}>Ordenar</span>
-                <div className={styles.filterSelectWrap}>
-                  <select
-                    className={styles.filterSelect}
-                    value={clientsOrder}
-                    onChange={(e) => setClientsOrder(e.target.value)}
-                  >
-                    <option value="newest">Mais recentes</option>
-                    <option value="oldest">Mais antigos</option>
-                  </select>
-                </div>
-              </div>
+              <Input
+                type="select"
+                label="Ordenar"
+                value={clientsOrder}
+                onChange={(e) => setClientsOrder(e.target.value)}
+                options={[
+                  { value: "newest", label: "Mais recentes" },
+                  { value: "oldest", label: "Mais antigos" },
+                ]}
+              />
 
               {/* Type */}
-              <div className={styles.filterGroup}>
-                <span className={styles.filterLabel}>Tipo</span>
-                <div className={styles.filterSelectWrap}>
-                  <select
-                    className={styles.filterSelect}
-                    value={typeSearch}
-                    onChange={(e) => setTypeSearch(e.target.value)}
-                  >
-                    <option value="">Todos</option>
-                    <option value="Apartamento">Apartamento</option>
-                    <option value="Casa">Casa</option>
-                    <option value="Comercial">Comercial</option>
-                    <option value="Terreno">Terreno</option>
-                  </select>
-                </div>
-              </div>
+              <Input
+                type="select"
+                label="Tipo"
+                value={typeSearch}
+                onChange={(e) => setTypeSearch(e.target.value)}
+                options={[
+                  { value: "", label: "Todos" },
+                  { value: "Apartamento", label: "Apartamento" },
+                  { value: "Casa", label: "Casa" },
+                  { value: "Comercial", label: "Comercial" },
+                  { value: "Terreno", label: "Terreno" },
+                ]}
+              />
 
               {/* Status */}
-              <div className={styles.filterGroup}>
-                <span className={styles.filterLabel}>Status</span>
-                <div className={styles.filterSelectWrap}>
-                  <select
-                    className={styles.filterSelect}
-                    value={statusSearch}
-                    onChange={(e) => setStatusSearch(e.target.value)}
-                  >
-                    <option value="">Todos</option>
-                    <option value="outdated">Aguardando cadastro</option>
-                    <option value="active">Aguardando avaliação</option>
-                    <option value="evaluated">Avaliado</option>
-                    <option value="answered">Respondido</option>
-                  </select>
-                </div>
-              </div>
+              <Input
+                type="select"
+                label="Status"
+                value={statusSearch}
+                onChange={(e) => setStatusSearch(e.target.value)}
+                options={[
+                  { value: "", label: "Todos" },
+                  { value: "outdated", label: "Aguardando cadastro" },
+                  { value: "active", label: "Aguardando avaliação" },
+                  { value: "evaluated", label: "Avaliado" },
+                  { value: "answered", label: "Respondido" },
+                ]}
+              />
 
             </div>
 
             {hasActiveFilters && (
               <div className={styles.filterFooter}>
-                <button className={styles.clearFiltersBtn} onClick={clearFilters}>
+                <Button variant="ghost" className={styles.clearFiltersBtn} onClick={clearFilters}>
                   Limpar filtros
-                </button>
+                </Button>
               </div>
             )}
           </div>

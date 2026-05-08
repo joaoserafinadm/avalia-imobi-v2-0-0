@@ -7,7 +7,7 @@ import Title from "../src/components/title/Title2";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import navbarHide from "../utils/navbarHide";
-import { SpinnerLG, SpinnerSM } from "../src/components/loading/Spinners";
+import { SpinnerLG } from "../src/components/loading/Spinners";
 import scrollTo from "../utils/scrollTo";
 import EstadosList from "../src/components/estadosList";
 import { useRouter } from "next/router";
@@ -26,6 +26,7 @@ import {
 import Input from "../src/components/Input";
 import TitleLabel from "../src/components/TitleLabel";
 import styles from "./companyEdit.module.scss";
+import Button from "../src/components/Button";
 
 
 
@@ -227,15 +228,15 @@ export default function companyEdit() {
                             <div className={styles.imageCard}>
                                 <div className={styles.imageCardHeader}>
                                     <p className={styles.imageCardTitle}>Imagem de capa</p>
-                                    <button
+                                    <Button
+                                        variant="ghost"
                                         className={styles.imageCardEditBtn}
                                         data-bs-toggle="modal"
                                         data-bs-target="#ImageHeaderModal"
-                                        type="button"
                                     >
                                         <FontAwesomeIcon icon={faPen} />
                                         Editar
-                                    </button>
+                                    </Button>
                                 </div>
                                 <p className={styles.imageCardSubtitle}>
                                     Usada no cartão de visitas e apresentações.
@@ -404,21 +405,19 @@ export default function companyEdit() {
                         {/* ── Footer ── */}
                         <FixedTopicsBottom>
                             <div className={styles.footerBar}>
-                                <Link href="/" className={styles.btnCancel}>
-                                    Cancelar
+                                <Link href="/" >
+                                    <Button variant="secondary">
+
+                                        Cancelar
+                                    </Button>
                                 </Link>
-                                {loadingSave ? (
-                                    <button className={styles.btnSave} disabled>
-                                        <SpinnerSM />
-                                    </button>
-                                ) : (
-                                    <button
-                                        className={styles.btnSave}
-                                        onClick={() => handleSave(token.company_id)}
-                                    >
-                                        Salvar alterações
-                                    </button>
-                                )}
+                                <Button
+                                    variant="primary"
+                                    loading={loadingSave}
+                                    onClick={() => handleSave(token.company_id)}
+                                >
+                                    Salvar alterações
+                                </Button>
                             </div>
                         </FixedTopicsBottom>
                     </div>

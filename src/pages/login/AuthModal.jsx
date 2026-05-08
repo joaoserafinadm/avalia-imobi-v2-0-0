@@ -5,6 +5,7 @@ import baseUrl from "../../../utils/baseUrl";
 import styles from "./Login.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
+import Button from "../../components/Button";
 
 const DIGITS = 6;
 
@@ -158,37 +159,38 @@ export default function AuthModal(props) {
               {loadingEmail ? (
                 <span className="small text-secondary"><SpinnerSM /> Enviando...</span>
               ) : (
-                <button
+                <Button
+                  variant="ghost"
                   className={styles.linkOrange}
                   style={{ fontSize: "0.85rem" }}
                   onClick={() => resendEmail(props.email, props.firstName)}
                 >
                   Reenviar código
-                </button>
+                </Button>
               )}
             </div>
           </div>
 
           <div className="modal-footer border-0 px-4 pb-4 pt-0 gap-2">
-            <button
-              type="button"
-              className="btn btn-secondary flex-fill"
+            <Button
+              variant="secondary"
+              className="flex-fill"
               style={{ borderRadius: 8 }}
               data-bs-dismiss="modal"
               onClick={cleanStatus}
             >
               Cancelar
-            </button>
-            <button
-              type="button"
-              className="btn flex-fill fw-semibold text-white"
-              style={{ borderRadius: 8, background: "#f5874f", border: "none", opacity: code.length === DIGITS ? 1 : 0.5 }}
+            </Button>
+            <Button
+              variant="primary"
+              className="flex-fill fw-semibold"
+              style={{ borderRadius: 8, opacity: code.length === DIGITS ? 1 : 0.5 }}
               data-bs-dismiss="modal"
               disabled={code.length < DIGITS}
               onClick={() => props.handleSignUp(code)}
             >
               Confirmar
-            </button>
+            </Button>
           </div>
 
         </div>

@@ -74,7 +74,7 @@ export default function PropertyTypeCard({ type, edit = false }) {
                     align-items: center;
                     justify-content: center;
                     user-select: none;
-                    background: rgba(255, 255, 255, 0.02);
+                    background: var(--theme-section-bg, rgba(255, 255, 255, 0.02));
                     width: 100%;
                     animation: cardEnter 0.4s ease-out;
                 }
@@ -148,7 +148,7 @@ export default function PropertyTypeCard({ type, edit = false }) {
                     font-family: 'DM Sans', sans-serif;
                     font-size: 0.78rem;
                     font-weight: 600;
-                    color: rgba(255, 255, 255, 0.9);
+                    color: var(--theme-text-primary, rgba(255, 255, 255, 0.9));
                     transition: all 0.25s ease;
                     letter-spacing: 0.02em;
                     text-align: center;

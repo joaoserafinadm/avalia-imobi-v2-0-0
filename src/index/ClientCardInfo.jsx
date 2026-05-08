@@ -16,6 +16,7 @@ import ClientFeatures from "../clientsManagement/ClientFeatures"
 import { showClientInfo } from "../../utils/showClientInfo"
 import Link from "next/link"
 import HandleButtons from "../clientsManagement/HandleButtons"
+import Button from "../components/Button"
 
 export default function ClientCardInfo(props) {
 
@@ -109,9 +110,9 @@ export default function ClientCardInfo(props) {
                 {client?.status !== 'outdated' && (
                     <div className={styles.viewBtnWrap}>
                         <Link href={`/clientsManagement?client_id=${client._id}`} passHref>
-                            <button type="button" className={styles.viewBtn} id={"viewClientButton" + client._id}>
+                            <Button variant="ghost" className={styles.viewBtn} id={"viewClientButton" + client._id}>
                                 <FontAwesomeIcon icon={faEye} />
-                            </button>
+                            </Button>
                         </Link>
                     </div>
                 )}

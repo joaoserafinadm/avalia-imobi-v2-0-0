@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
 
 /* ── Outer card ── */
 .card {
-  background: linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%);
+  background: var(--theme-content-bg, linear-gradient(145deg, #0d1420 0%, #111827 60%, #0f1b2d 100%));
   border: 1px solid rgba(245, 134, 79, 0.362);
   border-radius: 18px;
   overflow: hidden;
@@ -76,7 +76,7 @@
   }
 
   :global(.swiper-pagination-bullet) {
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--theme-border-visible, rgba(255, 255, 255, 0.3));
     opacity: 1;
   }
 
@@ -86,7 +86,7 @@
 
   :global(.swiper-button-prev),
   :global(.swiper-button-next) {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--theme-text-secondary, rgba(255, 255, 255, 0.7));
     width: 28px;
     height: 28px;
     background: rgba(0, 0, 0, 0.45);
@@ -118,7 +118,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.04));
 }
 
 .placeholderText {
@@ -126,7 +126,7 @@
   font-size: 0.72rem;
   font-weight: 300;
   font-style: italic;
-  color: rgba(255, 255, 255, 0.18);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.18));
   letter-spacing: 0.06em;
 }
 
@@ -140,7 +140,7 @@
   gap: 5px;
   padding: 3px 10px 3px 8px;
   border-radius: 0 20px 20px 0;
-  color: #fff;
+  color: var(--theme-text-primary, #fff);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.67rem;
   font-weight: 500;
@@ -169,9 +169,9 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 0.65rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.6);
-  background: #111827;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--theme-text-tertiary, rgba(255, 255, 255, 0.6));
+  background: var(--theme-bg-elevated, #111827);
+  border: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.08));
   padding: 3px 10px 3px 8px;
   border-radius: 6px 0 0 6px;
   white-space: nowrap;
@@ -205,7 +205,7 @@
   font-family: 'Syne', sans-serif;
   font-weight: 700;
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--theme-text-primary, rgba(255, 255, 255, 0.9));
   letter-spacing: -0.01em;
   line-height: 1.2;
   margin: 0 0 5px 0;
@@ -222,7 +222,7 @@
 /* ── Divider ── */
 .divider {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.05));
   margin: 8px 0 6px;
 }
 
@@ -235,7 +235,7 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 0.67rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.2);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.2));
   display: flex;
   align-items: baseline;
   gap: 4px;
@@ -246,7 +246,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.65rem;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.28);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.28));
 }
 
 /* ── Legacy classes kept for ClientCard.module.scss consumers ── */

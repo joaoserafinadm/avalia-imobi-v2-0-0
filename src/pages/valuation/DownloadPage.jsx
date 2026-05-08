@@ -3,6 +3,7 @@ import styles from './valuation.module.scss'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDownload, faEye, faCheckCircle, faHandshake, faFilePdf, faPhone } from "@fortawesome/free-solid-svg-icons"
 import { Download, Eye, View } from 'lucide-react'
+import Button from "../../components/Button"
 
 export default function DownloadPage(props) {
 
@@ -121,14 +122,10 @@ export default function DownloadPage(props) {
                                                         <p className="text-muted mb-4">
                                                             Revise todos os detalhes da sua avaliação
                                                         </p>
-                                                        <button 
-                                                            className="btn btn-outline-orange btn-lg w-100" 
-                                                            onClick={() => handleRestartValuation()}                                                          
-                                                         
-                                                        >
+                                                        <Button variant="secondary" size="lg" full onClick={() => handleRestartValuation()}>
                                                             <Eye className="me-2" />
                                                             Visualizar
-                                                        </button>
+                                                        </Button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -149,13 +146,10 @@ export default function DownloadPage(props) {
                                                         <p className="text-muted mb-4">
                                                             Baixe o relatório completo da avaliação
                                                         </p>
-                                                        <button 
-                                                            className="btn btn-lg btn-orange w-100" 
-                                                            onClick={() => generatePDF()}
-                                                        >
+                                                        <Button variant="primary" size="lg" full onClick={() => generatePDF()}>
                                                             <Download className="me-2" />
                                                             Baixar PDF
-                                                        </button>
+                                                        </Button>
                                                     </div>
                                                 </div>
                                             </div>

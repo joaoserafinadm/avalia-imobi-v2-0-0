@@ -16,6 +16,7 @@ import {
     FacebookMessengerIcon,
 } from 'next-share'
 import { replaceAmpersand } from "../../utils/replaceAmpersand"
+import Button from "../components/Button"
 
 
 
@@ -85,12 +86,13 @@ export default function Alerts() {
                             <div className="row">
                                 <div className="col-12 d-flex">
 
-                                    <button
-                                        className="mx-2 btn btn-sm btn-outline-light"
-                                        type="button"
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        className="mx-2"
                                         onClick={() => handleShare(elem.link + "&userId=" + token.sub)}>
                                         <FontAwesomeIcon icon={faShareAlt} className="icon" /> Compartilhar
-                                    </button>
+                                    </Button>
 
 
                                     {/* <span className="mx-2 cardAnimation" type="button" >

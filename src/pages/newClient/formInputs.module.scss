@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 /* ── Section card ── */
 .section {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--theme-section-bg, rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--theme-border-subtle, rgba(255, 255, 255, 0.06));
   border-radius: 14px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
@@ -15,7 +15,7 @@
   font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--theme-text-tertiary, rgba(255, 255, 255, 0.45));
   margin-bottom: 5px;
   display: block;
 }
@@ -26,12 +26,12 @@
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.09);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--theme-input-bg, rgba(255, 255, 255, 0.04));
   transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 
   &:focus-within {
     border-color: rgba(245, 135, 79, 0.45);
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--theme-border-subtle, rgba(255, 255, 255, 0.06));
     box-shadow: 0 0 0 3px rgba(245, 135, 79, 0.08);
   }
 }
@@ -45,10 +45,10 @@
   padding: 10px 14px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--theme-text-primary, rgba(255, 255, 255, 0.85));
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.2);
+    color: var(--theme-text-faint, rgba(255, 255, 255, 0.2));
   }
 
   &[type='number'] {
@@ -71,11 +71,11 @@
   display: flex;
   align-items: center;
   padding: 0 12px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--theme-section-bg, rgba(255, 255, 255, 0.03));
   border-left: 1px solid rgba(255, 255, 255, 0.06);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.3));
   flex-shrink: 0;
 }
 
@@ -94,19 +94,19 @@
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--theme-input-bg, rgba(255, 255, 255, 0.04));
   border: 1px solid rgba(255, 255, 255, 0.09);
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--theme-text-primary, rgba(255, 255, 255, 0.85));
   transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 
   option {
-    background: #0d1420;
-    color: rgba(255, 255, 255, 0.85);
+    background: var(--theme-header-bg, #0d1420);
+    color: var(--theme-text-primary, rgba(255, 255, 255, 0.85));
   }
 
   &:focus {
     border-color: rgba(245, 135, 79, 0.45);
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--theme-border-subtle, rgba(255, 255, 255, 0.06));
     box-shadow: 0 0 0 3px rgba(245, 135, 79, 0.08);
   }
 }
@@ -118,7 +118,7 @@
   transform: translateY(-50%);
   pointer-events: none;
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--theme-text-faint, rgba(255, 255, 255, 0.35));
 }
 
 /* ── Feature checkboxes ── */

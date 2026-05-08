@@ -1,4 +1,5 @@
 import styles from "./Login.module.scss";
+import Button from "../../components/Button";
 import { AiOutlineLeft } from "@react-icons/all-files/ai/AiOutlineLeft";
 import { useState } from "react";
 import { SpinnerSM } from "../../components/loading/Spinners";
@@ -27,9 +28,9 @@ export default function RescuePassword(props) {
   return (
     <div className={`${styles.formInner} fadeItem1s`}>
 
-      <button className={styles.backLink} onClick={() => props.setSection("signIn")}>
+      <Button variant="ghost" className={styles.backLink} onClick={() => props.setSection("signIn")}>
         <AiOutlineLeft /> Voltar para o login
-      </button>
+      </Button>
 
       <h1 className={styles.formTitle}>Recuperar senha</h1>
       <p className={styles.formSubtitle}>
@@ -41,13 +42,14 @@ export default function RescuePassword(props) {
           <FontAwesomeIcon icon={faCircleCheck} style={{ fontSize: "3rem", color: "#21a663" }} />
           <p className="text-success fw-semibold mb-0">{emailSuccess}</p>
           <p className="text-secondary small">Verifique também a pasta de spam.</p>
-          <button
+          <Button
+            variant="primary"
             className={styles.btnPrimary}
             style={{ maxWidth: "200px" }}
             onClick={() => props.setSection("signIn")}
           >
             Voltar ao login
-          </button>
+          </Button>
         </div>
       ) : (
         <>
@@ -65,9 +67,9 @@ export default function RescuePassword(props) {
             {emailError && <small className="text-danger">{emailError}</small>}
           </div>
 
-          <button className={styles.btnPrimary} onClick={handleSendToken} disabled={loadingSend}>
-            {loadingSend ? <SpinnerSM /> : "Enviar link de recuperação"}
-          </button>
+          <Button variant="primary" className={styles.btnPrimary} loading={loadingSend} onClick={handleSendToken}>
+            Enviar link de recuperação
+          </Button>
         </>
       )}
 

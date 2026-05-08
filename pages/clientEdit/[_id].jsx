@@ -3,7 +3,7 @@ import Title from "../../src/components/title/Title2"
 import { useEffect, useState } from "react"
 import { FixedTopicsBottom } from "../../src/components/fixedTopics"
 import Link from "next/link"
-import { SpinnerLG, SpinnerSM } from "../../src/components/loading/Spinners"
+import { SpinnerLG } from "../../src/components/loading/Spinners"
 import {
     initialValues, setAndar, setAreaTotal, setAreaTotalPrivativa, setBairro,
     setBanheiros, setCelular, setCep, setCidade, setClientLastName, setClientName,
@@ -33,6 +33,7 @@ import Input from "../../src/components/Input"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEnvelope, faMobileScreen } from "@fortawesome/free-solid-svg-icons"
 import styles from "./clientEdit.module.scss"
+import Button from "../../src/components/Button"
 
 export default function clientEdit() {
 
@@ -252,20 +253,20 @@ export default function clientEdit() {
                 <FixedTopicsBottom>
                     <div className={styles.footerBar}>
                         <div className={styles.footerActions}>
-                            <Link href="/clientsManagement" className={styles.btnCancel}>
-                                Cancelar
+                            <Link href="/clientsManagement" >
+                                <Button variant="secondary">
+
+                                    Cancelar
+                                </Button>
                             </Link>
-                            {loadingSave ? (
-                                <button className={styles.btnSave} disabled><SpinnerSM /></button>
-                            ) : (
-                                <button
-                                    className={styles.btnSave}
-                                    disabled={!newClientForm.clientName || !newClientForm.propertyType}
-                                    onClick={() => handleSave(newClientForm)}
-                                >
-                                    Salvar alterações
-                                </button>
-                            )}
+                            <Button
+                                variant="primary"
+                                loading={loadingSave}
+                                disabled={!newClientForm.clientName || !newClientForm.propertyType}
+                                onClick={() => handleSave(newClientForm)}
+                            >
+                                Salvar alterações
+                            </Button>
                         </div>
                     </div>
                 </FixedTopicsBottom>

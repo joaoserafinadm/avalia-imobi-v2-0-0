@@ -4,6 +4,7 @@ import { useJsApiLoader } from "@react-google-maps/api"
 import { useDispatch, useSelector } from "react-redux"
 import { setBairro, setCep, setCidade, setLatitude, setLogradouro, setLongitude, setNumero, setUf } from "../../../store/NewClientForm/NewClientForm.actions"
 import TitleLabel from "../../components/TitleLabel"
+import Input from "../../components/Input"
 import s from "./formInputs.module.scss"
 
 const LIBRARIES = ["places"]
@@ -33,6 +34,8 @@ export default function Location(props) {
     }
 
     const [addressInput, setAddressInput] = useState("")
+    const [addressConfirmed, setAddressConfirmed] = useState(false)
+    const [touched, setTouched] = useState(false)
 
     useEffect(() => {
         const built = buildAddressDisplay()
@@ -46,7 +49,14 @@ export default function Location(props) {
     ])
 
     useEffect(() => {
+        if (!inputRef.current) return
+        inputRef.current.setAttribute("autocomplete", "new-password")
+    }, [])
+
+    useEffect(() => {
         if (!isLoaded || !inputRef.current) return
+
+        inputRef.current.setAttribute("autocomplete", "new-password")
 
         autocompleteRef.current = new window.google.maps.places.Autocomplete(
             inputRef.current,
@@ -96,6 +106,8 @@ export default function Location(props) {
         dispatch(setLongitude(lng))
 
         setAddressInput(place.formatted_address || "")
+        setAddressConfirmed(true)
+        setTouched(false)
     }
 
     return (
@@ -105,19 +117,20 @@ export default function Location(props) {
                 <div className="row g-3">
 
                     <div className="col-12">
-                        <label className="form-label">Endereço<b>*</b></label>
-                        <input
+                        <Input
                             ref={inputRef}
-                            type="text"
-                            className="form-control"
+                            label="Endereço"
+                            required
                             placeholder="Digite o endereço do imóvel..."
                             value={addressInput}
-                            onChange={e => setAddressInput(e.target.value)}
-                            autoComplete="off"
+                            onChange={e => {
+                                setAddressInput(e.target.value)
+                                setAddressConfirmed(false)
+                            }}
+                            onBlur={() => setTouched(true)}
+                            error={touched && !addressConfirmed ? "Selecione um endereço da lista de sugestões" : undefined}
+                            hint={!touched || addressConfirmed ? "Digite e selecione uma sugestão para preencher automaticamente" : undefined}
                         />
-                        <small className="text-muted">
-                            Digite e selecione uma sugestão para preencher automaticamente
-                        </small>
                     </div>
 
                     {newClientForm.latitude && newClientForm.longitude && (

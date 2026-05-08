@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
+import Button from '../Button'
 if (typeof window !== "undefined") {
     const bootstrap = require("bootstrap");
 }
@@ -91,12 +92,10 @@ const Cropper = (props) => {
                         </div>
                         <div>
                             {selectFile &&
-
-                                <button type="button" className="btn btn-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#cropperModal">
+                                <Button variant="secondary" size="sm" className="text-nowrap" data-bs-toggle="modal" data-bs-target="#cropperModal">
                                     Editar imagem
-                                </button>
+                                </Button>
                             }
-
                         </div>
                     </div>
 
@@ -114,7 +113,7 @@ const Cropper = (props) => {
                         </div>
                         <div className="modal-footer">
                             {/* <label htmlFor="inputButton" className="akvo_btn akvo_btn_primary btn-sm">Alterar Imagem</label> */}
-                            <button className="akvo_btn akvo_btn_secondary btn-sm" onClick={getCroppedImg} data-bs-dismiss="modal">Cortar Imagem</button>
+                            <Button variant="secondary" size="sm" onClick={getCroppedImg} data-bs-dismiss="modal">Cortar Imagem</Button>
                         </div>
                     </div>
                 </div>

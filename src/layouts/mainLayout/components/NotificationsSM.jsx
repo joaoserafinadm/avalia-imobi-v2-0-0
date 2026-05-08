@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useRef } from 'react'
+import Button from '../../../components/Button'
 
 function NotifItem({ elem, onClick }) {
     const unread = !elem.checked
@@ -53,14 +54,14 @@ export default function NotificationsSM(props) {
                             {unreadCount} nova{unreadCount > 1 ? 's' : ''}
                         </span>
                     )}
-                    <button
-                        type="button"
+                    <Button
+                        variant="ghost"
                         className={styles.closeBtn}
                         onClick={handleClose}
                         aria-label="Fechar"
                     >
                         <FontAwesomeIcon icon={faXmark} />
-                    </button>
+                    </Button>
                 </div>
             </div>
 

@@ -11,8 +11,8 @@ import { useDispatch } from "react-redux";
 import navbarHide from "../utils/navbarHide";
 import Input from "../src/components/Input";
 import TitleLabel from "../src/components/TitleLabel";
-import { SpinnerSM } from "../src/components/loading/Spinners";
 import styles from "./sac.module.scss";
+import Button from "../src/components/Button";
 
 export default function Sac() {
 
@@ -90,14 +90,16 @@ export default function Sac() {
                                 </div>
                             )}
                             <div className={styles.sectionFooter}>
-                                <button
+                                <Button
+                                    variant="primary"
                                     className={styles.btnPrimary}
-                                    onClick={() => handleSend('question')}
+                                    loading={loading}
                                     disabled={loading || !text.trim()}
+                                    icon={faPaperPlane}
+                                    onClick={() => handleSend('question')}
                                 >
-                                    {loading ? <SpinnerSM /> : <FontAwesomeIcon icon={faPaperPlane} />}
-                                    {loading ? 'Enviando…' : 'Enviar mensagem'}
-                                </button>
+                                    Enviar mensagem
+                                </Button>
                             </div>
                         </div>
 
@@ -127,14 +129,16 @@ export default function Sac() {
                                 </div>
                             )}
                             <div className={styles.sectionFooter}>
-                                <button
+                                <Button
+                                    variant="danger"
                                     className={styles.btnDanger}
-                                    onClick={() => handleSend('error')}
+                                    loading={errorLoading}
                                     disabled={errorLoading || !errorText.trim()}
+                                    icon={faTriangleExclamation}
+                                    onClick={() => handleSend('error')}
                                 >
-                                    {errorLoading ? <SpinnerSM /> : <FontAwesomeIcon icon={faTriangleExclamation} />}
-                                    {errorLoading ? 'Enviando…' : 'Reportar erro'}
-                                </button>
+                                    Reportar erro
+                                </Button>
                             </div>
                         </div>
                     </div>

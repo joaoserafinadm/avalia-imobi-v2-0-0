@@ -92,13 +92,13 @@
   gap: 10px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--theme-text-secondary);
   line-height: 1.5;
   overflow-wrap: break-word;
   word-break: break-word;
 
   strong {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--theme-text-primary);
     font-weight: 600;
   }
 

@@ -7,6 +7,7 @@ import TitleLabel from "../components/TitleLabel"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import styles from "./ValuationConfig.module.scss"
+import Button from "../components/Button"
 
 export default function ValuationConfig(props) {
     const client = props.client
@@ -25,18 +26,12 @@ export default function ValuationConfig(props) {
                 setLoadingAdd={value => setLoadingAdd(value)} />
 
             <div className="col-12">
-                <div className={styles.sectionHeader}>
-                    <TitleLabel>Imóveis para comparação</TitleLabel>
-                    <AiPropertySearch
-                        client={client}
-                        propertyArray={props.propertyArray}
-                        setPropertyArray={value => props.setPropertyArray(value)}
-                        setForceUpdate={() => setForceUpdate(forceUpdate + 1)} />
-                </div>
+                <TitleLabel>Imóveis para comparação</TitleLabel>
+
 
                 <div className={styles.infoBlock}>
-                    <button
-                        type="button"
+                    <Button
+                        variant="ghost"
                         className={styles.infoToggle}
                         onClick={() => setInfoExpanded(p => !p)}
                     >
@@ -45,7 +40,7 @@ export default function ValuationConfig(props) {
                             icon={faChevronDown}
                             className={`${styles.infoChevron} ${infoExpanded ? styles.infoChevronOpen : ''}`}
                         />
-                    </button>
+                    </Button>
                     <div className={`${styles.infoItems} ${infoExpanded ? styles.infoItemsOpen : ''}`}>
                         <div className={styles.infoItem}>
                             <span className={styles.infoDot} />
@@ -61,7 +56,13 @@ export default function ValuationConfig(props) {
                         </div>
                     </div>
                 </div>
-
+                <div className={styles.sectionHeader}>
+                    <AiPropertySearch
+                        client={client}
+                        propertyArray={props.propertyArray}
+                        setPropertyArray={value => props.setPropertyArray(value)}
+                        setForceUpdate={() => setForceUpdate(forceUpdate + 1)} />
+                </div>
                 <PropertyCollection
                     client={client}
                     propertyArray={props.propertyArray}

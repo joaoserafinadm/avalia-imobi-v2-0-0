@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashAlt, faUpload, faLink, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import Modal, { ModalBtnPrimary, ModalBtnSecondary } from "../components/Modal"
 import styles from "./PropertyAdd.module.scss"
+import Button from "../components/Button"
 
 export default function PropertyEditModal({ property, index, propertyArray, setPropertyArray }) {
     const dispatch = useDispatch()
@@ -395,9 +396,9 @@ export default function PropertyEditModal({ property, index, propertyArray, setP
                     ) : (
                         <div className={styles.imagePreview}>
                             <img src={previewUrl || imageUrl} alt="" className={styles.previewImg} />
-                            <button type="button" className={styles.removeBtn} onClick={handleRemoveManualImage} title="Remover imagem">
+                            <Button variant="danger" className={styles.removeBtn} onClick={handleRemoveManualImage} title="Remover imagem">
                                 <FontAwesomeIcon icon={faTrashAlt} />
-                            </button>
+                            </Button>
                             {manualImageFile && (
                                 <span className={styles.previewName}>{manualImageFile.name}</span>
                             )}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import Button from "../Button"
 
 
 export default function CompanyLogo(props) {
@@ -60,7 +61,7 @@ export default function CompanyLogo(props) {
                         value={fileInputState} className="form-input" hidden />
                     <label htmlFor="inputButton" className="btn btn-secondary btn-sm text-nowrap mx-1" type="button">{props.data ? 'Alterar Imagem' : 'Inserir Imagem'}</label>
                     {props.data && (
-                        <button className="akvo_btn akvo_btn_danger btn-sm mx-1" onClick={() => { setPreviewSorce(null) }}>Remover Imagem</button>
+                        <Button variant="danger" size="sm" className="mx-1" onClick={() => { setPreviewSorce(null) }}>Remover Imagem</Button>
                     )}
                     <div className="d-flex align-items-center">
                         {/* <span

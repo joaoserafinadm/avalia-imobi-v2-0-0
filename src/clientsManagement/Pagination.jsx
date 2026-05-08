@@ -2,6 +2,7 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import scrollTo from '../../utils/scrollTo';
 import styles from "./Pagination.module.scss";
+import Button from "../components/Button";
 
 export default function Pagination({ array, elementosPorPagina, page, setPage }) {
 
@@ -26,8 +27,8 @@ export default function Pagination({ array, elementosPorPagina, page, setPage })
     return (
         <div className={styles.wrap} role="navigation" aria-label="Paginação">
 
-            <button
-                type="button"
+            <Button
+                variant="ghost"
                 className={styles.btn}
                 disabled={page === 1}
                 onClick={() => goTo(page - 1)}
@@ -35,36 +36,36 @@ export default function Pagination({ array, elementosPorPagina, page, setPage })
             >
                 <FontAwesomeIcon icon={faChevronLeft} style={{ fontSize: '0.65rem' }} />
                 <span>Anterior</span>
-            </button>
+            </Button>
 
             {pageNumbers[0] > 1 && (
                 <>
-                    <button type="button" className={styles.btnPage} onClick={() => goTo(1)}>1</button>
+                    <Button variant="ghost" className={styles.btnPage} onClick={() => goTo(1)}>1</Button>
                     {pageNumbers[0] > 2 && <span className={styles.sep}>···</span>}
                 </>
             )}
 
             {pageNumbers.map(n => (
-                <button
+                <Button
                     key={n}
-                    type="button"
+                    variant="ghost"
                     className={page === n ? styles.btnActive : styles.btnPage}
                     onClick={() => page !== n && goTo(n)}
                     aria-current={page === n ? 'page' : undefined}
                 >
                     {n}
-                </button>
+                </Button>
             ))}
 
             {pageNumbers[pageNumbers.length - 1] < totalPages && (
                 <>
                     {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && <span className={styles.sep}>···</span>}
-                    <button type="button" className={styles.btnPage} onClick={() => goTo(totalPages)}>{totalPages}</button>
+                    <Button variant="ghost" className={styles.btnPage} onClick={() => goTo(totalPages)}>{totalPages}</Button>
                 </>
             )}
 
-            <button
-                type="button"
+            <Button
+                variant="ghost"
                 className={styles.btn}
                 disabled={page === totalPages}
                 onClick={() => goTo(page + 1)}
@@ -72,7 +73,7 @@ export default function Pagination({ array, elementosPorPagina, page, setPage })
             >
                 <span>Próximo</span>
                 <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: '0.65rem' }} />
-            </button>
+            </Button>
 
         </div>
     );

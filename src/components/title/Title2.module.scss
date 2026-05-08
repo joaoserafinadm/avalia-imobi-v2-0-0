@@ -1,4 +1,4 @@
-.headerBox {
+﻿.headerBox {
     position: relative;
     background-color: var(--ai-bg-primary);
     border-bottom: 3px solid #f5874f;
@@ -38,7 +38,7 @@
 .headerTitle {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--theme-text-primary, #fff);
     line-height: 1.2;
     letter-spacing: -0.01em;
 }
@@ -46,7 +46,7 @@
 .headerSubtitle {
     font-size: 0.875rem;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--theme-text-tertiary, rgba(255, 255, 255, 0.6));
     padding-left: calc(4px + 0.75rem);
     margin-top: 0.1rem;
 }
@@ -57,9 +57,9 @@
     gap: 0.4rem;
     font-size: 0.8rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.55);
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--theme-text-tertiary, rgba(255, 255, 255, 0.55));
+    background: var(--theme-border-subtle, rgba(255, 255, 255, 0.07));
+    border: 1px solid var(--theme-border-visible, rgba(255, 255, 255, 0.12));
     border-radius: 100px;
     padding: 0.3rem 0.85rem;
     transition: all 0.2s ease;
@@ -67,9 +67,9 @@
     flex-shrink: 0;
 
     &:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.13);
-        border-color: rgba(255, 255, 255, 0.25);
+        color: var(--theme-text-primary, #fff);
+        background: var(--theme-active-bg, rgba(255, 255, 255, 0.13));
+        border-color: var(--theme-text-faint, rgba(255, 255, 255, 0.25));
     }
 }
 

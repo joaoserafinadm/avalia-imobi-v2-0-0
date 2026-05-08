@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
-import { SpinnerLG, SpinnerSM } from "../src/components/loading/Spinners";
+import { SpinnerLG } from "../src/components/loading/Spinners";
 import CropperImageModal from "../src/companyEdit/CropperImageModal";
 import CardsCarouselModal from "../src/editProfile/CardsCarouselModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,6 +25,7 @@ import { closeModal, modalClose } from "../utils/modalControl.js";
 import Input from "../src/components/Input";
 import TitleLabel from "../src/components/TitleLabel";
 import styles from "./editProfile.module.scss";
+import Button from "../src/components/Button";
 
 
 
@@ -241,7 +242,7 @@ export default function EditProfile() {
                             </div>
 
                         </div>
-                        
+
 
                         {/* ── Identificação ── */}
                         <TitleLabel>Identificação</TitleLabel>
@@ -341,36 +342,34 @@ export default function EditProfile() {
                         </div>
                         <div className="col-12 d-flex justify-content-end">
 
-                            <button
+                            <Button
+                                variant="ghost"
                                 className={`${styles.btnCard} mb-3`}
                                 data-bs-toggle="modal"
                                 data-bs-target="#CardsCarouselModal"
-                                type="button"
                             >
                                 <FontAwesomeIcon icon={faIdCard} />
                                 Ver cartão
-                            </button>
+                            </Button>
                         </div>
                         <FixedTopicsBottom>
                             <div className={styles.footerBar}>
 
 
                                 <div className={styles.footerActions}>
-                                    <Link href="/" className={styles.btnCancel}>
-                                        Cancelar
+                                    <Link href="/" >
+                                        <Button variant="secondary">
+
+                                            Cancelar
+                                        </Button>
                                     </Link>
-                                    {loadingSave ? (
-                                        <button className={styles.btnSave} disabled>
-                                            <SpinnerSM />
-                                        </button>
-                                    ) : (
-                                        <button
-                                            className={styles.btnSave}
-                                            onClick={() => handleSave(token.company_id)}
-                                        >
-                                            Salvar alterações
-                                        </button>
-                                    )}
+                                    <Button
+                                        variant="primary"
+                                        loading={loadingSave}
+                                        onClick={() => handleSave(token.company_id)}
+                                    >
+                                        Salvar alterações
+                                    </Button>
                                 </div>
                             </div>
                         </FixedTopicsBottom>

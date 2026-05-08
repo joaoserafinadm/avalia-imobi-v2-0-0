@@ -2,7 +2,7 @@ import Link from "next/link";
 import Title from "../src/components/title/Title2";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faUserPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faUserPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { SpinnerLG } from "../src/components/loading/Spinners";
 import navbarHide from "../utils/navbarHide";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,8 @@ import UsersCard from "../src/usersManagement/UserCard";
 import ViewUserModal from "../src/usersManagement/ViewUserModal";
 import MenuBar from "../src/components/menuBar";
 import styles from "./usersManagement.module.scss";
+import Button from "../src/components/Button";
+import Input from "../src/components/Input";
 
 
 
@@ -76,27 +78,28 @@ export default function UsersManagement() {
                                 </span>
                             </div>
                         </div> */}
-                        <Link href='/userAdd' className={styles.addBtn}>
-                            <FontAwesomeIcon icon={faUserPlus} />
-                            Adicionar usuário
+                        <Link href='/userAdd' >
+                            <Button variant="primary">
+
+                                <FontAwesomeIcon icon={faUserPlus} />
+                                Adicionar usuário
+                            </Button>
                         </Link>
                     </div>
 
-                    <hr className={styles.divider} />
+                    <hr  />
 
                     {loadingPage ? <SpinnerLG /> : (
                         <>
                             {/* ── Search row ── */}
                             <div className={styles.searchRow}>
                                 <div className={styles.searchWrap}>
-                                    <input
-                                        type="text"
-                                        className={styles.searchInput}
+                                    <Input
+                                        type="search"
                                         placeholder="Pesquisar por nome..."
                                         value={searchValue}
                                         onChange={e => setSearchValue(e.target.value)}
                                     />
-                                    <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
                                 </div>
                                 {searchValue && (
                                     <span className={styles.resultsLabel}>

@@ -1,4 +1,4 @@
-export default function ClientInfoApartamento({ client }) {
+﻿export default function ClientInfoApartamento({ client }) {
     return (
         <>
             <Chip label="Área Total"     value={`${client?.areaTotal || 0} m²`} />
@@ -17,15 +17,15 @@ function Chip({ label, value }) {
     return (
         <div style={{
             display: 'inline-flex', flexDirection: 'column', gap: '3px',
-            background: 'rgba(255,255,255,0.04)',
+            background: 'var(--theme-input-bg)',
             justifyContent: 'center', alignItems: 'center',
             border: '1px solid rgba(255,255,255,0.08)',
             borderRadius: '10px', padding: '10px 16px',
         }}>
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.95rem', fontWeight: 500, color: 'rgba(255,255,255,0.85)', lineHeight: 1 }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.95rem', fontWeight: 500, color: 'var(--theme-text-primary)', lineHeight: 1 }}>
                 {value}
             </span>
-            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.85rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1 }}>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.85rem', color: 'var(--theme-text-primary)', lineHeight: 1 }}>
                 {label}
             </span>
         </div>

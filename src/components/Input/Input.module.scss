@@ -1,4 +1,4 @@
-/* ─────────────────────────────────────────────
+﻿/* ─────────────────────────────────────────────
    Input Component — Design System
    Fonts: DM Sans · Syne · IBM Plex Mono
    Brand: #f5874f / rgba(245,135,79,…)
@@ -19,7 +19,7 @@
 ══════════════════════════════════════════ */
 .label {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.80rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   transition: color 0.2s ease;
@@ -65,14 +65,14 @@
     }
 
     option {
-      background: #0d1420;
+      background: var(--theme-header-bg, #0d1420);
       color: rgba(255,255,255,0.85);
     }
   }
 
   .light & {
     background: #ffffff;
-    border:     1px solid rgba(15,20,35,0.12);
+    border:     1px solid rgba(15,20,35,0.25);
     color:      rgba(15,20,35,0.9);
 
     &::placeholder { color: rgba(15,20,35,0.28); }
@@ -158,10 +158,10 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.72rem;
   pointer-events: none;
-  z-index: 1;
+  // z-index: 1;
 
-  .dark  & { background: rgba(255, 255, 255, 0.03); color: rgba(255, 255, 255, 0.3); }
-  .light & { background: rgba(15, 20, 35, 0.03);    color: rgba(15, 20, 35, 0.35); }
+  .dark  & { background: var(--theme-section-bg, rgba(255, 255, 255, 0.03)); color: var(--theme-text-faint, rgba(255, 255, 255, 0.3)); }
+  .light & { background: rgba(15, 20, 35, 0.03);    color: rgba(15, 20, 35, 0.50); }
 }
 
 .hasSuffixBadge { padding-right: 52px !important; }
@@ -274,7 +274,7 @@
     opacity: 0;
     transform: scale(0.5) rotate(-10deg);
     transition: opacity 0.15s ease, transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
-    color: #fff;
+    color: var(--theme-text-primary, #fff);
     font-size: 0.6rem;
   }
 }
@@ -490,4 +490,52 @@
   display: flex;
   align-items: center;
   gap: 5px;
+}
+
+/* ══════════════════════════════════════════
+   TEMA CLARO GLOBAL — quando [data-theme="light"]
+   está no html, forçar comportamento .light
+   mesmo em componentes com prop theme="dark"
+══════════════════════════════════════════ */
+:global([data-theme="light"]) .dark {
+  .label  { color: rgba(15, 20, 35, 0.8) !important; }
+  .input  {
+    background: #ffffff !important;
+    border:     1px solid rgba(15, 20, 35, 0.3) !important;
+    color:      rgba(15, 20, 35, 0.9) !important;
+    &::placeholder { color: rgba(15, 20, 35, 0.28) !important; }
+    &:focus {
+      border-color: rgba(245, 135, 79, 0.55) !important;
+      background:   #fff !important;
+      box-shadow:   0 0 0 3px rgba(245, 135, 79, 0.10) !important;
+    }
+    option { background: #ffffff !important; color: rgba(15, 20, 35, 0.9) !important; }
+  }
+  .textarea {
+    background: #ffffff !important;
+    border:     1px solid rgba(15, 20, 35, 0.12) !important;
+    color:      rgba(15, 20, 35, 0.9) !important;
+    &::placeholder { color: rgba(15, 20, 35, 0.28) !important; }
+    &:focus {
+      border-color: rgba(245, 135, 79, 0.55) !important;
+      background:   #fff !important;
+      box-shadow:   0 0 0 3px rgba(245, 135, 79, 0.10) !important;
+    }
+  }
+  .iconWrap      { color: rgba(15, 20, 35, 0.35) !important; }
+  .suffixBtn     { color: rgba(15, 20, 35, 0.35) !important;
+    &:hover { color: rgba(15, 20, 35, 0.75) !important; background: rgba(15, 20, 35, 0.06) !important; } }
+  .suffixBadge   { background: rgba(15, 20, 35, 0.03) !important; color: rgba(15, 20, 35, 0.6) !important; }
+  .selectArrow   { color: rgba(15, 20, 35, 0.4) !important; }
+  .checkboxLabel { color: rgba(15, 20, 35, 0.8) !important; }
+  .checkboxBox   { background: #fff !important; border-color: rgba(15, 20, 35, 0.18) !important; }
+  .radioLabel    { color: rgba(15, 20, 35, 0.8) !important; }
+  .radioDot      { background: #fff !important; border-color: rgba(15, 20, 35, 0.18) !important; }
+  .toggleLabel   { color: rgba(15, 20, 35, 0.8) !important; }
+  .toggleTrack   { background: rgba(15, 20, 35, 0.12) !important; border-color: rgba(15, 20, 35, 0.14) !important; }
+  .fileZone      { background: rgba(15, 20, 35, 0.02) !important; border-color: rgba(15, 20, 35, 0.14) !important; }
+  .fileIcon      { color: rgba(15, 20, 35, 0.25) !important; }
+  .fileText      { color: rgba(15, 20, 35, 0.45) !important; }
+  .fileName      { background: rgba(15, 20, 35, 0.06) !important; color: rgba(15, 20, 35, 0.65) !important; }
+  .hint          { color: rgba(15, 20, 35, 0.38) !important; }
 }

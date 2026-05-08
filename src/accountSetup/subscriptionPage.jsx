@@ -4,8 +4,8 @@ import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken';
 import { loadStripe } from '@stripe/stripe-js';
 import { useState } from "react";
-import { SpinnerSM } from "../components/loading/Spinners";
 import styles from "./subscriptionPage.module.scss";
+import Button from "../components/Button";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
@@ -46,17 +46,16 @@ export default function SubscriptionPage(props) {
                     </p>
                 </div>
 
-                {loading ? (
-                    <button className={styles.portalBtn} disabled>
-                        Acessando portal&hellip; <SpinnerSM />
-                    </button>
-                ) : (
-                    <button className={styles.portalBtn} onClick={handleCustomerSession}>
-                        <FontAwesomeIcon icon={faCreditCard} />
-                        Gerenciar assinatura
-                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} style={{ fontSize: '0.7rem', opacity: 0.7 }} />
-                    </button>
-                )}
+                <Button
+                    variant="ghost"
+                    className={styles.portalBtn}
+                    loading={loading}
+                    icon={faCreditCard}
+                    onClick={handleCustomerSession}
+                >
+                    Gerenciar assinatura
+                    <FontAwesomeIcon icon={faArrowUpRightFromSquare} style={{ fontSize: '0.7rem', opacity: 0.7 }} />
+                </Button>
 
                 <div className={styles.infoNote}>
                     <FontAwesomeIcon icon={faCircleInfo} className={styles.infoNoteIcon} />

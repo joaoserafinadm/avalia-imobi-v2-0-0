@@ -6,9 +6,9 @@ import { useState } from "react";
 import { loadStripe } from '@stripe/stripe-js';
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken';
-import { SpinnerSM } from "../components/loading/Spinners";
 import useMercadoPago from "../../hooks/useMercadoPago";
 import styles from "./noSubscriptionPage.module.scss";
+import Button from "../components/Button";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
@@ -175,42 +175,39 @@ export default function NoSubscriptionPage(props) {
             {/* ── CTA card ── */}
             <div className={styles.ctaCard}>
                 {selectedPlan === 'teste' && (
-                    loadingPix ? (
-                        <button className={styles.btnGreen} disabled>
-                            Gerando PIX&hellip; <SpinnerSM />
-                        </button>
-                    ) : (
-                        <button className={styles.btnGreen} onClick={handlePixPayment}>
-                            <FontAwesomeIcon icon={faQrcode} />
-                            Pagar com PIX — R$&nbsp;39,90
-                        </button>
-                    )
+                    <Button
+                        variant="ghost"
+                        className={styles.btnGreen}
+                        loading={loadingPix}
+                        icon={faQrcode}
+                        onClick={handlePixPayment}
+                    >
+                        Pagar com PIX — R$&nbsp;39,90
+                    </Button>
                 )}
 
                 {selectedPlan === 'mensal' && (
-                    loading ? (
-                        <button className={styles.btnOrange} disabled>
-                            Acessando checkout&hellip; <SpinnerSM />
-                        </button>
-                    ) : (
-                        <button className={styles.btnOrange} onClick={() => handleStripe('mensal')}>
-                            <FontAwesomeIcon icon={faCreditCard} />
-                            Assinar por R$&nbsp;39,90/mês
-                        </button>
-                    )
+                    <Button
+                        variant="ghost"
+                        className={styles.btnOrange}
+                        loading={loading}
+                        icon={faCreditCard}
+                        onClick={() => handleStripe('mensal')}
+                    >
+                        Assinar por R$&nbsp;39,90/mês
+                    </Button>
                 )}
 
                 {selectedPlan === 'anual' && (
-                    loading ? (
-                        <button className={styles.btnOrange} disabled>
-                            Acessando checkout&hellip; <SpinnerSM />
-                        </button>
-                    ) : (
-                        <button className={styles.btnOrange} onClick={() => handleStripe('anual')}>
-                            <FontAwesomeIcon icon={faCreditCard} />
-                            Assinar por R$&nbsp;199,90/ano
-                        </button>
-                    )
+                    <Button
+                        variant="ghost"
+                        className={styles.btnOrange}
+                        loading={loading}
+                        icon={faCreditCard}
+                        onClick={() => handleStripe('anual')}
+                    >
+                        Assinar por R$&nbsp;199,90/ano
+                    </Button>
                 )}
 
                 <span className={styles.ctaSafe}>✓ Seguro e protegido &nbsp;·&nbsp; Cancele quando quiser</span>

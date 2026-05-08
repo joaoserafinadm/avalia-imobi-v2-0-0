@@ -11,7 +11,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--theme-text-tertiary);
   margin-bottom: 7px;
   display: flex;
   align-items: center;
@@ -20,20 +20,20 @@
 
 .input {
   width: 100%;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--theme-input-bg);
+  border: 1px solid var(--theme-badge-border);
   border-radius: 10px;
   padding: 10px 14px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--theme-input-color);
   outline: none;
   transition: border-color 0.2s ease, background 0.2s ease;
 
-  &::placeholder { color: rgba(255, 255, 255, 0.2); }
+  &::placeholder { color: var(--theme-placeholder-color); }
 
   &:focus {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--theme-active-bg);
     border-color: rgba(245, 135, 79, 0.4);
   }
 
@@ -48,11 +48,11 @@
 
 .pricePrefix, .priceSuffix {
   padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--theme-bg-subtle);
+  border: 1px solid var(--theme-badge-border);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--theme-mono-color);
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -88,8 +88,8 @@
 .imagePlaceholder {
   width: 100%;
   min-height: 180px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 255, 255, 0.1);
+  background: var(--theme-section-bg);
+  border: 1px dashed var(--theme-badge-border);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -103,7 +103,7 @@
 .imagePlaceholderText {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.25);
+  color: var(--theme-placeholder-color);
   font-style: italic;
   text-align: center;
 }
@@ -113,19 +113,19 @@
   align-items: center;
   gap: 7px;
   padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--theme-badge-bg);
+  border: 1px solid var(--theme-badge-border);
   border-radius: 8px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--theme-text-tertiary);
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.75);
+    background: var(--theme-hover-bg);
+    border-color: var(--theme-border-visible);
+    color: var(--theme-text-secondary);
   }
 }
 
@@ -167,7 +167,7 @@
 .previewName {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--theme-mono-color);
   text-align: center;
   margin-top: 6px;
   display: block;
@@ -180,7 +180,7 @@
 .urlDivider {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.2);
+  color: var(--theme-footer-color);
   margin: 4px 0 2px;
 }
 
@@ -203,7 +203,7 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--theme-text-tertiary);
 }
 
 .tooltipWrap {
@@ -220,11 +220,11 @@
 
 .tooltipIcon {
   font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--theme-mono-color);
   cursor: help;
   transition: color 0.15s ease;
 
-  &:hover { color: rgba(255, 255, 255, 0.6); }
+  &:hover { color: var(--theme-text-secondary); }
 }
 
 .tooltipBox {
@@ -268,7 +268,7 @@
 .urlHint {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--theme-text-tertiary);
   font-style: italic;
 }
 
@@ -279,7 +279,7 @@
   gap: 6px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--theme-text-tertiary);
   margin-left: 8px;
 }
 
@@ -287,7 +287,7 @@
 .requiredNote {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--theme-mono-color);
   font-style: italic;
   margin-bottom: 0.75rem;
   display: block;

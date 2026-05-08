@@ -6,7 +6,7 @@
 
 .sep {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--theme-border-subtle);
   margin: 1.5rem 0 1.25rem;
 }
 
@@ -84,14 +84,14 @@
   align-items: flex-start;
   gap: 10px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  color: var(--theme-text-secondary);
   line-height: 1.5;
   overflow-wrap: break-word;
   word-break: break-word;
 
   b {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--theme-text-primary);
     font-weight: 600;
   }
 
@@ -134,8 +134,8 @@
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--theme-section-bg);
+  border: 1px solid var(--theme-border-subtle);
   border-radius: 12px;
   transition: background 0.22s ease, border-color 0.22s ease;
   position: relative;
@@ -174,7 +174,7 @@
 .radioDot {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid var(--theme-border-visible);
   border-radius: 50%;
   position: relative;
   flex-shrink: 0;
@@ -197,12 +197,12 @@
 .radioLabel {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--theme-text-secondary);
   line-height: 1.3;
   user-select: none;
 
   b {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--theme-text-primary);
     font-weight: 600;
   }
 }
@@ -210,7 +210,7 @@
 .radioDesc {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.32);
+  color: var(--theme-mono-color);
   margin-top: 3px;
 }
 
@@ -227,8 +227,8 @@
 }
 
 .valueCard {
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--theme-section-bg);
+  border: 1px solid var(--theme-tag-border);
   border-radius: 16px;
   padding: 1.25rem 1rem 1.1rem;
   display: flex;
@@ -260,7 +260,7 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--theme-text-tertiary);
   margin-bottom: 0.875rem;
   text-align: center;
 }
@@ -284,7 +284,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 1.3rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--theme-text-primary);
   letter-spacing: -0.03em;
 }
 
@@ -298,7 +298,7 @@
 .range {
   flex: 1;
   height: 4px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--theme-badge-border);
   border-radius: 2px;
   outline: none;
   -webkit-appearance: none;
@@ -356,20 +356,20 @@
   align-items: center;
   gap: 7px;
   padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--theme-bg-subtle);
+  border: 1px solid var(--theme-tag-border);
   border-radius: 9px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--theme-text-tertiary);
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 
   svg { font-size: 0.75rem; }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.14);
-    color: rgba(255, 255, 255, 0.65);
+    background: var(--theme-active-bg);
+    border-color: var(--theme-border-visible);
+    color: var(--theme-text-secondary);
   }
 }

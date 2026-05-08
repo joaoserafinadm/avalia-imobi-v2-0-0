@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import isMobile from "../../utils/isMobile";
 import tippy from "tippy.js";
 import DeleteClientModal from "./DeleteClientModal";
+import Button from "../components/Button";
 
 
 
@@ -133,17 +134,19 @@ export default function ClientCard(props) {
                     <div className="slideLeft d-flex ms-2 bg-light h-100 align-items-center shadow">
                         <VerticalLine />
                         <div className="d-flex justify-content-center align-items-center " style={{ width: '120px', height: '60px' }} >
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-light border" id="viewClientButton"><FontAwesomeIcon icon={faEye} className="icon  text-secondary" /></button>
-
-                                <button
-                                    type="button"
-                                    class="btn btn-light border"
+                            <div className="btn-group" role="group" aria-label="Basic example">
+                                <Button variant="ghost" className="btn btn-light border" id="viewClientButton">
+                                    <FontAwesomeIcon icon={faEye} className="icon text-secondary" />
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    className="btn btn-light border"
                                     id="deleteClientButton"
                                     data-bs-toggle="modal"
-                                    data-bs-target={"#deleteClientModal" + props.elem._id}>
+                                    data-bs-target={"#deleteClientModal" + props.elem._id}
+                                >
                                     <FontAwesomeIcon icon={faTrashAlt} className="icon text-secondary" />
-                                </button>
+                                </Button>
                             </div>
 
                         </div>

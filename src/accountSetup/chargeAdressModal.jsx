@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken';
 import axios from "axios";
+import Button from "../components/Button";
 
 
 
@@ -82,15 +83,15 @@ export default function ChargeAdressModal(props) {
 
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button
-                            type="button"
-                            className="btn btn-sm btn-orange"
+                        <Button variant="secondary" size="sm" data-bs-dismiss="modal">Fechar</Button>
+                        <Button
+                            variant="primary"
+                            size="sm"
                             data-bs-dismiss="modal"
                             onClick={handleSave}
                         >
                             Salvar
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, forwardRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEye, faEyeSlash, faXmark, faMagnifyingGlass,
@@ -28,7 +28,7 @@ import styles from './Input.module.scss';
      name        – string              (radio group name)
 ───────────────────────────────────────────── */
 
-export default function Input({
+const Input = forwardRef(function Input({
   type = 'text',
   label,
   placeholder,
@@ -47,7 +47,7 @@ export default function Input({
   name,
   id,
   ...rest
-}) {
+}, ref) {
   const inputId = id || `inp-${Math.random().toString(36).slice(2, 7)}`;
   const themeClass = theme === 'light' ? styles.light : styles.dark;
 
@@ -67,7 +67,7 @@ export default function Input({
         <_TextInput
           type={type} placeholder={placeholder} value={value}
           onChange={onChange} error={error} icon={icon} suffix={suffix}
-          styles={styles} {...sharedProps}
+          styles={styles} innerRef={ref} {...sharedProps}
         />
       )}
 
@@ -141,21 +141,24 @@ export default function Input({
       {hint && !error && <span className={styles.hint}>{hint}</span>}
     </div>
   );
-}
+});
+
+export default Input;
 
 /* ─────────────────────────────────────────────
    Internal sub-components
 ───────────────────────────────────────────── */
 
-function _TextInput({ type, placeholder, value, onChange, error, icon, suffix, styles, ...rest }) {
+function _TextInput({ type, placeholder, value, onChange, error, icon, suffix, styles, innerRef, ...rest }) {
   return (
     <div className={styles.inputWrap}>
       {icon && (
         <span className={styles.iconWrap}>
-          <FontAwesomeIcon icon={icon} />
+          {typeof icon === 'string' ? icon : <FontAwesomeIcon icon={icon} />}
         </span>
       )}
       <input
+        ref={innerRef}
         type={type}
         className={`${styles.input} ${icon ? styles.hasIcon : ''} ${suffix ? styles.hasSuffixBadge : ''} ${error ? styles.hasError : ''}`}
         placeholder={placeholder}
