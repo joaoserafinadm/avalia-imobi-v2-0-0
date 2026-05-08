@@ -25,6 +25,35 @@ export default function AccountDetailsPage(props) {
     return (
         <div className={styles.page}>
 
+{/* ── Aparência ── */}
+            <TitleLabel>Aparência</TitleLabel>
+            <div className={styles.section}>
+                <div className={styles.themeToggleRow}>
+                    <div className={styles.rowContent}>
+                        <p className={styles.rowLabel}>Tema</p>
+                        <p className={styles.themeToggleLabel}>{isDark ? 'Modo escuro' : 'Modo claro'}</p>
+                        <p className={styles.themeToggleSubLabel}>{isDark ? 'Interface com fundo escuro' : 'Interface com fundo claro'}</p>
+                    </div>
+                    <div className={styles.rowAction}>
+                        <label className={styles.switchWrapper}>
+                            <input
+                                type="checkbox"
+                                className={styles.switchInput}
+                                checked={isDark}
+                                onChange={handleThemeToggle}
+                            />
+                            <span className={styles.switchTrack}>
+                                <span className={styles.switchIcons}>
+                                    <FontAwesomeIcon icon={faSun} style={{ color: isDark ? 'rgba(255,255,255,0.3)' : '#fff' }} />
+                                    <FontAwesomeIcon icon={faMoon} style={{ color: isDark ? '#fff' : 'rgba(255,255,255,0.3)' }} />
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            
             {/* ── Sua Conta ── */}
             <TitleLabel>Sua Conta</TitleLabel>
             <div className={styles.section}>
@@ -151,33 +180,7 @@ export default function AccountDetailsPage(props) {
                 </div>
             </div>
 
-            {/* ── Aparência ── */}
-            <TitleLabel>Aparência</TitleLabel>
-            <div className={styles.section}>
-                <div className={styles.themeToggleRow}>
-                    <div className={styles.rowContent}>
-                        <p className={styles.rowLabel}>Tema</p>
-                        <p className={styles.themeToggleLabel}>{isDark ? 'Modo escuro' : 'Modo claro'}</p>
-                        <p className={styles.themeToggleSubLabel}>{isDark ? 'Interface com fundo escuro' : 'Interface com fundo claro'}</p>
-                    </div>
-                    <div className={styles.rowAction}>
-                        <label className={styles.switchWrapper}>
-                            <input
-                                type="checkbox"
-                                className={styles.switchInput}
-                                checked={isDark}
-                                onChange={handleThemeToggle}
-                            />
-                            <span className={styles.switchTrack}>
-                                <span className={styles.switchIcons}>
-                                    <FontAwesomeIcon icon={faSun} style={{ color: isDark ? 'rgba(255,255,255,0.3)' : '#fff' }} />
-                                    <FontAwesomeIcon icon={faMoon} style={{ color: isDark ? '#fff' : 'rgba(255,255,255,0.3)' }} />
-                                </span>
-                            </span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+            
 
             {/* ── Footer ── */}
             <div className={styles.footer}>
