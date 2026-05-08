@@ -122,9 +122,9 @@
 
   /* claro */
   &.light {
-    background: rgba(15, 20, 35, 0.05);
-    border-color: rgba(15, 20, 35, 0.14);
-    color: rgba(15, 20, 35, 0.6);
+    background: rgba(15, 20, 35, 0.10);
+    border-color: rgba(15, 20, 35, 0.25);
+    color: rgba(15, 20, 35, 0.8);
 
     &:hover:not(:disabled):not(.isLoading) {
       background: rgba(15, 20, 35, 0.09);
