@@ -20,7 +20,7 @@
     height: 2px;
     background: linear-gradient(90deg, transparent 0%, #f5874f 40%, #ff9f6b 60%, transparent 100%);
     background-size: 200% 100%;
-    animation: accentSlide 4s ease-in-out infinite;
+    // animation: accentSlide 4s ease-in-out infinite;
     z-index: 1;
   }
 
@@ -271,12 +271,11 @@
 
 .statLabel {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.62rem;
+  font-size: 0.80rem;
   font-weight: 500;
   color: #f5874f;
   letter-spacing: 0.03em;
   line-height: 1.3;
-  opacity: 0.85;
 }
 
 .starIcon {

@@ -20,7 +20,7 @@
 .label {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.80rem;
-  font-weight: 500;
+  font-weight: 550;
   letter-spacing: 0.04em;
   transition: color 0.2s ease;
 
@@ -72,10 +72,10 @@
 
   .light & {
     background: #ffffff;
-    border:     1px solid rgba(15,20,35,0.25);
+    border:     1px solid rgba(15,20,35,0.35);
     color:      rgba(15,20,35,0.9);
 
-    &::placeholder { color: rgba(15,20,35,0.28); }
+    &::placeholder { color: rgba(15,20,35,0.40); }
 
     &:focus {
       border-color: rgba(245,135,79,0.55);
