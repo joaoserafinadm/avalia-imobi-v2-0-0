@@ -134,7 +134,7 @@ export default function SignUp(props) {
             className={`form-control ${emailError ? "is-invalid" : ""}`}
             placeholder="seu@email.com"
             value={email}
-            onChange={(e) => { setEmail(e.target.value); setEmailError(""); }}
+            onChange={(e) => { setEmail(e.target.value.toLocaleLowerCase()); setEmailError(""); }}
           />
           {emailError && <small className="text-danger">{emailError}</small>}
         </div>

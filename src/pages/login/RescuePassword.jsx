@@ -61,7 +61,7 @@ export default function RescuePassword(props) {
               className={`form-control ${emailError ? "is-invalid" : ""}`}
               placeholder="seu@email.com"
               value={email}
-              onChange={(e) => { setEmail(e.target.value); setEmailError(""); }}
+              onChange={(e) => { setEmail(e.target.value.toLocaleLowerCase()); setEmailError(""); }}
               onKeyDown={(e) => e.key === "Enter" && handleSendToken()}
             />
             {emailError && <small className="text-danger">{emailError}</small>}
