@@ -26,7 +26,7 @@ export default function Login() {
         :
         <div className={`fadeItem ${styles.brandPanel}`}>
 
-          <img src="/LOGO_07.png" alt="Avalia Imobi" className={styles.brandLogo} />
+          <img src="/LOGO_05.png" alt="Avalia Imobi" className={styles.brandLogo} />
 
         </div>
 
