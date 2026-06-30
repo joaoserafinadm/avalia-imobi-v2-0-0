@@ -529,10 +529,12 @@
   .selectArrow   { color: rgba(15, 20, 35, 0.4) !important; }
   .checkboxLabel { color: rgba(15, 20, 35, 0.8) !important; }
   .checkboxBox   { background: #fff !important; border-color: rgba(15, 20, 35, 0.18) !important; }
+  .checkboxInput:checked + .checkboxBox { background: #f5874f !important; border-color: #f5874f !important; box-shadow: 0 0 0 3px rgba(245,135,79,0.18) !important; }
   .radioLabel    { color: rgba(15, 20, 35, 0.8) !important; }
   .radioDot      { background: #fff !important; border-color: rgba(15, 20, 35, 0.18) !important; }
   .toggleLabel   { color: rgba(15, 20, 35, 0.8) !important; }
   .toggleTrack   { background: rgba(15, 20, 35, 0.12) !important; border-color: rgba(15, 20, 35, 0.14) !important; }
+  .toggleInput:checked + .toggleTrack { background: #f5874f !important; border-color: #f5874f !important; box-shadow: 0 0 0 3px rgba(245,135,79,0.18) !important; }
   .fileZone      { background: rgba(15, 20, 35, 0.02) !important; border-color: rgba(15, 20, 35, 0.14) !important; }
   .fileIcon      { color: rgba(15, 20, 35, 0.25) !important; }
   .fileText      { color: rgba(15, 20, 35, 0.45) !important; }
