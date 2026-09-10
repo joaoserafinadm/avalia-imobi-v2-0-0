@@ -1,6 +1,8 @@
 import PropertyCollection from "./PropertyCollection"
 import PropertyAddModal from "./PropertyAdd"
-import AiPropertySearch from "./AiPropertySearch"
+// Busca com IA — desativada, substituída pela busca manual no Google (GooglePropertySearch)
+// import AiPropertySearch from "./AiPropertySearch"
+import GooglePropertySearch from "./GooglePropertySearch"
 import { useState } from "react"
 import PropertyCalc from "./PropertyCalc"
 import TitleLabel from "../components/TitleLabel"
@@ -57,11 +59,14 @@ export default function ValuationConfig(props) {
                     </div>
                 </div>
                 <div className={styles.sectionHeader}>
+                    {/* Busca com IA — mantida para referência, substituída pela busca manual no Google
                     <AiPropertySearch
                         client={client}
                         propertyArray={props.propertyArray}
                         setPropertyArray={value => props.setPropertyArray(value)}
                         setForceUpdate={() => setForceUpdate(forceUpdate + 1)} />
+                    */}
+                    <GooglePropertySearch client={client} />
                 </div>
                 <PropertyCollection
                     client={client}
