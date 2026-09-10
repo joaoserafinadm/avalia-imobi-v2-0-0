@@ -250,3 +250,14 @@
     color: #f2545b;
   }
 }
+
+/* ── Switch liga/desliga (guias interativos) ──
+   Diferente do switch de tema, aqui "desligado" é neutro
+   e "ligado" usa a cor da marca. */
+.switchTrackToggle {
+  background: var(--theme-border-visible, rgba(255, 255, 255, 0.18));
+}
+
+.switchInput:checked + .switchTrackToggle {
+  background: #f5874f;
+}

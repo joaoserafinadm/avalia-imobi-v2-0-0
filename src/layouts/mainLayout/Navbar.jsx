@@ -60,7 +60,7 @@ export default function Nav(props) {
 
     return (
         <>
-            <div className={`${styles.menuArea} ${styles.modernSidebar}`} style={{ left: `${toggleStatus ? "0px" : "-250px"}` }}>
+            <div id="tourNavbar" className={`${styles.menuArea} ${styles.modernSidebar}`} style={{ left: `${toggleStatus ? "0px" : "-250px"}` }}>
                 {/* Toggle e Logo - mantidos inalterados */}
                 <Toggle />
                 <Logo />

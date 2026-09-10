@@ -23,7 +23,7 @@ export default function UsersCard(props) {
 
 
     return (
-        <div className={styles.card}>
+        <div className={styles.card} id="tourUsersCard">
 
             {loading && <Loading />}
 

@@ -20,7 +20,7 @@ export default function ClientsCard_02(props) {
 
 
     return (
-        <div className={styles.card}>
+        <div className={styles.card} id="tourClientsCard">
 
             {loading && <Loading />}
 

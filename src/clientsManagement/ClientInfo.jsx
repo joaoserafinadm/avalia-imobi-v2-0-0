@@ -19,6 +19,11 @@ import styles from "./ClientInfo.module.scss";
 export default function ClientInfo(props) {
     const client = props.client;
 
+    // Âncoras do guia interativo: aplicadas apenas onde o guia roda
+    // (ViewClientModal), evitando ids repetidos nas páginas de avaliação
+    // que também renderizam este componente.
+    const anchor = (name) => (props.tourAnchors ? name : undefined);
+
     useEffect(() => {
         tippy("#emailButton", { content: "Enviar e-mail", placement: "bottom" });
         tippy("#whatsButton", { content: "Conversar pelo Whatsapp", placement: "bottom" });
@@ -38,7 +43,7 @@ export default function ClientInfo(props) {
 
             {/* ── No-valuation banner ── */}
             {!client?.valuation && props.valuationButton && (
-                <div style={{
+                <div id={anchor('tourClientModalNoValuation')} style={{
                     background: 'rgba(245,135,79,0.05)',
                     border: '1.5px dashed rgba(245,135,79,0.25)',
                     borderRadius: '14px',
@@ -62,6 +67,7 @@ export default function ClientInfo(props) {
             )}
 
             {/* ── Image gallery ── */}
+            <div id={anchor('tourClientModalGallery')}>
             {client?.files?.length === 0 ? (
                 <div style={{
                     background: 'var(--theme-section-bg)',
@@ -99,9 +105,10 @@ export default function ClientInfo(props) {
                     </Swiper>
                 </div>
             )}
+            </div>
 
             {/* ── Client header ── */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
+            <div id={anchor('tourClientModalHeader')} style={{ display: 'flex', alignItems: 'flex-start', gap: '14px', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
                 <PropertyTypeCard type={client?.propertyType} />
 
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -156,12 +163,15 @@ export default function ClientInfo(props) {
                 {client?.propertyType === "Terreno"     && <ClientInfoTerreno     client={client} />}
             </div> */}
 
-            <ClientFeatures client={client} elem={client} />
+            <div id={anchor('tourClientModalFeatures')}>
+                <ClientFeatures client={client} elem={client} />
+            </div>
 
 
             <Divider />
 
             {/* ── Features ── */}
+            <div id={anchor('tourClientModalGeneral')}>
             <SectionLabel icon={<List size={13} />}>Características gerais</SectionLabel>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '1.25rem' }}>
                 {client?.features?.length > 0 ? client.features.map((f, i) => (
@@ -178,10 +188,12 @@ export default function ClientInfo(props) {
                     <span style={{ fontSize: '0.8rem', color: 'var(--theme-text-faint)' }}>Nenhuma característica registrada</span>
                 )}
             </div>
+            </div>
 
             <Divider />
 
             {/* ── Observations ── */}
+            <div id={anchor('tourClientModalComments')}>
             <SectionLabel icon={<MessageSquare size={13} />}>Observações</SectionLabel>
             <textarea
                 disabled rows={3}
@@ -194,10 +206,12 @@ export default function ClientInfo(props) {
                     resize: 'none', outline: 'none', opacity: 1, marginBottom: '1.25rem',
                 }}
             />
+            </div>
 
             <Divider />
 
             {/* ── Location ── */}
+            <div id={anchor('tourClientModalLocation')}>
             <SectionLabel icon={<MapPin size={13} />}>Localização</SectionLabel>
             <div style={{
                 background: 'var(--theme-section-bg)',
@@ -218,6 +232,7 @@ export default function ClientInfo(props) {
                     </div>
                 )
             }
+            </div>
         </div >
     );
 }

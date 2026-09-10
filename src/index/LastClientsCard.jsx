@@ -13,7 +13,7 @@ export default function LastClientsCard(props) {
     const { clientsArray, loading } = props
 
     return (
-        <div className={styles.section}>
+        <div className={styles.section} id="tourLastClients">
 
             <span className={styles.sectionHeading}>
                 Últimos imóveis cadastrados

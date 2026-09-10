@@ -64,7 +64,7 @@ export default function Valuation(props) {
 
     if (!client?.valuation) {
         return (
-            <div style={{
+            <div id="tourValuationEmpty" style={{
                 background: 'rgba(245,135,79,0.05)',
                 border: '1.5px dashed rgba(245,135,79,0.2)',
                 borderRadius: '14px', padding: '3rem 2rem',
@@ -87,7 +87,7 @@ export default function Valuation(props) {
         <div style={{ fontFamily: "'DM Sans', sans-serif" }}>
 
             {/* ── Action bar ── */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '1.25rem' }}>
+            <div id="tourValuationActions" style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '1.25rem' }}>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     <ActionBtn icon={faShare} onClick={() => setShareButton(v => !v)}>
                         Compartilhar
@@ -156,15 +156,19 @@ export default function Valuation(props) {
             )}
 
             {/* ── Status ── */}
-            <div style={{ marginBottom: '1.25rem' }}>
+            <div id="tourValuationStatus" style={{ marginBottom: '1.25rem' }}>
                 <SectionLabel>Status da avaliação</SectionLabel>
                 <ValuationStatus status={client?.status} />
             </div>
 
             {client?.status === 'answered' && (
                 <>
-                    <SelectedValue client={client} dataFunction={props.dataFunction} />
-                    <ServiceAvaliation client={client} />
+                    <div id="tourValuationSelectedValue">
+                        <SelectedValue client={client} dataFunction={props.dataFunction} />
+                    </div>
+                    <div id="tourValuationService">
+                        <ServiceAvaliation client={client} />
+                    </div>
                 </>
             )}
 
@@ -172,7 +176,7 @@ export default function Valuation(props) {
 
             {/* ── Evaluator ── */}
             <SectionLabel>Avaliação realizada por</SectionLabel>
-            <div style={{
+            <div id="tourValuationEvaluator" style={{
                 display: 'flex', alignItems: 'center', gap: '14px',
                 background: 'var(--theme-section-bg)',
                 border: '1px solid rgba(255,255,255,0.07)',
@@ -202,13 +206,17 @@ export default function Valuation(props) {
 
             <Divider />
 
-            <ValuationPropertyCalc client={client} />
+            <div id="tourValuationCalc">
+                <ValuationPropertyCalc client={client} />
+            </div>
 
             <Divider />
 
             {/* ── Comparison properties ── */}
-            <SectionLabel>Imóveis utilizados para comparação</SectionLabel>
-            <ValuationPropertyCollection propertyArray={propertyArray} />
+            <div id="tourValuationProperties">
+                <SectionLabel>Imóveis utilizados para comparação</SectionLabel>
+                <ValuationPropertyCollection propertyArray={propertyArray} />
+            </div>
         </div>
     );
 }

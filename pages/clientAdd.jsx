@@ -5,7 +5,7 @@ import { FixedTopicsBottom } from "../src/components/fixedTopics"
 import Link from "next/link"
 import { SpinnerSM } from "../src/components/loading/Spinners"
 import Button from "../src/components/Button"
-import { initialValues, setCelular, setClientLastName, setClientName, setEmail } from "../store/NewClientForm/NewClientForm.actions"
+import { initialValues, setCelular, setClientLastName, setClientName, setEmail, setPropertyType } from "../store/NewClientForm/NewClientForm.actions"
 import TypeApartamento from "../src/pages/newClient/TypeApartamento"
 import GeralFeatures from "../src/pages/newClient/GeralFeatures"
 import UploadFiles from "../src/pages/newClient/UploadFiles"
@@ -97,13 +97,26 @@ export default function clientAdd() {
 
     return (
         <div id="pageTop">
-            <Title title="Cadastrar imóvel" backButton="/clientsManagement" subtitle="Preencha os dados do cliente e do imóvel" />
+            <Title
+                title="Cadastrar imóvel"
+                backButton="/clientsManagement"
+                subtitle="Preencha os dados do cliente e do imóvel"
+                guide="clientAdd"
+                guideProps={{
+                    // O formulário completo só aparece depois que um tipo de
+                    // imóvel é escolhido. Sem escolha ainda, o guia seleciona
+                    // "Apartamento" para poder mostrar o formulário inteiro.
+                    beforeStart: () => {
+                        if (!newClientForm.propertyType) dispatch(setPropertyType("Apartamento"))
+                    },
+                    waitFor: "#tourClientAddDetails",
+                }} />
 
             <div className={`pagesContent ${styles.page}`}>
 
                 {/* ── Dados do cliente ── */}
                 <TitleLabel>Dados do cliente</TitleLabel>
-                <div className={styles.section}>
+                <div className={styles.section} id="tourClientAddClient">
                     <div className="row g-3">
                         <div className="col-12 col-md-6">
                             <Input
@@ -159,7 +172,7 @@ export default function clientAdd() {
                 {manualRegister && (
                     <>
                         <TitleLabel>Tipo de imóvel</TitleLabel>
-                        <div className={styles.section}>
+                        <div className={styles.section} id="tourClientAddType">
                             <div className={styles.typeGrid}>
                                 <PropertyTypeCard type="Apartamento" />
                                 <PropertyTypeCard type="Casa" />
@@ -168,43 +181,30 @@ export default function clientAdd() {
                             </div>
                         </div>
 
-                        {newClientForm.propertyType === "Apartamento" && (
+                        {newClientForm.propertyType && (
                             <>
-                                <TypeApartamento />
-                                <GeralFeatures type="Apartamento" />
-                                <Location />
-                                <UploadFiles setFiles={array => setFiles(array)} files={files} />
-                            </>
-                        )}
-                        {newClientForm.propertyType === "Casa" && (
-                            <>
-                                <TypeCasa />
-                                <GeralFeatures type="Casa" />
-                                <Location />
-                                <UploadFiles setFiles={array => setFiles(array)} files={files} />
-                            </>
-                        )}
-                        {newClientForm.propertyType === "Comercial" && (
-                            <>
-                                <TypeComercial />
-                                <GeralFeatures type="Comercial" />
-                                <Location />
-                                <UploadFiles setFiles={array => setFiles(array)} files={files} />
-                            </>
-                        )}
-                        {newClientForm.propertyType === "Terreno" && (
-                            <>
-                                <TypeTerreno />
-                                <GeralFeatures type="Terreno" />
-                                <Location />
-                                <UploadFiles setFiles={array => setFiles(array)} files={files} />
+                                <div id="tourClientAddDetails">
+                                    {newClientForm.propertyType === "Apartamento" && <TypeApartamento />}
+                                    {newClientForm.propertyType === "Casa" && <TypeCasa />}
+                                    {newClientForm.propertyType === "Comercial" && <TypeComercial />}
+                                    {newClientForm.propertyType === "Terreno" && <TypeTerreno />}
+                                </div>
+                                <div id="tourClientAddFeatures">
+                                    <GeralFeatures type={newClientForm.propertyType} />
+                                </div>
+                                <div id="tourClientAddLocation">
+                                    <Location />
+                                </div>
+                                <div id="tourClientAddFiles">
+                                    <UploadFiles setFiles={array => setFiles(array)} files={files} />
+                                </div>
                             </>
                         )}
                     </>
                 )}
 
                 <FixedTopicsBottom>
-                    <div className={styles.footerBar}>
+                    <div className={styles.footerBar} id="tourClientAddFooter">
                         <div className={styles.footerActions}>
                             {!manualRegister && (
                                 <Button variant="secondary" onClick={() => setManualRegister(true)}>

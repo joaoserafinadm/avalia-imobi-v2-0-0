@@ -151,7 +151,7 @@ export default function clientsManagement() {
         setClientSelected={(value) => setClientSelected(value)}
       />
 
-      <Title title={"Gestão de Imóveis"} backButton="/" />
+      <Title title={"Gestão de Imóveis"} backButton="/" guide="clientsManagement" />
 
       <div className={`pagesContent-lg fadeItem`} id="pageTop">
 
@@ -164,6 +164,7 @@ export default function clientsManagement() {
           </div> */}
           <div className={styles.topBarRight}>
             <Button
+              id="tourClientsFilters"
               variant="secondary"
               className={`${(filtersOpen || hasActiveFilters) ? styles.filterBtnActive : ""}`}
               onClick={() => setFiltersOpen((v) => !v)}
@@ -172,7 +173,7 @@ export default function clientsManagement() {
               Filtros
               {hasActiveFilters && <span className={styles.filterActiveDot} />}
             </Button>
-            <Link href="/clientAdd">
+            <Link href="/clientAdd" id="tourClientsAdd">
               <Button variant="primary">
                 <FontAwesomeIcon icon={faHouseMedical} />
                 Adicionar Imóvel
@@ -264,16 +265,18 @@ export default function clientsManagement() {
               data-bs-interval="false"
               id="clientsManagementSection"
             >
-              <Sections
-                section={section}
-                idTarget="clientsManagementSection"
-                setSection={(value) => setSection(value)}
-                sections={["Meus Clientes", "Todos Clientes"]}
-              />
+              <div id="tourClientsSections">
+                <Sections
+                  section={section}
+                  idTarget="clientsManagementSection"
+                  setSection={(value) => setSection(value)}
+                  sections={["Meus Clientes", "Todos Clientes"]}
+                />
+              </div>
               <div className="carousel-inner">
                 <div className="carousel-item active">
                   <div className="row d-flex justify-content-center">
-                    <div className="col-12">
+                    <div className="col-12" id="tourClientsList">
                       <ClientsPage
                         clients={clientsArray}
                         section="Meus Clientes"

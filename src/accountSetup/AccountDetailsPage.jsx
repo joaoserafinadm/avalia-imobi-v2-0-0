@@ -1,4 +1,4 @@
-import { faLock, faMoon, faPencil, faRightFromBracket, faShield, faSun } from "@fortawesome/free-solid-svg-icons";
+import { faCircleQuestion, faEyeSlash, faLock, faMoon, faPencil, faRightFromBracket, faShield, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import Cookie from 'js-cookie'
@@ -9,6 +9,7 @@ import styles from "./AccountDetailsPage.module.scss";
 import Button from "../components/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { setTheme } from "../../store/Theme/Theme.action";
+import { setGuideTour } from "../../store/GuideTour/GuideTour.action";
 
 export default function AccountDetailsPage(props) {
 
@@ -18,8 +19,14 @@ export default function AccountDetailsPage(props) {
     const theme = useSelector(state => state.theme) || 'light'
     const isDark = theme === 'dark'
 
+    const guideTourEnabled = useSelector(state => state.guideTour) !== false
+
     const handleThemeToggle = () => {
         dispatch(setTheme(isDark ? 'light' : 'dark'))
+    }
+
+    const handleGuideTourToggle = () => {
+        dispatch(setGuideTour(!guideTourEnabled))
     }
 
     return (
@@ -53,7 +60,42 @@ export default function AccountDetailsPage(props) {
                 </div>
             </div>
 
-            
+
+            {/* ── Ajuda ── */}
+            <TitleLabel>Ajuda</TitleLabel>
+            <div className={styles.section}>
+                <div className={styles.themeToggleRow}>
+                    <div className={styles.rowContent}>
+                        <p className={styles.rowLabel}>Guias interativos</p>
+                        <p className={styles.themeToggleLabel}>
+                            {guideTourEnabled ? 'Guias ativados' : 'Guias desativados'}
+                        </p>
+                        <p className={styles.themeToggleSubLabel}>
+                            {guideTourEnabled
+                                ? 'O botão de guia fica disponível nas páginas do sistema'
+                                : 'O botão de guia não é exibido nas páginas do sistema'}
+                        </p>
+                    </div>
+                    <div className={styles.rowAction}>
+                        <label className={styles.switchWrapper}>
+                            <input
+                                type="checkbox"
+                                className={styles.switchInput}
+                                checked={guideTourEnabled}
+                                onChange={handleGuideTourToggle}
+                            />
+                            <span className={`${styles.switchTrack} ${styles.switchTrackToggle}`}>
+                                <span className={styles.switchIcons}>
+                                    <FontAwesomeIcon icon={faEyeSlash} style={{ color: guideTourEnabled ? 'rgba(255,255,255,0.3)' : '#fff' }} />
+                                    <FontAwesomeIcon icon={faCircleQuestion} style={{ color: guideTourEnabled ? '#fff' : 'rgba(255,255,255,0.3)' }} />
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
             {/* ── Sua Conta ── */}
             <TitleLabel>Sua Conta</TitleLabel>
             <div className={styles.section}>

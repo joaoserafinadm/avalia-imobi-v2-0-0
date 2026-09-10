@@ -16,7 +16,7 @@ export default function HandleButtons(props) {
     return (
         <>
             {client?.status !== 'outdated' ?
-                <div className={styles.btnGroup}>
+                <div className={styles.btnGroup} id={props.id}>
                     <Button
                         variant="ghost"
                         className={styles.btn}
@@ -53,7 +53,7 @@ export default function HandleButtons(props) {
                     </Button>
                 </div>
                 :
-                <div className={styles.btnGroup}>
+                <div className={styles.btnGroup} id={props.id}>
                     <Button variant="ghost" className={styles.btn}
                         id={"shareClientButton" + elem._id}
                         onClick={() => handleShare(elem.urlToken + "&userId=" + token.sub)}>

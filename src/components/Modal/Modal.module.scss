@@ -47,7 +47,7 @@
   background: var(--theme-section-bg, rgba(255, 255, 255, 0.015));
 }
 
-.headerText { flex: 1; }
+.headerText { flex: 1; min-width: 0; }
 
 .modalTitle {
   font-family: 'Syne', sans-serif;

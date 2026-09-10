@@ -48,14 +48,15 @@ export default function ClientsPage(props) {
                 <>
                     <div className="row scrollTop  d-flex" id="clientsManagementList">
 
-                        {handleClientsArray(clients, page).map(elem => {
+                        {handleClientsArray(clients, page).map((elem, index) => {
 
                             return (
-                                <div className="col-12 col-sm-6 col-xl-4 col-xxl-3 d-flex justify-content-center">
+                                <div key={elem._id} className="col-12 col-sm-6 col-xl-4 col-xxl-3 d-flex justify-content-center">
                                     <ClientCard_02 section={props.section}
                                         elem={elem} setClientSelected={value => props.setClientSelected(value)}
                                         setIdSelected={value => idSelected === value ? setIdSelected('') : setIdSelected(value)}
-                                        idSelected={idSelected} />
+                                        idSelected={idSelected}
+                                        tourAnchor={index === 0 && props.section === 'Meus Clientes'} />
                                 </div>
                             )
                         })

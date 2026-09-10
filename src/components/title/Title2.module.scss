@@ -25,6 +25,16 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    min-width: 0;
+}
+
+/* Agrupa as ações à direita do título (guia e "Voltar") sem
+   interferir no bloco do título, que continua à esquerda. */
+.topRowActions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
 }
 
 .accentBar {

@@ -148,7 +148,7 @@ export default function Header(props) {
 
             <div className={`d-flex ${styles.configIcons}`}>
 
-                <div className={` dropdown`} ref={dropdownRef}>
+                <div id="tourNotifications" className={` dropdown`} ref={dropdownRef}>
                     <span type="button" className={`px-2 cardAnimationGrow ${!!handleShowNotifications() ? 'pulse' : ''}`} role="button" data-bs-toggle={window2Mobile() ? "dropdown" : ''} aria-expanded="false" onClick={() => setShowNotification(!showNotification)}>
                         <FontAwesomeIcon icon={faBell} className={`fs-4 px-3 ${showNotification && !window2Mobile() ? styles.bellIconActive : styles.bellIcon}`} />
                         {!!handleShowNotifications() && (

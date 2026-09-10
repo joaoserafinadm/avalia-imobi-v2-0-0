@@ -22,6 +22,7 @@ import api from "../utils/api";
 import GeralButtons from '../src/index/GeralButtons.jsx'
 import FirstNotifications from '../src/index/FirstNotifications.jsx'
 import FirstNotificationsModal from '../src/index/FirstNotificationsModal.jsx'
+import GuideTour from '../src/components/guideTour/index.jsx'
 
 
 
@@ -106,7 +107,9 @@ export default function Home() {
 
                 {/*<IndexNotifications /> */}
 
+
                 <div className="row p-3 ">
+                <GuideTour tour="index" />
                     <div className="col-12 col-md-6 my-2">
                         <ClientsCard_02 userResults={userResults} clientsArray={clientsArray} loading={loading} />
 

@@ -4,6 +4,7 @@ import ClientInfo from "./ClientInfo"
 import Valuation from "./Valuation"
 import Modal, { ModalBtnSecondary } from "../components/Modal"
 import { faHouse } from "@fortawesome/free-solid-svg-icons"
+import GuideTour from "../components/guideTour"
 
 export default function ViewClientModal(props) {
 
@@ -36,18 +37,21 @@ export default function ViewClientModal(props) {
         >
             <div className="container carousel slide" data-bs-touch="false" data-bs-interval="false" id="clientManage">
 
-                <Sections
-                    section={section}
-                    idTarget="clientManage"
-                    setSection={value => setSection(value)}
-                    sections={["Informações", "Avaliação"]}
-                />
+                <div id="tourClientModalTabs">
+                    <Sections
+                        section={section}
+                        idTarget="clientManage"
+                        setSection={value => setSection(value)}
+                        sections={["Informações", "Avaliação"]}
+                    />
+                </div>
 
                 <div className="carousel-inner">
                     <div className="carousel-item active">
                         <div className="row d-flex justify-content-center">
                             <div className="col-12">
-                                <ClientInfo client={client} valuationButton />
+                                <GuideTour tour="clientInfo" label="Guia" />
+                                <ClientInfo client={client} valuationButton tourAnchors />
                             </div>
                         </div>
                     </div>
@@ -57,6 +61,7 @@ export default function ViewClientModal(props) {
                     <div className="carousel-item">
                         <div className="row d-flex justify-content-center">
                             <div className="col-12">
+                                <GuideTour tour="clientValuation" label="Guia" />
                                 <Valuation client={client} dataFunction={props.dataFunction} userData={userData} />
                             </div>
                         </div>

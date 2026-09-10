@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+/* ─────────────────────────────────────────────
+   Tema do guia interativo (driver.js)
+
+   O driver.js renderiza o popover diretamente no <body>,
+   fora do escopo dos CSS Modules. Por isso os estilos
+   ficam neste arquivo global, importado em _app.js.
+───────────────────────────────────────────── */
+
+:root {
+  --guide-popover-bg: #ffffff;
+  --guide-popover-border: rgba(0, 0, 0, 0.08);
+  --guide-popover-title: #1f2937;
+  --guide-popover-text: rgba(31, 41, 55, 0.72);
+  --guide-popover-progress: rgba(31, 41, 55, 0.45);
+  --guide-popover-btn-bg: rgba(0, 0, 0, 0.03);
+  --guide-popover-btn-border: rgba(0, 0, 0, 0.1);
+  --guide-popover-btn-color: rgba(31, 41, 55, 0.75);
+  --guide-popover-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+
+  /* Folga acima do elemento ao rolar a página durante o guia:
+     altura do cabeçalho fixo + respiro para a moldura do destaque. */
+  --guide-scroll-margin: calc(var(--header-height, 50px) + 24px);
+}
+
+/* Aplicado pelo componente GuideTour aos alvos do roteiro antes de
+   iniciar. O driver.js rola com scrollIntoView, que respeita o
+   scroll-margin — assim o elemento não fica sob o cabeçalho fixo. */
+[data-guide-anchor] {
+  scroll-margin-top: var(--guide-scroll-margin);
+}
+
+/* Dentro de um modal a rolagem acontece no corpo da própria janela,
+   que não tem cabeçalho fixo: basta uma folga pequena. */
+.modal [data-guide-anchor] {
+  scroll-margin-top: 12px;
+}
+
+[data-theme="dark"] {
+  --guide-popover-bg: #0d1420;
+  --guide-popover-border: rgba(255, 255, 255, 0.08);
+  --guide-popover-title: rgba(255, 255, 255, 0.9);
+  --guide-popover-text: rgba(255, 255, 255, 0.66);
+  --guide-popover-progress: rgba(255, 255, 255, 0.4);
+  --guide-popover-btn-bg: rgba(255, 255, 255, 0.05);
+  --guide-popover-btn-border: rgba(255, 255, 255, 0.12);
+  --guide-popover-btn-color: rgba(255, 255, 255, 0.75);
+  --guide-popover-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.driver-popover.avaliaGuidePopover {
+  background-color: var(--guide-popover-bg);
+  border: 1px solid var(--guide-popover-border);
+  border-radius: 14px;
+  box-shadow: var(--guide-popover-shadow);
+  padding: 1.1rem 1.15rem;
+  max-width: 330px;
+  font-family: 'DM Sans', sans-serif;
+
+  .driver-popover-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--guide-popover-title);
+    padding-right: 1.5rem;
+  }
+
+  .driver-popover-description {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.83rem;
+    line-height: 1.6;
+    color: var(--guide-popover-text);
+    margin-top: 7px;
+  }
+
+  .driver-popover-close-btn {
+    color: var(--guide-popover-progress);
+    font-size: 1.1rem;
+    top: 6px;
+    right: 6px;
+
+    &:hover,
+    &:focus {
+      color: #f5874f;
+    }
+  }
+
+  .driver-popover-footer {
+    margin-top: 1.1rem;
+    gap: 10px;
+  }
+
+  .driver-popover-progress-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    color: var(--guide-popover-progress);
+  }
+
+  .driver-popover-footer-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 500;
+    padding: 6px 13px;
+    border-radius: 8px;
+    background-color: var(--guide-popover-btn-bg);
+    border: 1px solid var(--guide-popover-btn-border);
+    color: var(--guide-popover-btn-color);
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+    &:hover,
+    &:focus {
+      background-color: var(--guide-popover-btn-bg);
+      border-color: rgba(245, 135, 79, 0.4);
+      color: #f5874f;
+    }
+  }
+
+  /* Botão principal (Avançar / Concluir) */
+  .driver-popover-next-btn {
+    background-color: #f5874f;
+    border-color: #f5874f;
+    color: #ffffff;
+
+    &:hover,
+    &:focus {
+      background-color: #e9743a;
+      border-color: #e9743a;
+      color: #ffffff;
+    }
+  }
+
+  .driver-popover-navigation-btns button + button {
+    margin-left: 6px;
+  }
+
+  /* Seta apontando para o elemento destacado */
+  .driver-popover-arrow {
+    border-width: 6px;
+  }
+
+  .driver-popover-arrow-side-left   { border-left-color:   var(--guide-popover-bg); }
+  .driver-popover-arrow-side-right  { border-right-color:  var(--guide-popover-bg); }
+  .driver-popover-arrow-side-top    { border-top-color:    var(--guide-popover-bg); }
+  .driver-popover-arrow-side-bottom { border-bottom-color: var(--guide-popover-bg); }
+}
+
+/* No mobile o balão ocupa quase toda a largura: o texto quebra em
+   menos linhas, o balão fica mais baixo e cabe acima ou abaixo do
+   elemento destacado em vez de ser jogado por cima dele. */
+@media (max-width: 576px) {
+  .driver-popover.avaliaGuidePopover {
+    max-width: calc(100vw - 24px);
+    padding: 0.9rem 1rem;
+
+    .driver-popover-title {
+      font-size: 0.9rem;
+    }
+
+    .driver-popover-description {
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .driver-popover-footer {
+      margin-top: 0.9rem;
+    }
+  }
+}

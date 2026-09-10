@@ -62,7 +62,7 @@ export default function ClientCard_02(props) {
     const assignedUser = users?.find(elem => elem._id === client?.user_id)
 
     return (
-        <div className={`${styles.card} my-2`}>
+        <div className={`${styles.card} my-2`} id={props.tourAnchor ? 'tourClientCard' : undefined}>
 
             {/* ── Image / Swiper area ── */}
             <div className={styles.imageWrap}>
@@ -128,7 +128,7 @@ export default function ClientCard_02(props) {
                     {client?.clientName} {client?.clientLastName}
                 </h5>
 
-                <div className={styles.statusRow}>
+                <div className={styles.statusRow} id={props.tourAnchor ? 'tourClientStatus' : undefined}>
                     <ClientStatus status={client?.status} id={client?._id} />
                 </div>
 
@@ -138,6 +138,7 @@ export default function ClientCard_02(props) {
                     client={client}
                     setClientSelected={value => props.setClientSelected(value)}
                     elem={props.elem}
+                    id={props.tourAnchor ? 'tourClientActions' : undefined}
                 />
 
                 <hr className={styles.divider} />

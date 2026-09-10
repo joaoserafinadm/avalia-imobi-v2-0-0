@@ -12,7 +12,7 @@ const items = [
 
 export default function GeralButtons() {
     return (
-        <div className={`${styles.grid} mx-3`}>
+        <div className={`${styles.grid} mx-3`} id="tourGeralButtons">
             {items.map(({ href, icon, label }) => (
                 <Link href={href} key={href}>
                     <div className={styles.navCard}>

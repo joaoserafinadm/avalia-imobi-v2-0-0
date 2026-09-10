@@ -16,6 +16,7 @@ import alerts from './Alerts/Alerts.reducer'
 import newClientForm from './NewClientForm/NewClientForm.reducer'
 import usersArray from './Users/Users.reducer'
 import theme from './Theme/Theme.reducer'
+import guideTour from './GuideTour/GuideTour.reducer'
 
 const rootReducer = combineReducers({
     // inventoryList: inventoryList,
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
     newClientForm: newClientForm,
     users: usersArray,
     theme: theme,
+    guideTour: guideTour,
 })
 
 const persistedReducer = persistReducer({

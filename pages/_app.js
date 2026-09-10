@@ -50,6 +50,8 @@ function ThemeApplier({ forceLight = false }) {
 import "../styles/globals.scss";
 import "../styles/bgColors.scss";
 import 'font-awesome/css/font-awesome.min.css'
+import 'driver.js/dist/driver.css'
+import "../styles/driverTheme.scss";
 
 import MainLayout from "../src/layouts/mainLayout";
 import Login from "../src/pages/login";
