@@ -18,7 +18,12 @@ const nextConfig = {
 
     return config;
   },
-  swcMinify: true,
+  // O minificador SWC do Next 13 quebra o destroy() do driver.js 1.8:
+  // ao embutir uma função auxiliar, uma chamada passa a apontar para o
+  // handler de clique no overlay, que chama destroy() de novo em loop.
+  // Em produção o guia não fechava (Concluir, X, clique no fundo).
+  // O Terser compila o mesmo código corretamente.
+  swcMinify: false,
   compiler: {
     removeConsole: process.env.NODE_ENV !== "development",
   },
