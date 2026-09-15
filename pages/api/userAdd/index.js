@@ -13,6 +13,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Empresas com uso gratuito (sem assinatura no Stripe)
+const FREE_SUBSCRIPTION_COMPANIES = [
+    "6668c78b5d0dfeb36eb9b008", // Admin
+]
+
 
 const authenticated = fn => async (req, res) => {
     verify(req.cookies.auth, process.env.JWT_SECRET, async function (err, decoded) {
@@ -51,20 +56,19 @@ export default authenticated(async (req, res) => {
                     res.status(400).json({ error: "User already exists" })
                 } else {
 
-                    const subscriptionId = companyExist.paymentData?.subscriptionId
-                    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-                    // const existingProductId = subscription.items.data[0].price.product; // Obtém o ID do produto
+                    const isFreeCompany = FREE_SUBSCRIPTION_COMPANIES.includes(String(company_id))
 
-                    console.log("subscription.items.data[0].price", subscription.items.data[0].price)
+                    const subscriptionId = companyExist.paymentData?.subscriptionId
+                    const subscription = isFreeCompany ? null : await stripe.subscriptions.retrieve(subscriptionId);
+                    // const existingProductId = subscription.items.data[0].price.product; // Obtém o ID do produto
 
                     try {
                         // Recuperar a assinatura existente
                         const usersCount = await db.collection('users').countDocuments({ company_id: company_id })
 
-                        console.log("usersCount", usersCount)
 
-                        // Atualize a quantidade de usuários na assinatura
-                        const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
+                        // Atualize a quantidade de usuários na assinatura (empresas gratuitas não possuem assinatura)
+                        const updatedSubscription = isFreeCompany ? true : await stripe.subscriptions.update(subscription.id, {
                             items: [
                                 {
                                     id: subscription.items.data[0].id, // ID do item de assinatura
@@ -72,8 +76,6 @@ export default authenticated(async (req, res) => {
                                 },
                             ],
                         });
-
-                        console.log("updatedSubscription", updatedSubscription);
 
                         if (updatedSubscription) {
                             const password = randomPassword()
