@@ -6,6 +6,8 @@ import ValuationPdf from "../pages/valuation/valuationPdf";
 import Button from "../components/Button";
 import PdfDownloadNotice from "../components/pdfDownloadNotice";
 import { buildPdfBlob, pdfFileName, triggerDownload } from "../../utils/generatePdf";
+import { pdfErrorMessage } from "../../hooks/usePdfDownload";
+import { toast } from "react-toastify";
 
 
 
@@ -39,6 +41,7 @@ export default function ShowValuationModal(props) {
         if (!pdfUrl) return
         triggerDownload(pdfUrl, pdfFileName(userData?.companyName))
         setPdfStatus('done')
+        toast.success('Download do PDF iniciado.', { autoClose: 4000 })
     }
 
     const generatePDF = async () => {
@@ -48,6 +51,7 @@ export default function ShowValuationModal(props) {
         } catch (err) {
             console.error('Erro ao gerar PDF:', err);
             setPdfStatus('error');
+            toast.error(pdfErrorMessage(err), { autoClose: 8000 });
         }
     };
 

@@ -15,6 +15,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/scrollbar'
 
 import { Analytics } from "@vercel/analytics/next"
+import { ToastContainer } from "react-toastify";
 
 if (typeof window !== "undefined") {
     window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
@@ -251,5 +252,11 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps} }
         }
     };
 
-    return <div><Analytics />{render()}</div>;
+    return (
+        <div>
+            <Analytics />
+            {render()}
+            <ToastContainer position="bottom-right" newestOnTop />
+        </div>
+    );
 }

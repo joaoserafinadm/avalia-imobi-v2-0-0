@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import { buildPdfBlob, pdfFileName, triggerDownload } from "../utils/generatePdf";
+
+export function pdfErrorMessage(err) {
+    const detail = err?.message ? ` (${err.message})` : '';
+    return `Não foi possível gerar o PDF${detail}. Tente novamente em alguns instantes.`;
+}
 
 // status: 'idle' | 'generating' | 'done' | 'error'
 // pdfUrl fica disponível após a geração para servir de fallback ("abrir PDF"),
@@ -18,6 +24,7 @@ export default function usePdfDownload() {
         if (busyRef.current) return;
         busyRef.current = true;
         setStatus('generating');
+        const toastId = toast.loading('Gerando o PDF da avaliação, aguarde...');
 
         try {
             const blob = await buildPdfBlob(elementId);
@@ -28,9 +35,17 @@ export default function usePdfDownload() {
 
             triggerDownload(urlRef.current, pdfFileName(companyName));
             setStatus('done');
+            toast.update(toastId, {
+                render: 'PDF gerado! O download foi iniciado.',
+                type: 'success', isLoading: false, autoClose: 4000, closeButton: true,
+            });
         } catch (err) {
             console.error('Erro ao gerar PDF:', err);
             setStatus('error');
+            toast.update(toastId, {
+                render: pdfErrorMessage(err),
+                type: 'error', isLoading: false, autoClose: 8000, closeButton: true,
+            });
         } finally {
             busyRef.current = false;
         }

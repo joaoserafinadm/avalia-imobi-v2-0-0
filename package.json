@@ -101,6 +101,7 @@
     "react-select-search": "^4.1.6",
     "react-share": "^4.4.1",
     "react-sticky": "^6.0.3",
+    "react-toastify": "^11.1.0",
     "react-type-animation": "^3.2.0",
     "react-use-scroll-position": "^2.0.0",
     "react-vis-network-graph": "^3.0.1",
