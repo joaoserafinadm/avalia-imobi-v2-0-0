@@ -12,7 +12,8 @@ import Button from "../components/Button";
 import SelectedValue from "./SelectedValue";
 import ServiceAvaliation from "./ServiceAvaliation";
 import handleShare from "../../utils/handleShare";
-import { generatePDF } from "../../utils/generatePdf";
+import usePdfDownload from "../../hooks/usePdfDownload";
+import PdfDownloadNotice from "../components/pdfDownloadNotice";
 import { useState } from "react";
 import { HouseIcon } from "lucide-react";
 
@@ -26,6 +27,7 @@ export default function Valuation(props) {
 
     const [shareButton, setShareButton] = useState(false);
     const [copied, setCopied] = useState(false);
+    const pdf = usePdfDownload();
 
     const shareUrl = `${client?.valuation?.urlToken}?userId=${token.sub}`;
 
@@ -92,8 +94,8 @@ export default function Valuation(props) {
                     <ActionBtn icon={faShare} onClick={() => setShareButton(v => !v)}>
                         Compartilhar
                     </ActionBtn>
-                    <ActionBtn icon={faDownload} onClick={() => generatePDF('valuationPdf', userData.companyName)}>
-                        Baixar PDF
+                    <ActionBtn icon={faDownload} disabled={pdf.generating} onClick={() => pdf.download('valuationPdf', userData.companyName)}>
+                        {pdf.generating ? 'Gerando PDF...' : 'Baixar PDF'}
                     </ActionBtn>
                 </div>
                 <Link href={"/valuationEdit/" + client?._id} style={{ textDecoration: 'none' }}>
@@ -102,6 +104,8 @@ export default function Valuation(props) {
                     </ActionBtn>
                 </Link>
             </div>
+
+            <PdfDownloadNotice status={pdf.status} pdfUrl={pdf.pdfUrl} style={{ marginTop: '-0.75rem', marginBottom: '1.25rem' }} />
 
             {/* ── Share panel ── */}
             {shareButton && (
@@ -221,17 +225,19 @@ export default function Valuation(props) {
     );
 }
 
-function ActionBtn({ children, icon, onClick, dismiss }) {
+function ActionBtn({ children, icon, onClick, dismiss, disabled }) {
     return (
         <button
             onClick={onClick}
+            disabled={disabled}
             {...(dismiss ? { 'data-bs-dismiss': 'modal' } : {})}
             style={{
                 background: 'var(--theme-input-bg)',
                 border: '1px solid var(--theme-border-visible)',
                 borderRadius: '9px', padding: '8px 16px',
                 fontFamily: "'DM Sans', sans-serif", fontSize: '0.8rem',
-                color: 'var(--theme-text-tertiary)', cursor: 'pointer',
+                color: 'var(--theme-text-tertiary)', cursor: disabled ? 'wait' : 'pointer',
+                opacity: disabled ? 0.7 : 1,
                 display: 'inline-flex', alignItems: 'center', gap: '7px',
                 transition: 'background 0.18s ease, border-color 0.18s ease',
             }}

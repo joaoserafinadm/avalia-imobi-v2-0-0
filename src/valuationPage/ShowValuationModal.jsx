@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import handleShare from "../../utils/handleShare";
 import ValuationPdf from "../pages/valuation/valuationPdf";
 import Button from "../components/Button";
+import PdfDownloadNotice from "../components/pdfDownloadNotice";
+import { buildPdfBlob, pdfFileName, triggerDownload } from "../../utils/generatePdf";
 
 
 
@@ -20,6 +22,7 @@ export default function ShowValuationModal(props) {
 
     const [section, setSection] = useState('Apresentação')
     const [pdfUrl, setPdfUrl] = useState(null);
+    const [pdfStatus, setPdfStatus] = useState('idle');
 
     useEffect(() => {
         if (userData && clientData) {
@@ -28,32 +31,23 @@ export default function ShowValuationModal(props) {
         }
     }, [userData, clientData])
 
+    useEffect(() => () => {
+        if (pdfUrl) URL.revokeObjectURL(pdfUrl)
+    }, [pdfUrl])
+
+    const handleDownload = () => {
+        if (!pdfUrl) return
+        triggerDownload(pdfUrl, pdfFileName(userData?.companyName))
+        setPdfStatus('done')
+    }
+
     const generatePDF = async () => {
-        if (typeof window !== 'undefined') {
-            const html2pdf = (await import('html2pdf.js')).default;
-            const element = document.getElementById('valuationPdf');
-
-            // Aguarde o carregamento das imagens
-            const images = Array.from(element.querySelectorAll('img'));
-            await Promise.all(images.map(img => new Promise(resolve => {
-                if (img.complete) resolve();
-                else img.onload = resolve;
-            })));
-
-            const opt = {
-                margin: 0,
-                filename: `Avaliação - ${userData?.companyName}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            // Gera o PDF como Blob
-            const pdfBlob = await html2pdf().set(opt).from(element).toPdf().get('pdf');
-            const blobUrl = pdfBlob && URL.createObjectURL(pdfBlob);
-
-            // Define o PDF no estado
-            setPdfUrl(blobUrl);
+        try {
+            const blob = await buildPdfBlob('valuationPdf');
+            setPdfUrl(URL.createObjectURL(blob));
+        } catch (err) {
+            console.error('Erro ao gerar PDF:', err);
+            setPdfStatus('error');
         }
     };
 
@@ -100,7 +94,8 @@ export default function ShowValuationModal(props) {
                     </div>
                     <div className="modal-footer">
                         <Button variant="secondary" size="sm" data-bs-dismiss="modal">Fechar</Button>
-                        <Button variant="primary" size="sm">Baixar PDF</Button>
+                        <PdfDownloadNotice status={pdfStatus} pdfUrl={pdfUrl} style={{ marginRight: 'auto' }} />
+                        <Button variant="primary" size="sm" loading={!pdfUrl && pdfStatus !== 'error'} disabled={!pdfUrl} onClick={handleDownload}>Baixar PDF</Button>
                         <Button variant="primary" size="sm" onClick={() => handleShare(valuationUrl + '&userId=' + token.sub)}>Compartilhar apresentação</Button>
                     </div>
                 </div>

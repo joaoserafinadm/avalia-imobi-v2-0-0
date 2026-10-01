@@ -4,8 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDownload, faEye, faCheckCircle, faHandshake, faFilePdf, faPhone } from "@fortawesome/free-solid-svg-icons"
 import { Download, Eye, View } from 'lucide-react'
 import Button from "../../components/Button"
+import PdfDownloadNotice from "../../components/pdfDownloadNotice"
+import usePdfDownload from "../../../hooks/usePdfDownload"
 
 export default function DownloadPage(props) {
+
+    const pdf = usePdfDownload()
 
     const handleRestartValuation = () => {
         var myCarousel = document.querySelector('#valuationCarousel')
@@ -20,30 +24,6 @@ export default function DownloadPage(props) {
             const imgData = canvas.toDataURL("image/png");
             setMapImage(imgData);
             console.log("imgData", imgData) // Armazena a imagem capturada
-        }
-    }
-
-    const generatePDF = async () => {
-        if (typeof window !== 'undefined') {
-            const html2pdf = (await import('html2pdf.js')).default;
-            const element = document.getElementById('valuationPdf');
-    
-            // Aguarde o carregamento das imagens
-            const images = Array.from(element.querySelectorAll('img'));
-            await Promise.all(images.map(img => new Promise(resolve => {
-                if (img.complete) resolve();
-                else img.onload = resolve;
-            })));
-    
-            const opt = {
-                margin: 0,
-                filename: `Avaliação - ${props.userData.companyName}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-    
-            html2pdf().set(opt).from(element).save();
         }
     }
 
@@ -146,10 +126,11 @@ export default function DownloadPage(props) {
                                                         <p className="text-muted mb-4">
                                                             Baixe o relatório completo da avaliação
                                                         </p>
-                                                        <Button variant="primary" size="lg" full onClick={() => generatePDF()}>
+                                                        <Button variant="primary" size="lg" full loading={pdf.generating} onClick={() => pdf.download('valuationPdf', props.userData.companyName)}>
                                                             <Download className="me-2" />
-                                                            Baixar PDF
+                                                            {pdf.generating ? 'Gerando PDF...' : 'Baixar PDF'}
                                                         </Button>
+                                                        <PdfDownloadNotice status={pdf.status} pdfUrl={pdf.pdfUrl} style={{ marginTop: '0.75rem' }} />
                                                     </div>
                                                 </div>
                                             </div>

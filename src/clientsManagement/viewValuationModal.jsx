@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Sections from "../components/Sections";
-import { generatePDF } from "../../utils/generatePdf";
+import usePdfDownload from "../../hooks/usePdfDownload";
+import PdfDownloadNotice from "../components/pdfDownloadNotice";
 import Modal, { ModalBtnSecondary, ModalBtnPrimary } from "../components/Modal";
 import { faChartLine, faDownload, faShareNodes } from "@fortawesome/free-solid-svg-icons";
 
@@ -11,6 +12,7 @@ export default function ViewValuationModal(props) {
     const token = props.token
 
     const [section, setSection] = useState('Apresentação')
+    const pdf = usePdfDownload()
 
     const handleShare = async (url) => {
         try {
@@ -34,15 +36,17 @@ export default function ViewValuationModal(props) {
             size="xl"
             footer={
                 <>
+                    <PdfDownloadNotice status={pdf.status} pdfUrl={pdf.pdfUrl} style={{ marginRight: 'auto' }} />
                     <ModalBtnSecondary onClick={() => props.setClientSelected('')}>
                         Fechar
                     </ModalBtnSecondary>
                     <ModalBtnPrimary
                         dismiss={false}
                         icon={faDownload}
-                        onClick={() => generatePDF('valuationPdf', userData?.companyName)}
+                        disabled={pdf.generating}
+                        onClick={() => pdf.download('valuationPdf', userData?.companyName)}
                     >
-                        Baixar PDF
+                        {pdf.generating ? 'Gerando PDF...' : 'Baixar PDF'}
                     </ModalBtnPrimary>
                     <ModalBtnPrimary
                         dismiss={false}
